@@ -41,18 +41,5 @@ Vagrant.configure("2") do |config|
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available.
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y build-essential vim-nox python-pip postgresql postgresql-contrib postgis nginx-core
-    sed -i "s/#listen_address.*/listen_addresses 'localhost'/" /etc/postgresql/9.5/main/postgresql.conf
-
-    # Create Role and login
-    su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant'\" "
-
-    # Create vagrant database
-    su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
-    su vagrant -c "psql -c \"CREATE EXTENSION postgis\" vagrant"
-
-    apt-get upgrade -y
-  SHELL
+  config.vm.provision "shell", path: "provision.sh"
 end
