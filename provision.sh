@@ -19,3 +19,32 @@ su vagrant -c "psql -c \"CREATE EXTENSION IF NOT EXISTS postgis;\" vagrant"
 # Upgrade - with non-interactive flags so grub/sudo don't hang on config changes
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
     -o Dpkg::Options::="--force-confold" -yq upgrade
+
+pip install --upgrade pip
+
+PYTHON_VERSION=3.5
+
+# Use the miniconda installer for faster download / install of conda
+# itself
+wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh \
+    -O miniconda.sh
+chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
+PATH=$HOME/miniconda/bin:$PATH
+conda update --yes conda
+
+# Configure the conda environment and put it in the path using the
+# provided versions
+conda create -n testenv --yes python=$PYTHON_VERSION pip
+source activate testenv
+
+# Install a version of smif using an editable install
+git clone https://github.com/nismod/smif.git
+cd smif
+pip install -r requirements.txt
+# Use a special install of behave testing framework for now
+pip install git+https://github.com/behave/behave
+# Run the tests for smif
+python setup.py test
+python setup.py behave_test
+# Install the developer version of smif
+python setup.py develop
