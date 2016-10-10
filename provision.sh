@@ -22,12 +22,6 @@ DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
 
 pip install --upgrade pip
 
-# Add github to known hosts
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-ssh -T git@github.com
-
 PYTHON_VERSION=3.5
 
 # Use the miniconda installer for faster download / install of conda
@@ -44,4 +38,13 @@ conda create -n testenv --yes python=$PYTHON_VERSION pip
 source activate testenv
 
 # Install a version of smif using an editable install
-pip install -e git+ssh://git@github.com/nismod/smif.git#egg=smif
+git clone https://github.com/nismod/smif.git
+cd smif
+pip install -r requirements.txt
+# Use a special install of behave testing framework for now
+pip install git+https://github.com/behave/behave
+# Run the tests for smif
+python setup.py test
+python setup.py behave_test
+# Install the developer version of smif
+python setup.py develop
