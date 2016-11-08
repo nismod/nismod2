@@ -1,0 +1,17 @@
+assets:
+  - assets.yaml # The set of assets
+  - attributes.yaml # Attributes for each asset in the set of assets
+  - initial_conditions.yaml # Initial conditions for the model (pre-existing capacity)
+timesteps:
+  - timesteps.yaml # Set of timesteps
+planning:
+  pre_spec:
+    use: true
+    files:
+      - pre-specified.yaml # The build instructions
+  rule_based:
+    use: false
+    files:
+  optimisation:
+    use: false
+    files:

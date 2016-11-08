@@ -1,0 +1,11 @@
+# Initial conditions for the water_supply model
+-
+  asset: water_treatment_plant
+  description: Existing water treatment plants
+  timeperiod: 1990 # 2010 is the first year in the model horizon
+  location:
+    lat: 51.745560
+    lon: -1.240528
+  new_capacity:
+    value: 6
+    unit: Ml/yr
