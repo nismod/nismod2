@@ -4,3 +4,6 @@
 [submodule "models/solid_waste"]
 	path = models/solid_waste
 	url = https://github.com/nismod/solid_waste.git
+[submodule "models/water_supply"]
+	path = models/water_supply
+	url = https://github.com/nismod/water_supply.git
