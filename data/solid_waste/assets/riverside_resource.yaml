@@ -1,0 +1,12 @@
+name:
+  - value: Riverside Resource Recovery EfW
+waste_treatment_process:
+  - value: MSW incineration, electricity recovery only (BAT)
+annual_operating_capacity:
+  - value: 636500
+maximum_annual_capacity:
+  - value: 670000
+absolute_capacity:
+commissioning_timestep:
+  - value: 2012
+  - unit: year
