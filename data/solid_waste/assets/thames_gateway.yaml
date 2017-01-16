@@ -10,3 +10,5 @@ absolute_capacity:
 commissioning_timestep:
   - value: 2016
   - unit: year
+area:
+  - value: Narnia
