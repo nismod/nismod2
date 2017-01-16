@@ -47,21 +47,6 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'djrole';\" " \
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'scr1';\" " \
     | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE scr1;\" "
 
-# # Load db functions and tables
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/cdam_modified_func.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/cdam_admin_update_model_execution_time.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_run_order.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/cdam_admin_auto_run_reports.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_sectors_and_strategies.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_logs_schema.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_emission_factors_and_fuels.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_emission_factors_and_sources.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_lu.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_base_audit.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_i.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_regions.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_io.sql"
-# su postgres -c "psql -d vagrant -f /vagrant/models/solid_waste/db/data/itrc_sos_test_sw_o.sql"
 
 # Upgrade - with non-interactive flags so grub/sudo don't hang on config changes
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
