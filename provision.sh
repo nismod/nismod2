@@ -13,18 +13,8 @@ pip3 install --upgrade pip
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
 
-# Install a version of smif using an editable install
-su vagrant <<'EOF'
-cd ~
-git clone https://github.com/nismod/smif.git
-cd smif/
-# Install requirements to vagrant user dir
-pip install --user -r requirements.txt
-# Use a special install of behave testing framework for now
-pip install --user git+https://github.com/behave/behave
-pip install --user -r test-requirements.txt
-python3 setup.py develop --user
-EOF
+# Install smif from github repository
+pip install git+https://github.com/nismod/smif
 
 
 # Provision script for the transport model
@@ -32,10 +22,7 @@ bash /vagrant/provision/transport.sh
 
 # Provision script for the solid waste model
 
-# Install OS packages
-apt-get install -y tmux
-
-# Create vagrant role if not exists
+# Create roles for solid waste database if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'runcdamrole';\" " \
     | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE runcdamrole;\" "
 
@@ -60,10 +47,8 @@ apt-get update
 # Install dotnet core (version latest as of 2016-11-28)
 apt-get install -y dotnet-dev-1.0.0-preview2.1-003177 --allow-unauthenticated
 
-
-# Run the tests for the solid waste model
+# Restore dependencies for the solid waste model
 cd /vagrant/models/solid_waste/src/SolidWasteModel
 dotnet restore
 cd /vagrant/models/solid_waste/test/SolidWasteModel.Tests
 dotnet restore
-dotnet test
