@@ -27,4 +27,4 @@ python3 setup.py develop --user
 EOF
 
 # Provision script for the transport model
-bash /vagrant/models/transport/provision.sh
+bash /vagrant/provision/transport.sh
