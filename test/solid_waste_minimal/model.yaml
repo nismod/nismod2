@@ -1,3 +1,9 @@
+sector_models:
+  - name: solid_waste
+    path: ../../models/solid_waste/wrapper.py
+    classname: SolidWasteSectorModel
+    config_dir: ./data/solid_waste
+timesteps: timesteps.yaml
 assets:
   - assets.yaml # The set of assets
   - attributes.yaml # Attributes for each asset in the set of assets
@@ -8,7 +14,7 @@ planning:
   pre_spec:
     use: true
     files:
-      - pre-specified.yaml # The build instructions
+      - ./data/pre-specified.yaml # The build instructions
   rule_based:
     use: false
     files:
