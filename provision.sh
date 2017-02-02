@@ -1,50 +1,30 @@
 # Update package lists
 apt-get update
 # Install OS packages
-apt-get install -y build-essential git vim-nox python-pip postgresql \
-    postgresql-contrib postgis nginx-core
-
-# Database config to listen on network connection
-sed -i "s/#listen_address.*/listen_addresses 'localhost'/" \
-    /etc/postgresql/9.5/main/postgresql.conf
-# Create vagrant role if not exists
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant';\" "
-# Create vagrant database if not exists
-su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\" " \
-    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
-# Add PostGIS extension
-su vagrant -c "psql -c \"CREATE EXTENSION IF NOT EXISTS postgis;\" vagrant"
-
+apt-get install -y build-essential git vim-nox python3-pip python3
 # Upgrade - with non-interactive flags so grub/sudo don't hang on config changes
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
     -o Dpkg::Options::="--force-confold" -yq upgrade
 
-pip install --upgrade pip
+# use ubuntu package to install latest pip
+pip3 install --upgrade pip
 
-PYTHON_VERSION=3.5
-
-# Use the miniconda installer for faster download / install of conda
-# itself
-wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh \
-    -O miniconda.sh
-chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
-PATH=$HOME/miniconda/bin:$PATH
-conda update --yes conda
-
-# Configure the conda environment and put it in the path using the
-# provided versions
-conda create -n testenv --yes python=$PYTHON_VERSION pip
-source activate testenv
+# copy bash config to vagrant home
+cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
+chown vagrant:vagrant /home/vagrant/.bashrc
 
 # Install a version of smif using an editable install
+su vagrant <<'EOF'
+cd ~
 git clone https://github.com/nismod/smif.git
-cd smif
-pip install -r requirements.txt
+cd smif/
+# Install requirements to vagrant user dir
+pip install --user -r requirements.txt
 # Use a special install of behave testing framework for now
-pip install git+https://github.com/behave/behave
-# Run the tests for smif
-python setup.py test
-python setup.py behave_test
-# Install the developer version of smif
-python setup.py develop
+pip install --user git+https://github.com/behave/behave
+pip install --user -r test-requirements.txt
+python3 setup.py develop --user
+EOF
+
+# Provision script for the transport model
+bash /vagrant/models/transport/provision.sh
