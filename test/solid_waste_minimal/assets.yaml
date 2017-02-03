@@ -1,0 +1,57 @@
+- type: Residual waste MRF (BAT), with gasification
+  waste_treatment_process:
+    value: Residual waste MRF (BAT), with gasification
+    units: wtp_type
+  annual_operating_capacity:
+    value: 102000
+    units: tonnes
+  maximum_annual_capacity:
+    value: 120000
+    units: tonnes
+  capital_cost:
+    value: 1000000
+    units: £
+  operational_lifetime:
+    value: 150
+    units: years
+  economic_lifetime:
+    value: 150
+    units: years
+- type: MSW incineration, electricity recovery only (average)
+  waste_treatment_process:
+    value: MSW incineration, electricity recovery only (average)
+    units: wtp_type
+  annual_operating_capacity:
+    value: 641250
+    units: tonnes
+  maximum_annual_capacity:
+    value: 675000
+    units: tonnes
+  capital_cost:
+    value: 1000000
+    units: £
+  operational_lifetime:
+    value: 150
+    units: years
+  economic_lifetime:
+    value: 150
+    units: years
+- type: MSW incineration, electricity recovery only (BAT)
+  waste_treatment_process:
+    value: MSW incineration, electricity recovery only (BAT)
+    units: wtp_type
+  annual_operating_capacity:
+    value: 636500
+    units: tonnes
+  maximum_annual_capacity:
+    value: 670000
+    units: tonnes
+  capital_cost:
+    value: 1000000
+    units: £
+  operational_lifetime:
+    value: 150
+    units: years
+  economic_lifetime:
+    value: 150
+    units: years
