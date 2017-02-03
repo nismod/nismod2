@@ -1,0 +1,30 @@
+- type: water_treatment_plant
+  capital_cost:
+    value: 1200
+    units: £/Ml/yr
+  economic_lifetime:
+    value: 25
+    units: years
+  operational_lifetime:
+    value: 25
+    units: years
+- type: reservoir
+  capital_cost:
+    value: 100
+    units: £M/Ml
+  economic_lifetime:
+    value: 25
+    units: years
+  operational_lifetime:
+    value: 100
+    units: years
+- type: blue_water_pipe
+  capital_cost:
+    value: 800
+    units: £M/km
+  economic_lifetime:
+    value: 25
+    units: years
+  operational_lifetime:
+    value: 50
+    units: years

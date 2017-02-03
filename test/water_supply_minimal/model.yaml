@@ -1,8 +1,13 @@
 sector_models:
-  - water_supply
-timesteps:
-  timesteps.yaml # Set of timesteps
-assets: []
+  - name: water_supply
+    path: /vagrant/models/water_supply/run.py
+    classname: Wathnet
+    config_dir: .
+timesteps: timesteps.yaml
+assets:
+  - initial_conditions.yaml
+asset_types:
+  - assets.yaml
 planning:
   pre_specified:
     use: true
@@ -10,5 +15,7 @@ planning:
       - pre-specified.yaml # The build instructions
   rule_based:
     use: false
+    files: []
   optimisation:
     use: false
+    files: []
