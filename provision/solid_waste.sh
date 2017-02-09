@@ -1,15 +1,11 @@
 # Create roles for solid waste database if not exists
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'runcdamrole';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE runcdamrole;\" "
+su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'runcdamrole';\" " | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE runcdamrole;\" "
 
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'sosadministratorrole';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE sosadministratorrole;\" "
+su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'sosadministratorrole';\" " | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE sosadministratorrole;\" "
 
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'djrole';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE djrole;\" "
+su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'djrole';\" " | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE djrole;\" "
 
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'scr1';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE scr1;\" "
+su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'scr1';\" " | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE scr1;\" "
 
 # Add package repository for dotnet core
 echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list

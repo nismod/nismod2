@@ -16,7 +16,17 @@ To use it, first install:
 
 Then on the command line, from this directory, run:
 
+    git submodule init
+    git submodule update
     vagrant up
 
 This will download a virtual machine image and install all the packages and
 software which are required to test and run NISMOD onto that virtual machine.
+
+Once that has finished, enter the virtual machine navigate to the project folder
+and runs the tests:
+
+    vagrant ssh
+    cd /vagrant
+    smif run test/solid_waste_minimal/model.yaml
+    smif run test/water_supply_minimal/model.yaml
