@@ -34,3 +34,6 @@ bash /vagrant/provision/transport.sh
 
 # Provision solid_waste model
 bash /vagrant/provision/solid_waste.sh
+
+# Provision energy_supply model
+bash /vagrant/provision/energy_supply.sh
