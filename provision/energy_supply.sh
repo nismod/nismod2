@@ -100,18 +100,18 @@ odbcinst -i -l -s -f /vagrant/template.ini
 # cp /vagrant/xpauth.xpr /opt/xpressmp/bin/xpauth.xpr
 
 # Now compile and install the energy_supply model
-MODEL_DIR=/vagrant/model
+MODEL_DIR=/vagrant/models/energy_supply/model
 cp $MODEL_DIR/Initial.bim $XPRESSDIR/dso/Initial.bim
 
 # Compile the energy_supply model
-cd /vagrant/model
+cd $MODEL_DIR
 make clean
 make
 
 cd
 
 # Run migrations
-su vagrant -c "python /vagrant/db/run_migrations.py -u"
+su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -u"
 
 # Setup environment variables on login
 echo "source /opt/xpressmp/bin/xpvars.sh" >> /home/vagrant/.bashrc
