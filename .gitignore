@@ -94,3 +94,7 @@ ENV/
 # Energy supply
 xpress.tar
 template.ini
+install.sh
+kalis_license.txt
+version.txt
+xphostid
