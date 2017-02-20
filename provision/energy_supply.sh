@@ -24,8 +24,9 @@ PKGFILE=xp8.1_linux_x86_64.tar.gz
 
 SOURCE=/vagrant
 
+wget https://clientarea.xpress.fico.com/downloads/8.1.0/xp8.1_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
 tar xf $SOURCE/xpress.tar
-# ./install.sh 
+# ./install.sh
 
 INSTALL_TYPE="distrib_client"
 XPRESSDIR=/opt/xpressmp
@@ -39,7 +40,7 @@ if [ "`( gzip -d -c < $PKGFILE | ( cd $XPRESSDIR; tar xf - ) ) 2>&1 | tee -a $SO
   echo "Errors while extracting the package - your download may be corrupted."
 fi
 
-SERVERNAME="192.168.0.1:29395"
+SERVERNAME="ouce-license.ouce.ox.ac.uk"
 echo "use_server server=\"$SERVERNAME\"" > $LICPATH
 
 XPRESS_VAR=$XPRESSDIR/bin
@@ -70,7 +71,7 @@ export XPRESSDIR
 export XPRESS
 EOF
 
-# Makes a template file containing the connection information to 
+# Makes a template file containing the connection information to
 cat > /vagrant/template.ini <<EOF
 [energy_supply]
 Description=Energy Supply Data
@@ -91,13 +92,10 @@ FakeOidIndex=No
 ConnSettings=
 EOF
 
-odbcinst -i -l -s -f /vagrant/template.ini 
+odbcinst -i -l -s -f /vagrant/template.ini
 
 # Setup environment
 . $XPRESSDIR/bin/xpvars.sh
-
-# Copy over the license file
-# cp /vagrant/xpauth.xpr /opt/xpressmp/bin/xpauth.xpr
 
 # Now compile and install the energy_supply model
 MODEL_DIR=/vagrant/models/energy_supply/model

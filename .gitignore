@@ -90,3 +90,7 @@ ENV/
 
 # Vagrant
 .vagrant/
+
+# Energy supply
+xpress.tar
+template.ini
