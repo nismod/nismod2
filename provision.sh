@@ -30,10 +30,13 @@ pip install git+https://github.com/nismod/smif
 
 
 # Provision transport model
+tr -s '\r' '' < /vagrant/provision/transport.sh
 bash /vagrant/provision/transport.sh
 
 # Provision solid_waste model
+tr -s '\r' '' < /vagrant/provision/solid_waste.sh
 bash /vagrant/provision/solid_waste.sh
 
 # Provision energy_supply model
+tr -s '\r' '' < /vagrant/provision/energy_supply.sh
 bash /vagrant/provision/energy_supply.sh
