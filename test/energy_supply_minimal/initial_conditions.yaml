@@ -1,0 +1,7 @@
+# Initial conditions for the water_supply model
+- type: water_treatment_plant
+  description: Existing water treatment plants
+  build_date: 1990
+  location:
+    lat: 51.745560
+    lon: -1.240528

@@ -1,0 +1,44 @@
+- type: nuclear_power_station
+  capital_cost:
+    value: 3.5
+    units: £(million)/MW
+  economic_lifetime:
+    value: 30
+    units: years
+  operational_life:
+    value: 40
+    units: years
+  operational_Year:
+    value: 2030
+    units: year
+  capacity:
+    value: 1000
+    units: MW
+  location:
+    value: England
+    units: string
+  power_generation_type:
+    value: 4
+    units: number
+- type: IOG_gas_terminal_expansion
+  capital_cost:
+    value: 10
+    units: £(million)/mcm
+  economic_lifetime:
+    value: 25
+    units: years
+  operational_life:
+    value: 30
+    units: years
+  operational_Year:
+    value: 2020
+    units: year
+  capacity:
+    value: 10
+    units: mcm
+  location:
+    value: England
+    units: string
+  gas_Terminal_Number:
+    value: 8
+    units: number
