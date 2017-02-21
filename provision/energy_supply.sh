@@ -24,7 +24,7 @@ PKGFILE=xp8.1_linux_x86_64.tar.gz
 
 SOURCE=/vagrant
 
-wget https://clientarea.xpress.fico.com/downloads/8.1.0/xp8.1_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
+wget -nc https://clientarea.xpress.fico.com/downloads/8.1.0/xp8.1_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
 tar xf $SOURCE/xpress.tar
 # ./install.sh
 
