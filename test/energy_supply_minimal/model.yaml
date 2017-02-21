@@ -1,0 +1,17 @@
+sector_models:
+  - name: energy_supply
+    path: /vagrant/models/energy_supply/run.py
+    classname: energysupplywrapper
+    config_dir: .
+timesteps: timesteps.yaml
+planning:
+  pre_specified:
+    use: true
+    files:
+      - pre-specified.yaml # The build instructions
+  rule_based:
+    use: false
+    files: []
+  optimisation:
+    use: false
+    files: []
