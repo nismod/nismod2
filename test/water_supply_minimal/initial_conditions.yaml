@@ -1,7 +1,13 @@
 # Initial conditions for the water_supply model
-- type: water_treatment_plant
-  description: Existing water treatment plants
-  build_date: 1990
+- type: Lower_Thames_Reservoir
+  description: Existing reservoir
+  build_date: 1900
   location:
-    lat: 51.745560
-    lon: -1.240528
+    lat: 51.442859
+    lon: -0.502879
+ - type: Upper_Thames_Reservoir
+  description: Existing reservoir
+  build_date: 1900
+  location:
+    lat: 51.750753
+    lon: -1.356835
