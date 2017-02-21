@@ -1,14 +1,14 @@
-- type: water_treatment_plant
+- type: Lower_Thames_Reservoir
   capital_cost:
     value: 1200
     units: £/Ml/yr
   economic_lifetime:
-    value: 25
+    value: 100
     units: years
   operational_lifetime:
-    value: 25
+    value: 100
     units: years
-- type: reservoir
+- type: Upper_Thames_Reservoir
   capital_cost:
     value: 100
     units: £M/Ml
@@ -17,14 +17,4 @@
     units: years
   operational_lifetime:
     value: 100
-    units: years
-- type: blue_water_pipe
-  capital_cost:
-    value: 800
-    units: £M/km
-  economic_lifetime:
-    value: 25
-    units: years
-  operational_lifetime:
-    value: 50
     units: years
