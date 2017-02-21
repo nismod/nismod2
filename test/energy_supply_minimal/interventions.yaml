@@ -1,4 +1,4 @@
-- type: nuclear_power_station
+- name: nuclear_power_station
   capital_cost:
     value: 3.5
     units: £(million)/MW
@@ -20,7 +20,7 @@
   power_generation_type:
     value: 4
     units: number
-- type: IOG_gas_terminal_expansion
+- name: IOG_gas_terminal_expansion
   capital_cost:
     value: 10
     units: £(million)/mcm

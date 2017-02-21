@@ -1,8 +1,12 @@
 sector_models:
   - name: energy_supply
-    path: /vagrant/models/energy_supply/run.py
+    path: ../../models/energy_supply/run.py
     classname: energysupplywrapper
     config_dir: .
+    initial_conditions:
+    - initial_conditions.yaml
+    interventions:
+    - interventions.yaml
 timesteps: timesteps.yaml
 planning:
   pre_specified:

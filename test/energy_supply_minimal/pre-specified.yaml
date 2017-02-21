@@ -1,5 +1,5 @@
 # Pre-specified Planning for the water_supply model
-- type: nuclear_power_station
+- name: nuclear_power_station
   build_date: 2017
   location:
     lat: 51.745560
