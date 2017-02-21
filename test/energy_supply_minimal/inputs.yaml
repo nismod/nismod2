@@ -1,1 +1,1 @@
-dependencies: ['electricity_demand']
+dependencies: ['electricity_demand', 'gas_demand']

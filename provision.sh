@@ -2,7 +2,7 @@
 apt-get update
 # Install OS packages
 apt-get install -y build-essential git vim-nox python3-pip python3 postgresql \
-    postgresql-contrib
+    postgresql-contrib libpq-dev python-dev 
 
 # Database config to listen on network connection
 sed -i "s/#listen_address.*/listen_addresses 'localhost'/" \
