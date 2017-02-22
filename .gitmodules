@@ -1,6 +1,3 @@
-[submodule "models/transport"]
-	path = models/transport
-	url = https://github.com/nismod/transport.git
 [submodule "models/solid_waste"]
 	path = models/solid_waste
 	url = https://github.com/nismod/solid_waste.git
