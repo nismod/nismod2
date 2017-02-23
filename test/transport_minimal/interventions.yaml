@@ -34,9 +34,9 @@
   capacity:
     value: 2330
     units: PCU/lane/hr
-  location:
-    value: England
-    units: string
-  road_type:
-    value: M
-    units: string
+  lanes:
+    value: 1
+    units: count
+  from: 57
+  to: 39
+  count_point: 26042
