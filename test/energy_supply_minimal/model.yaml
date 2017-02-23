@@ -20,4 +20,4 @@ planning:
     use: false
     files: []
 assets:
-asset_types:
+  - assets.yaml

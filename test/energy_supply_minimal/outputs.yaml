@@ -1,1 +1,4 @@
-metrics: ['total_cost', 'water_demand', 'total_emissions']
+metrics: 
+  - name: total_cost
+  - name: water_demand
+  - name: total_emissions

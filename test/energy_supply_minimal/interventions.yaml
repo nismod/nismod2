@@ -8,7 +8,7 @@
   operational_life:
     value: 40
     units: years
-  operational_Year:
+  operational_year:
     value: 2030
     units: year
   capacity:
@@ -30,7 +30,7 @@
   operational_life:
     value: 30
     units: years
-  operational_Year:
+  operational_year:
     value: 2020
     units: year
   capacity:
@@ -39,6 +39,6 @@
   location:
     value: England
     units: string
-  gas_Terminal_Number:
+  gas_terminal_number:
     value: 8
     units: number

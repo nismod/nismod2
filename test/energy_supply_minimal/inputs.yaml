@@ -1,1 +1,9 @@
-dependencies: ['electricity_demand', 'gas_demand']
+dependencies: 
+  - name: electricity_demand
+    spatial_resolution: 
+    temporal_resolution: 
+    from_model: energy_demand
+  - name: gas_demand
+    spatial_resolution: 
+    temporal_resolution: 
+    from_model: energy_demand
