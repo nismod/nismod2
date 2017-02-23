@@ -1,0 +1,22 @@
+sector_models:
+  - name: digital_comms
+    path: ../../models/digital_comms/run.py
+    classname: DigitalCommsWrapper
+    config_dir: .
+    initial_conditions:
+    - initial_conditions.yaml
+    interventions:
+    - interventions.yaml
+timesteps: timesteps.yaml
+planning:
+  pre_specified:
+    use: true
+    files:
+      - pre-specified.yaml # The build instructions
+  rule_based:
+    use: false
+    files: []
+  optimisation:
+    use: false
+    files: []
+assets:

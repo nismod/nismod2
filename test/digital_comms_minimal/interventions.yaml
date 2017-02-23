@@ -1,0 +1,584 @@
+- name: G.fast_geo1
+  capital_cost:
+    value: 2201
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo2
+  capital_cost:
+    value: 3301
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo3
+  capital_cost:
+    value: 4402
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo4
+  capital_cost:
+    value: 5502
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo5
+  capital_cost:
+    value: 6603
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo6
+  capital_cost:
+    value: 7703
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo7
+  capital_cost:
+    value: 8804
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo8
+  capital_cost:
+    value: 9904
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo9
+  capital_cost:
+    value: 11005
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo10
+  capital_cost:
+    value: 12105
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo11
+  capital_cost:
+    value: 13206
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo12
+  capital_cost:
+    value: 14306
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: G.fast_geo13
+  capital_cost:
+    value: 15407
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo1
+  capital_cost:
+    value: 4402
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo2
+  capital_cost:
+    value: 4853
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo3
+  capital_cost:
+    value: 4754
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo4
+  capital_cost:
+    value: 4413
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo5
+  capital_cost:
+    value: 7813
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo6
+  capital_cost:
+    value: 4149
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo7
+  capital_cost:
+    value: 5921
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo8
+  capital_cost:
+    value: 5095
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo9
+  capital_cost:
+    value: 11863
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo10
+  capital_cost:
+    value: 4479
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo11
+  capital_cost:
+    value: 7582
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo12
+  capital_cost:
+    value: 13206
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTdp_geo13
+  capital_cost:
+    value: 38516
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo1
+  capital_cost:
+    value: 14306
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo2
+  capital_cost:
+    value: 19808
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo3
+  capital_cost:
+    value: 22009
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo4
+  capital_cost:
+    value: 18708
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo5
+  capital_cost:
+    value: 36315
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo6
+  capital_cost:
+    value: 20909
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo7
+  capital_cost:
+    value: 47320
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo8
+  capital_cost:
+    value: 16507
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo9
+  capital_cost:
+    value: 44019
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo10
+  capital_cost:
+    value: 24210
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo11
+  capital_cost:
+    value: 73731
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo12
+  capital_cost:
+    value: 99042
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
+
+- name: FTTP_geo13
+  capital_cost:
+    value: 132056
+    units: £(million)
+  economic_lifetime:
+    value: 15
+    units: years
+  operational_life:
+    value: 15
+    units: years
+  capacity:
+    value: 2000
+    units: Mbps
+  location: Great Britain
