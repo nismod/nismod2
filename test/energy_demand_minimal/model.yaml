@@ -3,12 +3,14 @@ sector_models:
     path: /vagrant/models/energy_demand/run.py
     classname: EnergyDemandModel
     config_dir: "."
+    initial_conditions: []
+    interventions: []
 timesteps: timesteps.yaml
+scenario_data: []
 planning:
   pre_specified:
     use: true
-    files:
-      - pre-specified.yaml # The build instructions
+    files: []
   rule_based:
     use: false
     files: []
