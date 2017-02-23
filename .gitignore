@@ -98,3 +98,11 @@ install.sh
 kalis_license.txt
 version.txt
 xphostid
+
+# OS X 
+.DS_Store
+.vscode
+
+# Python
+*.pyc 
+__pycache__
