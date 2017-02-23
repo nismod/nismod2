@@ -1,0 +1,1 @@
+metrics: ['electricity_demand', 'diesel_demand', 'petrol_demand', 'LPG_demand']

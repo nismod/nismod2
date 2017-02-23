@@ -1,0 +1,28 @@
+- name: vehicle_electrification
+  electricity_split:
+    value: 0.5
+  petrol_split:
+    value: 0.2
+  diesel_split:
+    value: 0.2
+  LPG_split:
+    value: 0.1
+- name: new_motorway_lane
+  capital_cost:
+    value: 10.3
+    units: £(million)/lane-km
+  economic_lifetime:
+    value: 30
+    units: years
+  operational_life:
+    value: 40
+    units: years
+  capacity:
+    value: 2330
+    units: PCU/lane/hr
+  location:
+    value: England
+    units: string
+  road_type:
+    value: M
+    units: string
