@@ -1,12 +1,14 @@
 sector_models:
   - name: energy_demand
     path: /vagrant/models/energy_demand/run.py
-    classname: EnergyDemandModel
+    classname: EDWrapper
     config_dir: "."
     initial_conditions: []
     interventions: []
 timesteps: timesteps.yaml
-scenario_data: []
+scenario_data:
+  - file: population.yaml
+    parameter: population
 planning:
   pre_specified:
     use: true
