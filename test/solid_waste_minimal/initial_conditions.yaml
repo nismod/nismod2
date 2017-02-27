@@ -1,12 +1,13 @@
 - type: Residual waste MRF (BAT), with gasification
   name: Thames Gateway Energy Facility
   build_date: 2016
-  location: Narnia
+  location: london
 - type: MSW incineration, electricity recovery only (average)
   name: Edmonton
   build_date: 1974
-  location: Narnia
+  location: south_west
 - type: MSW incineration, electricity recovery only (BAT)
   name: Riverside Resource Recovery EfW
   build_date: 2012
-  location: Narnia
+  location: london
+
