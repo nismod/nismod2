@@ -1,13 +1,12 @@
 sector_models:
   - name: solid_waste
-    path: /vagrant/models/solid_waste/run.py
-    classname: SolidWasteModel
-    config_dir: "."
-timesteps: timesteps.yaml
-assets:
-  - assets_initial.yaml # Initial conditions for the model (pre-existing capacity)
-asset_types:
-  - assets.yaml # Attributes for each asset in the set of assets
+    path: ../../models/solid_waste/run.py
+    classname: SolidWasteWrapper
+    config_dir: .
+    initial_conditions:
+    - initial_conditions.yaml
+    interventions:
+    - interventions.yaml
 timesteps: timesteps.yaml
 planning:
   pre_specified:
@@ -20,3 +19,5 @@ planning:
   optimisation:
     use: false
     files: []
+assets:
+  - assets.yaml
