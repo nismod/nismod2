@@ -1,7 +1,7 @@
 sector_models:
   - name: solid_waste
     path: ../../models/solid_waste/run.py
-    classname: SolidWasteWrapper
+    classname: SolidWasteModel
     config_dir: .
     initial_conditions:
     - initial_conditions.yaml
@@ -19,5 +19,3 @@ planning:
   optimisation:
     use: false
     files: []
-assets:
-  - assets.yaml

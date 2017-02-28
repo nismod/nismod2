@@ -8,6 +8,11 @@ sector_models:
     interventions:
     - interventions.yaml
 timesteps: timesteps.yaml
+scenario_data:
+- file: energy_demand.yaml
+  parameter: energy_demand
+- file: gas_demand.yaml
+  parameter: gas_demand
 planning:
   pre_specified:
     use: true
@@ -19,5 +24,3 @@ planning:
   optimisation:
     use: false
     files: []
-assets:
-  - assets.yaml
