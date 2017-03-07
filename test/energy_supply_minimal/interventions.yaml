@@ -5,7 +5,7 @@
   economic_lifetime:
     value: 30
     units: years
-  operational_life:
+  operational_lifetime:
     value: 40
     units: years
   operational_year:
@@ -27,7 +27,7 @@
   economic_lifetime:
     value: 25
     units: years
-  operational_life:
+  operational_lifetime:
     value: 30
     units: years
   operational_year:
