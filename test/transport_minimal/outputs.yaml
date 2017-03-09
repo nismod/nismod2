@@ -1,1 +1,5 @@
-metrics: ['electricity_demand', 'diesel_demand', 'petrol_demand', 'LPG_demand']
+metrics: 
+  - name: 'electricity_demand'
+  - name: 'diesel_demand'
+  - name: 'petrol_demand'
+  - name: 'LPG_demand'

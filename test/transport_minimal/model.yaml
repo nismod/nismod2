@@ -8,12 +8,14 @@ sector_models:
     - interventions.yaml
 timesteps: timesteps.yaml
 scenario_data:
-- file: LPG_price.yaml
-  parameter: LPG_price
+- file: lpg_price.yaml
+  parameter: lpg_price
 - file: diesel_price.yaml  
   parameter: diesel_price
 - file: petrol_price.yaml  
   parameter: petrol_price 
+- file: electricity_price.yaml  
+  parameter: electricity_price
 planning:
   pre_specified:
     use: false
