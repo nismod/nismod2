@@ -1,18 +1,15 @@
-- start: P0Y
-  end: P1Y
+- interval: '1_1'
   region: "England"
-  value: 23.48
+  value: 2.48
   units: GW
   year: 2015
-- start: P0Y
-  end: P1Y
+- interval: '1_2'
   region: "Wales"
-  value: 23.48
+  value: 2.48
   units: GW
   year: 2015
-- start: P0Y
-  end: P1Y
+- interval: '1_3'
   region: "Scotland"
-  value: 23.48
+  value: 2.48
   units: GW
   year: 2015
