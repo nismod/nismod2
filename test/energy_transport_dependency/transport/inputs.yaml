@@ -1,0 +1,17 @@
+dependencies:
+- name: electricity_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
+- name: petrol_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
+- name: diesel_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
+- name: lpg_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
