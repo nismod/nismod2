@@ -1,6 +1,6 @@
 sector_models:
   - name: energy_demand
-    path: /vagrant/models/energy_demand/run.py
+    path: ../../models/energy_demand/run.py
     classname: EDWrapper
     config_dir: "."
     initial_conditions: []
@@ -11,11 +11,8 @@ scenario_data:
     parameter: population
 planning:
   pre_specified:
-    use: true
-    files: []
+    use: false
   rule_based:
     use: false
-    files: []
   optimisation:
     use: false
-    files: []
