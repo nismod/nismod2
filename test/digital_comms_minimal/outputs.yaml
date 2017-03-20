@@ -1,5 +1,5 @@
 metrics:
-  - name: 'total_cost'
-  - name: 'average_speed'
-  - name: 'premises_passed'
-  - name: 'energy_demand'
+- name: total_cost
+- name: average_speed
+- name: premises_passed
+- name: energy_demand

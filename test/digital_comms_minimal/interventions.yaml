@@ -5,7 +5,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -20,7 +20,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -35,7 +35,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -50,7 +50,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -65,7 +65,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -80,7 +80,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -95,7 +95,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -110,7 +110,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -125,7 +125,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -140,7 +140,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -155,7 +155,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -170,7 +170,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -185,7 +185,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -200,7 +200,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -215,7 +215,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -230,7 +230,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -245,7 +245,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -260,7 +260,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -275,7 +275,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -290,7 +290,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -305,7 +305,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -320,7 +320,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -335,7 +335,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -350,7 +350,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -365,7 +365,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:
@@ -380,7 +380,7 @@
   economic_lifetime:
     value: 15
     units: years
-  operational_life:
+  operational_lifetime:
     value: 15
     units: years
   capacity:

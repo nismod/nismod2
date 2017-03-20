@@ -10,12 +10,8 @@ sector_models:
 timesteps: timesteps.yaml
 planning:
   pre_specified:
-    use: true
-    files:
-      - pre-specified.yaml # The build instructions
+    use: false
   rule_based:
     use: false
-    files: []
   optimisation:
     use: false
-    files: []
