@@ -118,3 +118,5 @@ fi
 
 # use python3 as default interpreter
 alias python=python3
+alias srm="smif run model.yaml"
+alias svm="smif validate model.yaml"
