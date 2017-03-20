@@ -1,1 +1,5 @@
-metrics: ['total_cost', 'average_speed', 'premises_passed', 'energy_demand']
+metrics:
+  - name: 'total_cost'
+  - name: 'average_speed'
+  - name: 'premises_passed'
+  - name: 'energy_demand'

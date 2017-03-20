@@ -11,8 +11,12 @@ timesteps: timesteps.yaml
 scenario_data:
 - file: electricity_demand.yaml
   parameter: electricity_demand
+  spatial_resolution: energy_regions
+  temporal_resolution: annual_intervals
 - file: gas_demand.yaml
   parameter: gas_demand
+  spatial_resolution: energy_regions
+  temporal_resolution: annual_intervals
 planning:
   pre_specified:
     use: true
@@ -24,3 +28,11 @@ planning:
   optimisation:
     use: false
     files: []
+region_sets:
+  - name: energy_regions
+    file: regions.shp
+interval_sets:
+  - name: energy_timeslices
+    file: time_intervals.yaml
+  - name: annual_intervals
+    file: annual_intervals.yaml

@@ -1,14 +1,14 @@
-- interval: '1_1'
+- interval: 1
   region: "England"
   value: 2.48
   units: GW
   year: 2015
-- interval: '1_2'
+- interval: 1
   region: "Wales"
   value: 2.48
   units: GW
   year: 2015
-- interval: '1_3'
+- interval: 1
   region: "Scotland"
   value: 2.48
   units: GW
