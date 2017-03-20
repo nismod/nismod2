@@ -118,7 +118,7 @@
     units: Mbps
   location: Great Britain
 
-  - name: FTTP_geo5_0_50
+- name: FTTP_geo5_0_50
   capital_cost:
     value: 18158
     units: £(million)
@@ -178,7 +178,7 @@
     units: Mbps
   location: Great Britain
 
-  - name: FTTP_geo7_0_50
+- name: FTTP_geo7_0_50
   capital_cost:
     value: 23660
     units: £(million)
@@ -238,7 +238,7 @@
     units: Mbps
   location: Great Britain
 
-  - name: FTTP_geo9_0_50
+- name: FTTP_geo9_0_50
   capital_cost:
     value: 22009
     units: £(million)
@@ -298,7 +298,7 @@
     units: Mbps
   location: Great Britain
 
-  - name: FTTP_geo11_0_50
+- name: FTTP_geo11_0_50
   capital_cost:
     value: 36866
     units: £(million)
@@ -358,7 +358,7 @@
     units: Mbps
   location: Great Britain
 
-  - name: FTTP_geo13_0_50
+- name: FTTP_geo13_0_50
   capital_cost:
     value: 66028
     units: £(million)
