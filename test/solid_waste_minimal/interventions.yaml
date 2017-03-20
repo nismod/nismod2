@@ -2,7 +2,7 @@
   capital_cost:
     value: 1000000
     units: £
-  operational_life:
+  operational_lifetime:
     value: 150
     units: years
   economic_lifetime:
@@ -15,7 +15,7 @@
   capital_cost:
     value: 1000000
     units: £
-  operational_life:
+  operational_lifetime:
     value: 150
     units: years
   economic_lifetime:
@@ -25,11 +25,10 @@
     value: south_east
     units: string
 - name: msw_incineration_electricity_recovery_only_bat
-  waste_treatment_process:
   capital_cost:
     value: 1000000
     units: £
-  operational_life:
+  operational_lifetime:
     value: 150
     units: years
   economic_lifetime:
