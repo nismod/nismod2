@@ -1,26 +1,26 @@
 - name: vehicle_electrification
   electricity_split:
     value: 0.5
-    units: '%'
+    units: proportion
   petrol_split:
     value: 0.2
-    units: '%'
+    units: proportion
   diesel_split:
     value: 0.2
-    units: '%'
+    units: proportion
   lpg_split:
     value: 0.1
-    units: '%'
+    units: proportion
   economic_lifetime:
     value: 99
-    units: 'years'
+    units: years
   operational_lifetime:
     value: 99
-    units: 'years'  
+    units: years
   capital_cost:
     value: 10
-    units: '£bn'
-  location: 'UK'
+    units: £bn
+  location: UK
 - name: new_motorway_lane
   capital_cost:
     value: 10.3

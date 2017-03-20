@@ -1,5 +1,5 @@
-metrics: 
-  - name: 'electricity_demand'
-  - name: 'diesel_demand'
-  - name: 'petrol_demand'
-  - name: 'LPG_demand'
+metrics:
+- name: electricity_demand
+- name: diesel_demand
+- name: petrol_demand
+- name: LPG_demand
