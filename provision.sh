@@ -29,15 +29,18 @@ chown vagrant:vagrant /home/vagrant/.bashrc
 # Install smif from github repository
 pip install git+https://github.com/nismod/smif#egg=v0.2
 
+# Provision energy_demand model
+tr -d '\r' < /vagrant/provision/energy_demand.sh > /tmp/energy_demand.sh
+bash /tmp/energy_demand.sh
 
-# Provision transport model
-tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
-bash /tmp/transport.sh
+# Provision energy_supply model
+tr -d '\r' < /vagrant/provision/energy_supply.sh > /tmp/energy_supply.sh
+bash /tmp/energy_supply.sh
 
 # Provision solid_waste model
 tr -d '\r' < /vagrant/provision/solid_waste.sh > /tmp/solid_waste.sh
 bash /tmp/solid_waste.sh
 
-# Provision energy_supply model
-tr -d '\r' < /vagrant/provision/energy_supply.sh > /tmp/energy_supply.sh
-bash /tmp/energy_supply.sh
+# Provision transport model
+tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
+bash /tmp/transport.sh
