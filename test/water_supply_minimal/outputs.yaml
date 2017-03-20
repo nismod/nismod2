@@ -1,1 +1,2 @@
-metrics: [Restriction_Frequency_L3]
+metrics:
+- name: Restriction_Frequency_L3
