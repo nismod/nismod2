@@ -99,10 +99,14 @@ kalis_license.txt
 version.txt
 xphostid
 
-# OS X 
+# OS X
 .DS_Store
 .vscode
 
 # Python
-*.pyc 
+*.pyc
 __pycache__
+
+# smif creates log files and results files
+smif.log
+results.yaml
