@@ -1,4 +1,20 @@
 timesteps: timesteps.yaml
+region_sets:
+- name: counties
+  file: ../digital_comms_minimal/regions.shp
+- name: countries
+  file: ../energy_demand_minimal/regions.shp
+- name: es_regions
+  file: ../energy_supply_minimal/regions.shp
+- name: tr_regions
+  file: ../transport_minimal/regions.shp
+interval_sets:
+- name: annual
+  file: annual_interval.yaml
+- name: es_hourly
+  file: ../energy_supply_minimal/time_intervals.yaml
+- name: daily
+  file: ../transport_minimal/time_intervals.yaml
 scenario_data: []
 sector_models:
   - name: digital_comms
