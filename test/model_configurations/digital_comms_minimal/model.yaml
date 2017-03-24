@@ -1,6 +1,6 @@
 sector_models:
   - name: digital_comms
-    path: ../../models/digital_comms/run.py
+    path: ../../../models/digital_comms/run.py
     classname: DigitalCommsWrapper
     config_dir: .
     initial_conditions:

@@ -1,6 +1,6 @@
 sector_models:
   - name: energy_demand
-    path: ../../models/energy_demand/run.py
+    path: ../../../models/energy_demand/run.py
     classname: EDWrapper
     config_dir: "."
     initial_conditions: []

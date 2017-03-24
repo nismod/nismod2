@@ -1,6 +1,6 @@
 sector_models:
   - name: water_supply
-    path: ../../models/water_supply/run.py
+    path: ../../../models/water_supply/run.py
     classname: Wathnet
     config_dir: .
     initial_conditions:

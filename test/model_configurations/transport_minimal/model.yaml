@@ -1,6 +1,6 @@
 sector_models:
   - name: transport
-    path: ../../models/transport/run.py
+    path: ../../../models/transport/run.py
     classname: TransportWrapper
     config_dir: .
     initial_conditions: []

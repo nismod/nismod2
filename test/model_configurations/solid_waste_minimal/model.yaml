@@ -1,6 +1,6 @@
 sector_models:
   - name: solid_waste
-    path: ../../models/solid_waste/run.py
+    path: ../../../models/solid_waste/run.py
     classname: SolidWasteModel
     config_dir: .
     initial_conditions:

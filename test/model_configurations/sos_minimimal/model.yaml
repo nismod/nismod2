@@ -2,37 +2,37 @@ timesteps: timesteps.yaml
 scenario_data: []
 sector_models:
   - name: digital_comms
-    path: ../../models/digital_comms/run.py
+    path: ../../../models/digital_comms/run.py
     classname: DigitalCommsWrapper
     config_dir: ../digital_comms_minimal
     initial_conditions: []
     interventions: []
   - name: energy_demand
-    path: ../../models/energy_demand/run.py
+    path: ../../../models/energy_demand/run.py
     classname: EDWrapper
     config_dir: "../energy_demand_minimal"
     initial_conditions: []
     interventions: []
   - name: energy_supply
-    path: ../../models/energy_supply/run.py
+    path: ../../../models/energy_supply/run.py
     classname: EnergySupplyWrapper
     config_dir: ../energy_supply_minimal
     initial_conditions: []
     interventions: []
   - name: solid_waste
-    path: ../../models/solid_waste/run.py
+    path: ../../../models/solid_waste/run.py
     classname: SolidWasteModel
     config_dir: ../solid_waste_minimal
     initial_conditions: []
     interventions: []
   - name: transport
-    path: ../../models/transport/run.py
+    path: ../../../models/transport/run.py
     classname: TransportWrapper
     config_dir: ../transport_minimal
     initial_conditions: []
     interventions: []
   - name: water_supply
-    path: ../../models/water_supply/run.py
+    path: ../../../models/water_supply/run.py
     classname: Wathnet
     config_dir: ../water_supply_minimal
     initial_conditions: []
