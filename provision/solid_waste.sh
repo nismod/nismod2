@@ -11,8 +11,8 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'scr1';\" " | gr
 echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list
 apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
 apt-get update
-# Install dotnet core (version latest as of 2016-11-28)
-apt-get install -y dotnet-dev-1.0.0-preview2.1-003177
+# Install dotnet core (version latest as of 2017-03-24)
+apt-get install -y dotnet-dev-1.0.1
 
 # Restore dependencies for the solid waste model
 su vagrant <<'EOF'

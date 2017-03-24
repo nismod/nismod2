@@ -1,2 +1,2 @@
-# Install digital_comms from github repository
-pip install git+https://github.com/nismod/digital_comms
+# Install digital_comms from git submodule checkout
+pip install -e /vagrant/models/digital_comms

@@ -1,2 +1,2 @@
-# Install energy_demand from github repository
-pip install git+https://github.com/nismod/energy_demand
+# Install digital_comms from git submodule checkout
+pip install -e /vagrant/models/energy_demand
