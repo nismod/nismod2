@@ -56,6 +56,13 @@ def test_sos_valid():
 if __name__ == '__main__':
     MODEL_DIRS = [
         'digital_comms_minimal',
+        'energy_demand_minimal',
+        'energy_supply_minimal',
+        'solid_waste_minimal',
+        'transport_minimal',
+        'water_supply_minimal',
+        'energy_transport_dependency',
+        'sos_minimal',
     ]
     for config_dirname in MODEL_DIRS:
         model_configuration_valid(config_dirname)
