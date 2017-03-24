@@ -1,3 +1,37 @@
+timesteps: timesteps.yaml
+region_sets:
+- name: es_regions
+  file: energy/regions.shp
+- name: tr_regions
+  file: transport/regions.shp
+interval_sets:
+- name: annual
+  file: annual_interval.yaml
+- name: es_hourly
+  file: energy/time_intervals.yaml
+- name: daily
+  file: transport/time_intervals.yaml
+scenario_data:
+- file: scenarios/gas_demand.yaml
+  parameter: gas_demand
+  spatial_resolution: es_regions
+  temporal_resolution: es_hourly
+- file: scenarios/lpg_price.yaml
+  parameter: lpg_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: scenarios/diesel_price.yaml
+  parameter: diesel_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: scenarios/petrol_price.yaml
+  parameter: petrol_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: scenarios/electricity_price.yaml
+  parameter: electricity_price
+  spatial_resolution: GB
+  temporal_resolution: annual
 sector_models:
   - name: energy_supply
     path: ../../../models/energy_supply/run.py
@@ -13,18 +47,6 @@ sector_models:
     initial_conditions: []
     interventions:
     - ./transport/interventions.yaml
-timesteps: timesteps.yaml
-scenario_data:
-- file: scenarios/gas_demand.yaml
-  parameter: gas_demand
-- file: scenarios/lpg_price.yaml
-  parameter: lpg_price
-- file: scenarios/diesel_price.yaml
-  parameter: diesel_price
-- file: scenarios/petrol_price.yaml
-  parameter: petrol_price
-- file: scenarios/electricity_price.yaml
-  parameter: electricity_price
 planning:
   pre_specified:
     use: true

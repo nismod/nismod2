@@ -1,9 +1,9 @@
-dependencies: 
+dependencies:
   - name: electricity_demand
-    spatial_resolution: 
-    temporal_resolution: 
+    spatial_resolution: es_regions
+    temporal_resolution: es_hourly
     from_model: transport
   - name: gas_demand
-    spatial_resolution: 
-    temporal_resolution: 
+    spatial_resolution: es_regions
+    temporal_resolution: es_hourly
     from_model: scenario
