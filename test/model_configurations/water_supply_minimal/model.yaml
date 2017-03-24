@@ -1,3 +1,11 @@
+timesteps: timesteps.yaml
+region_sets:
+- name: water_resource_zones
+  file: regions.shp
+interval_sets:
+- name: daily
+  file: time_intervals.yaml
+scenario_data: []
 sector_models:
   - name: water_supply
     path: ../../../models/water_supply/run.py
@@ -7,7 +15,6 @@ sector_models:
     - initial_conditions.yaml
     interventions:
     - interventions.yaml
-timesteps: timesteps.yaml
 planning:
   pre_specified:
     use: true
