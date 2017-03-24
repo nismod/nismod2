@@ -1,6 +1,16 @@
 metrics:
-  - name: total_cost
-  - name: water_demand
-  - name: total_emissions
-  - name: diesel_demand
-  - name: electricity_demand
+- name: total_cost
+  spatial_resolution: GB
+  temporal_resolution: annual
+- name: water_demand
+  spatial_resolution: GB
+  temporal_resolution: annual
+- name: total_emissions
+  spatial_resolution: GB
+  temporal_resolution: annual
+- name: diesel_demand
+  spatial_resolution: GB
+  temporal_resolution: annual
+- name: electricity_demand
+  spatial_resolution: GB
+  temporal_resolution: annual
