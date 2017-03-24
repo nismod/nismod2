@@ -1,38 +1,38 @@
-sector_models:
-  - name: energy_supply
-    path: ../../../models/energy_supply/run.py
-    classname: EnergySupplyWrapper
-    config_dir: .
-    initial_conditions:
-    - initial_conditions.yaml
-    interventions:
-    - interventions.yaml
 timesteps: timesteps.yaml
+region_sets:
+- name: energy_regions
+  file: regions.shp
+interval_sets:
+- name: energy_timeslices
+  file: time_intervals.yaml
+- name: annual_interval
+  file: annual_interval.yaml
 scenario_data:
 - file: hourly_electricity_demand.yaml
   parameter: electricity_demand
   spatial_resolution: energy_regions
-  temporal_resolution: annual_intervals
+  temporal_resolution: annual_interval
 - file: hourly_gas_demand.yaml
   parameter: gas_demand
   spatial_resolution: energy_regions
-  temporal_resolution: annual_intervals
+  temporal_resolution: annual_interval
+sector_models:
+- name: energy_supply
+  path: ../../../models/energy_supply/run.py
+  classname: EnergySupplyWrapper
+  config_dir: .
+  initial_conditions:
+  - initial_conditions.yaml
+  interventions:
+  - interventions.yaml
 planning:
   pre_specified:
     use: true
     files:
-      - pre-specified.yaml # The build instructions
+    - pre-specified.yaml
   rule_based:
     use: false
     files: []
   optimisation:
     use: false
     files: []
-region_sets:
-  - name: energy_regions
-    file: regions.shp
-interval_sets:
-  - name: energy_timeslices
-    file: time_intervals.yaml
-  - name: annual_intervals
-    file: annual_intervals.yaml
