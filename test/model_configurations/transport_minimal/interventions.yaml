@@ -37,6 +37,13 @@
   lanes:
     value: 1
     units: count
-  from: 57
-  to: 39
-  count_point: 26042
+  location:
+    from:
+      value: 57
+      units: node_id
+    to:
+      value: 39
+      units: node_id
+  count_point:
+    value: 26042
+    units: id
