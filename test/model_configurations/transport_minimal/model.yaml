@@ -1,3 +1,29 @@
+timesteps: timesteps.yaml
+region_sets:
+- name: tr_regions
+  file: regions.shp
+interval_sets:
+- name: annual
+  file: annual_interval.yaml
+- name: daily
+  file: time_intervals.yaml
+scenario_data:
+- file: data_diesel_price.yaml
+  parameter: diesel_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_electricity_price.yaml
+  parameter: electricity_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_lpg_price.yaml
+  parameter: lpg_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_petrol_price.yaml
+  parameter: petrol_price
+  spatial_resolution: GB
+  temporal_resolution: annual
 sector_models:
   - name: transport
     path: ../../../models/transport/run.py
@@ -6,16 +32,6 @@ sector_models:
     initial_conditions: []
     interventions:
     - interventions.yaml
-timesteps: timesteps.yaml
-scenario_data:
-- file: data_diesel_price.yaml
-  parameter: diesel_price
-- file: data_electricity_price.yaml
-  parameter: electricity_price
-- file: data_lpg_price.yaml
-  parameter: lpg_price
-- file: data_petrol_price.yaml
-  parameter: petrol_price
 planning:
   pre_specified:
     use: false

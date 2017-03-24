@@ -1,5 +1,13 @@
 metrics:
 - name: electricity_demand
+  spatial_resolution: tr_regions
+  temporal_resolution: daily
 - name: diesel_demand
+  spatial_resolution: tr_regions
+  temporal_resolution: daily
 - name: petrol_demand
+  spatial_resolution: tr_regions
+  temporal_resolution: daily
 - name: LPG_demand
+  spatial_resolution: tr_regions
+  temporal_resolution: daily
