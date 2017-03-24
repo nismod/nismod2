@@ -120,3 +120,6 @@ fi
 alias python=python3
 alias srm="smif run model.yaml"
 alias svm="smif validate model.yaml"
+
+# start in vagrant dir on login
+cd /vagrant
