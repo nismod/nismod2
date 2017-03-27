@@ -1,4 +1,3 @@
-metrics:
 - name: total_cost
   spatial_resolution: counties
   temporal_resolution: annual

@@ -1,4 +1,3 @@
-metrics:
 - name: electricity_demand
   spatial_resolution: tr_regions
   temporal_resolution: daily

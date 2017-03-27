@@ -1,4 +1,3 @@
-metrics:
 - name: Restriction_Frequency_L3
   spatial_resolution: water_resource_zones
   temporal_resolution: daily

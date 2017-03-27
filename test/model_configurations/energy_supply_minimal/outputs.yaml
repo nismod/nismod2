@@ -1,10 +1,9 @@
-metrics: 
-  - name: total_cost
-    spatial_resolution: energy_regions
-    temporal_resolution: energy_timeslices 
-  - name: water_demand
-    spatial_resolution: energy_regions
-    temporal_resolution: energy_timeslices 
-  - name: total_emissions
-    spatial_resolution: energy_regions
-    temporal_resolution: energy_timeslices 
+- name: total_cost
+  spatial_resolution: energy_regions
+  temporal_resolution: energy_timeslices
+- name: water_demand
+  spatial_resolution: energy_regions
+  temporal_resolution: energy_timeslices
+- name: total_emissions
+  spatial_resolution: energy_regions
+  temporal_resolution: energy_timeslices
