@@ -26,8 +26,12 @@ Then on the command line, from this directory, run:
 This will download a virtual machine image and install all the packages and
 software which are required to test and run NISMOD onto that virtual machine.
 
-Once that has finished, enter the virtual machine navigate to the project folder
-and runs the tests:
+Once that has finished, restart the machine.
+    
+    vagrant reload
+
+Now, enter the virtual machine, navigate to the project folder
+and run the tests:
 
     vagrant ssh
     cd /vagrant
