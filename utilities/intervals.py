@@ -116,20 +116,19 @@ def get_season_of_hour(hour):
 
 def make_hourly():
 
+    results = []
+
     for hour in range(8760):
 
-        season = get_season_of_hour(hour)
-
-        name = "{}_{}".format(int(season), int(hour))
-        start_hour = first_hour_of_week + first_hour_of_month + hour
-        start_code = "P{}H".format(int(start_hour - 1))
-        end_hour = start_hour
-        end_code = "P{}H".format(int(end_hour))
-        print(name, start_code, end_code)
+        name = hour + 1
+        start_code = "PT{}H".format(int(hour))
+        end_hour = hour + 1
+        end_code = "PT{}H".format(int(end_hour))
         results.append({'id': name,
                         'start': start_code,
                         'end': end_code})
 
+    return results
 
 
 def make_dict():
@@ -251,11 +250,14 @@ def write_file(period_data, filename):
 
 if __name__ == '__main__':
 
-    period_data = create_transport_periods()
-    write_file(period_data, './test/transport_minimal/time_intervals.yaml')
+    # period_data = create_transport_periods()
+    # write_file(period_data, './test/transport_minimal/time_intervals.yaml')
 
-    period_data = create_water_supply_periods()
-    write_file(period_data, './test/water_supply_minimal/time_intervals.yaml')    
+    # period_data = create_water_supply_periods()
+    # write_file(period_data, './test/water_supply_minimal/time_intervals.yaml')    
 
-    period_data = make_energy_supply()
-    write_file(period_data, './test/energy_supply_minimal/time_intervals.yaml')
+    # period_data = make_energy_supply()
+    # write_file(period_data, './test/energy_supply_minimal/time_intervals.yaml')
+
+    period_data = make_hourly()
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.yaml')

@@ -1,8 +1,6 @@
-  - name: electricity_demand
-    spatial_resolution: energy_regions
-    temporal_resolution: energy_timeslices
-    from_model: scenario
-  - name: gas_demand
-    spatial_resolution: energy_regions
-    temporal_resolution: energy_timeslices
-    from_model: scenario
+- name: electricity_demand
+  spatial_resolution: energy_regions
+  temporal_resolution: energy_timeslices
+- name: gas_demand
+  spatial_resolution: energy_regions
+  temporal_resolution:
