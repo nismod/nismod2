@@ -26,8 +26,8 @@ pip3 install psycopg2
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
 
-# Install smif from github repository
-pip install git+https://github.com/nismod/smif#egg=v0.2
+# Install smif from pypi
+pip install smif==0.2.0
 
 # Provision energy_demand model
 tr -d '\r' < /vagrant/provision/energy_demand.sh > /tmp/energy_demand.sh
