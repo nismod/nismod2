@@ -2,6 +2,8 @@ timesteps: timesteps.yaml
 region_sets:
 - name: water_resource_zones
   file: regions.shp
+- name: modelled_area
+  file: modelled_area.shp
 interval_sets:
 - name: daily
   file: time_intervals.yaml
