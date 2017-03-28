@@ -21,6 +21,9 @@ pip3 install --upgrade pip
 # Install smif
 pip3 install smif~=0.2 --upgrade
 
+# Install pyscopg2 (required by some run.py wrappers)
+pip3 install psycopg2
+
 # copy bash config to vagrant home
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
