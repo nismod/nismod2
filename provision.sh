@@ -18,9 +18,8 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\"
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
 
-# Install smif and psycopg2
-pip3 install smif==0.2.0
-pip3 install psycopg2
+# Install smif
+pip3 install smif~=0.2 --upgrade
 
 # copy bash config to vagrant home
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
