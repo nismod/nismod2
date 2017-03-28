@@ -3,4 +3,4 @@
   temporal_resolution: energy_timeslices
 - name: gas_demand
   spatial_resolution: energy_regions
-  temporal_resolution:
+  temporal_resolution: energy_timeslices
