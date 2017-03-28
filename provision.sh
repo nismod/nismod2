@@ -1,8 +1,8 @@
 # Update package lists
 apt-get update
 # Install OS packages
-apt-get install -y build-essential git vim-nox python3-pip python3 postgresql \
-    postgresql-contrib libpq-dev python-dev gdal-bin libspatialindex-dev \
+apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev
+    postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
     libgeos-dev python-glpk glpk-utils
 
 # Database config to listen on network connection
