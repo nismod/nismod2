@@ -18,6 +18,8 @@ def model_configuration_run(config_dirname):
     )
     mock_args = MagicMock()
     mock_args.path = model_config
+    mock_args.model = 'all'
+    mock_args.output_file = '/tmp/results.yaml'
     run_model(mock_args)
 
 
