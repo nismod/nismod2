@@ -25,6 +25,10 @@ pip3 install smif~=0.2 --upgrade
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
 
+# Provision digital_comms model
+tr -d '\r' < /vagrant/provision/digital_comms.sh > /tmp/digital_comms.sh
+bash /tmp/digital_comms.sh
+
 # Provision energy_demand model
 tr -d '\r' < /vagrant/provision/energy_demand.sh > /tmp/energy_demand.sh
 bash /tmp/energy_demand.sh
