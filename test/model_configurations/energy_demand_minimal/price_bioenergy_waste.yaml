@@ -1,0 +1,15 @@
+- interval: year
+  region: GB
+  value: 10.0
+  units: £/ktoe
+  year: 2010
+- interval: year
+  region: GB
+  value: 10.0
+  units: £/ktoe
+  year: 2015
+- interval: year
+  region: GB
+  value: 10.0
+  units: £/ktoe
+  year: 2020

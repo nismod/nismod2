@@ -2,23 +2,57 @@ timesteps: timesteps.yaml
 region_sets:
 - name: countries
   file: regions.shp
+- name: national
+  file: ../../region_definitions/national-gb.shp
 interval_sets:
 - name: hourly
   file: time_intervals.yaml
 - name: annual
   file: annual_interval.yaml
 scenario_data:
-  - file: population.yaml
-    parameter: population
-    spatial_resolution: countries
-    temporal_resolution: annual
+- file: population.yaml
+  parameter: population
+  spatial_resolution: countries
+  temporal_resolution: annual
+- file: price_solid_fuel.yaml
+  parameter: solid_fuel_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_gas.yaml
+  parameter: gas_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_electricity.yaml
+  parameter: electricity_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_oil.yaml
+  parameter: oil_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_heat_sold.yaml
+  parameter: heat_sold_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_bioenergy_waste.yaml
+  parameter: bioenergy_waste_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_hydrogen.yaml
+  parameter: hydrogen_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: price_future_fuel.yaml
+  parameter: future_fuel_price
+  spatial_resolution: national
+  temporal_resolution: annual
 sector_models:
-  - name: energy_demand
-    path: ../../../models/energy_demand/run.py
-    classname: EDWrapper
-    config_dir: "."
-    initial_conditions: []
-    interventions: []
+- name: energy_demand
+  path: ../../../models/energy_demand/run.py
+  classname: EDWrapper
+  config_dir: "."
+  initial_conditions: []
+  interventions: []
 planning:
   pre_specified:
     use: false
