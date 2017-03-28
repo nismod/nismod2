@@ -2,7 +2,8 @@
 apt-get update
 # Install OS packages
 apt-get install -y build-essential git vim-nox python3-pip python3 postgresql \
-    postgresql-contrib libpq-dev python-dev gdal-bin libspatialindex-dev libgeos-dev glpk
+    postgresql-contrib libpq-dev python-dev gdal-bin libspatialindex-dev \
+    libgeos-dev python-glpk glpk-utils
 
 # Database config to listen on network connection
 sed -i "s/#listen_address.*/listen_addresses 'localhost'/" \
@@ -14,20 +15,16 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
 su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\" " \
     | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
 
-# Upgrade - with non-interactive flags so grub/sudo don't hang on config changes
-DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
-    -o Dpkg::Options::="--force-confold" -yq upgrade
-
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
+
+# Install smif and psycopg2
+pip3 install smif==0.2.0
 pip3 install psycopg2
 
 # copy bash config to vagrant home
 cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
-
-# Install smif from pypi
-pip install smif==0.2.0
 
 # Provision energy_demand model
 tr -d '\r' < /vagrant/provision/energy_demand.sh > /tmp/energy_demand.sh
