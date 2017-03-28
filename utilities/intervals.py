@@ -81,7 +81,7 @@ def make_energy_supply():
                     4: autumn}
     for season, hours in season_hours.items():
         for (smif_hour, es_hour) in zip(hours, cycle(range(168))):
-            results.append({'id': "{}_{}".format(season, es_hour),
+            results.append({'id': "{}_{}".format(season, es_hour + 1),
                             'start': "PT{}H".format(smif_hour),
                             'end': "PT{}H".format(smif_hour + 1)})
     return results
@@ -250,14 +250,14 @@ def write_file(period_data, filename):
 
 if __name__ == '__main__':
 
-    # period_data = create_transport_periods()
-    # write_file(period_data, './test/transport_minimal/time_intervals.yaml')
+    period_data = create_transport_periods()
+    write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.yaml')
 
-    # period_data = create_water_supply_periods()
-    # write_file(period_data, './test/water_supply_minimal/time_intervals.yaml')    
+    period_data = create_water_supply_periods()
+    write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.yaml')    
 
-    # period_data = make_energy_supply()
-    # write_file(period_data, './test/energy_supply_minimal/time_intervals.yaml')
+    period_data = make_energy_supply()
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/time_intervals.yaml')
 
     period_data = make_hourly()
     write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.yaml')
