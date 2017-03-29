@@ -26,6 +26,14 @@ scenario_data:
   parameter: petrol_price
   spatial_resolution: GB
   temporal_resolution: annual
+- file: data_hydrogen_price.yaml
+  parameter: hydrogen_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_hybrid_price.yaml
+  parameter: hybrid_price
+  spatial_resolution: GB
+  temporal_resolution: annual
 sector_models:
   - name: transport
     path: ../../../models/transport/run.py
