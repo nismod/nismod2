@@ -1,2 +1,5 @@
-# Install energy_demand from github repository
-pip install git+https://github.com/nismod/energy_demand
+# Install tkinter as requirement for matplotlib
+apt-get install -y python3-tk
+
+# Install digital_comms from git submodule checkout
+pip3 install -e /vagrant/models/energy_demand

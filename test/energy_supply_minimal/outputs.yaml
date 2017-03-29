@@ -1,4 +1,0 @@
-metrics: 
-  - name: total_cost
-  - name: water_demand
-  - name: total_emissions

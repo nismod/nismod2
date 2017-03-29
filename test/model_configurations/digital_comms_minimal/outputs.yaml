@@ -1,0 +1,12 @@
+- name: total_cost
+  spatial_resolution: counties
+  temporal_resolution: annual
+- name: average_speed
+  spatial_resolution: counties
+  temporal_resolution: annual
+- name: premises_passed
+  spatial_resolution: counties
+  temporal_resolution: annual
+- name: energy_demand
+  spatial_resolution: counties
+  temporal_resolution: annual

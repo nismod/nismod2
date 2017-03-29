@@ -1,9 +1,0 @@
-dependencies: 
-  - name: electricity_demand
-    spatial_resolution: 
-    temporal_resolution: 
-    from_model: scenario
-  - name: gas_demand
-    spatial_resolution: 
-    temporal_resolution: 
-    from_model: scenario

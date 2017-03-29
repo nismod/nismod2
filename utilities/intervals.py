@@ -81,9 +81,9 @@ def make_energy_supply():
                     4: autumn}
     for season, hours in season_hours.items():
         for (smif_hour, es_hour) in zip(hours, cycle(range(168))):
-            results.append({'name': "{}_{}".format(season, es_hour),
-                            'start': "P{}H".format(smif_hour),
-                            'end': "P{}H".format(smif_hour + 1)})
+            results.append({'id': "{}_{}".format(season, es_hour + 1),
+                            'start': "PT{}H".format(smif_hour),
+                            'end': "PT{}H".format(smif_hour + 1)})
     return results
 
 def make_season_ranges():
@@ -116,20 +116,19 @@ def get_season_of_hour(hour):
 
 def make_hourly():
 
+    results = []
+
     for hour in range(8760):
 
-        season = get_season_of_hour(hour)
-
-        name = "{}_{}".format(int(season), int(hour))
-        start_hour = first_hour_of_week + first_hour_of_month + hour
-        start_code = "P{}H".format(int(start_hour - 1))
-        end_hour = start_hour
-        end_code = "P{}H".format(int(end_hour))
-        print(name, start_code, end_code)
-        results.append({'name': name,
+        name = hour + 1
+        start_code = "PT{}H".format(int(hour))
+        end_hour = hour + 1
+        end_code = "PT{}H".format(int(end_hour))
+        results.append({'id': name,
                         'start': start_code,
                         'end': end_code})
 
+    return results
 
 
 def make_dict():
@@ -166,7 +165,7 @@ def make_dict():
                             end_hour = start_hour
                             end_code = "P{}H".format(int(end_hour))
                             print(name, start_code, end_code)
-                            results.append({'name': name,
+                            results.append({'id': name,
                                             'start': start_code,
                                             'end': end_code})
     return results
@@ -218,7 +217,7 @@ def create_water_supply_periods():
         name = str(day + 1)
         start_code = "P{}D".format(day)
         end_code = "P{}D".format(day + 1)
-        results.append({'name': name,
+        results.append({'id': name,
                         'start': start_code,
                         'end': end_code})
     return results    
@@ -230,7 +229,7 @@ def create_transport_periods():
         name = "1"
         start_code = "P{}D".format(day)
         end_code = "P{}D".format(day + 1)
-        results.append({'name': name,
+        results.append({'id': name,
                         'start': start_code,
                         'end': end_code})
     return results
@@ -252,10 +251,13 @@ def write_file(period_data, filename):
 if __name__ == '__main__':
 
     period_data = create_transport_periods()
-    write_file(period_data, '.test/transport_minimal/time_intervals.yaml')
+    write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.yaml')
 
     period_data = create_water_supply_periods()
-    write_file(period_data, '.test/water_supply_minimal/time_intervals.yaml')    
+    write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.yaml')    
 
     period_data = make_energy_supply()
-    write_file(period_data, '.test/energy_supply/time_intervals.yaml')
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/time_intervals.yaml')
+
+    period_data = make_hourly()
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.yaml')

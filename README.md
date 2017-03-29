@@ -27,16 +27,18 @@ This will download a virtual machine image and install all the packages and
 software which are required to test and run NISMOD onto that virtual machine.
 
 Once that has finished, restart the machine.
-    
+
     vagrant reload
 
 Now, enter the virtual machine, navigate to the project folder
 and run the tests:
 
     vagrant ssh
-    cd /vagrant
-    smif run test/solid_waste_minimal/model.yaml
-    smif run test/water_supply_minimal/model.yaml
+    cd /vagrant/test
+    pytest
+
+Within `test/model_configurations` there are a set of sample model
+configurations.
 
 ### Updating your NISMOD v2.0
 
@@ -45,4 +47,21 @@ If a new version of NISMOD v2.0 is released, follow these instructions:
     git checkout v2
     git pull # Pull down the latest changes
     git submodule update # Update the sector models
-    vagrant up --provision # Re-provision the virtual machine
+    vagrant reload --provision # Restart and re-provision the virtual machine
+
+
+### Integration testing
+
+The tests in this repository are intended to test the integration of the various
+NISMOD sector models with `smif`, the simulation modelling integration
+framework. In outline, tests here should:
+
+- validate possible system-of-systems model configurations
+- run each sector model through `smif` with only scenario dependencies (not
+  coupling with any other models)
+    1. without unexpected error
+    1. with the expected type contract of results
+- run combinations of sector models
+    1. without unexpected error
+    1. with the expected type contract of results
+    1. (optionally) with regression tests against known-good modelled outputs

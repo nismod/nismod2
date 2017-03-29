@@ -106,7 +106,7 @@ cd $MODEL_DIR
 make clean
 make
 
-cd
+cd /vagrant
 
 # Run migrations
 su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -u"

@@ -1,0 +1,44 @@
+timesteps: timesteps.yaml
+region_sets:
+- name: english_regions
+  file: regions.shp
+interval_sets:
+- name: annual
+  file: time_intervals.yaml
+scenario_data:
+- file: data_diesel_price.yaml
+  parameter: diesel_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_electricity_price.yaml
+  parameter: electricity_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_lpg_price.yaml
+  parameter: lpg_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+- file: data_petrol_price.yaml
+  parameter: petrol_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+sector_models:
+- name: solid_waste
+  path: ../../../models/solid_waste/run.py
+  classname: SolidWasteModel
+  config_dir: .
+  initial_conditions:
+  - initial_conditions.yaml
+  interventions:
+  - interventions.yaml
+planning:
+  pre_specified:
+    use: true
+    files:
+    - pre-specified.yaml
+  rule_based:
+    use: false
+    files: []
+  optimisation:
+    use: false
+    files: []

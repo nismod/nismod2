@@ -1,6 +1,0 @@
-metrics: 
-  - name: total_cost
-  - name: water_demand
-  - name: total_emissions
-  - name: diesel_demand
-  - name: electricity_demand
