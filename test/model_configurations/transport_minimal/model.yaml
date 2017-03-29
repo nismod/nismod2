@@ -2,6 +2,8 @@ timesteps: timesteps.yaml
 region_sets:
 - name: tr_regions
   file: regions.shp
+- name: GB
+  file: ../../region_definitions/national-gb.shp
 interval_sets:
 - name: annual
   file: annual_interval.yaml
