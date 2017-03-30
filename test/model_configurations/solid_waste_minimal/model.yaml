@@ -2,6 +2,8 @@ timesteps: timesteps.yaml
 region_sets:
 - name: english_regions
   file: regions.shp
+- name: GB
+  file: ../../region_definitions/national-gb.shp
 interval_sets:
 - name: annual
   file: time_intervals.yaml
@@ -24,7 +26,7 @@ scenario_data:
   temporal_resolution: annual
 sector_models:
 - name: solid_waste
-  path: ../../../models/solid_waste/run.py
+  path: ../../../models/solid_waste/SWIMS wrapper fake.py
   classname: SolidWasteModel
   config_dir: .
   initial_conditions:
