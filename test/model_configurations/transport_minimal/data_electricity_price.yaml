@@ -2,54 +2,54 @@
   region: 'UK'
   units:
   year: 2015
-  value: 1.20
+  value: 0.1
 - interval: 1
   region: 'UK'
   units:
   year: 2016
-  value: 1.21
+  value: 0.11
 - interval: 1
   region: 'UK'
   units:
   year: 2017
-  value: 1.22
+  value: 0.11
 - interval: 1
   region: 'UK'
   units:
   year: 2018
-  value: 1.24
+  value: 0.12
 - interval: 1
   region: 'UK'
   units:
   year: 2019
-  value: 1.25
+  value: 0.12
 - interval: 1
   region: 'UK'
   units:
   year: 2020
-  value: 1.26
+  value: 0.13
 - interval: 1
   region: 'UK'
   units:
   year: 2021
-  value: 1.27
+  value: 0.13
 - interval: 1
   region: 'UK'
   units:
   year: 2022
-  value: 1.29
+  value: 0.14
 - interval: 1
   region: 'UK'
   units:
   year: 2023
-  value: 1.3
+  value: 0.15
 - interval: 1
   region: 'UK'
   units:
   year: 2024
-  value: 1.31
+  value: 0.16
 - interval: 1
   region: 'UK'
   units:
   year: 2025
-  value: 1.33
+  value: 0.16

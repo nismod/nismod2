@@ -14,3 +14,11 @@
   spatial_resolution: GB
   temporal_resolution: annual
   from_model: scenario
+- name: hydrogen_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
+- name: hybrid_price
+  spatial_resolution: GB
+  temporal_resolution: annual
+  from_model: scenario
