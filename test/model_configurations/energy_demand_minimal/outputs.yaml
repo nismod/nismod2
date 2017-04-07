@@ -1,3 +1,6 @@
-- name: energy_demand
+- name: electricity_demand
+  spatial_resolution: countries
+  temporal_resolution: hourly
+- name: gas_demand
   spatial_resolution: countries
   temporal_resolution: hourly

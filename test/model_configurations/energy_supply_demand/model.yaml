@@ -1,0 +1,80 @@
+timesteps: timesteps.yaml
+region_sets:
+- name: energy_regions
+  file: ../energy_supply_minimal/regions.shp
+- name: countries
+  file: ../energy_demand_minimal/regions.shp
+- name: national
+  file: ../../region_definitions/national-gb.shp
+interval_sets:
+- name: energy_timeslices
+  file: ../energy_supply_minimal/time_intervals.yaml
+- name: scenario_intervals
+  file: ../energy_supply_minimal/scenario_intervals.yaml
+- name: hourly
+  file: ../energy_demand_minimal/time_intervals.yaml
+- name: annual
+  file: ../energy_demand_minimal/annual_interval.yaml
+scenario_data:
+- file: ../energy_demand_minimal/population.yaml
+  parameter: population
+  spatial_resolution: countries
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_solid_fuel.yaml
+  parameter: solid_fuel_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_gas.yaml
+  parameter: gas_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_electricity.yaml
+  parameter: electricity_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_oil.yaml
+  parameter: oil_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_heat_sold.yaml
+  parameter: heat_sold_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_bioenergy_waste.yaml
+  parameter: bioenergy_waste_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_hydrogen.yaml
+  parameter: hydrogen_price
+  spatial_resolution: national
+  temporal_resolution: annual
+- file: ../energy_demand_minimal/price_future_fuel.yaml
+  parameter: future_fuel_price
+  spatial_resolution: national
+  temporal_resolution: annual
+sector_models:
+- name: energy_supply
+  path: ../../../models/energy_supply/run.py
+  classname: EnergySupplyWrapper
+  config_dir: ../energy_supply_minimal/
+  initial_conditions:
+  - ../energy_supply_minimal/initial_conditions.yaml
+  interventions:
+  - ../energy_supply_minimal/interventions.yaml
+- name: energy_demand
+  path: ../../../models/energy_demand/run.py
+  classname: EDWrapper
+  config_dir: ../energy_demand_minimal/
+  initial_conditions: []
+  interventions: []
+planning:
+  pre_specified:
+    use: true
+    files:
+    - ../energy_supply_minimal/pre-specified.yaml
+  rule_based:
+    use: false
+    files: []
+  optimisation:
+    use: false
+    files: []
