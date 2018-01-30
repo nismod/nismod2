@@ -1,0 +1,10 @@
+decision_module: ''
+description: ''
+name: energy_supply_test
+narratives:
+- technology:
+  - High Tech Demand Side Management
+scenarios: {}
+sos_model: energy_supply_only
+stamp: '2018-01-30T10:29:09.904Z'
+timesteps: []

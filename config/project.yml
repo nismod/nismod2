@@ -1,0 +1,71 @@
+interval_definitions:
+- description: One annual interval of 8760 hours
+  filename: annual_intervals.csv
+  name: annual
+- description: One week in each season of 168 hours
+  filename: seasonal_week.csv
+  name: seasonal_week
+name: Test Project
+narrative_sets:
+- description: Describes the evolution of technology
+  name: technology
+- description: Describes the governance landscape
+  name: governance
+narratives:
+- description: High penetration of SMART technology on the demand side
+  filename: high_tech_dsm.yml
+  name: High Tech Demand Side Management
+  narrative_set: technology
+region_definitions:
+- description: ''
+  filename: uk_nations_shp/regions.shp
+  name: national
+- description: ''
+  filename: oxfordshire/regions.geojson
+  name: oxfordshire
+- description: National grid-gas exit zones
+  filename: oxfordshire/regions.geojson
+  name: exit_zones
+scenario_sets:
+- description: UK precipitation
+  name: rainfall
+- description: Growth in UK population
+  name: population
+scenarios:
+- description: Central Population for the UK (Low)
+  name: Central Population (Low)
+  parameters:
+  - filename: population_low.csv
+    name: population
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: people
+  scenario_set: population
+- description: Central Population for the UK (Medium)
+  name: Central Population (Medium)
+  parameters:
+  - filename: population_med.csv
+    name: population
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: people
+  scenario_set: population
+- description: Central Population for the UK (High)
+  name: Central Population (High)
+  parameters:
+  - filename: population_low.csv
+    name: population
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: people
+  scenario_set: population
+- description: Central Rainfall Scenario for the UK
+  name: Central Rainfall
+  parameters:
+  - filename: raininess.csv
+    name: raininess
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: Ml
+  scenario_set: rainfall
+units: units.txt
