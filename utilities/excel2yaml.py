@@ -131,6 +131,16 @@ def read(model_name, filename, project_data):
         'initial_conditions': read_worksheet('initial_conditions', workbook),
     }
 
+    # Post-process parameter_absolute, relative ranges into tuples
+    for parameter in model_data['parameters']:
+        parameter['absolute_range'] = '(' + str(parameter['absolute_range_lower']) + ', ' + str(parameter['absolute_range_upper']) + ')'
+        parameter['suggested_range'] = '(' + str(parameter['suggested_range_lower']) + ', ' + str(parameter['suggested_range_upper']) + ')'
+
+        del parameter['absolute_range_lower']
+        del parameter['absolute_range_upper']
+        del parameter['suggested_range_lower']
+        del parameter['suggested_range_upper']
+
     extra = {}
     for sheet_name in set(workbook.sheetnames) - expected_worksheets:
         print("  * Found extra worksheet", sheet_name)
