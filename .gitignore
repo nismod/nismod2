@@ -92,6 +92,7 @@ ENV/
 .vagrant/
 
 # Energy supply
+*.xpr
 xpress.tar
 template.ini
 install.sh
