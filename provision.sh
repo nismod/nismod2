@@ -22,7 +22,8 @@ service postgresql restart
 pip3 install --upgrade pip
 
 # Install smif
-pip3 install smif~=0.2 --upgrade
+pip3 install -U setuptools
+pip3 install smif~=0.6 --upgrade
 
 # Install pyscopg2 (required by some run.py wrappers)
 pip3 install psycopg2 pytest

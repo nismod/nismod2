@@ -1,0 +1,38 @@
+classname: EnergySupplyWrapper
+description: CGEN++ simulates the operation of the coupled UK gas and electricity
+  transmission system
+initial_conditions: []
+inputs:
+- name: residential_gas_boiler_gas
+  spatial_resolution: exit_zones
+  temporal_resolution: seasonal_week
+  units: MW
+- name: cost_of_carbon
+  spatial_resolution: national
+  temporal_resolution: annual
+  units: "£/kg"
+interventions: []
+name: energy_supply
+outputs:
+- name: ccgt_gen
+  spatial_resolution: exit_zones
+  temporal_resolution: seasonal_week
+  units: MW
+- name: coal_gen
+  spatial_resolution: exit_zones
+  temporal_resolution: seasonal_week
+  units: MW
+parameters:
+- absolute_range: (0, 999)
+  default_value: '100'
+  description: cost of electricity load shedding
+  name: LoadShed_elec
+  suggested_range: (0, 500)
+  units: "£/MWh"
+- absolute_range: (0, 999)
+  default_value: '300'
+  description: cost of gas load shedding
+  name: LoadShed_gas
+  suggested_range: (0, 500)
+  units: "£/MWh"
+path: models/energy_supply.py
