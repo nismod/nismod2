@@ -6,5 +6,6 @@ max_iterations: 1
 name: energy_supply_only
 narrative_sets:
 - technology
+- governance
 sector_models:
 - energy_supply
