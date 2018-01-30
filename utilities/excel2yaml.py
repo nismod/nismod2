@@ -19,7 +19,7 @@ Process
   - write to interval_definitions section in project file
 - read intervals tab
   - write to data folder
-  - TODO write to interval csv file in data/interval_definitions
+  - write to interval csv file in data/interval_definitions
 - read units tab
   - write to units in project file
 - create new simulation model file under /models
@@ -67,6 +67,11 @@ def read_project(output_dir):
         yaml = YAML()
         with open(project_yaml_file(output_dir), encoding='utf-8') as project:
             project_data = yaml.load(project)
+
+        for key, value in project_data.items():
+            if value == None:
+                project_data[key] = []
+        
     except FileNotFoundError:
         project_data = {
             'name': "Test Project",
