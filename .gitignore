@@ -111,3 +111,4 @@ __pycache__
 # smif creates log files and results files
 smif.log
 results.yaml
+*.xlsx
