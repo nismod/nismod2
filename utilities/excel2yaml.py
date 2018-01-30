@@ -117,6 +117,7 @@ def read(model_name, filename, project_data):
     project_data['units'].extend(read_worksheet('units', workbook))
 
     intervals = read_worksheet('intervals', workbook)
+    interventions = read_worksheet('interventions', workbook)
 
     model_data = {
         'name': model_name,
@@ -135,7 +136,7 @@ def read(model_name, filename, project_data):
         print("  * Found extra worksheet", sheet_name)
         extra[sheet_name] = read_worksheet(sheet_name, workbook)
 
-    return project_data, intervals, model_data, extra
+    return project_data, intervals, interventions, model_data, extra
 
 
 def read_worksheet(worksheet_name, workbook):
@@ -167,7 +168,7 @@ def read_worksheet(worksheet_name, workbook):
 def write(model_name, data, output_dir):
     """Write data structure to YAML and csv
     """
-    project_data, intervals, model_data, extra = data
+    project_data, intervals, interventions, model_data, extra = data
 
     yaml = YAML()
 
@@ -183,12 +184,19 @@ def write(model_name, data, output_dir):
         writer.writeheader()
         writer.writerows(intervals)
 
+    # interventions
+    interventions_filename = os.path.join(output_dir, 'data', 'interventions', '{}.yml'.format(model_name))
+    with open(interventions_filename, 'w', encoding='utf-8') as interventions_file:
+        yaml.dump(interventions, interventions_file)
+
     # model
     model_filename = os.path.join(
         output_dir, 'config', 'sector_models', '{}.yml'.format(
             model_name))
     with open(model_filename, 'w', encoding='utf-8') as model_file:
         yaml.dump(model_data, model_file)
+
+    
 
     # extras
     for sheet_name, data in extra.items():
