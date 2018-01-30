@@ -11,11 +11,7 @@ narrative_sets:
   name: technology
 - description: Describes the governance landscape
   name: governance
-narratives:
-- description: High penetration of SMART technology on the demand side
-  filename: high_tech_dsm.yml
-  name: High Tech Demand Side Management
-  narrative_set: technology
+narratives: []
 region_definitions:
 - description: ''
   filename: uk_nations_shp/regions.shp
@@ -31,41 +27,5 @@ scenario_sets:
   name: rainfall
 - description: Growth in UK population
   name: population
-scenarios:
-- description: Central Population for the UK (Low)
-  name: Central Population (Low)
-  parameters:
-  - filename: population_low.csv
-    name: population
-    spatial_resolution: national
-    temporal_resolution: annual
-    units: people
-  scenario_set: population
-- description: Central Population for the UK (Medium)
-  name: Central Population (Medium)
-  parameters:
-  - filename: population_med.csv
-    name: population
-    spatial_resolution: national
-    temporal_resolution: annual
-    units: people
-  scenario_set: population
-- description: Central Population for the UK (High)
-  name: Central Population (High)
-  parameters:
-  - filename: population_low.csv
-    name: population
-    spatial_resolution: national
-    temporal_resolution: annual
-    units: people
-  scenario_set: population
-- description: Central Rainfall Scenario for the UK
-  name: Central Rainfall
-  parameters:
-  - filename: raininess.csv
-    name: raininess
-    spatial_resolution: national
-    temporal_resolution: annual
-    units: Ml
-  scenario_set: rainfall
+scenarios: []
 units: units.txt

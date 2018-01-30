@@ -1,3 +1,36 @@
+# Energy supply
+*.xpr
+xpress.tar
+template.ini
+install.sh
+kalis_license.txt
+version.txt
+xphostid
+
+# OS X
+.DS_Store
+.vscode
+
+# Python
+*.pyc
+__pycache__
+
+# smif creates log files and results files
+smif.log
+
+# Ignore results folder
+results/
+
+# Ignore any Excel files
+*.xlsx
+
+# Vagrant provision install artifacts
+database
+.vagrant/
+smif/
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -87,28 +120,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-# Vagrant
-.vagrant/
-
-# Energy supply
-*.xpr
-xpress.tar
-template.ini
-install.sh
-kalis_license.txt
-version.txt
-xphostid
-
-# OS X
-.DS_Store
-.vscode
-
-# Python
-*.pyc
-__pycache__
-
-# smif creates log files and results files
-smif.log
-results.yaml
-*.xlsx
