@@ -16,11 +16,8 @@ region_definitions:
 - description: ''
   filename: uk_nations_shp/regions.shp
   name: national
-- description: ''
-  filename: oxfordshire/regions.geojson
-  name: oxfordshire
 - description: National grid-gas exit zones
-  filename: oxfordshire/regions.geojson
+  filename: uk_nations_shp/regions.shp
   name: exit_zones
 scenario_sets:
 - description: UK precipitation
