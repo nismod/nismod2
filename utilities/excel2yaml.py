@@ -30,7 +30,7 @@ Process
 - read parameters tab
   - write to parameters in simulation model file
 - read interventions tab
-  - TODO write to interventions file in data/interventions folder
+  - write to interventions file in data/interventions folder
   - write to interventions section in simulation model file
 - read any other tabs
   - write to tab-named yaml file and warn
@@ -127,7 +127,7 @@ def read(model_name, filename, project_data):
         'inputs': read_worksheet('sectormodel_inputs', workbook),
         'outputs': read_worksheet('sectormodel_outputs', workbook),
         'parameters': read_worksheet('parameters', workbook),
-        'interventions': read_worksheet('interventions', workbook),
+        'interventions': '{}_interventions.yml'.format(model_name),
         'initial_conditions': read_worksheet('initial_conditions', workbook),
     }
 
@@ -185,7 +185,7 @@ def write(model_name, data, output_dir):
         writer.writerows(intervals)
 
     # interventions
-    interventions_filename = os.path.join(output_dir, 'data', 'interventions', '{}.yml'.format(model_name))
+    interventions_filename = os.path.join(output_dir, 'data', 'interventions', '{}_interventions.yml'.format(model_name))
     with open(interventions_filename, 'w', encoding='utf-8') as interventions_file:
         yaml.dump(interventions, interventions_file)
 
