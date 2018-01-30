@@ -101,7 +101,12 @@ parameters:
   units: £/MWh
   description: cost of gas load shedding
   name: LoadShed_gas
-initial_conditions: []
+initial_conditions:
+- energy_supply_elecnetwork.yml
+- energy_supply_gasnetwork.yml
+- energy_supply_gasstore.yml
+- energy_supply_gasterminal.yml
+- energy_supply_generation.yml
 inputs:
 - units: MW
   temporal_resolution: seasonal_week
