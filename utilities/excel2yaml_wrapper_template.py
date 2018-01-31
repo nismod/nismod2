@@ -18,46 +18,11 @@ class {model_name_cap}Wrapper(SectorModel):
 
         # Get model parameters
         {model_parameters}
-
-        # Demonstrates how to get the value for a model input
-        # (defaults to the current time period)
-        current_{model_name} = data.get_data('{model_name}')
-        self.logger.info("Current {model_name_rm_} in %s is %s",
-                         now, current_{model_name})
-
-        # Demonstrates how to get the value for a model input from the base
-        # timeperiod
-        base_{model_name} = data.get_base_timestep_data('{model_name}')
-        base_year = data.base_timestep
-        self.logger.info("Base year {model_name_rm_} in %s was %s", base_year,
-                         base_{model_name})
-
-        # Demonstrates how to get the value for a model input from the previous
-        # timeperiod
-        if now > base_year:
-            prev_{model_name} = data.get_previous_timestep_data('{model_name}')
-            prev_year = data.previous_timestep
-            self.logger.info("Previous {model_name_rm_} in %s was %s",
-                             prev_year, prev_{model_name})
-
-        # Pretend to call the '{model_name_rm_}'
-        # This code prints out debug logging messages for each input
-        # defined in the {model_name} configuration
-        for name in self.inputs.names:
-            time_intervals = self.inputs[name].get_interval_names()
-            regions = self.inputs[name].get_region_names()
-            for i, region in enumerate(regions):
-                for j, interval in enumerate(time_intervals):
-                    self.logger.info(
-                        "%s %s %s",
-                        interval,
-                        region,
-                        data.get_data(name)[i, j])
-
-        # Write pretend results to data handler
+        # Get model inputs
+        {model_inputs}
+        # Write results to data handler
         {model_outputs}
-        self.logger.info("{model_name_cap}Wrapper produced outputs in %s",
-                         now)
+        self.logger.info("{model_name_cap}Wrapper produced outputs in %s", now)
 
     def extract_obj(self, results):
         return 0

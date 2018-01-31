@@ -215,17 +215,23 @@ def write(model_name, data, output_dir):
     wrapper_parameters = ''
     for parameter in model_data['parameters']:
         wrapper_parameters+= 'parameter_{0} = data.get_parameter(\'{0}\')\n\t\t'.format(parameter['name'])
-        wrapper_parameters+= 'self.logger.info(\'{1}: %s\', {0})\n\t\t'.format(parameter['name'], str(parameter['name']).replace("_", " ").capitalize())
+        wrapper_parameters+= 'self.logger.info(\'Parameter {1}: %s\', {0})\n\t\t'.format(parameter['name'], str(parameter['name']).replace("_", " ").capitalize())
+
+    wrapper_inputs = ''
+    for input in model_data['inputs']:
+        wrapper_inputs+= 'input_{0} = data.get_data("{0}")\n\t\t'.format(input['name'])
+        wrapper_inputs+= 'self.logger.info(\'Input {1}: %s\', input_{0})\n\t\t'.format(input['name'], str(input['name']).replace("_", " ").capitalize())
 
     wrapper_outputs = ''
     for output in model_data['outputs']:
-        wrapper_outputs+= 'data.set_results("{0}", np.ones((3, 1)) * 3)\n\t\t'.format(output['name'])
+        wrapper_outputs+= 'data.set_results("{0}", None)\n\t\t'.format(output['name'])
 
     with open(WRAPPER_TEMPLATE, 'r') as source, open(os.path.join(output_dir, 'models', '{}.py'.format(model_name)), 'w') as sink:
         for line in source.readlines():
             sink.write(line.format(model_name=model_name, model_name_rm_=model_name.replace("_", " "), 
                                    model_name_cap=model_name.replace("_", " ").capitalize(),
                                    model_parameters=wrapper_parameters,
+                                   model_inputs=wrapper_inputs,
                                    model_outputs=wrapper_outputs))
 
     # extras
@@ -234,8 +240,6 @@ def write(model_name, data, output_dir):
         with open(filename, 'w', encoding='utf-8') as file_handle:
             yaml.dump(data, file_handle)
 
-    # wrapper template
-    
 
 if __name__ == '__main__':
     if len(sys.argv) != 5:
