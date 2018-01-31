@@ -6,6 +6,21 @@ from collections import namedtuple
 
 class EnergySupplyWrapper(SectorModel):
     """Wraps the energy supply model
+
+    The energy supply model has five main categories of interventions:
+    - electricity network
+    - gas network
+    - gas store
+    - gas terminals
+    - electricity generation
+
+    These are associated with the database tables
+    - LineData
+    - PipeData
+    - GasStorage
+    - GasTerminal
+    - GeneratorData
+
     """
     @staticmethod
     def establish_connection():
@@ -410,109 +425,102 @@ class EnergySupplyWrapper(SectorModel):
     def initialise(self, initial_conditions):
         """Set up the initial system from a list of interventions
 
+        Write in the all interventions with the intervention_name ``gasstore%``
+        to the GasStore table.
+
         Arguments
         ---------
         initial_conditions : list
+
+        Notes
+        -----
+        GasStorage" (
+        storagenum double precision,
+        gasnode double precision,
+        name character varying(255),
+        year double precision,
+        inflowcap double precision,
+        outflowcap double precision,
+        storagecap double precision,
+        outflowcost double precision
         """
-        pass
 
-    def simulate(self, decisions, state, data):
-        """Runs the energy supply model
+        gasstores = []
+        for intervention in initial_conditions:
+            if 'intervention_name' in intervention.keys():
+                if str(intervention['intervention_name']).startswith('gasstore'):
+                    gasstores.append(intervention)
 
-        Arguments
-        ---------
-        decisions : list
-        state : list
-        data : dict
-            A dict of lists-of-dicts
-        """
-
-        # Write decisions into the input tables
-        for decision in decisions:
-            if  decision.name == 'nuclear_power_station':
-                name = decision.name
-                plant_type = decision.data['power_generation_type']['value']
-                region = decision.data['location']['value']
-                capacity = decision.data['capacity']['value']
-                build_year = data['timestep']
-                operational_life = decision.data['operational_lifetime']['value']
-                self.build_power_station(name, plant_type, region, capacity,
-                                         build_year,
-                                         operational_life)
-            elif decision.name == 'IOG_gas_terminal_expansion':
-                capacity = decision.data['capacity']['value']
-                terminal_number = decision.data['gas_terminal_number']['value']
-                self.increase_gas_terminal_capacity(terminal_number, capacity)
-
-        # Write demand data into input tables
-        # print(data)
         conn = self.establish_connection()
-        # Open a cursor to perform database operations
         cur = conn.cursor()
-        cur.execute("""DELETE FROM "ElecLoad";""")
-        cur.execute("""DELETE FROM "GasLoad";""")
-        # Make the changes to the database persistent
-        conn.commit()
+        
+        cur.execute("""DELETE FROM "GasStorage";""")
+
+        for store in gasstores:
+
+            sql = """INSERT INTO "GasStorage" (StorageNum, GasNode, Name, Year, InFlowCap, OutFlowCap, StorageCap, OutFlowCost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+
+            data = (store['storagenumber'],
+                    store['gasnode'],
+                    store['name'],
+                    store['build_year'],
+                    store['inflowcap'],
+                    store['outflowcap'],
+                    store['storagecap'],
+                    store['outflowcost']
+                    )
+
+            cur.execute(sql, data)
+
+            # Make the changes to the database persistent
+            conn.commit()
+
         # Close communication with the database
         cur.close()
-        conn.close()
+        conn.close()            
 
-        self.write_electricity_demand_data(data)
-        self.write_gas_demand_data(data)
+    def simulate(self, data):
+
+        # # Write decisions into the input tables
+        # for decision in decisions:
+        #     if  decision.name == 'nuclear_power_station':
+        #         name = decision.name
+        #         plant_type = decision.data['power_generation_type']['value']
+        #         region = decision.data['location']['value']
+        #         capacity = decision.data['capacity']['value']
+        #         build_year = data['timestep']
+        #         operational_life = decision.data['operational_lifetime']['value']
+        #         self.build_power_station(name, plant_type, region, capacity,
+        #                                  build_year,
+        #                                  operational_life)
+        #     elif decision.name == 'IOG_gas_terminal_expansion':
+        #         capacity = decision.data['capacity']['value']
+        #         terminal_number = decision.data['gas_terminal_number']['value']
+        #         self.increase_gas_terminal_capacity(terminal_number, capacity)
+
+        # # Write demand data into input tables
+        # # print(data)
+        # conn = self.establish_connection()
+        # # Open a cursor to perform database operations
+        # cur = conn.cursor()
+        # cur.execute("""DELETE FROM "ElecLoad";""")
+        # cur.execute("""DELETE FROM "GasLoad";""")
+        # # Make the changes to the database persistent
+        # conn.commit()
+        # # Close communication with the database
+        # cur.close()
+        # conn.close()
+
+        # self.write_electricity_demand_data(data)
+        # self.write_gas_demand_data(data)
 
         # Run the model
         arguments = [self.get_model_executable()]
         output = check_output(arguments)
+        self.logger.debug(output)
 
         results = self.get_results()
-        print("Emissions: {}".format(results['total_emissions']))
-        print("Total Cost: {}".format(results['total_cost']))
-        return results
+        data.set_results("emissions_elec", results['total_emissions'] )
 
     def extract_obj(self, results):
         return results
-
-def main():
-    SpaceTimeValue = namedtuple('SpaceTimeValue', ['region', 'interval', 'value', 'units'])
-
-    electricity_demand = [SpaceTimeValue('Scotland', ('1_1'), 2.48, 'GW'),
-                          SpaceTimeValue('Wales', ('1_1'), 2.48, 'GW'),
-                          SpaceTimeValue('England', ('1_1'), 2.48, 'GW')]
-    gas_demand = [SpaceTimeValue('Scotland', ('1_1'), 2.48, 'GW'),
-                  SpaceTimeValue('Wales', ('1_1'), 2.48, 'GW'),
-                  SpaceTimeValue('England', ('1_1'), 2.48, 'GW')]
-
-    data = {'timestep': 2015,
-            'electricity_demand': electricity_demand,
-            'gas_demand': gas_demand}
-
-    decision = [{'capacity': {'units': 'MW', 'value': 1000},
-                 'capital_cost': {'units': '£(million)/MW', 'value': 3.5},
-                 'economic_lifetime': {'units': 'years', 'value': 30},
-                 'operational_year': {'units': 'year', 'value': 2030},
-                 'name': 'nuclear_power_station',
-                 'location': {'units': 'string', 'value': 'England'},
-                 'power_generation_type': {'units': 'number', 'value': 4},
-                 'operational_life': {'units': 'years', 'value': 40}},
-                {'name': 'IOG_gas_terminal_expansion',
-                 'operational_life': {'units': 'years', 'value': 30},
-                 'gas_terminal_number': {'units': 'number', 'value': 8},
-                 'operational_year': {'units': 'year', 'value': 2020},
-                 'capacity': {'units': 'mcm', 'value': 10},
-                 'economic_lifetime': {'units': 'years', 'value': 25},
-                 'location': {'units': 'string', 'value': 'England'},
-                 'capital_cost': {'units': '£(million)/mcm', 'value': 10}}]
-
-    energy = EnergySupplyWrapper('energy_supply')
-    print("Running model")
-    energy.simulate(decision, [], data)
-    print("Finished running model")
-
-    results = energy.get_results()
-
-    print("Emissions: {}".format(results['total_emissions']))
-    print("Total Cost: {}".format(results['total_cost']))
-
-
-if __name__ == '__main__':
-    main()
