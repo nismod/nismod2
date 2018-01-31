@@ -44,6 +44,7 @@ import sys
 
 # from pprint import pprint
 
+from string import Template
 from openpyxl import load_workbook
 from ruamel.yaml import YAML
 
@@ -206,7 +207,22 @@ def write(model_name, data, output_dir):
     with open(model_filename, 'w', encoding='utf-8') as model_file:
         yaml.dump(model_data, model_file)
 
-    
+    # write wrapper
+    wrapper_parameters = ''
+    for parameter in model_data['parameters']:
+        wrapper_parameters+= 'parameter_{0} = data.get_parameter(\'{0}\')\n\t\t'.format(parameter['name'])
+        wrapper_parameters+= 'self.logger.info(\'{1}: %s\', {0})\n\t\t'.format(parameter['name'], str(parameter['name']).replace("_", " ").capitalize())
+
+    wrapper_outputs = ''
+    for output in model_data['outputs']:
+        wrapper_outputs+= 'data.set_results("{0}", np.ones((3, 1)) * 3)\n\t\t'.format(output['name'])
+
+    with open(WRAPPER_TEMPLATE, 'r') as source, open(os.path.join(output_dir, 'models', '{}.py'.format(model_name)), 'w') as sink:
+        for line in source.readlines():
+            sink.write(line.format(model_name=model_name, model_name_rm_=model_name.replace("_", " "), 
+                                   model_name_cap=model_name.replace("_", " ").capitalize(),
+                                   model_parameters=wrapper_parameters,
+                                   model_outputs=wrapper_outputs))
 
     # extras
     for sheet_name, data in extra.items():
@@ -214,15 +230,19 @@ def write(model_name, data, output_dir):
         with open(filename, 'w', encoding='utf-8') as file_handle:
             yaml.dump(data, file_handle)
 
+    # wrapper template
+    
+
 if __name__ == '__main__':
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         SCRIPT_NAME = os.path.basename(__file__)
         print(
-            "Usage: python {} model_name integration_template.xslx path/to/project/dir/".format(
+            "Usage: python {} model_name integration_template.xslx wrapper_template.py path/to/project/dir/".format(
                 SCRIPT_NAME))
         exit(1)
 
     MODEL_NAME = sys.argv[1]
     FILENAME = os.path.normpath(os.path.abspath(sys.argv[2]))
-    OUTPUT_DIR = os.path.normpath(os.path.abspath(sys.argv[3]))
+    WRAPPER_TEMPLATE = os.path.normpath(os.path.abspath(sys.argv[3]))
+    OUTPUT_DIR = os.path.normpath(os.path.abspath(sys.argv[4]))
     main(MODEL_NAME, FILENAME, OUTPUT_DIR)
