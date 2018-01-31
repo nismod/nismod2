@@ -134,9 +134,13 @@ def read(model_name, filename, project_data):
 
     # Post-process parameter_absolute, relative ranges into tuples
     for parameter in model_data['parameters']:
-        parameter['absolute_range'] = '(' + str(parameter['absolute_range_lower']) + ', ' + str(parameter['absolute_range_upper']) + ')'
-        parameter['suggested_range'] = '(' + str(parameter['suggested_range_lower']) + ', ' + str(parameter['suggested_range_upper']) + ')'
 
+        if (None in (parameter['absolute_range_lower'], parameter['absolute_range_upper'], parameter['suggested_range_lower'], parameter['suggested_range_upper'])):
+            parameter['absolute_range'], parameter['suggested_range'] = [None, None]
+        else:
+            parameter['absolute_range'] = [(parameter['absolute_range_lower']), (parameter['absolute_range_upper'])]
+            parameter['suggested_range'] = [(parameter['suggested_range_lower']), (parameter['suggested_range_upper'])]
+        
         del parameter['absolute_range_lower']
         del parameter['absolute_range_upper']
         del parameter['suggested_range_lower']
