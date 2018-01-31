@@ -1,0 +1,51 @@
+classname: EnergySupplyWrapper
+description: CGEN++ simulates the operation of the coupled UK gas and electricity.
+initial_conditions:
+- energy_supply_elecnetwork.yml
+- energy_supply_gasnetwork.yml
+- energy_supply_gasstore.yml
+- energy_supply_gasterminal.yml
+- energy_supply_generation.yml
+inputs:
+- name: residential_gas_boiler_gas
+  spatial_resolution: exit_zones
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_electricity_boiler_electricity
+  spatial_resolution: exit_zones
+  temporal_resolution: seasonal_week
+  units: MW
+- name: gas_price
+  spatial_resolution: national
+  temporal_resolution: annual
+  units: "£/MWh"
+interventions:
+- energy_supply.yml
+name: energy_supply_toy
+outputs:
+- name: emissions_elec
+  spatial_resolution: national
+  temporal_resolution: annual
+  units: MtCO2
+parameters:
+- absolute_range:
+  - 0
+  - 9999
+  default_value: 100
+  description: cost of electricity load shedding
+  name: LoadShed_elec
+  suggested_range:
+  - 0
+  - 500
+  units: "£/MWh"
+- absolute_range:
+  - 0
+  - 9999
+  default_value: 300
+  description: cost of gas load shedding
+  name: LoadShed_gas
+  suggested_range:
+  - 0
+  - 500
+  units: "£/MWh"
+path: models/energy_supply_toy.py

@@ -24,5 +24,32 @@ scenario_sets:
   name: rainfall
 - description: Growth in UK population
   name: population
-scenarios: []
+- description: Dummy data for energy_supply model residential inputs
+  name: es_residential
+- description: Dummy data for energy_supply prices data
+  name: es_prices
+scenarios:
+- description: Dummy data for residential inputs to energy supply model
+  name: es_residential_dummy
+  parameters:
+  - filename: residential_gas_boiler_gas.csv
+    name: residential_gas_boiler_gas
+    spatial_resolution: exit_zones
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: residential_electricity_boiler_electricity.csv
+    name: residential_electricity_boiler_electricity
+    spatial_resolution: exit_zones
+    temporal_resolution: seasonal_week
+    units: MW
+  scenario_set: es_residential
+- description: Dummy prices data to pass to the energy_supply toy model
+  name: es_prices_dummy
+  parameters:
+  - filename: gas_price.csv
+    name: gas_price
+    spatial_resolution: annual
+    temporal_resolution: national
+    units: "\xA3/MWh"
+  scenario_set: es_prices
 units: units.txt

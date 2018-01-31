@@ -1,0 +1,24 @@
+convergence_absolute_tolerance: 1.0e-05
+convergence_relative_tolerance: 1.0e-05
+dependencies:
+- sink_model: energy_supply_toy
+  sink_model_input: residential_gas_boiler_gas
+  source_model: es_residential
+  source_model_output: residential_gas_boiler_gas
+- sink_model: energy_supply_toy
+  sink_model_input: residential_electricity_boiler_electricity
+  source_model: es_residential
+  source_model_output: residential_electricity_boiler_electricity
+- sink_model: energy_supply_toy
+  sink_model_input: gas_price
+  source_model: es_prices
+  source_model_output: gas_price
+description: Toy version of the energy supply model with just three inputs, two parameters
+  and one output.
+max_iterations: 1
+name: energy_supply_toy
+scenario_sets:
+- es_residential
+- es_prices
+sector_models:
+- energy_supply_toy

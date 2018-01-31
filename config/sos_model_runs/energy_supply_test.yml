@@ -5,4 +5,4 @@ narratives: {}
 scenarios: {}
 sos_model: energy_supply_only
 stamp: '2018-01-30T10:29:09.904Z'
-timesteps: []
+timesteps: [2015, 2020]
