@@ -21,6 +21,37 @@ class EnergySupplyWrapper(SectorModel):
     - GasTerminal
     - GeneratorData
 
+    Inputs:
+    - name: residential_gas_boiler_gas
+    - name: residential_electricity_boiler_electricity
+    - name: gas_price
+    outputs:
+    - name: emissions_elec
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: MtCO2
+    parameters:
+    - absolute_range:
+    - 0
+    - 9999
+    default_value: 100
+    description: cost of electricity load shedding
+    name: LoadShed_elec
+    suggested_range:
+    - 0
+    - 500
+    units: "£/MWh"
+    - absolute_range:
+    - 0
+    - 9999
+    default_value: 300
+    description: cost of gas load shedding
+    name: LoadShed_gas
+    suggested_range:
+    - 0
+    - 500
+    units: "£/MWh"
+
     """
     @staticmethod
     def establish_connection():
@@ -113,7 +144,7 @@ class EnergySupplyWrapper(SectorModel):
         Arguments
         ---------
         data : list
-            A dict of list of SpaceTimeValue tuples
+            A numpy array of gas data arranged by regions and intervals
         """
         conn = self.establish_connection()
         # Open a cursor to perform database operations
@@ -480,23 +511,17 @@ class EnergySupplyWrapper(SectorModel):
         conn.close()            
 
     def simulate(self, data):
+    """
 
-        # # Write decisions into the input tables
-        # for decision in decisions:
-        #     if  decision.name == 'nuclear_power_station':
-        #         name = decision.name
-        #         plant_type = decision.data['power_generation_type']['value']
-        #         region = decision.data['location']['value']
-        #         capacity = decision.data['capacity']['value']
-        #         build_year = data['timestep']
-        #         operational_life = decision.data['operational_lifetime']['value']
-        #         self.build_power_station(name, plant_type, region, capacity,
-        #                                  build_year,
-        #                                  operational_life)
-        #     elif decision.name == 'IOG_gas_terminal_expansion':
-        #         capacity = decision.data['capacity']['value']
-        #         terminal_number = decision.data['gas_terminal_number']['value']
-        #         self.increase_gas_terminal_capacity(terminal_number, capacity)
+    Inputs defined as:
+    - residential_gas_boiler_gas
+    - residential_electricity_boiler_electricity
+    - gas_price
+    """
+
+    residential_boiler_gas = data.get_data("residential_gas_boiler_gas")
+    residential_boiler_elec = data.get_data("residential_electricity_boiler_electricity")
+    gas_price = data.get_data("gas_price")
 
         # # Write demand data into input tables
         # # print(data)
