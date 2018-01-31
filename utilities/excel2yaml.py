@@ -34,13 +34,14 @@ Process
   - write to interventions section in simulation model file
 - read any other tabs
   - write to tab-named yaml file and warn
-- TODO write template model_wrapper.py implementing SectorModel
+- write template model_wrapper.py implementing SectorModel
   - get each input and parameter
   - write each output
 """
 import csv
 import os.path
 import sys
+import re
 
 # from pprint import pprint
 
@@ -211,16 +212,18 @@ def write(model_name, data, output_dir):
     with open(model_filename, 'w', encoding='utf-8') as model_file:
         yaml.dump(model_data, model_file)
 
-    # write wrapper
+    # wrapper
     wrapper_parameters = ''
     for parameter in model_data['parameters']:
-        wrapper_parameters+= 'parameter_{0} = data.get_parameter(\'{0}\')\n\t\t'.format(parameter['name'])
-        wrapper_parameters+= 'self.logger.info(\'Parameter {1}: %s\', {0})\n\t\t'.format(parameter['name'], str(parameter['name']).replace("_", " ").capitalize())
+        identifier = clean('parameter_' + str(parameter['name']))
+        wrapper_parameters+= '{0} = data.get_parameter(\'{1}\')\n\t\t'.format(identifier, parameter['name'])
+        wrapper_parameters+= 'self.logger.info(\'Parameter {1}: %s\', {0})\n\t\t'.format(identifier, str(parameter['name']).replace("_", " ").capitalize())
 
     wrapper_inputs = ''
     for input in model_data['inputs']:
-        wrapper_inputs+= 'input_{0} = data.get_data("{0}")\n\t\t'.format(input['name'])
-        wrapper_inputs+= 'self.logger.info(\'Input {1}: %s\', input_{0})\n\t\t'.format(input['name'], str(input['name']).replace("_", " ").capitalize())
+        identifier = clean('input_' + str(input['name']))
+        wrapper_inputs+= '{0} = data.get_data("{1}")\n\t\t'.format(identifier, input['name'])
+        wrapper_inputs+= 'self.logger.info(\'Input {1}: %s\', {0})\n\t\t'.format(identifier, str(input['name']).replace("_", " ").capitalize())
 
     wrapper_outputs = ''
     for output in model_data['outputs']:
@@ -239,6 +242,17 @@ def write(model_name, data, output_dir):
         filename = os.path.join(output_dir, '{}__{}.yml'.format(model_name, sheet_name))
         with open(filename, 'w', encoding='utf-8') as file_handle:
             yaml.dump(data, file_handle)
+
+
+def clean(s):
+
+   # Remove invalid characters
+   s = re.sub('[^0-9a-zA-Z_]', '', s)
+
+   # Remove leading characters until we find a letter or underscore
+   s = re.sub('^[^a-zA-Z_]+', '', s)
+
+   return s
 
 
 if __name__ == '__main__':
