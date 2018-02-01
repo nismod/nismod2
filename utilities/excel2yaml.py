@@ -72,7 +72,7 @@ def read_project(output_dir):
         for key, value in project_data.items():
             if value == None:
                 project_data[key] = []
-        
+
     except FileNotFoundError:
         project_data = {
             'name': "Test Project",
@@ -140,7 +140,7 @@ def read(model_name, filename, project_data):
         else:
             parameter['absolute_range'] = [(parameter['absolute_range_lower']), (parameter['absolute_range_upper'])]
             parameter['suggested_range'] = [(parameter['suggested_range_lower']), (parameter['suggested_range_upper'])]
-        
+
         del parameter['absolute_range_lower']
         del parameter['absolute_range_upper']
         del parameter['suggested_range_lower']
@@ -236,9 +236,15 @@ def write(model_name, data, output_dir):
     for output in model_data['outputs']:
         wrapper_outputs+= 'data.set_results("{0}", None)\n\t\t'.format(output['name'])
 
+    # ensure models dir exists
+    try:
+        os.mkdir(os.path.join(output_dir, 'models'))
+    except FileExistsError:
+        pass
+
     with open(WRAPPER_TEMPLATE, 'r') as source, open(os.path.join(output_dir, 'models', '{}.py'.format(model_name)), 'w') as sink:
         for line in source.readlines():
-            sink.write(line.format(model_name=model_name, model_name_rm_=model_name.replace("_", " "), 
+            sink.write(line.format(model_name=model_name, model_name_rm_=model_name.replace("_", " "),
                                    model_name_cap=model_name.replace("_", " ").capitalize(),
                                    model_parameters=wrapper_parameters,
                                    model_inputs=wrapper_inputs,
@@ -252,14 +258,15 @@ def write(model_name, data, output_dir):
 
 
 def clean(s):
+    """Clean a string for use as python token
+    """
+    # Remove invalid characters
+    s = re.sub('[^0-9a-zA-Z_]', '', s)
 
-   # Remove invalid characters
-   s = re.sub('[^0-9a-zA-Z_]', '', s)
+    # Remove leading characters until we find a letter or underscore
+    s = re.sub('^[^a-zA-Z_]+', '', s)
 
-   # Remove leading characters until we find a letter or underscore
-   s = re.sub('^[^a-zA-Z_]+', '', s)
-
-   return s
+    return s
 
 
 if __name__ == '__main__':
