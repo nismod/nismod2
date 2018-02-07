@@ -48,8 +48,8 @@ scenarios:
   parameters:
   - filename: gas_price.csv
     name: gas_price
-    spatial_resolution: annual
-    temporal_resolution: national
-    units: "\xA3/MWh"
+    spatial_resolution: national
+    temporal_resolution: annual
+    units: "£/MWh"
   scenario_set: es_prices
 units: units.txt

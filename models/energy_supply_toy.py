@@ -509,19 +509,17 @@ class EnergySupplyWrapper(SectorModel):
         # Close communication with the database
         cur.close()
         conn.close()            
-
+  
     def simulate(self, data):
-    """
 
-    Inputs defined as:
-    - residential_gas_boiler_gas
-    - residential_electricity_boiler_electricity
-    - gas_price
-    """
+        # Inputs defined as:
+        # - residential_electricity_boiler_electricity
+        # - residential_gas_boiler_gas
+        # - gas_price
 
-    residential_boiler_gas = data.get_data("residential_gas_boiler_gas")
-    residential_boiler_elec = data.get_data("residential_electricity_boiler_electricity")
-    gas_price = data.get_data("gas_price")
+        residential_boiler_gas = data.get_data("residential_gas_boiler_gas")
+        residential_boiler_elec = data.get_data("residential_electricity_boiler_electricity")
+        gas_price = data.get_data("gas_price")
 
         # # Write demand data into input tables
         # # print(data)
