@@ -4,10 +4,10 @@ import os
 from glob import glob
 from unittest.mock import MagicMock
 
-from smif.cli import run_model
+from smif.cli import execute_model_run
 
 def model_configuration_run(config_dirname):
-    """Run `smif.cli.run_model` on a model_configuration, expect no errors
+    """Run `smif.cli.execute_model_run` on a model_configuration, expect no errors
     """
     test_dir = os.path.dirname(__file__)
     model_config = os.path.join(
@@ -20,7 +20,7 @@ def model_configuration_run(config_dirname):
     mock_args.path = model_config
     mock_args.model = 'all'
     mock_args.output_file = '/tmp/results.yaml'
-    run_model(mock_args)
+    execute_model_run(mock_args)
 
 
 def test_digital_comms_run():
