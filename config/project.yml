@@ -5,13 +5,20 @@ interval_definitions:
 - description: One week in each season of 168 hours
   filename: seasonal_week.csv
   name: seasonal_week
+- name: hourly
+  description: 'Every hour in a year'
+  filename: hourly_intervals.csv
 name: Test Project
 narrative_sets:
 - description: Describes the evolution of technology
   name: technology
 - description: Describes the governance landscape
   name: governance
-narratives: []
+narratives:
+- name: 'High Tech Demand Side Management'
+  description: 'High penetration of SMART technology on the demand side'
+  filename: high_tech_dsm.yml
+  narrative_set: technology
 region_definitions:
 - description: ''
   filename: uk_nations_shp/regions.shp
@@ -19,10 +26,60 @@ region_definitions:
 - description: National grid-gas exit zones
   filename: uk_nations_shp/regions.shp
   name: exit_zones
+- description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+  filename: lad_uk_2016-12/lad_uk_2016-12.shp
+  name: lad_uk_2016
 scenario_sets:
 - description: UK precipitation
   name: rainfall
 - description: Growth in UK population
   name: population
-scenarios: []
+- description: Gross value added
+  name: gva
+scenarios:
+- name: et_demand_baseline
+  description: 'Baseline GWh of transport for the UK'
+  scenario_set: transport_energy_demand
+  parameters:
+  - name: electricity
+    filename: et_demand_electricity.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GWh
+- name: pop_baseline
+  description: 'Baseline Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_Baseline.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_high
+  description: 'High Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_High.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_low
+  description: 'Low Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_Low.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: gva_baseline
+  description: 'Baseline gva for the UK'
+  scenario_set: gva
+  parameters:
+  - name: gva
+    filename: gva_sven.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: pounds
 units: units.txt
