@@ -14,6 +14,10 @@ To use it, first install:
 1. [Virtualbox](www.virtualbox.org)
 1. [Vagrant](vagrantup.com)
 
+```
+Ubuntu note: If you are experiencing the issue *The box ‘bento/ubuntu-16.04’ could not be found or could not be accessed in the remote catalog.* Make sure that you have the latest version of Vagrant (>v2) installed. This version is currently not in the standard package archive (PPA) but can be downloaded from the vagrant website.
+```
+
 ### Running for the first time
 
 Then on the command line, from this directory, run:
