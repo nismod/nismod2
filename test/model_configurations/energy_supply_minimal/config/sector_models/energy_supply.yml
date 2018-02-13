@@ -1,14 +1,13 @@
-interventions: energy_supply_interventions.yml
-initial_conditions:
-- initial_value: 1000
-  parameter_name: reservoir_level
-path: /path/to/energy_supply/wrapper.py
+interventions: 
+- energy_supply_interventions.yml
+initial_conditions: []
+path: models/energy_supply.py
 name: energy_supply
 parameters:
 - suggested_range:
   - 0
   - 500
-  units: £/MWh
+  units: GBP/MWh
   name: LoadShed_elec
   absolute_range:
   - 0
@@ -18,7 +17,7 @@ parameters:
 - suggested_range:
   - 0
   - 500
-  units: £/MWh
+  units: GBP/MWh
   name: LoadShed_gas
   absolute_range:
   - 0
@@ -132,30 +131,30 @@ inputs:
   name: industry_electricity_non_heating
   spatial_resolution: eh_regions
 - temporal_resolution: annual
-  units: £/kgCO2
+  units: GBP/kgCO2
   name: cost_of_carbon
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £/MWh
+  units: GBP/MWh
   name: electricity_price
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £/MWh
+  units: GBP/MWh
   name: gas_price
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £/MWh
+  units: GBP/MWh
   name: nuclearFuel_price
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £/MWh
+  units: GBP/MWh
   name: oil_price
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £/MWh
+  units: GBP/MWh
   name: coal_price
   spatial_resolution: national
-classname: SectorModelImplementation
+classname: EnergySupplyWrapper
 outputs:
 - temporal_resolution: seasonal_week
   units: MW
@@ -242,7 +241,7 @@ outputs:
   name: emissions_elec
   spatial_resolution: national
 - temporal_resolution: seasonal_week
-  units: £/kWh
+  units: GBP/kWh
   name: elec_cost
   spatial_resolution: national
 - temporal_resolution: seasonal_week
@@ -258,14 +257,14 @@ outputs:
   name: elec_reserve_tran
   spatial_resolution: national
 - temporal_resolution: annual
-  units: n/a
+  units: GBP
   name: problem_objective
   spatial_resolution: national
 - temporal_resolution: annual
-  units: n/a
+  units: None
   name: problem_status
   spatial_resolution: national
 - temporal_resolution: annual
-  units: £
+  units: GBP
   name: total_opt_cost
   spatial_resolution: national

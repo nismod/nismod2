@@ -1,3 +1,14 @@
+# Don't add spatial data
+*.shp* 
+*.prj
+*.dbf
+*.shx 
+*.geojson
+*.cpg 
+*.sbn 
+*.sbx 
+*.xml
+
 # Energy supply
 *.xpr
 xpress.tar
