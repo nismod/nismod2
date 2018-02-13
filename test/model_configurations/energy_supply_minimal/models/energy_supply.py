@@ -4,7 +4,7 @@ import numpy as np
 from smif.model.sector_model import SectorModel
 
 
-class Energy supplyWrapper(SectorModel):
+class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
     def initialise(self, initial_conditions):

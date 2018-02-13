@@ -1,847 +1,271 @@
-outputs:
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: gasfired_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: coal_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: hydro_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: pumpedHydro_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: nuclear_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: interconnector_elec_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_ElecMixTran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: renewable_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_RenewableSupply_Tran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: wind_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_RenewableSupply_Tran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: pv_gen_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_RenewableSupply_Tran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: wind_curtail_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_RenewableSupply_Tran
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: pv_curtail_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_ElecMix_EH
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: gasfired_gen_eh
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_ElecMix_EH
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: wind_gen_eh
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_ElecMix_EH
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: pv_gen_eh
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_GasMixTran
-  units: mcm
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: lng_supply
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_GasMixTran
-  units: mcm
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: domestic_gas
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_GasMixTran
-  units: mcm
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: interconnector_gas
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_GasMixTran
-  units: mcm
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: storage_gas
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_LoadShed
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: load_shed_gas
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert in to table O_LoadShed
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: load_shed_elec
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_Emissions
-  units: MtCO2
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: emissions_elec
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_Elec_Prices
-  units: £/kWh
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: elec_cost
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_HeatMix_EH
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: heat_gasboiler
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_HeatMix_EH
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: heat_heatpump
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_Elec_Reserve
-  units: MW
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: elec_reserve_tran
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_Objective
-  units: n/a
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  absolute_range_lower: 0
-  suggested_range_upper: 1000000
-  name: problem_objective
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-- source notes: insert into table O_Objective
-  units: n/a
-  suggested_range_lower: n/a
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  absolute_range_lower: n/a
-  suggested_range_upper: n/a
-  name: problem_status
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: n/a
-  destination: database
-- source notes: insert into table O_Total_Op_Cost
-  units: £
-  suggested_range_lower: 0
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  absolute_range_lower: 0
-  suggested_range_upper: 10000000
-  name: total_opt_cost
-  spatial_resolution: national
-  licenses/restrictions:
-  absolute_range_upper: inf
-  destination: database
-name: energy_supply
+interventions: energy_supply_interventions.yml
 initial_conditions:
 - initial_value: 1000
   parameter_name: reservoir_level
-description: energy_supply model description
+path: /path/to/energy_supply/wrapper.py
+name: energy_supply
 parameters:
-- name: LoadShed_elec
-  suggested_range:
+- suggested_range:
   - 0
   - 500
+  units: £/MWh
+  name: LoadShed_elec
+  absolute_range:
+  - 0
+  - inf
   description: cost of electricity load shedding
-  units: £/MWh
   default_value: 100
-  absolute_range:
-  - 0
-  - inf
-- name: LoadShed_gas
-  suggested_range:
+- suggested_range:
   - 0
   - 500
-  description: cost of gas load shedding
   units: £/MWh
-  default_value: 300
+  name: LoadShed_gas
   absolute_range:
   - 0
   - inf
+  description: cost of gas load shedding
+  default_value: 300
+description: energy_supply model description
 inputs:
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_gas_boiler_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_electricity_boiler_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_gas_stirling_micro_CHP
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_electricity_heat_pumps_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_electricity_district_heating_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_gas_district_heating_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_gas_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: residential_electricity_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table ElecLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_gas_boiler_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_electricity_boiler_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_gas_stirling_micro_CHP
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_electricity_heat_pumps_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_electricity_district_heating_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_gas_district_heating_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table HeatLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_gas_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: service_electricity_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table ElecLoad_EH
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_gas_boiler_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_electricity_boiler_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table ELecLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_biomass_boiler_biomass
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_gas_stirling_micro_CHP
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_electricity_heat_pumps_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table ELecLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_electricity_district_heating_electricity
   spatial_resolution: eh_regions
-  destination notes: insert into table ELecLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_gas_district_heating_gas
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_biomass_district_heating_biomass
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_gas_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table GasLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower: 0
+- temporal_resolution: seasonal_week
   units: MW
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: seasonal_week
-  description:
-  absolute_range_lower: 0
-  suggested_range_upper: 5000
   name: industry_electricity_non_heating
   spatial_resolution: eh_regions
-  destination notes: insert into table ELecLoad_Tran
-  url (if applicable):
-  source: database
-  absolute_range_upper: inf
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/kgCO2
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: cost_of_carbon
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/MWh
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: electricity_price
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/MWh
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: gas_price
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/MWh
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: nuclearFuel_price
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/MWh
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: oil_price
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-- licenses:
-  suggested_range_lower:
+- temporal_resolution: annual
   units: £/MWh
-  tools or script used to process (if applicable):
-  dummy data (reference to input_data tab):
-  temporal_resolution: annual
-  description:
-  absolute_range_lower:
-  suggested_range_upper:
   name: coal_price
   spatial_resolution: national
-  destination notes:
-  url (if applicable):
-  source: database
-  absolute_range_upper:
-path: /path/to/energy_supply/wrapper.py
 classname: SectorModelImplementation
-interventions: energy_supply_interventions.yml
+outputs:
+- temporal_resolution: seasonal_week
+  units: MW
+  name: gasfired_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: coal_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: hydro_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: pumpedHydro_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: nuclear_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: interconnector_elec_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: renewable_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: wind_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: pv_gen_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: wind_curtail_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: pv_curtail_tran
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: gasfired_gen_eh
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: wind_gen_eh
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: pv_gen_eh
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: mcm
+  name: lng_supply
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: mcm
+  name: domestic_gas
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: mcm
+  name: interconnector_gas
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: mcm
+  name: storage_gas
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: load_shed_gas
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: load_shed_elec
+  spatial_resolution: national
+- temporal_resolution: annual
+  units: MtCO2
+  name: emissions_elec
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: £/kWh
+  name: elec_cost
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: heat_gasboiler
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: heat_heatpump
+  spatial_resolution: national
+- temporal_resolution: seasonal_week
+  units: MW
+  name: elec_reserve_tran
+  spatial_resolution: national
+- temporal_resolution: annual
+  units: n/a
+  name: problem_objective
+  spatial_resolution: national
+- temporal_resolution: annual
+  units: n/a
+  name: problem_status
+  spatial_resolution: national
+- temporal_resolution: annual
+  units: £
+  name: total_opt_cost
+  spatial_resolution: national
