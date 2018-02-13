@@ -5,13 +5,23 @@ interval_definitions:
 - description: One week in each season of 168 hours
   filename: seasonal_week.csv
   name: seasonal_week
+- description: One annual interval of 8760 hours
+  name: annual
+  filename: annual.csv
+- description: One week in each season of 168 hours
+  name: seasonal_week
+  filename: seasonal_weeks.csv
 name: Test Project
 narrative_sets:
 - description: Describes the evolution of technology
   name: technology
 - description: Describes the governance landscape
   name: governance
-narratives: []
+narratives:
+- description: ''
+  filename: ''
+  name: test_narrative
+  narrative_set: technology
 region_definitions:
 - description: ''
   filename: uk_nations_shp/regions.shp
@@ -19,6 +29,12 @@ region_definitions:
 - description: National grid-gas exit zones
   filename: uk_nations_shp/regions.shp
   name: exit_zones
+- description: Great Britain
+  name: national
+  filename: GB_National_boundary.shp
+- description: 'Boundaries of Energy Hubs '
+  name: eh_regions
+  filename: EH_Region_Boundaries.shp
 scenario_sets:
 - description: UK precipitation
   name: rainfall
@@ -50,6 +66,6 @@ scenarios:
     name: gas_price
     spatial_resolution: national
     temporal_resolution: annual
-    units: "£/MWh"
+    units: £/MWh
   scenario_set: es_prices
-units: units.txt
+units: []

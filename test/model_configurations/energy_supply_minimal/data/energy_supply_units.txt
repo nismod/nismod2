@@ -1,0 +1,15 @@
+unit_name=description
+MW=a mega watt of power
+MWh=a mega watt hour of energy
+mcm=a million cubic meters of gas volume
+£/MW=cost of unit power in GBP
+£/MWh=cost of unit energy in GBP
+£/kgCO2=cost per unit CO2 emission in kg
+bar=1 bar of guage pressure
+£=Great Britain Pounds (GBP)
+MtCO2 =metric tonne of CO2 emitted
+£/mcm=cost of a million cubic meter of gas volume in GBP
+m=metric meters
+mm=metric millimeters
+kgCO2/kWh=CO2 emission in kg, per kilowatte hour of energy generation
+mcm/day=million cubic meters of volume per day
