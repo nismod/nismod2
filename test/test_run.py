@@ -21,14 +21,15 @@ def model_configuration_run(config_dirname, modelrun_name):
 
     # Clear results
     results_folder = os.path.join(model_config, 'results')
-    for file in os.listdir(results_folder):
-        file_path = os.path.join(results_folder, file)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path): shutil.rmtree(file_path)
-        except Exception as e:
-            print(e)
+    if os.path.isdir(results_folder):
+        for file in os.listdir(results_folder):
+            file_path = os.path.join(results_folder, file)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path): shutil.rmtree(file_path)
+            except Exception as e:
+                print(e)
 
     # Run Model
     mock_args = MagicMock()
