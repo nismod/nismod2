@@ -5,6 +5,9 @@ interval_definitions:
 - description: One week in each season of 168 hours
   filename: seasonal_week.csv
   name: seasonal_week
+- description: The seasons covered by the model
+  filename: seasons.csv
+  name: seasons
 name: Test Project
 narrative_sets:
 - description: Describes the evolution of technology
@@ -38,12 +41,12 @@ scenarios:
   parameters:
   - filename: residential_gas_boiler_gas.csv
     name: residential_gas_boiler_gas
-    spatial_resolution: exit_zones
+    spatial_resolution: eh_regions
     temporal_resolution: seasonal_week
     units: MW
   - filename: residential_electricity_boiler_electricity.csv
     name: residential_electricity_boiler_electricity
-    spatial_resolution: exit_zones
+    spatial_resolution: eh_regions
     temporal_resolution: seasonal_week
     units: MW
   scenario_set: es_residential
@@ -53,7 +56,7 @@ scenarios:
   - filename: gas_price.csv
     name: gas_price
     spatial_resolution: national
-    temporal_resolution: annual
+    temporal_resolution: seasons
     units: GBP/MWh
   scenario_set: es_prices
 units:
