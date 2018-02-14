@@ -12,7 +12,12 @@ class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
     def initialise(self, initial_conditions):
-        pass
+        gas_stores = []
+        for intervention in initial_conditions:
+            if 'intervention_name' in intervention.keys():
+                if str(intervention['intervention_name']).startswith('gasstore'):
+                    gas_stores.append(intervention)
+        build_gas_stores(gas_stores)
 
     def simulate(self, data):
 
@@ -234,3 +239,53 @@ def write_load_shed_costs(loadshedcost_elec,
 
     conn.close()
     
+
+def build_gas_stores(gas_stores):
+    """Set up the initial system from a list of interventions
+
+    Write in the all interventions with the intervention_name ``gasstore``
+    to the GasStore table.
+
+    Arguments
+    ---------
+    gas_stores : list
+
+    Notes
+    -----
+    GasStorage" (
+        storagenum double precision,
+        gasnode double precision,
+        name character varying(255),
+        year double precision,
+        inflowcap double precision,
+        outflowcap double precision,
+        storagecap double precision,
+        outflowcost double precision
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    cur.execute("""DELETE FROM "GasStorage";""")
+
+    for store in gas_stores:
+
+        sql = """INSERT INTO "GasStorage" (StorageNum, GasNode, Name, Year, InFlowCap, OutFlowCap, StorageCap, OutFlowCost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        data = (store['storagenumber'],
+                store['gasnode'],
+                store['name'],
+                store['build_year'],
+                store['inflowcap'],
+                store['outflowcap'],
+                store['storagecap'],
+                store['outflowcost']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()  
