@@ -17,6 +17,8 @@ description: Toy version of the energy supply model with just three inputs, two 
   and one output.
 max_iterations: 1
 name: energy_supply_toy
+narrative_sets:
+- technology
 scenario_sets:
 - es_residential
 - es_prices

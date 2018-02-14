@@ -23,12 +23,13 @@ class EnergySupplyWrapper(SectorModel):
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
         self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
-        
         parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
         self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
+
+        write_load_shed_costs(parameter_LoadShed_elec,
+                              parameter_LoadShed_gas)
         
         # Get model inputs for Heat_EH table
-
         input_residential_gas_boiler_gas = data.get_data("residential_gas_boiler_gas")
         self.logger.info('Input Residential gas boiler gas: %s', 
             input_residential_gas_boiler_gas)
@@ -209,5 +210,21 @@ def get_total_emissions(year):
         sql = """SELECT total_emissions from "O_Emissions" WHERE year=%s;"""
         cur.execute(sql, (year, ))
         emissions = cur.fetchone()[0]
-        print(emissions)
+    conn.close()
     return np.array([[emissions]])
+
+def write_load_shed_costs(loadshedcost_elec, 
+                          loadshedcost_gas):
+    """
+    """
+    # Connect to an existing database
+    conn = establish_connection()
+
+    sql = """INSERT INTO "LoadShedCosts" (eshedc, gshedc) VALUES (%s, %s)"""
+
+    # Open a cursor to perform database operations
+    with conn.cursor() as cur:
+        cur.execute("""DELETE FROM "LoadShedCosts";""")
+        cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
+    conn.close()
+    

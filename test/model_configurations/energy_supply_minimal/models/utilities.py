@@ -53,7 +53,7 @@ def get_day(period):
     day = ((period - 1) // 24) + 1
     return day
 
-def get_node_numbers(self):
+def get_node_numbers():
     """Returns the number of the bus associated with the region
     """
     conn = establish_connection()
@@ -77,7 +77,7 @@ def get_node_numbers(self):
 
     return bus_numbers
 
-def _get_bus_numbers(self):
+def _get_bus_numbers():
     """Returns the number of the bus associated with the region
     """
     conn = establish_connection()
@@ -248,7 +248,7 @@ def write_heat_demand_data(year, data_res, data_com):
     cur.close()
     conn.close()
 
-def get_cooling_water_demand(self):
+def get_cooling_water_demand():
     """Calculated cooling water demand as a function of thermal power station operation
     Returns
     -------
@@ -291,7 +291,7 @@ def _calculate_water_demand(elec_generation):
 
     return cooling_water_demand
 
-def get_total_cost(self):
+def get_total_cost():
     """Gets total cost from the objective function table
     Returns
     -------
@@ -307,7 +307,7 @@ def get_total_cost(self):
         total_cost = cur.fetchone()[0]
     return total_cost
 
-def get_prices(self):
+def get_prices():
     """Gets the prices from the O_Prices table
     year integer,
     season integer,
@@ -332,7 +332,7 @@ def get_prices(self):
 
     return electricity_prices
 
-def get_results(self):
+def get_results():
     """Gets the results as defined in ``outputs.yaml``
     """
     return {'water_demand': get_cooling_water_demand(),
@@ -340,7 +340,7 @@ def get_results(self):
             'total_emissions': get_total_emissions(),
             'electricity_prices': get_prices()}
 
-def get_model_executable(self):
+def get_model_executable():
     """Return path of current python interpreter
     """
     executable = '/vagrant/models/energy_supply/model/MISTRAL_ES.exe'
