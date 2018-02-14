@@ -35,12 +35,16 @@ class EnergySupplyWrapper(SectorModel):
         input_gas_price = data.get_data("gas_price")
         self.logger.info('Input Gas price: %s', input_gas_price)
 
-        heatload_eh_inputs = np.array(
+        print(type(input_residential_gas_boiler_gas))
+
+        heatload_eh_inputs = np.array([
             input_residential_gas_boiler_gas,
-            input_residential_electricity_boiler_electricity
+            input_residential_electricity_boiler_electricity]
             )
 
-        heatload_eh = np.sum.reduce(heatload_eh_inputs, axis=1)
+        
+
+        heatload_eh = np.add.reduce(heatload_eh_inputs, axis=1)
 
         # Write results to data handler
         data.set_results("emissions_elec", None)
