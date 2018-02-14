@@ -1,4 +1,5 @@
-from utilities import write_heat_demand_data, parse_season_day_period
+from energy_supply_toy import (write_heat_demand_data, parse_season_day_period,
+                               get_total_emissions)
 import numpy as np
 import pytest
 
@@ -25,13 +26,17 @@ def test_parse_season_day_period(test_input, expected):
 
 def test_write_heat_demand_data():
 
-    
     year = 2000
     data_res = np.arange(10).reshape((2,5))
     data_com = np.arange(10).reshape((2,5))
 
     write_heat_demand_data(year, data_res, data_com)
 
+def test_get_total_emissions():
 
+    year = 2015
+    actual = get_total_emissions(year)
+    assert type(actual) == np.ndarray
+    assert actual.ndim == 2
 
 

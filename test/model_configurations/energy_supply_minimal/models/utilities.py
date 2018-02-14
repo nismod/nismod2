@@ -271,21 +271,6 @@ def get_cooling_water_demand(self):
 
     return water_demand
 
-def get_total_emissions(self):
-    """Gets total emissions from the output table
-    Returns
-    -------
-    emissions : float
-        Annual emissions in tCO2
-    """
-    # Connect to an existing database
-    conn = establish_connection()
-    # Open a cursor to perform database operations
-    with conn.cursor() as cur:
-        sql = """SELECT total_emissions from "O_Emissions";"""
-        cur.execute(sql)
-        emissions = cur.fetchone()[0]
-    return emissions
 
 @staticmethod
 def _calculate_water_demand(elec_generation):

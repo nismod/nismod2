@@ -18,7 +18,7 @@ inputs:
 - name: gas_price
   spatial_resolution: national
   temporal_resolution: seasons
-  units: "GBP/MWh"
+  units: GBP/MWh
 interventions:
 - energy_supply.yml
 name: energy_supply_toy
@@ -37,7 +37,7 @@ parameters:
   suggested_range:
   - 0
   - 500
-  units: "GBP/MWh"
+  units: GBP/MWh
 - absolute_range:
   - 0
   - 9999
@@ -47,5 +47,5 @@ parameters:
   suggested_range:
   - 0
   - 500
-  units: "GBP/MWh"
+  units: GBP/MWh
 path: models/energy_supply_toy.py
