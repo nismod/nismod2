@@ -1,5 +1,6 @@
 from energy_supply_toy import (write_heat_demand_data, parse_season_day_period,
-                               get_total_emissions)
+                               get_total_emissions,
+                               write_load_shed_costs)
 import numpy as np
 import pytest
 
@@ -39,4 +40,11 @@ def test_get_total_emissions():
     assert type(actual) == np.ndarray
     assert actual.ndim == 2
 
+
+def test_write_load_shed_costs():
+
+    elec = 2332345
+    gas = 23234
+
+    write_load_shed_costs(elec, gas)
 

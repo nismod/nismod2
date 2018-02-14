@@ -123,7 +123,7 @@ def write_gas_price(year, data):
                        interval_index + 1,
                        float(cell))
 
-        print("Data: {}".format(insert_data))
+        # print("Data: {}".format(insert_data))
 
         cur.execute(sql, insert_data)
         it.iternext()
@@ -220,11 +220,17 @@ def write_load_shed_costs(loadshedcost_elec,
     # Connect to an existing database
     conn = establish_connection()
 
-    sql = """INSERT INTO "LoadShedCosts" (eshedc, gshedc) VALUES (%s, %s)"""
+    sql = """INSERT INTO "LoadShedCosts" (eshedc, gshedc) VALUES (%s, %s);"""
+
+    print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
 
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
         cur.execute("""DELETE FROM "LoadShedCosts";""")
+    with conn.cursor() as cur:
         cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
+    
+    conn.commit()
+
     conn.close()
     
