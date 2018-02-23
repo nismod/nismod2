@@ -66,14 +66,19 @@ from itertools import cycle
 
 def make_energy_supply():
     """
+    Season,Start,End
+    winter,PT0H,PT167H
+    spring,PT2160H,PT2327H
+    summer,PT4344H,PT4511H
+    autumn,PT6552H,PT6719H
+
     """
     results = []
 
-    winter = list(range(7224, 8759))
-    winter.extend(list(range(671)))
-    spring = list(range(672, 2855))
-    summer = list(range(2856, 5039))
-    autumn = list(range(5040, 7223))
+    winter = list(range(0, 168))
+    spring = list(range(2160, 2328))
+    summer = list(range(4344, 4512))
+    autumn = list(range(6552, 6720))
 
     season_hours = {1: winter,
                     2: spring,
@@ -81,7 +86,10 @@ def make_energy_supply():
                     4: autumn}
     for season, hours in season_hours.items():
         for (smif_hour, es_hour) in zip(hours, cycle(range(168))):
-            results.append({'id': "{}_{}".format(season, es_hour + 1),
+
+            hour_id = (168 * (season - 1)) + es_hour + 1
+
+            results.append({'id': "{}".format(hour_id),
                             'start': "PT{}H".format(smif_hour),
                             'end': "PT{}H".format(smif_hour + 1)})
     return results
@@ -234,6 +242,8 @@ def create_transport_periods():
                         'end': end_code})
     return results
 
+from csv import DictWriter
+
 def write_file(period_data, filename):
     """Writes the period configuration structure into a yaml file
 
@@ -244,20 +254,25 @@ def write_file(period_data, filename):
     filename: str
         The name of the file to produce
     """
-    with open(filename, 'w+') as yamlfile:
-        dump(period_data, yamlfile, default_flow_style=False)
+    # with open(filename, 'w+') as yamlfile:
+    #     dump(period_data, yamlfile, default_flow_style=False)
 
+    with open(filename, 'w+') as csvfile:
+        headers = ['id', 'start', 'end']
+        writer = DictWriter(csvfile, headers)
+        writer.writeheader()
+        writer.writerows(period_data)
 
 if __name__ == '__main__':
 
     period_data = create_transport_periods()
-    write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.yaml')
+    write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.csv')
 
     period_data = create_water_supply_periods()
-    write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.yaml')    
+    write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')    
 
     period_data = make_energy_supply()
-    write_file(period_data, './test/model_configurations/energy_supply_minimal/time_intervals.yaml')
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/time_intervals.csv')
 
     period_data = make_hourly()
-    write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.yaml')
+    write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.csv')

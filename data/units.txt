@@ -1,9 +1,0 @@
-people	a count of population
-mcm = 10^6 * m^3  # a million cubic meters of gas volume
-# £/MW	cost of unit power in pounds
-# £/MWh	cost of unit energy in pounds
-# £/kgCO2	cost per unit CO2 emission in kg
-# bar	1 bar of guage pressure
-GBP = [currency]
-USD = GBP / 1.6
-£ = GBP
