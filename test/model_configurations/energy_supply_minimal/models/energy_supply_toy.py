@@ -43,14 +43,18 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)
 
-        write_heat_demand_data(
-            now, 
+        heatload_inputs = np.array([
             input_residential_gas_boiler_gas,
-            input_residential_electricity_boiler_electricity)
+            input_residential_electricity_boiler_electricity
+        ])
 
+        heatload = np.add.reduce(heatload_inputs, axis=0)
+
+        write_input_timestep(
+            heatload, 
+            'heatload_res')
 
         # Get model inputs for FuelData table
-
         input_gas_price = data.get_data("gas_price")
         self.logger.info('Input Gas price: %s', input_gas_price)
 
@@ -60,10 +64,12 @@ class EnergySupplyWrapper(SectorModel):
         # RUN THE MODEL HERE
         # RUN THE MODEL HERE
 
-        output_emissions_elec = get_total_emissions(now)
-
         # Retrieve results from Model and write results to data handler
+        output_emissions_elec = get_annual_output('e_emissions')
         data.set_results("emissions_elec", output_emissions_elec)
+
+        output_tran_gas_fired = get_timestep_output('tran_gas_fired')
+        data.set_results("tran_gas_fired", output_tran_gas_fired)
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
@@ -96,6 +102,21 @@ def parse_season_day_period(time_id):
     season = divmod(time_id - 1, 168)
     day, period = divmod(season[1], 24)
     return (season[0] + 1, day + 1, period + 1)
+
+def compute_interval_id(season, day, period):
+    """
+    Arguments
+    ---------
+    season : int
+    day : int
+    period : int
+
+    Returns
+    -------
+    int
+
+    """
+    return 1 + (168 * (season - 1)) + (24 * (day - 1)) + (period - 1)
 
 def write_gas_price(year, data):
     """
@@ -140,83 +161,99 @@ def write_gas_price(year, data):
     cur.close()
     conn.close()
 
-def write_heat_demand_data(year, data_res, data_com):
-    """Writes heat demand data into database table
-    
+def write_annual_rows_into_array(list_of_row_tuples):
+    """Writes annual query results into a numpy array
+
     Arguments
     ---------
-    year : int
-        The current model year
-    data_res : numpy.ndarray
-        Residential heating data
-    data_com : numpy.ndarray
-        Commercial heating data
+    list_of_row_tuples : list
 
-    Notes
-    -----
-    Columns are::
-
-        year
-        season
-        day
-        period
-        eh_conn_num
-        heatload_res
-        heatload_com
-    """
-    conn = establish_connection()
-    # Open a cursor to perform database operations
-    cur = conn.cursor()
-
-    cur.execute("""DELETE FROM "HeatLoad_EH" WHERE year=%s;""", (year, ))
-
-    sql = """INSERT INTO "HeatLoad_EH" (year, season, day, period, eh_conn_num, heatload_res, heatload_com) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-
-
-    it = np.nditer(data_res, flags=['multi_index'])
-    while not it.finished:
-        cell_res = it[0]
-        cell_com = data_com[it.multi_index]
-
-        region, interval = it.multi_index
-        season, day, period = parse_season_day_period(interval + 1)
-        insert_data = (year,
-                       season,
-                       day,
-                       period,
-                       region + 1,
-                       float(cell_res),
-                       float(cell_com))
-
-        # print("Data: {}".format(insert_data))
-
-        cur.execute(sql, insert_data)
-        it.iternext()
-
-    # Make the changes to the database persistent
-    conn.commit()
-
-    # Close communication with the database
-    cur.close()
-    conn.close()
-
-
-def get_total_emissions(year):
-    """Gets total emissions from the output table
     Returns
     -------
-    emissions : float
-        Annual emissions in tCO2
+    numpy.ndarray
+
+    """
+    regions = []
+    intervals = []
+    values = []
+
+    for row in list_of_row_tuples:
+        regions.append(int(row[0]))
+        intervals.append(int(row[1]))
+        values.append(float(row[2]))
+
+    array = np.zeros((len(regions), len(intervals)))
+    for region, interval, value in zip(regions, intervals, values):
+        array[region - 1, interval - 1] = value
+    return array
+
+def write_timestep_rows_into_array(list_of_row_tuples):
+    """Writes timestep query results into a numpy array
+
+    Arguments
+    ---------
+    list_of_row_tuples : list
+
+    Returns
+    -------
+    numpy.ndarray
+
+    """
+    regions = []
+    intervals = []
+    values = []
+
+    for row in list_of_row_tuples:
+        regions.append(int(row[3]))
+        intervals.append(compute_interval_id(int(row[0]), 
+                                             int(row[1]), 
+                                             int(row[2])))
+        values.append(float(row[4]))
+
+    array = np.zeros((len(regions), len(intervals)))
+    for region, interval, value in zip(regions, intervals, values):
+        array[region - 1, interval - 1] = value
+    return array
+
+
+def get_annual_output(output_parameter):
+    """Retrieves annual parameters from the database
     """
     # Connect to an existing database
     conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        sql = """SELECT total_emissions from "O_Emissions" WHERE year=%s;"""
-        cur.execute(sql, (year, ))
-        emissions = cur.fetchone()[0]
+        sql = """SELECT r.name AS region, '1', o.value AS value
+                 FROM "output_annual" AS o
+                 INNER JOIN region AS r ON o.region_id = r.id
+                 WHERE parameter = %s;"""
+        cur.execute(sql, (output_parameter, ))
+        results = cur.fetchall()
+
     conn.close()
-    return np.array([[emissions]])
+
+    return write_annual_rows_into_array(results)
+
+
+def get_timestep_output(output_parameter):
+    """
+    """
+    # Connect to an existing database
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    with conn.cursor() as cur:
+        sql = """SELECT o.season, o.day, o.period, 
+                 r.name AS region, o.value AS value
+                 FROM "output_timestep" AS o
+                 INNER JOIN region AS r ON o.region_id = r.id
+                 WHERE parameter = %s;"""
+        cur.execute(sql, (output_parameter, ))
+        results = cur.fetchall()
+
+    conn.close()
+
+    return write_timestep_rows_into_array(results)
+
 
 def write_load_shed_costs(loadshedcost_elec, 
                           loadshedcost_gas):
@@ -288,4 +325,87 @@ def build_gas_stores(gas_stores):
 
     # Close communication with the database
     cur.close()
-    conn.close()  
+    conn.close()
+
+def get_region_mapping(input_parameter_name):
+    """Return a dict of database ids from region ids
+
+    Arguments
+    ---------
+    input_parameter_name : string
+        The name of the input parameter
+
+    Returns
+    -------
+    dict
+    """
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    with conn.cursor() as cur:
+        cur.execute("""SELECT name, id
+                        FROM region 
+                        WHERE regiontype = (
+                            SELECT regiontype from input_parameter 
+                            WHERE name=%s);""", 
+                    (input_parameter_name, ))    
+        mapping = cur.fetchall()
+    conn.close()
+
+    return dict(mapping)
+
+def write_input_timestep(input_data, parameter_name):
+    """Writes input data into database table 
+    
+    Uses the index of the numpy array as a reference to interval and region definitions
+    
+    Arguments
+    ---------
+    input_data : numpy.ndarray
+        Residential heating data
+    parameter_name : string
+        Name of the input parameter
+
+    Notes
+    -----
+    Database table columns are::
+
+        season
+        day
+        period
+        region_id
+        value
+    """
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s;""", (parameter_name, ))
+
+    sql = """INSERT INTO "input_timestep" (season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s)"""
+
+    region_mapping = get_region_mapping(parameter_name)
+
+    it = np.nditer(input_data, flags=['multi_index'])
+    while not it.finished:
+        cell = it[0]
+
+        region, interval = it.multi_index
+        season, day, period = parse_season_day_period(interval + 1)
+        insert_data = (season,
+                       day,
+                       period,
+                       region_mapping[str(region + 1)],
+                       parameter_name,
+                       float(cell))
+
+        # print("Data: {}".format(insert_data))
+
+        cur.execute(sql, insert_data)
+        it.iternext()
+
+    # Make the changes to the database persistent
+    conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()

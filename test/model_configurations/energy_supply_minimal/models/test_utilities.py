@@ -1,6 +1,8 @@
-from energy_supply_toy import (write_heat_demand_data, parse_season_day_period,
-                               get_total_emissions,
-                               write_load_shed_costs)
+from energy_supply_toy import (parse_season_day_period,
+                               write_load_shed_costs,
+                               write_annual_rows_into_array,
+                               write_timestep_rows_into_array,
+                               compute_interval_id)
 import numpy as np
 import pytest
 
@@ -25,21 +27,28 @@ def test_parse_season_day_period(test_input, expected):
     actual = parse_season_day_period(test_input)
     assert actual == expected
 
-def test_write_heat_demand_data():
-
-    year = 2000
-    data_res = np.arange(10).reshape((2,5))
-    data_com = np.arange(10).reshape((2,5))
-
-    write_heat_demand_data(year, data_res, data_com)
-
-def test_get_total_emissions():
-
-    year = 2015
-    actual = get_total_emissions(year)
-    assert type(actual) == np.ndarray
-    assert actual.ndim == 2
-
+@pytest.mark.parametrize("test_input,expected", [
+((1,1,1), 1),
+((1,1,24), 24),
+((1,2,1) , 25),
+((2,3,22), 238),
+((2,3,23), 239),
+((2,3,24), 240),
+((2,4,1), 241),
+((2,4,2), 242),
+((2,4,3), 243),
+((3,2,24), 384),
+((3,3,1), 385),
+((4,7,22), 670),
+((4,7,23), 671),
+((4,7,24), 672),
+])
+def test_compute_interval_id(test_input, expected):
+    season = test_input[0]
+    day = test_input[1]
+    period = test_input[2]
+    actual = compute_interval_id(season, day, period)
+    assert actual == expected
 
 def test_write_load_shed_costs():
 
@@ -48,3 +57,25 @@ def test_write_load_shed_costs():
 
     write_load_shed_costs(elec, gas)
 
+
+def test_annual_row_to_array():
+
+    rows = [('1', '1', 19840.0)]
+    expected = np.array([[19840.0]])
+
+    actual = write_annual_rows_into_array(rows)
+    assert actual == expected
+
+
+def test_timestep_row_to_array():
+
+    rows = [(1, 1, 1, '1', 21131.0), (1, 1, 2, '2', 20919.0), 
+            (1, 1, 3, '3', 19957.0), (1, 1, 4, '4', 19159.0)]
+    expected = np.array([[21131.0, 0, 0, 0], 
+                         [0, 20919.0, 0, 0], 
+                         [0, 0, 19957.0, 0], 
+                         [0, 0, 0, 19159.0]
+                         ])
+
+    actual = write_timestep_rows_into_array(rows)
+    np.testing.assert_equal(actual, expected)

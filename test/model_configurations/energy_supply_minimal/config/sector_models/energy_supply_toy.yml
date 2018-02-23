@@ -27,6 +27,10 @@ outputs:
   spatial_resolution: national
   temporal_resolution: annual
   units: MtCO2
+- name: tran_gas_fired
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
+  units: MW
 parameters:
 - absolute_range:
   - 0
