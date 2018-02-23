@@ -1,0 +1,14 @@
+name: energy_demand_test
+description: ''
+stamp: '2018-02-12T13:24:11.204Z'
+timesteps:
+- 2015
+- 2016
+sos_model: energy_demand_only
+decision_module: ''
+scenarios:
+  population: pop_baseline
+  gva: gva_baseline  
+narratives:
+  technology:
+    - 'High Tech Demand Side Management'
