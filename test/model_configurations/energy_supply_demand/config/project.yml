@@ -1,0 +1,119 @@
+interval_definitions:
+- description: One annual interval of 8760 hours
+  filename: annual_intervals.csv
+  name: annual
+- description: One week in each season of 168 hours
+  filename: seasonal_week.csv
+  name: seasonal_week
+- description: The seasons covered by the model
+  filename: seasons.csv
+  name: seasons
+- name: hourly
+  description: 'Every hour in a year'
+  filename: hourly_intervals.csv
+name: Energy Supply and Demand Minimal
+narrative_sets:
+- description: Describes the evolution of technology
+  name: technology
+- description: Describes the governance landscape
+  name: governance
+narratives:
+- name: 'High Tech Demand Side Management'
+  description: 'High penetration of SMART technology on the demand side'
+  filename: high_tech_dsm.yml
+  narrative_set: technology
+- description: ''
+  filename: test_narrative.yml
+  name: test_narrative
+  narrative_set: technology
+region_definitions:
+- description: Boundary of Great Britain
+  filename: national.shp
+  name: national
+- description: Boundaries of Energy Hubs
+  filename: eh_region.shp
+  name: eh_regions
+- description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+  filename: lad_uk_2016-12/lad_uk_2016-12.shp
+  name: lad_uk_2016
+scenario_sets:
+- description: UK precipitation
+  name: rainfall
+- description: Growth in UK population
+  name: population
+- description: Dummy data for energy_supply model residential inputs
+  name: es_residential
+- description: Dummy data for energy_supply prices data
+  name: es_prices
+- description: Gross value added
+  name: gva
+scenarios:
+- description: Dummy data for residential inputs to energy supply model
+  name: es_residential_dummy
+  parameters:
+  - filename: residential_gas_boiler_gas.csv
+    name: residential_gas_boiler_gas
+    spatial_resolution: eh_regions
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: residential_electricity_boiler_electricity.csv
+    name: residential_electricity_boiler_electricity
+    spatial_resolution: eh_regions
+    temporal_resolution: seasonal_week
+    units: MW
+  scenario_set: es_residential
+- description: Dummy prices data to pass to the energy_supply toy model
+  name: es_prices_dummy
+  parameters:
+  - filename: gas_price.csv
+    name: gas_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  scenario_set: es_prices
+- name: et_demand_baseline
+  description: 'Baseline GWh of transport for the UK'
+  scenario_set: transport_energy_demand
+  parameters:
+  - name: electricity
+    filename: et_demand_electricity.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GWh
+- name: pop_baseline
+  description: 'Baseline Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_Baseline.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_high
+  description: 'High Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_High.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_low
+  description: 'Low Population for the UK'
+  scenario_set: population
+  parameters:
+  - name: population
+    filename: uk_population_by_district_codes_Low.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: gva_baseline
+  description: 'Baseline gva for the UK'
+  scenario_set: gva
+  parameters:
+  - name: gva
+    filename: gva_sven.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: pounds
+units: units.txt

@@ -1,0 +1,140 @@
+- start_year: 2020
+  length_unit:
+  name: ccgt_plantA
+  capacity_value: 800
+  economic_lifetime: 10
+  capital_cost_unit: £/MW
+  operational_lifetime: 50
+  length:
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2: nodeNumber2
+  diameter:
+  location1: busNumber1
+- start_year: 2025
+  length_unit:
+  name: nuclear_plantA
+  capacity_value: 1500
+  economic_lifetime: 10
+  capital_cost_unit: £/MW
+  operational_lifetime: 50
+  length:
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: busNumber2
+- start_year: 2020
+  length_unit:
+  name: wind_plantA
+  capacity_value: 200
+  economic_lifetime: 5
+  capital_cost_unit: £/MW
+  operational_lifetime: 20
+  length:
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: busNumber3
+- start_year: 2020
+  length_unit:
+  name: pv_farmA
+  capacity_value: 100
+  economic_lifetime: 5
+  capital_cost_unit: £/MW
+  operational_lifetime: 25
+  length:
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: busNumber4
+- start_year: 2025
+  length_unit:
+  name: batteryStoreA
+  capacity_value: 50
+  economic_lifetime: 10
+  capital_cost_unit: £/MW
+  operational_lifetime: 35
+  length:
+  capacity_unit: MWh
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: busNumber5
+- start_year: 2025
+  length_unit:
+  name: elec_interconnectorA
+  capacity_value: 1000
+  economic_lifetime: 15
+  capital_cost_unit: £/MW
+  operational_lifetime: 80
+  length:
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: elec_terminal2
+- start_year: 2030
+  length_unit:
+  name: gas_interconnectorB
+  capacity_value: 100
+  economic_lifetime: 15
+  capital_cost_unit: £/MWh
+  operational_lifetime: 80
+  length:
+  capacity_unit: mcm/day
+  capital_cost_value:
+  diameter_unit:
+  location2:
+  diameter:
+  location1: gas_terminal3
+- start_year: 2025
+  length_unit: km
+  name: pipeA
+  capacity_value: 95
+  economic_lifetime: 3
+  capital_cost_unit: £/km
+  operational_lifetime: 75
+  length: 30
+  capacity_unit: barg
+  capital_cost_value:
+  diameter_unit: mm
+  location2: nodeNumber3
+  diameter: 900
+  location1: nodeNumber1
+- start_year: 2020
+  length_unit: km
+  name: lineA_AC
+  capacity_value: 2000
+  economic_lifetime: 5
+  capital_cost_unit: £/km
+  operational_lifetime: 80
+  length: 5
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2: busNumber5
+  diameter:
+  location1: busNumber3
+- start_year: 2020
+  length_unit: km
+  name: lineB_DC
+  capacity_value: 2000
+  economic_lifetime: 8
+  capital_cost_unit: £/km
+  operational_lifetime: 85
+  length: 10
+  capacity_unit: MW
+  capital_cost_value:
+  diameter_unit:
+  location2: busNumber12
+  diameter:
+  location1: busNumber5
