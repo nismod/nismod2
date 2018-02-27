@@ -32,7 +32,10 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				# install api from wheel file
 				subprocess.run(['sudo', 'pip3', 'install', file])
 
-				# end search
+				# following install, delete wheel
+				subprocess.run(['sudo', 'rm', file])
+
+				# end search for file
 				break
 
 	# get database files
