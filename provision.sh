@@ -37,7 +37,7 @@ pip3 install jupyter notebook
 pip3 install networkx matplotlib numpy ipywidgets
 
 # Install pyscopg2 (required by some run.py wrappers)
-pip3 install psycopg2-binary pytest
+pip3 install psycopg2-binary pytest pysftp
 
 # We MUST clean ALL the windows newlines
 shopt -s nullglob
