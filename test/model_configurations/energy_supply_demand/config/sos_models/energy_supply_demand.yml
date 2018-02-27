@@ -9,11 +9,11 @@ dependencies:
   sink_model_input: gva
   source_model: gva
   source_model_output: gva
-- sink_model: energy_supply_toy
+- sink_model: convert_ed_to_es
   sink_model_input: residential_gas_boiler_gas
   source_model: energy_demand_toy
   source_model_output: residential_gas_boiler_gas
-- sink_model: energy_supply_toy
+- sink_model: convert_ed_to_es
   sink_model_input: residential_electricity_boiler_electricity
   source_model: energy_demand_toy
   source_model_output: residential_electricity_boiler_electricity
@@ -21,6 +21,14 @@ dependencies:
   sink_model_input: gas_price
   source_model: es_prices
   source_model_output: gas_price
+- source_model: convert_ed_to_es
+  source_model_output: residential_gas_boiler_gas
+  sink_model: energy_supply_toy
+  sink_model_input: residential_gas_boiler_gas
+- source_model: convert_ed_to_es
+  source_model_output: residential_electricity_boiler_electricity
+  sink_model: energy_supply_toy
+  sink_model_input: residential_electricity_boiler_electricity
 description: ''
 max_iterations: '100'
 name: energy_supply_demand
@@ -31,3 +39,4 @@ scenario_sets:
 sector_models:
 - energy_supply_toy
 - energy_demand_toy
+- convert_ed_to_es
