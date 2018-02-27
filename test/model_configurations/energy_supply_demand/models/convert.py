@@ -24,13 +24,22 @@ class InputOutputConvertor(SpaceTimeConvertor, UnitConvertor):
 
         data = data_handle.get_data(model_input.name)
 
-        from_spatial = model_input.spatial_resolution
-        from_temporal = model_input.temporal_resolution
+        from_spatial = model_input.spatial_resolution.name
+        from_temporal = model_input.temporal_resolution.name
         from_unit = model_input.units
 
-        to_spatial = model_output.spatial_resolution
-        to_temporal = model_output.temporal_resolution
+        to_spatial = model_output.spatial_resolution.name
+        to_temporal = model_output.temporal_resolution.name
         to_unit = model_output.units
+
+        self.logger.debug("Converting from %s to %s",
+            from_temporal, to_temporal)
+
+        self.logger.debug("Coverting from %s to %s",
+            from_spatial, to_spatial)
+
+        self.logger.debug("Coverting from %s to %s",
+            from_unit, to_unit)
 
         space_time_result = SpaceTimeConvertor.convert(
             self,
