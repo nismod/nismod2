@@ -1,21 +1,21 @@
 convergence_absolute_tolerance: 1.0e-05
 convergence_relative_tolerance: 1.0e-05
 dependencies:
-- sink_model: energy_demand
+- sink_model: energy_demand_toy
   sink_model_input: population
   source_model: population
   source_model_output: population
-- sink_model: energy_demand
+- sink_model: energy_demand_toy
   sink_model_input: gva
   source_model: gva
   source_model_output: gva
 - sink_model: energy_supply_toy
   sink_model_input: residential_gas_boiler_gas
-  source_model: energy_demand
+  source_model: energy_demand_toy
   source_model_output: residential_gas_boiler_gas
 - sink_model: energy_supply_toy
   sink_model_input: residential_electricity_boiler_electricity
-  source_model: energy_demand
+  source_model: energy_demand_toy
   source_model_output: residential_electricity_boiler_electricity
 - sink_model: energy_supply_toy
   sink_model_input: gas_price
@@ -30,4 +30,4 @@ scenario_sets:
 - gva
 sector_models:
 - energy_supply_toy
-- energy_demand
+- energy_demand_toy
