@@ -11,7 +11,7 @@ inputs:
 - name: gva
   spatial_resolution: lad_uk_2016
   temporal_resolution: annual
-  units: pounds
+  units: GBP
 # ---------------------------------------------------
 outputs:
 - name: residential_gas_boiler_gas
