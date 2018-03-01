@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Install tkinter as requirement for matplotlib
 apt-get install -y python3-tk
 
@@ -13,7 +15,7 @@ mkdir -p "$target"
 
 # Download data from server
 export SSHPASS=$password
-sshpass -e sftp -oBatchMode=no -b - $username@$ftp_server << !
+sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_server << !
    lcd $target
    get $source
    bye
