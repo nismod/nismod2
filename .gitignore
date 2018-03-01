@@ -131,3 +131,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Provisioning config file
+provision/config.ini
