@@ -24,6 +24,18 @@ Then on the command line, from this directory, run:
     git checkout v2 # Checks out the NISMOD v2.0 branch
     git submodule init
     git submodule update
+
+Add the credentials for the Smif FTP server to `provision/config.ini':
+
+```
+[ftp-config]
+ftp_server=ceg-itrc.ncl.ac.uk
+username=
+password=
+```
+
+Create and configure the guest machine:
+
     vagrant up
 
 This will download a virtual machine image and install all the packages and
