@@ -7,8 +7,8 @@ apt-get install -y python3-tk
 pip3 install -e /vagrant/models/energy_demand
 
 # Post install
-source <(grep = <(grep -A3 '\[ftp-config\]' config.ini))
-source <(grep = <(grep -A2 '\[energy-demand\]' config.ini))
+source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/config.ini))
+source <(grep = <(grep -A2 '\[energy-demand\]' /vagrant/provision/config.ini))
 
 # Prepare directory for data
 mkdir -p "$target"
