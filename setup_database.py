@@ -46,12 +46,15 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 			# get list of files
 			file_names = sftp.listdir()
-			print('SQL file names:', file_names)
+
 			# loop through files
 			for file in file_names:
-				# get sql file
-				sftp.get(file)
 
-				#run sql file silently
-				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
+				if file[0:2] == 'up':
+
+					# get sql file
+					sftp.get(file)
+
+					#run sql file silently
+					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
 
