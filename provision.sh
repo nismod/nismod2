@@ -16,6 +16,9 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
 # Create vagrant database if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\" " \
     | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
+# Create vagrant database if not exists
+su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'nismod-db';\" " \
+    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant nismod-db"
 # Database config to listen on network connection
 sed -i "s/#\?listen_address.*/listen_addresses '*'/" /etc/postgresql/9.5/main/postgresql.conf
 # Allow password connections from any IP (so includes host)
