@@ -61,6 +61,11 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 					# remove sql file - no longer needed
 					subprocess.run(['sudo', 'rm',  file])
 
-	# database hydration through sql file
-	# intervals
-	subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', 'copy_data_to_database.sql'])
+		# get files to populate database and populate
+		with sftp.cd('nismod-db-vm'):
+
+			sftp.get('copy_data_to_database.sql')
+
+			# database hydration through sql file
+			# intervals
+			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', 'copy_data_to_database.sql'])
