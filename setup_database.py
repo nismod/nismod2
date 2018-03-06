@@ -41,8 +41,8 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				break
 
 		# get database files
-		# go to database provisioning directory
-		with sftp.cd('provisioning'):
+		# pull migration files
+		with sftp.cd('nismod-db-vm/migrations'):
 
 			# get list of files
 			file_names = sftp.listdir()
@@ -55,6 +55,12 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 					# get sql file
 					sftp.get(file)
 
-					#run sql file silently
+					# run sql file silently
 					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
 
+					# remove sql file - no longer needed
+					subprocess.run(['sudo', 'rm',  file])
+
+	# database hydration through sql file
+	# intervals
+	subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', 'copy_data_to_database.sql'])
