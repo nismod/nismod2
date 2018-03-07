@@ -10,15 +10,15 @@ interval_definitions:
   #   filename: annual_day_hours.csv
   #   name: annual_day_hours
 region_definitions:
-  - description: Great Britain
-    filename: gb/gb.shp
-    name: national
   - description: Southampton LADs for transport test
-    filename: lad_southampton/regions.shp
+    filename: lad_southampton/zones.shp
     name: lad_southampton
   - description: Southampton LAD-LAD Origin-Destination for transport test
     filename: lad_southampton/od.geojson
     name: lad_od_southampton
+  - description: Southampton whole system for transport test
+    filename: lad_southampton/whole_system.geojson
+    name: whole_system
 scenario_sets:
   - description: Growth in UK population
     name: population
