@@ -86,9 +86,6 @@ def test_solid_waste_run():
 def test_transport_run():
     model_configuration_run('transport_minimal', 'transport_test')
 
-    check_result_exists('transport_minimal', 'transport_test', 'transport',
-                        'output_energy-consumption_DIESEL_timestep_2015_regions_whole_system_intervals_annual_day.dat')
-
 
 def test_water_supply_run():
     # model_configuration_run('water_supply_minimal')
