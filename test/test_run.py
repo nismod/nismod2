@@ -1,6 +1,10 @@
 """Test sets of model configuration files for run without error
+
+Example manual usage to run transport_minimal with debug logging::
+
+    python test/test_run.py -vv --tr
 """
-import os, shutil
+import os, shutil, sys
 from glob import glob
 from unittest.mock import MagicMock
 
@@ -55,49 +59,66 @@ def check_result_exists(config_dirname, modelrun_name, sector_model_name, result
     assert os.path.exists(os.path.join(results_folder, modelrun_name, sector_model_name, result_file_name))
 
 
-# def test_digital_comms_run():
-#     model_configuration_run('digital_comms_minimal')
+def test_digital_comms_run():
+    # model_configuration_run('digital_comms_minimal')
+    pass
 
 
-def test_energy_demand_minimal_run():
+def test_energy_demand_run():
     model_configuration_run('energy_demand_minimal', 'energy_demand_test')
 
-    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand', 
+    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand',
                         'output_residential_solid_fuel_boiler_solid_fuel_timestep_2015_regions_national_intervals_hourly.csv')
-    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand', 
+    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand',
                         'output_residential_solid_fuel_boiler_solid_fuel_timestep_2016_regions_national_intervals_hourly.csv')
 
 
-# def test_energy_supply_run():
-#     model_configuration_run('energy_supply_minimal')
+def test_energy_supply_run():
+    # model_configuration_run('energy_supply_minimal')
+    pass
 
 
-# def test_solid_waste_run():
-#     model_configuration_run('solid_waste_minimal')
+def test_solid_waste_run():
+    # model_configuration_run('solid_waste_minimal')
+    pass
 
 
-# def test_transport_run():
-#     model_configuration_run('transport_minimal')
+def test_transport_run():
+    model_configuration_run('transport_minimal', 'transport_test')
+
+    check_result_exists('transport_minimal', 'transport_test', 'transport',
+                        'output_energy-consumption_DIESEL_timestep_2015_regions_whole_system_intervals_annual_day.dat')
 
 
-# def test_water_supply_run():
-#     model_configuration_run('water_supply_minimal')
+def test_water_supply_run():
+    # model_configuration_run('water_supply_minimal')
+    pass
 
 
-# def test_energy_transport_dependency_run():
-#     model_configuration_run('energy_transport_dependency')
+def test_energy_transport_dependency_run():
+    # model_configuration_run('energy_transport_dependency')
+    pass
 
 
-# def test_sos_run():
-#     model_configuration_run('sos_minimal')
+def test_sos_run():
+    # model_configuration_run('sos_minimal')
+    pass
 
 
 if __name__ == '__main__':
-    test_digital_comms_run()
-    test_energy_demand_run()
-    test_energy_supply_run()
-    test_solid_waste_run()
-    test_transport_run()
-    test_water_supply_run()
-    test_energy_transport_dependency_run()
-    test_sos_run()
+    if '--dc' in sys.argv:
+        test_digital_comms_run()
+    if '--ed' in sys.argv:
+        test_energy_demand_run()
+    if '--es' in sys.argv:
+        test_energy_supply_run()
+    if '--sw' in sys.argv:
+        test_solid_waste_run()
+    if '--tr' in sys.argv:
+        test_transport_run()
+    if '--ws' in sys.argv:
+        test_water_supply_run()
+    if '--et' in sys.argv:
+        test_energy_transport_dependency_run()
+    if '--sos' in sys.argv:
+        test_sos_run()
