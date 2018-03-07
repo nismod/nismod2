@@ -75,6 +75,30 @@ inputs:
   #   temporal_resolution: hourly
   #   note: routes are fixed but their properties (time, cost) are updated hourly
 outputs:
+  - name: energy_consumption_PETROL
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_DIESEL
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_LPG
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_ELECTRICITY
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: kWh
+  - name: energy_consumption_HYDROGEN
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_HYBRID
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
   # - name: energy_consumptions
   #   spatial_resolution: lad_od_southampton
   #   temporal_resolution: annual_day
