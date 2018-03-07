@@ -19,7 +19,7 @@ version.txt
 xphostid
 
 # Transport
-test/model_configurations/transport_minimal/*.csv
+passengerODM.csv
 
 # OS X
 .DS_Store
