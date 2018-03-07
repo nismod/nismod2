@@ -1,0 +1,48 @@
+name: Test Project
+interval_definitions:
+- description: One annual interval of 8760 hours
+  filename: annual_intervals.csv
+  name: annual
+- name: hourly
+  description: 'Every hour in a year'
+  filename: hourly_intervals.csv
+- description: One representative day
+  filename: annual_day.csv
+  name: annual_day
+region_definitions:
+- description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+  filename: lad_uk_2016-12/lad_uk_2016-12.shp
+  name: lad_uk_2016
+- description: Southampton LAD for transport test
+  filename: lad_southampton/zones.shp
+  name: lad_southampton
+- description: Southampton LAD-LAD Origin-Destination for transport test
+  filename: lad_southampton/od.geojson
+  name: od_southampton
+- description: Southampton whole system for transport test
+  filename: lad_southampton/whole_system.geojson
+  name: whole_system
+scenario_sets:
+- description: UK precipitation
+  name: rainfall
+- description: Growth in UK population
+  name: population
+- description: Passenger OD flows for transport base year
+  name: passenger_vehicle_OD
+scenarios:
+- name: Southampton-Southampton test OD
+  description: Test data for transport base year
+  scenario_set: passenger_vehicle_OD
+  parameters:
+    - name: flow
+      filename: soton_passenger_vehicle_OD.csv
+      spatial_resolution: od_southampton
+      temporal_resolution: annual_day
+      units: vehicles
+narrative_sets:
+- description: Describes the evolution of technology
+  name: technology
+- description: Describes the governance landscape
+  name: governance
+narratives: []
+units: units.txt

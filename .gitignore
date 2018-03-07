@@ -1,12 +1,12 @@
 # Don't add spatial data
-*.shp* 
+*.shp*
 *.prj
 *.dbf
-*.shx 
+*.shx
 *.geojson
-*.cpg 
-*.sbn 
-*.sbx 
+*.cpg
+*.sbn
+*.sbx
 *.xml
 
 # Energy supply
@@ -17,6 +17,9 @@ install.sh
 kalis_license.txt
 version.txt
 xphostid
+
+# Transport
+passengerODM.csv
 
 # OS X
 .DS_Store

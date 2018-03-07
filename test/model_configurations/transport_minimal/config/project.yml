@@ -1,0 +1,39 @@
+name: Test Project for Transport
+interval_definitions:
+  - description: One annual interval of 8760 hours
+    filename: annual.csv
+    name: annual
+  - description: One representative day
+    filename: annual_day.csv
+    name: annual_day
+  # - description: Hours of one representative day
+  #   filename: annual_day_hours.csv
+  #   name: annual_day_hours
+region_definitions:
+  - description: Southampton LADs for transport test
+    filename: lad_southampton/zones.shp
+    name: lad_southampton
+  - description: Southampton LAD-LAD Origin-Destination for transport test
+    filename: lad_southampton/od.geojson
+    name: lad_od_southampton
+  - description: Southampton whole system for transport test
+    filename: lad_southampton/whole_system.geojson
+    name: whole_system
+scenario_sets:
+  - description: Growth in UK population
+    name: population
+  - description: Passenger OD flows for transport base year
+    name: passenger_vehicle_OD
+scenarios:
+  - name: Southampton-Southampton test OD
+    description: Test data for transport base year
+    scenario_set: passenger_vehicle_OD
+    parameters:
+      - name: flow
+        filename: soton_passenger_vehicle_OD.csv
+        spatial_resolution: lad_od_southampton
+        temporal_resolution: annual_day
+        units: vehicles
+narrative_sets: []
+narratives: []
+units: units.txt
