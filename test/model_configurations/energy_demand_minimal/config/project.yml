@@ -81,5 +81,5 @@ scenarios:
     filename: gva_sven.csv
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
-    units: pounds
+    units: GBP
 units: units.txt

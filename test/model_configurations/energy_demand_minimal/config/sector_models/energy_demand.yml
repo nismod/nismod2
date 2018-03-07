@@ -11,7 +11,7 @@ inputs:
 - name: gva
   spatial_resolution: lad_uk_2016
   temporal_resolution: annual
-  units: pounds
+  units: GBP
 # ---------------------------------------------------
 outputs:
 - name: residential_solid_fuel_boiler_solid_fuel
@@ -578,7 +578,7 @@ parameters:
 - absolute_range: !!python/tuple
   - 0
   - 1
-  default_value: '0.1'
+  default_value: 0.1
   description: Population diffusion of smart meters
   name: smart_meter_p_future
   suggested_range: !!python/tuple
@@ -598,7 +598,7 @@ parameters:
 - absolute_range: &id005 !!python/tuple
   - 0
   - 1
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_cold
   name: smart_meter_improvement_rs_cold
   suggested_range: &id006 !!python/tuple
@@ -606,49 +606,49 @@ parameters:
   - 1
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_cooking
   name: smart_meter_improvement_rs_cooking
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_lighting
   name: smart_meter_improvement_rs_lighting
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_wet
   name: smart_meter_improvement_rs_wet
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_consumer_electronics
   name: smart_meter_improvement_rs_consumer_electronics
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_home_computing
   name: smart_meter_improvement_rs_home_computing
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_rs_space_heating
   name: smart_meter_improvement_rs_space_heating
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_ss_space_heating
   name: smart_meter_improvement_ss_space_heating
   suggested_range: *id006
   units: '%'
 - absolute_range: *id005
-  default_value: '0'
+  default_value: 0
   description: Smart meter induced savings for enduse smart_meter_improvement_is_space_heating
   name: smart_meter_improvement_is_space_heating
   suggested_range: *id006

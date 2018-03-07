@@ -6,9 +6,6 @@ mcm = 10^6 * m^3  # a million cubic meters of gas volume
 # bar	1 bar of guage pressure
 GBP = [currency]
 USD = GBP / 1.6
-£ = GBP
-£/capita = GVA per head of population in GBP
-vkm = vehicle-kilometre
-PCU = passenger car unit
-PCU/lane/h = capacity
-%capacity = capacity utilisation
+v = vehicle = car = [vehicle] = CU
+lane = [road]
+people = [population] = person = capita = P

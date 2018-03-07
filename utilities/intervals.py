@@ -64,8 +64,16 @@ from calendar import monthrange
 from yaml import load, dump
 from itertools import cycle
 
+
 def make_energy_supply():
     """
+
+    1) Dec/Jan/Feb - week 43 - 3 - hours 7224 - 8759; 0 - 671;
+    2) Mar/Apr/May - week 4 - 16 - hours 672 - 2855
+    3) Jun/Jul/Aug - week 17 - 29 - hours 2856 - 5039
+    4) Sep/Oct/Nov - week 30 - 42 - 5040 - 7223
+
+
     Season,Start,End
     winter,PT0H,PT167H
     spring,PT2160H,PT2327H
@@ -75,10 +83,11 @@ def make_energy_supply():
     """
     results = []
 
-    winter = list(range(0, 168))
-    spring = list(range(2160, 2328))
-    summer = list(range(4344, 4512))
-    autumn = list(range(6552, 6720))
+    winter = list(range(0, 672))
+    winter.extend(list(range(7224, 8760)))
+    spring = list(range(672, 2856))
+    summer = list(range(2856, 5040))
+    autumn = list(range(5040, 7224))
 
     season_hours = {1: winter,
                     2: spring,
@@ -265,14 +274,14 @@ def write_file(period_data, filename):
 
 if __name__ == '__main__':
 
-    period_data = create_transport_periods()
-    write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.csv')
+    # period_data = create_transport_periods()
+    # write_file(period_data, './test/model_configurations/transport_minimal/time_intervals.csv')
 
-    period_data = create_water_supply_periods()
-    write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')    
+    # period_data = create_water_supply_periods()
+    # write_file(period_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')    
 
     period_data = make_energy_supply()
     write_file(period_data, './test/model_configurations/energy_supply_minimal/time_intervals.csv')
 
-    period_data = make_hourly()
-    write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.csv')
+    # period_data = make_hourly()
+    # write_file(period_data, './test/model_configurations/energy_supply_minimal/scenario_intervals.csv')
