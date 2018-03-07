@@ -3,19 +3,16 @@ interval_definitions:
 - description: One annual interval of 8760 hours
   filename: annual_intervals.csv
   name: annual
-- description: One week in each season of 168 hours
-  filename: seasonal_week.csv
-  name: seasonal_week
+- name: hourly
+  description: 'Every hour in a year'
+  filename: hourly_intervals.csv
 - description: One representative day
   filename: annual_day.csv
   name: annual_day
 region_definitions:
-- description: ''
-  filename: uk_nations_shp/regions.shp
-  name: national
-- description: National grid-gas exit zones
-  filename: uk_nations_shp/regions.shp
-  name: exit_zones
+- description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+  filename: lad_uk_2016-12/lad_uk_2016-12.shp
+  name: lad_uk_2016
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
   name: lad_southampton
