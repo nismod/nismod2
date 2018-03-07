@@ -7,15 +7,13 @@ from subprocess import check_output
 import os
 import psycopg2
 from collections import namedtuple
-from smif.convert import SpaceTimeConvertor, UnitConvertor
+from smif.convert import SpaceTimeUnitConvertor
 import logging
 
-class InputOutputConvertor(SpaceTimeConvertor, UnitConvertor):
+class InputOutputConvertor(SpaceTimeUnitConvertor):
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        SpaceTimeConvertor.__init__(self)
-        UnitConvertor.__init__(self)
+        super().__init__()
 
     def convert_data(self, data_handle, model_input, model_output):
 
@@ -41,21 +39,17 @@ class InputOutputConvertor(SpaceTimeConvertor, UnitConvertor):
         self.logger.debug("Coverting from %s to %s",
             from_unit, to_unit)
 
-        space_time_result = SpaceTimeConvertor.convert(
+        space_time_result = SpaceTimeUnitConvertor.convert(
             self,
             data, 
             from_spatial, 
             to_spatial, 
             from_temporal, 
-            to_temporal)
-        
-        unit_result = UnitConvertor.convert(
-            self,
-            space_time_result,
+            to_temporal,
             from_unit,
             to_unit)
         
-        return unit_result
+        return space_time_result
 
 class ConvertDemandToSupply(SectorModel):
     """Converts energy demand data to energy supply
