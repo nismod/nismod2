@@ -1,7 +1,7 @@
 # sets up the nismod database
 # uses the SFTP server to get datafiles for database
 
-import pysftp, re, subprocess
+import pysftp, re, subprocess, os
 from getpass import getpass
 
 # ask for SFTP username
@@ -41,6 +41,11 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				break
 
 		# get the data folder for the database - contains the base data for the database
+
+		# remove data directory so files can be copied over
+		if os.path.isdir('data'):
+			subprocess.run(['sudo', 'rm', '-r','data/data'])
+
 		sftp.get_r('data', 'data')
 
 		# get provisioning file
