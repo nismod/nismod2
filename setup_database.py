@@ -40,6 +40,9 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				# end search for file
 				break
 
+		# get the data folder for the database - contains the base data for the database
+		sftp.get_r('data', 'data')
+
 		# get provisioning file
 		with sftp.cd('nismod-db-vm'):
 
