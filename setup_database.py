@@ -40,32 +40,44 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				# end search for file
 				break
 
-		# get database files
-		# pull migration files
-		with sftp.cd('nismod-db-vm/migrations'):
-
-			# get list of files
-			file_names = sftp.listdir()
-
-			# loop through files
-			for file in file_names:
-
-				if file[0:2] == 'up':
-
-					# get sql file
-					sftp.get(file)
-
-					# run sql file silently
-					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
-
-					# remove sql file - no longer needed
-					subprocess.run(['sudo', 'rm',  file])
-
-		# get files to populate database and populate
+		# get provisioning file
 		with sftp.cd('nismod-db-vm'):
 
-			sftp.get('copy_data_to_database.sql')
+			# get provision file
+			sftp.get('provision-db.sh')
 
-			# database hydration through sql file
-			# intervals
-			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', 'copy_data_to_database.sql'])
+			# run database provision file
+			subprocess.run(['sudo','sh','provision-db.sh'])
+
+			# remove provision file
+			subprocess.run(['sudo', 'rm', 'provision-db.sh'])
+
+			# get database files
+			# pull migration files
+			with sftp.cd('migrations'):
+
+				# get list of files
+				file_names = sftp.listdir()
+
+				# loop through files
+				for file in file_names:
+
+					if file[0:2] == 'up':
+
+						# get sql file
+						sftp.get(file)
+
+						# run sql file silently
+						subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
+
+						# remove sql file - no longer needed
+						subprocess.run(['sudo', 'rm',  file])
+
+			# get files to populate database and populate
+			sftp.get('database_hydration.py')
+
+			# database hydration through python file
+			subprocess.run(['python3', 'database_hydration.py', 'data'])
+
+			# remove hydration file
+			subprocess.run(['sudo', 'rm', 'database_hydration.py'])
