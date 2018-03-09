@@ -5,7 +5,7 @@ import pysftp, re, subprocess, os
 from getpass import getpass
 
 # ask for SFTP username
-username = input("Username:")
+username = input("FTP username:")
 # ask for SFTP password
 password = getpass("Enter password for " + username + ":")
 
@@ -44,8 +44,9 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 		# remove data directory so files can be copied over
 		if os.path.isdir('data'):
-			subprocess.run(['sudo', 'rm', '-r','data/data'])
+			subprocess.run(['sudo', 'rm', '-r', 'data/data'])
 
+		# copy database basedata onto vm
 		sftp.get_r('data', 'data')
 
 		# get provisioning file
@@ -55,7 +56,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 			sftp.get('provision-db.sh')
 
 			# run database provision file
-			subprocess.run(['sudo','sh','provision-db.sh'])
+			subprocess.run(['sudo', 'sh', 'provision-db.sh'])
 
 			# remove provision file
 			subprocess.run(['sudo', 'rm', 'provision-db.sh'])
