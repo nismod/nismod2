@@ -9,6 +9,20 @@ username = input("FTP username:")
 # ask for SFTP password
 password = getpass("Enter password for " + username + ":")
 
+# ask if user want the database to be populated/hydrated automatically
+auto_hydrate_db = input("Populate database with data from SFTP (y/n)? ")
+if auto_hydrate_db.lower() == 'y' or auto_hydrate_db.lower() == 'yes':
+	print("You entered: %s. The API will be installed and the database will be built and populated." %auto_hydrate_db)
+	auto_hydrate_db = True
+elif auto_hydrate_db.lower() == 'n' or auto_hydrate_db.lower() == 'no':
+	print("You entered: %s. The API will be installed and the database built, but not populated." %auto_hydrate_db)
+	auto_hydrate_db = False
+else:
+	# if incorrect input provided, exit setup now and don't run anything
+	print("Input incorectly entered - you entered: %s. The API and database will not be setup or populated. Exiting setup." %auto_hydrate_db)
+	exit()
+
+
 cnopts = pysftp.CnOpts()
 cnopts.hostkeys = None
 
@@ -41,7 +55,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				break
 
 		# get the data folder for the database - contains the base data for the database
-
+			
 		# remove data directory so files can be copied over
 		if os.path.isdir('data'):
 			subprocess.run(['sudo', 'rm', '-r', 'data/data'])
@@ -81,12 +95,13 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 						# remove sql file - no longer needed
 						subprocess.run(['sudo', 'rm',  file])
+			
+			if auto_hydrate_db:
+				# get files to populate database and populate
+				sftp.get('database_hydration.py')
 
-			# get files to populate database and populate
-			sftp.get('database_hydration.py')
+				# database hydration through python file
+				subprocess.run(['python3', 'database_hydration.py', 'data'])
 
-			# database hydration through python file
-			subprocess.run(['python3', 'database_hydration.py', 'data'])
-
-			# remove hydration file
-			subprocess.run(['sudo', 'rm', 'database_hydration.py'])
+				# remove hydration file
+				subprocess.run(['sudo', 'rm', 'database_hydration.py'])
