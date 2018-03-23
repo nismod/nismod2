@@ -82,9 +82,26 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 				# get list of files
 				file_names = sftp.listdir()
 
-				# loop through files
+				# separate up and down migrations  - run down first
+				# run down migrations
 				for file in file_names:
+				
+					# check if file is a down migration
+					if file[0:4] == 'down':
+						# get sql file
+						sftp.get(file)
 
+						# run sql file silently
+						subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
+
+						# remove sql file - no longer needed
+						subprocess.run(['sudo', 'rm',  file])
+						
+				# run up migrations
+				# loop through files
+				for file in file_names:		
+				
+					# check if file is a down migration
 					if file[0:2] == 'up':
 
 						# get sql file
@@ -95,7 +112,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 						# remove sql file - no longer needed
 						subprocess.run(['sudo', 'rm',  file])
-			
+		
 			if auto_hydrate_db:
 				# get files to populate database and populate
 				sftp.get('database_hydration.py')
