@@ -20,13 +20,12 @@ pip install --upgrade pip
 
 
 # Install xpress
-PKGFILE=xp8.1_linux_x86_64.tar.gz
+PKGFILE=xp8.4.4_linux_x86_64.tar.gz
 
 SOURCE=/vagrant
 
-wget -nc https://clientarea.xpress.fico.com/downloads/8.1.0/xp8.1_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
+wget -nc https://clientarea.xpress.fico.com/downloads/8.4.4/xp8.4.4_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
 tar xf $SOURCE/xpress.tar
-# ./install.sh
 
 INSTALL_TYPE="distrib_client"
 XPRESSDIR=/opt/xpressmp
@@ -61,6 +60,10 @@ CLASSPATH=\${XPRESSDIR}/lib/xprb.jar:\${CLASSPATH}
 CLASSPATH=\${XPRESSDIR}/lib/xprm.jar:\${CLASSPATH}
 PATH=\${XPRESSDIR}/bin:\${PATH}
 
+if [ -f "${XPRESSDIR}/bin/xpvars.local.sh" ]; then
+  . ${XPRESSDIR}/bin/xpvars.local.sh
+fi
+
 export LD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH
 export SHLIB_PATH
@@ -70,6 +73,44 @@ export CLASSPATH
 export XPRESSDIR
 export XPRESS
 EOF
+
+  cat > $XPRESSDIR/bin/xpvars.csh <<EOF
+setenv XPRESSDIR $XPRESSDIR
+setenv XPRESS $XPRESS_VAR
+
+if ( \$?LD_LIBRARY_PATH ) then
+  setenv LD_LIBRARY_PATH \${XPRESSDIR}/lib:\${LD_LIBRARY_PATH}
+else
+  setenv LD_LIBRARY_PATH \${XPRESSDIR}/lib
+endif
+
+if ( \$?DYLD_LIBRARY_PATH ) then
+  setenv DYLD_LIBRARY_PATH \${XPRESSDIR}/lib:\${DYLD_LIBRARY_PATH}
+else
+  setenv DYLD_LIBRARY_PATH \${XPRESSDIR}/lib
+endif
+
+if ( \$?SHLIB_PATH ) then
+  setenv SHLIB_PATH \${XPRESSDIR}/lib:\${SHLIB_PATH}
+else
+  setenv SHLIB_PATH \${XPRESSDIR}/lib
+endif
+
+if ( \$?LIBPATH ) then
+  setenv LIBPATH \${XPRESSDIR}/lib:\${LIBPATH}
+else
+  setenv LIBPATH \${XPRESSDIR}/lib
+endif
+
+if ( \$?CLASSPATH ) then
+  setenv CLASSPATH \${XPRESSDIR}/lib/xprs.jar:\${XPRESSDIR}/lib/xprm.jar:\${XPRESSDIR}/lib/xprb.jar:\${CLASSPATH}
+else
+  setenv CLASSPATH \${XPRESSDIR}/lib/xprs.jar:\${XPRESSDIR}/lib/xprm.jar:\${XPRESSDIR}/lib/xprb.jar
+endif
+
+set path=( \${XPRESSDIR}/bin \${path} )
+EOF
+
 
 # Makes a template file containing the connection information to
 cat > /vagrant/template.ini <<EOF
