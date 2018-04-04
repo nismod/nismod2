@@ -63,7 +63,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 		# copy database basedata onto vm
 		sftp.get_r('data', 'data')
 
-		# get provisioning file
+		# get provisioning files
 		with sftp.cd('nismod-db-vm'):
 
 			# get provision file
@@ -75,44 +75,22 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 			# remove provision file
 			subprocess.run(['sudo', 'rm', 'provision-db.sh'])
 
-			# get database files
+			# get run migrations file
+			sftp.get('run_migrations.py')
+			
 			# pull migration files
-			with sftp.cd('migrations'):
+			sftp.get_r('migrations', '')
 
-				# get list of files
-				file_names = sftp.listdir()
-
-				# separate up and down migrations  - run down first
-				# run down migrations
-				for file in file_names:
+			# run migrations - down
+			subprocess.run(['python3', 'run_migrations.py', 'down'])
+			
+			# run migrations - up 
+			subprocess.run(['python3', 'run_migrations.py', 'up'])
+			
+			# remove migrations directory
+			subprocess.run(['sudo', 'rm', '-r', 'migrations'])
 				
-					# check if file is a down migration
-					if file[0:4] == 'down':
-						# get sql file
-						sftp.get(file)
-
-						# run sql file silently
-						subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
-
-						# remove sql file - no longer needed
-						subprocess.run(['sudo', 'rm',  file])
-						
-				# run up migrations
-				# loop through files
-				for file in file_names:		
-				
-					# check if file is a down migration
-					if file[0:2] == 'up':
-
-						# get sql file
-						sftp.get(file)
-
-						# run sql file silently
-						subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod-db', '-q', '-f', file])
-
-						# remove sql file - no longer needed
-						subprocess.run(['sudo', 'rm',  file])
-		
+			# hydrate database with data is set so
 			if auto_hydrate_db:
 				# get files to populate database and populate
 				sftp.get('database_hydration.py')
