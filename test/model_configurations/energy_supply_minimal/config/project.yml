@@ -1,3 +1,4 @@
+name: Test Project
 interval_definitions:
 - description: One annual interval of 8760 hours
   filename: annual_intervals.csv
@@ -8,7 +9,13 @@ interval_definitions:
 - description: The seasons covered by the model
   filename: seasons.csv
   name: seasons
-name: Test Project
+region_definitions:
+- description: Boundary of Great Britain
+  filename: national.shp
+  name: national
+- description: Boundaries of Energy Hubs
+  filename: eh_region.shp
+  name: eh_regions
 narrative_sets:
 - description: Describes the evolution of technology
   name: technology
@@ -19,26 +26,23 @@ narratives:
   filename: test_narrative.yml
   name: test_narrative
   narrative_set: technology
-region_definitions:
-- description: Boundary of Great Britain
-  filename: national.shp
-  name: national
-- description: Boundaries of Energy Hubs
-  filename: eh_region.shp
-  name: eh_regions
 scenario_sets:
-- description: UK precipitation
-  name: rainfall
-- description: Growth in UK population
-  name: population
 - description: Dummy data for energy_supply model residential inputs
   name: es_residential
+  facets:
+  - name: residential_gas_boiler_gas
+    description: ''
+  - name: residential_electricity_boiler_electricity
+    description: ''
 - description: Dummy data for energy_supply prices data
   name: es_prices
+  facets:
+  - name: gas_price
+    description: ''
 scenarios:
 - description: Dummy data for residential inputs to energy supply model
   name: es_residential_dummy
-  parameters:
+  facets:
   - filename: residential_gas_boiler_gas.csv
     name: residential_gas_boiler_gas
     spatial_resolution: eh_regions
@@ -52,7 +56,7 @@ scenarios:
   scenario_set: es_residential
 - description: Dummy prices data to pass to the energy_supply toy model
   name: es_prices_dummy
-  parameters:
+  facets:
   - filename: gas_price.csv
     name: gas_price
     spatial_resolution: national
