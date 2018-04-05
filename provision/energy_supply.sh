@@ -29,7 +29,9 @@ tar xf $SOURCE/xpress.tar
 
 INSTALL_TYPE="distrib_client"
 XPRESSDIR=/opt/xpressmp
+
 LICPATH=$XPRESSDIR/bin/xpauth.xpr
+
 
 mkdir $XPRESSDIR/lib/backup 2>/dev/null
 mv $XPRESSDIR/lib/libxprl* $XPRESSDIR/lib/backup 2>/dev/null
@@ -43,6 +45,10 @@ SERVERNAME="ouce-license.ouce.ox.ac.uk"
 echo "use_server server=\"$SERVERNAME\"" > $LICPATH
 
 XPRESS_VAR=$XPRESSDIR/bin
+
+# Hack to insert local license
+cp -R $SOURCE/xpauth.xpr $XPRESSDIR/bin/xpauth.xpr
+
 CORRECT_LICENSE=1
 
 echo "" > $XPRESSDIR/bin/xpvars.sh
@@ -143,13 +149,13 @@ MODEL_DIR=/vagrant/models/energy_supply/model
 cp $MODEL_DIR/Initial.bim $XPRESSDIR/dso/Initial.bim
 
 # Compile the energy_supply model
-cd $MODEL_DIR
-make clean
-make
+make -C $MODEL_DIR clean
+make -C $MODEL_DIR all
 
 cd /vagrant
 
 # Run migrations
+su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -d"
 su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -u"
 
 # Setup environment variables on login
