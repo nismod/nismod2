@@ -137,3 +137,7 @@ ENV/
 
 # Provisioning config file
 provision/ftp.ini
+
+data/energy_demand
+data/energy_supply
+install
