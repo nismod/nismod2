@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Run db migrations
 su vagrant -c "python /vagrant/models/solid_waste/db/run_migrations.py -d"
 su vagrant -c "python /vagrant/models/solid_waste/db/run_migrations.py -u"
