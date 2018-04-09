@@ -50,9 +50,15 @@ class EnergySupplyWrapper(SectorModel):
 
         heatload = np.add.reduce(heatload_inputs, axis=0)
 
+        region_names = self.get_region_names(data, self.inputs.get_spatial_res('residential_electricity_boiler_electricity').name)
+        interval_names = self.get_interval_names(data, self.inputs.get_temporal_res('residential_electricity_boiler_electricity').name)
+
         write_input_timestep(
             heatload, 
-            'heatload_res')
+            'heatload_res',
+            now,
+            region_names,
+            interval_names)
 
         # Get model inputs for FuelData table
         input_gas_price = data.get_data("gas_price")
@@ -60,9 +66,9 @@ class EnergySupplyWrapper(SectorModel):
 
         write_gas_price(now, input_gas_price)
 
-        # RUN THE MODEL HERE
-        # RUN THE MODEL HERE
-        # RUN THE MODEL HERE
+        # Run the model
+        arguments = [self.get_model_executable()]
+        print(check_output(arguments))
 
         # Retrieve results from Model and write results to data handler
         output_emissions_elec = get_annual_output('e_emissions')
@@ -72,6 +78,13 @@ class EnergySupplyWrapper(SectorModel):
         data.set_results("tran_gas_fired", output_tran_gas_fired)
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
+
+    def get_model_executable(self):
+        """Return path of current python interpreter
+        """
+        executable = '/vagrant/models/energy_supply/test/MISTRAL_ES.exe'
+
+        return os.path.join(executable)
 
     def extract_obj(self, results):
         return 0
@@ -132,9 +145,9 @@ def write_gas_price(year, data):
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute("""DELETE FROM "FuelData" WHERE year=%s AND fuel_id=1;""", (year, ))
+    cur.execute("""DELETE FROM "FuelData" WHERE "Year"=%s AND "Fuel_ID"=1;""", (year, ))
 
-    sql = """INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost) VALUES (%s, %s, %s, %s, %s)"""
+    sql = """INSERT INTO "FuelData" ("Fuel_ID", "FuelType", "Year", "Season", "FuelCost") VALUES (%s, %s, %s, %s, %s)"""
 
     it = np.nditer(data, flags=['multi_index'])
     while not it.finished:
@@ -262,7 +275,7 @@ def write_load_shed_costs(loadshedcost_elec,
     # Connect to an existing database
     conn = establish_connection()
 
-    sql = """INSERT INTO "LoadShedCosts" (eshedc, gshedc) VALUES (%s, %s);"""
+    sql = """INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);"""
 
     print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
 
@@ -306,7 +319,7 @@ def build_gas_stores(gas_stores):
 
     for store in gas_stores:
 
-        sql = """INSERT INTO "GasStorage" (StorageNum, GasNode, Name, Year, InFlowCap, OutFlowCap, StorageCap, OutFlowCost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
 
         data = (store['storagenumber'],
                 store['gasnode'],
@@ -353,7 +366,8 @@ def get_region_mapping(input_parameter_name):
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name):
+def write_input_timestep(input_data, parameter_name, year, 
+                         region_names, interval_names):
     """Writes input data into database table 
     
     Uses the index of the numpy array as a reference to interval and region definitions
@@ -369,6 +383,7 @@ def write_input_timestep(input_data, parameter_name):
     -----
     Database table columns are::
 
+        year
         season
         day
         period
@@ -381,20 +396,22 @@ def write_input_timestep(input_data, parameter_name):
 
     cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s;""", (parameter_name, ))
 
-    sql = """INSERT INTO "input_timestep" (season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s)"""
+    sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     region_mapping = get_region_mapping(parameter_name)
+    print(region_mapping)
 
     it = np.nditer(input_data, flags=['multi_index'])
     while not it.finished:
         cell = it[0]
 
         region, interval = it.multi_index
-        season, day, period = parse_season_day_period(interval + 1)
-        insert_data = (season,
+        season, day, period = parse_season_day_period(int(interval_names[interval]))
+        insert_data = (year,
+                       season,
                        day,
                        period,
-                       region_mapping[str(region + 1)],
+                       region_mapping[int(region_names[region])],
                        parameter_name,
                        float(cell))
 

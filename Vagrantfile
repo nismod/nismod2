@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://atlas.hashicorp.com/search.
   # Bento packages are recommended by vagrant - 16.04 is the Ubuntu LTS release
   config.vm.box = "bento/ubuntu-16.04"
+  config.ssh.forward_agent = true
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
