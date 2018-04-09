@@ -136,4 +136,4 @@ ENV/
 .ropeproject
 
 # Provisioning config file
-provision/config.ini
+provision/ftp.ini
