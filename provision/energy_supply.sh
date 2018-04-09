@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 # Update package lists
 apt-get update
@@ -144,19 +145,37 @@ odbcinst -i -l -s -f /vagrant/template.ini
 # Setup environment
 . $XPRESSDIR/bin/xpvars.sh
 
-# Now compile and install the energy_supply model
-MODEL_DIR=/vagrant/models/energy_supply/model
-cp $MODEL_DIR/Initial.bim $XPRESSDIR/dso/Initial.bim
+Get the data from the ftp
+. /vagrant/provision/get_data.sh energy-supply
 
-# Compile the energy_supply model
-make -C $MODEL_DIR clean
-make -C $MODEL_DIR all
+# Now compile and install the energy_supply model
+source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/config.ini))
+source <(grep = <(grep -A3 "\[energy-supply\]" /vagrant/provision/config.ini))
+
+MODEL_DIR=/vagrant/install
+DATA_DIR=$target
+FILENAME=energy_supply_$release.zip
+TMP=/vagrant/tmp
+
+mkdir -p $MODEL_DIR
+mkdir -p $TMP
+
+export SSHPASS=$password
+sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_server << !
+   lcd $TMP
+   get /releases/energy_supply/$FILENAME
+   bye
+!
+
+unzip $TMP/$FILENAME -d $MODEL_DIR
+mv $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
 
 cd /vagrant
 
+MIGRATIONS=$MODEL_DIR/energy_supply/migrations
 # Run migrations
-su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -d"
-su vagrant -c "python /vagrant/models/energy_supply/db/run_migrations.py -u"
+su vagrant -c "python /vagrant/install/energy_supply/run_migrations.py -d $DATA_DIR/data $MIGRATIONS"
+su vagrant -c "python /vagrant/install/energy_supply/run_migrations.py -u $DATA_DIR/data $MIGRATIONS"
 
 # Setup environment variables on login
 echo "source /opt/xpressmp/bin/xpvars.sh" >> /home/vagrant/.bashrc
