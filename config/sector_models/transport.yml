@@ -5,7 +5,7 @@ classname: TransportWrapper
 inputs:
   - name: population
     spatial_resolution: lad_uk_2016
-    temporal_resolution: annual_day
+    temporal_resolution: annual
     units: people
 outputs:
   - name: energy_consumption_petrol
