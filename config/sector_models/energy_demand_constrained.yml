@@ -1,6 +1,6 @@
 name: energy_demand_constrained # With technologies as output
 description: 'balbla'
-path: config/run.py
+path: models/energy_demand/run.py
 classname: EDWrapper
 # ---------------------------------------------------
 inputs:

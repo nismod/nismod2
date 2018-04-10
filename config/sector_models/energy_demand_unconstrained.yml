@@ -1,6 +1,6 @@
 name: energy_demand_unconstrained
 description: ''
-path: config/run.py
+path: models/energy_demand/run.py
 classname: EDWrapper
 # ---------------------------------------------------
 inputs:
