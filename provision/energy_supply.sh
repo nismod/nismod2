@@ -152,7 +152,7 @@ odbcinst -i -l -s -f /vagrant/template.ini
 source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/ftp.ini))
 source <(grep = <(grep -A3 "\[energy-supply\]" /vagrant/provision/config.ini))
 
-MODEL_DIR=/vagrant/models
+MODEL_DIR=/vagrant/install
 DATA_DIR=$target
 FILENAME=energy_supply_$release.zip
 MIGRATIONS=$MODEL_DIR/energy_supply/migrations
@@ -168,7 +168,12 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_se
    bye
 !
 
-unzip $TMP/$FILENAME -d $MODEL_DIR && mv $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
+rm -r $MODEL_DIR/energy_supply
+unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
+rm -r $MODEL_DIR/energy_supply/energy_supply_$release
+
+# This is a bit of a hack which places the compiled BIM files into the XPRESS package directory
+cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
 cd /vagrant
 
