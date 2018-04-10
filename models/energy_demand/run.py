@@ -561,7 +561,7 @@ class EDWrapper(SectorModel):
                         key_name,
                         result_to_txt)
                 else:
-                    raise Exception(
+                    self.logger.warning(
                         "Check running mode (constrained vs unconstrained) as {} is not defined in output".format(
                             key_name))
 
