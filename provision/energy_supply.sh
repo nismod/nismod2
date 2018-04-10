@@ -168,6 +168,7 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_se
    bye
 !
 
+rm -r $MODEL_DIR/energy_supply
 unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
 rm -r $MODEL_DIR/energy_supply/energy_supply_$release
 

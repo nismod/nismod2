@@ -2,11 +2,10 @@
 """
 import numpy as np
 from smif.model.sector_model import SectorModel
-from subprocess import check_output
+import subprocess
 import os
 import psycopg2
 from collections import namedtuple
-
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -18,10 +17,10 @@ class EnergySupplyWrapper(SectorModel):
                 if str(intervention['intervention_name']).startswith('gasstore'):
                     gas_stores.append(intervention)
         build_gas_stores(gas_stores)
-
         
-
     def simulate(self, data):
+
+        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
 
         # Get the current timestep
         now = data.current_timestep
@@ -71,8 +70,10 @@ class EnergySupplyWrapper(SectorModel):
 
         # Run the model
         arguments = [self.get_model_executable()]
-        print(check_output(arguments))
-
+        output = subprocess.check_output(arguments, 
+                                         stderr=subprocess.STDOUT,
+                                         shell=True)
+        self.logger.info(output)
         # Retrieve results from Model and write results to data handler
         output_emissions_elec = get_annual_output('e_emissions')
         data.set_results("emissions_elec", output_emissions_elec)
@@ -93,7 +94,7 @@ class EnergySupplyWrapper(SectorModel):
     def get_model_executable(self):
         """Return path of current python interpreter
         """
-        executable = '/vagrant/models/energy_supply/Energy_Supply_Master.exe'
+        executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
 
         return os.path.join(executable)
 
