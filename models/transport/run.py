@@ -55,14 +55,14 @@ class TransportWrapper(SectorModel):
         with open(path_to_config_template, 'r') as template_fh:
             config = Template(template_fh.read())
 
-        config.substitute({
+        config_str = config.substitute({
             'base_timestep': data_handle.base_timestep,
             'current_timestep': data_handle.current_timestep,
-            'relative_path': os.path.relpath(working_dir)
+            'relative_path': os.path.abspath(working_dir)
         })
 
         with open(path_to_config, 'w') as template_fh:
-            template_fh.write(config)
+            template_fh.write(config_str)
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = [
@@ -103,7 +103,7 @@ class TransportWrapper(SectorModel):
                 for variable in variables:
                     key = "{}_{}".format(variable, suffix)
                     value = data_handle.get_parameter(key)
-                    writer.writerow(variable, value)
+                    writer.writerow((variable, value))
 
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
@@ -145,7 +145,7 @@ class TransportWrapper(SectorModel):
         # energyConsumptions.csv
         # year,PETROL,DIESEL,LPG,ELECTRICITY,HYDROGEN,HYBRID
         # 2020,11632.72,17596.62,2665.98,7435.64,94.57,714.32
-        with open(os.path.join(working_dir, 'csvfiles', 'energyConsumptions.csv')) as fh:
+        with open(os.path.join(working_dir, 'data', 'energyConsumptions.csv')) as fh:
             r = csv.reader(fh)
             header = next(r)[1:]
             values = next(r)[1:]
