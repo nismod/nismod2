@@ -51,5 +51,5 @@ bash /tmp/energy_supply.sh
 # bash /tmp/solid_waste.sh
 
 # # Provision transport model
-# tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
-# bash /tmp/transport.sh
+tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
+bash /tmp/transport.sh
