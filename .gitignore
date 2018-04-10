@@ -136,4 +136,8 @@ ENV/
 .ropeproject
 
 # Provisioning config file
-provision/config.ini
+provision/ftp.ini
+
+data/energy_demand
+data/energy_supply
+install

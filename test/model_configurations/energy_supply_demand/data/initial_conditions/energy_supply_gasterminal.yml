@@ -1,4 +1,4 @@
-- intervention_name: gasterminal1
+- name: gasterminal1
   gasterminaloptcost: 0.35
   intercapacity: 83
   terminalname: St Fergus
@@ -7,7 +7,7 @@
   domcapacity: 19
   lngcapacity: 0
   terminalcapacity: 102
-- intervention_name: gasterminal2
+- name: gasterminal2
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Teesside
@@ -16,7 +16,7 @@
   domcapacity: 13
   lngcapacity: 11
   terminalcapacity: 24
-- intervention_name: gasterminal3
+- name: gasterminal3
   gasterminaloptcost: 0.35
   intercapacity: 72
   terminalname: Easington
@@ -25,7 +25,7 @@
   domcapacity: 33
   lngcapacity: 0
   terminalcapacity: 105
-- intervention_name: gasterminal4
+- name: gasterminal4
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Barrow
@@ -34,7 +34,7 @@
   domcapacity: 8
   lngcapacity: 0
   terminalcapacity: 8
-- intervention_name: gasterminal5
+- name: gasterminal5
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Burton Point
@@ -43,7 +43,7 @@
   domcapacity: 3
   lngcapacity: 0
   terminalcapacity: 3
-- intervention_name: gasterminal6
+- name: gasterminal6
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Theddlethorpe
@@ -52,7 +52,7 @@
   domcapacity: 10
   lngcapacity: 0
   terminalcapacity: 10
-- intervention_name: gasterminal7
+- name: gasterminal7
   gasterminaloptcost: 0.35
   intercapacity: 127
   terminalname: Bacton
@@ -61,7 +61,7 @@
   domcapacity: 24
   lngcapacity: 0
   terminalcapacity: 151
-- intervention_name: gasterminal8
+- name: gasterminal8
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Isle of Grain
@@ -70,7 +70,7 @@
   domcapacity: 3
   lngcapacity: 56
   terminalcapacity: 59
-- intervention_name: gasterminal9
+- name: gasterminal9
   gasterminaloptcost: 0.35
   intercapacity: 0
   terminalname: Milford Haven

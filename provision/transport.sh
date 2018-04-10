@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # install packages
 apt-get install -y default-jdk maven
 

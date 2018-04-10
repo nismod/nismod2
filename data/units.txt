@@ -1,0 +1,7 @@
+vkm=vehicle*kilometre
+PCU=people*vehicle
+vehicles = [flow] = vehicle
+lane = [capacity]
+mcm = 10^6 * m^3
+GBP = [currency] = £
+people = [population] = capita

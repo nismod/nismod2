@@ -1,6 +1,6 @@
 name: energy_demand
 description: ''
-path: ../../../models/energy_demand/run.py
+path: models/run.py
 classname: EDWrapper
 # ---------------------------------------------------
 inputs:

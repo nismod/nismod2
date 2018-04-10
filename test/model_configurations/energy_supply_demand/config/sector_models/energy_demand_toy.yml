@@ -1,6 +1,6 @@
 name: energy_demand_toy
 description: 'Minimal version of energy demand model with only two outputs'
-path: ../../../models/energy_demand/run.py
+path: models/run.py
 classname: EDWrapper
 # ---------------------------------------------------
 inputs:

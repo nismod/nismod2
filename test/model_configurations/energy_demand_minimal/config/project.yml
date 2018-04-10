@@ -30,17 +30,26 @@ region_definitions:
   filename: lad_uk_2016-12/lad_uk_2016-12.shp
   name: lad_uk_2016
 scenario_sets:
-- description: UK precipitation
-  name: rainfall
+- description: ''
+  name: transport_energy_demand
+  facets:
+  - name: electricity
+    description: ''
 - description: Growth in UK population
   name: population
+  facets:
+  - name: population
+    description: ''
 - description: Gross value added
   name: gva
+  facets:
+  - name: gva
+    description: ''
 scenarios:
 - name: et_demand_baseline
   description: 'Baseline GWh of transport for the UK'
   scenario_set: transport_energy_demand
-  parameters:
+  facets:
   - name: electricity
     filename: et_demand_electricity.csv
     spatial_resolution: lad_uk_2016
@@ -49,7 +58,7 @@ scenarios:
 - name: pop_baseline
   description: 'Baseline Population for the UK'
   scenario_set: population
-  parameters:
+  facets:
   - name: population
     filename: uk_population_by_district_codes_Baseline.csv
     spatial_resolution: lad_uk_2016
@@ -58,7 +67,7 @@ scenarios:
 - name: pop_high
   description: 'High Population for the UK'
   scenario_set: population
-  parameters:
+  facets:
   - name: population
     filename: uk_population_by_district_codes_High.csv
     spatial_resolution: lad_uk_2016
@@ -67,7 +76,7 @@ scenarios:
 - name: pop_low
   description: 'Low Population for the UK'
   scenario_set: population
-  parameters:
+  facets:
   - name: population
     filename: uk_population_by_district_codes_Low.csv
     spatial_resolution: lad_uk_2016
@@ -76,7 +85,7 @@ scenarios:
 - name: gva_baseline
   description: 'Baseline gva for the UK'
   scenario_set: gva
-  parameters:
+  facets:
   - name: gva
     filename: gva_sven.csv
     spatial_resolution: lad_uk_2016

@@ -1,4 +1,4 @@
-- intervention_name: gasstore1
+- name: gasstore1
   outflowcap: 41
   storagecap: 3.3
   gasnode: 29
@@ -7,7 +7,7 @@
   build_year:
   storagenumber: 1
   name: Rough
-- intervention_name: gasstore2
+- name: gasstore2
   outflowcap: 40
   storagecap: 0.3
   gasnode: 55
@@ -16,7 +16,7 @@
   build_year:
   storagenumber: 2
   name: Aldbrough
-- intervention_name: gasstore3
+- name: gasstore3
   outflowcap: 22
   storagecap: 0.2
   gasnode: 26
@@ -25,7 +25,7 @@
   build_year:
   storagenumber: 3
   name: Holford
-- intervention_name: gasstore4
+- name: gasstore4
   outflowcap: 18
   storagecap: 0.3
   gasnode: 18
@@ -34,7 +34,7 @@
   build_year:
   storagenumber: 4
   name: Hornsea
-- intervention_name: gasstore5
+- name: gasstore5
   outflowcap: 5
   storagecap: 0.02
   gasnode: 16
@@ -43,7 +43,7 @@
   build_year:
   storagenumber: 5
   name: Holehouse Farm
-- intervention_name: gasstore6
+- name: gasstore6
   outflowcap: 7
   storagecap: 0.3
   gasnode: 13
@@ -52,7 +52,7 @@
   build_year:
   storagenumber: 6
   name: Humbly Grove
-- intervention_name: gasstore7
+- name: gasstore7
   outflowcap: 1.8
   storagecap: 0.07
   gasnode: 5
@@ -61,7 +61,7 @@
   build_year:
   storagenumber: 7
   name: Hatfield Moor
-- intervention_name: gasstore8
+- name: gasstore8
   outflowcap: 12
   storagecap: 0.05
   gasnode: 42
@@ -70,7 +70,7 @@
   build_year:
   storagenumber: 8
   name: Hill Top Farm
-- intervention_name: gasstore9
+- name: gasstore9
   outflowcap: 15
   storagecap: 0.2
   gasnode: 113

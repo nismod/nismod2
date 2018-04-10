@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Post install
-source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/config.ini))
+source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/ftp.ini))
 source <(grep = <(grep -A2 "\[$1\]" /vagrant/provision/config.ini))
 
 echo "Downloading ${1} from ${ftp_source} and copying to ${target}"
