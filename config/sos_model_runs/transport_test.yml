@@ -3,7 +3,7 @@ description: mini test for transport
 sos_model: transport_only
 timesteps: [2015, 2020]
 scenarios:
-  passenger_vehicle_OD: Southampton-Southampton test OD
+  population: pop_baseline
 narratives: {}
 decision_module: null
 stamp: '2018-02-13T10:00:00Z'
