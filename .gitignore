@@ -18,9 +18,6 @@ kalis_license.txt
 version.txt
 xphostid
 
-# Transport
-passengerODM.csv
-
 # OS X
 .DS_Store
 .vscode
@@ -137,7 +134,9 @@ ENV/
 
 # Provisioning config file
 provision/ftp.ini
+provision/config.ini
 
-data/energy_demand
-data/energy_supply
+# Working directories
 install
+data
+tmp
