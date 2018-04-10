@@ -8,9 +8,9 @@ interval_definitions:
 - description: The seasons covered by the model
   filename: seasons.csv
   name: seasons
-- name: hourly
-  description: 'Every hour in a year'
+- description: Every hour in a year
   filename: hourly_intervals.csv
+  name: hourly
 name: Energy Supply and Demand Minimal
 narrative_sets:
 - description: Describes the evolution of technology
@@ -18,9 +18,9 @@ narrative_sets:
 - description: Describes the governance landscape
   name: governance
 narratives:
-- name: 'High Tech Demand Side Management'
-  description: 'High penetration of SMART technology on the demand side'
+- description: High penetration of SMART technology on the demand side
   filename: high_tech_dsm.yml
+  name: High Tech Demand Side Management
   narrative_set: technology
 - description: ''
   filename: test_narrative.yml
@@ -33,87 +33,96 @@ region_definitions:
 - description: Boundaries of Energy Hubs
   filename: eh_region.shp
   name: eh_regions
-- description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+- description: Local Authority Districts (data from 2016, unchanged since 2009)
   filename: lad_uk_2016-12/lad_uk_2016-12.shp
   name: lad_uk_2016
 scenario_sets:
-- description: UK precipitation
-  name: rainfall
 - description: Growth in UK population
+  facets:
+  - description: ''
+    name: population
   name: population
 - description: Dummy data for energy_supply model residential inputs
+  facets:
+  - description: ''
+    name: residential_gas_boiler_gas_eh
+  - description: ''
+    name: residential_electricity_boiler_electricity_eh
   name: es_residential
 - description: Dummy data for energy_supply prices data
   name: es_prices
 - description: Gross value added
+  facets:
+  - description: ''
+    name: gva
   name: gva
 scenarios:
 - description: Dummy data for residential inputs to energy supply model
-  name: es_residential_dummy
-  parameters:
+  facets:
   - filename: residential_gas_boiler_gas.csv
-    name: residential_gas_boiler_gas
+    name: residential_gas_boiler_gas_eh
     spatial_resolution: eh_regions
     temporal_resolution: seasonal_week
     units: MW
   - filename: residential_electricity_boiler_electricity.csv
-    name: residential_electricity_boiler_electricity
+    name: residential_electricity_boiler_electricity_eh
     spatial_resolution: eh_regions
     temporal_resolution: seasonal_week
     units: MW
+  name: es_residential_dummy
   scenario_set: es_residential
 - description: Dummy prices data to pass to the energy_supply toy model
-  name: es_prices_dummy
-  parameters:
+  facets:
   - filename: gas_price.csv
     name: gas_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
+  name: es_prices_dummy
   scenario_set: es_prices
-- name: et_demand_baseline
-  description: 'Baseline GWh of transport for the UK'
-  scenario_set: transport_energy_demand
-  parameters:
-  - name: electricity
-    filename: et_demand_electricity.csv
+- description: Baseline GWh of transport for the UK
+  facets:
+  - filename: et_demand_electricity.csv
+    name: electricity
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: GWh
-- name: pop_baseline
-  description: 'Baseline Population for the UK'
-  scenario_set: population
-  parameters:
-  - name: population
-    filename: uk_population_by_district_codes_Baseline.csv
+  name: et_demand_baseline
+  scenario_set: transport_energy_demand
+- description: Baseline Population for the UK
+  facets:
+  - filename: uk_population_by_district_codes_Baseline.csv
+    name: population
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: people
-- name: pop_high
-  description: 'High Population for the UK'
+  name: pop_baseline
   scenario_set: population
-  parameters:
-  - name: population
-    filename: uk_population_by_district_codes_High.csv
+- description: High Population for the UK
+  facets:
+  - filename: uk_population_by_district_codes_High.csv
+    name: population
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: people
-- name: pop_low
-  description: 'Low Population for the UK'
+  name: pop_high
   scenario_set: population
-  parameters:
-  - name: population
-    filename: uk_population_by_district_codes_Low.csv
+- description: Low Population for the UK
+  facets:
+  - filename: uk_population_by_district_codes_Low.csv
+    name: population
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: people
-- name: gva_baseline
-  description: 'Baseline gva for the UK'
-  scenario_set: gva
-  parameters:
-  - name: gva
-    filename: gva_sven.csv
+  name: pop_low
+  scenario_set: population
+- description: Baseline gva for the UK
+  facets:
+  - filename: gva_sven.csv
+    name: gva
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: GBP
+  name: gva_baseline
+  scenario_set: gva
 units: units.txt

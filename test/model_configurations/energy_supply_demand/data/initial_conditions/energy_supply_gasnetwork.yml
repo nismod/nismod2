@@ -1,375 +1,375 @@
-- intervention_name: Pipe1
+- name: Pipe1
   diameter: 1852
   build_year:
   Pipe_number: 1
   location1: 106
   location2: 3
   length: 70000
-- intervention_name: Pipe2
+- name: Pipe2
   diameter: 1070
   build_year:
   Pipe_number: 2
   location1: 4
   location2: 6
   length: 145000
-- intervention_name: Pipe3
+- name: Pipe3
   diameter: 1369
   build_year:
   Pipe_number: 3
   location1: 4
   location2: 9
   length: 215000
-- intervention_name: Pipe4
+- name: Pipe4
   diameter: 600
   build_year:
   Pipe_number: 4
   location1: 11
   location2: 9
   length: 18000
-- intervention_name: Pipe5
+- name: Pipe5
   diameter: 600
   build_year:
   Pipe_number: 5
   location1: 10
   location2: 6
   length: 130000
-- intervention_name: Pipe6
+- name: Pipe6
   diameter: 1050
   build_year:
   Pipe_number: 6
   location1: 7
   location2: 17
   length: 143000
-- intervention_name: Pipe7
+- name: Pipe7
   diameter: 1137
   build_year:
   Pipe_number: 7
   location1: 15
   location2: 17
   length: 30000
-- intervention_name: Pipe8
+- name: Pipe8
   diameter: 1173
   build_year:
   Pipe_number: 8
   location1: 10
   location2: 20
   length: 88000
-- intervention_name: Pipe9
+- name: Pipe9
   diameter: 1173
   build_year:
   Pipe_number: 9
   location1: 21
   location2: 23
   length: 44000
-- intervention_name: Pipe10
+- name: Pipe10
   diameter: 900
   build_year:
   Pipe_number: 10
   location1: 18
   location2: 23
   length: 106000
-- intervention_name: Pipe11
+- name: Pipe11
   diameter: 1173
   build_year:
   Pipe_number: 11
   location1: 23
   location2: 35
   length: 103000
-- intervention_name: Pipe12
+- name: Pipe12
   diameter: 1199
   build_year:
   Pipe_number: 12
   location1: 18
   location2: 27
   length: 95000
-- intervention_name: Pipe13
+- name: Pipe13
   diameter: 750
   build_year:
   Pipe_number: 13
   location1: 18
   location2: 31
   length: 132000
-- intervention_name: Pipe14
+- name: Pipe14
   diameter: 1918
   build_year:
   Pipe_number: 14
   location1: 29
   location2: 31
   length: 28000
-- intervention_name: Pipe15
+- name: Pipe15
   diameter: 1200
   build_year:
   Pipe_number: 15
   location1: 31
   location2: 27
   length: 70000
-- intervention_name: Pipe16
+- name: Pipe16
   diameter: 1050
   build_year:
   Pipe_number: 16
   location1: 33
   location2: 35
   length: 51000
-- intervention_name: Pipe17
+- name: Pipe17
   diameter: 1200
   build_year:
   Pipe_number: 17
   location1: 36
   location2: 27
   length: 93000
-- intervention_name: Pipe18
+- name: Pipe18
   diameter: 1371
   build_year:
   Pipe_number: 18
   location1: 36
   location2: 39
   length: 100000
-- intervention_name: Pipe19
+- name: Pipe19
   diameter: 600
   build_year:
   Pipe_number: 19
   location1: 40
   location2: 42
   length: 20000
-- intervention_name: Pipe20
+- name: Pipe20
   diameter: 900
   build_year:
   Pipe_number: 20
   location1: 39
   location2: 42
   length: 35000
-- intervention_name: Pipe21
+- name: Pipe21
   diameter: 1277
   build_year:
   Pipe_number: 21
   location1: 113
   location2: 45
   length: 67000
-- intervention_name: Pipe22
+- name: Pipe22
   diameter: 900
   build_year:
   Pipe_number: 22
   location1: 27
   location2: 108
   length: 64000
-- intervention_name: Pipe23
+- name: Pipe23
   diameter: 1679
   build_year:
   Pipe_number: 23
   location1: 31
   location2: 51
   length: 60000
-- intervention_name: Pipe24
+- name: Pipe24
   diameter: 1082
   build_year:
   Pipe_number: 24
   location1: 49
   location2: 51
   length: 35000
-- intervention_name: Pipe25
+- name: Pipe25
   diameter: 1371
   build_year:
   Pipe_number: 25
   location1: 110
   location2: 53
   length: 85000
-- intervention_name: Pipe26
+- name: Pipe26
   diameter: 900
   build_year:
   Pipe_number: 26
   location1: 66
   location2: 51
   length: 78000
-- intervention_name: Pipe27
+- name: Pipe27
   diameter: 900
   build_year:
   Pipe_number: 27
   location1: 46
   location2: 57
   length: 51000
-- intervention_name: Pipe28
+- name: Pipe28
   diameter: 900
   build_year:
   Pipe_number: 28
   location1: 54
   location2: 45
   length: 105000
-- intervention_name: Pipe29
+- name: Pipe29
   diameter: 900
   build_year:
   Pipe_number: 29
   location1: 112
   location2: 53
   length: 71000
-- intervention_name: Pipe30
+- name: Pipe30
   diameter: 1546
   build_year:
   Pipe_number: 30
   location1: 60
   location2: 62
   length: 68000
-- intervention_name: Pipe31
+- name: Pipe31
   diameter: 1546
   build_year:
   Pipe_number: 31
   location1: 63
   location2: 65
   length: 29000
-- intervention_name: Pipe32
+- name: Pipe32
   diameter: 1173
   build_year:
   Pipe_number: 32
   location1: 66
   location2: 53
   length: 40000
-- intervention_name: Pipe33
+- name: Pipe33
   diameter: 900
   build_year:
   Pipe_number: 33
   location1: 111
   location2: 53
   length: 56000
-- intervention_name: Pipe34
+- name: Pipe34
   diameter: 900
   build_year:
   Pipe_number: 34
   location1: 60
   location2: 69
   length: 131000
-- intervention_name: Pipe35
+- name: Pipe35
   diameter: 900
   build_year:
   Pipe_number: 35
   location1: 60
   location2: 72
   length: 125000
-- intervention_name: Pipe36
+- name: Pipe36
   diameter: 1000
   build_year:
   Pipe_number: 36
   location1: 73
   location2: 69
   length: 80000
-- intervention_name: Pipe37
+- name: Pipe37
   diameter: 1082
   build_year:
   Pipe_number: 37
   location1: 78
   location2: 72
   length: 37000
-- intervention_name: Pipe38
+- name: Pipe38
   diameter: 1008
   build_year:
   Pipe_number: 38
   location1: 76
   location2: 78
   length: 23000
-- intervention_name: Pipe39
+- name: Pipe39
   diameter: 1173
   build_year:
   Pipe_number: 39
   location1: 115
   location2: 80
   length: 43000
-- intervention_name: Pipe40
+- name: Pipe40
   diameter: 1000
   build_year:
   Pipe_number: 40
   location1: 81
   location2: 83
   length: 145000
-- intervention_name: Pipe41
+- name: Pipe41
   diameter: 700
   build_year:
   Pipe_number: 41
   location1: 84
   location2: 86
   length: 97000
-- intervention_name: Pipe42
+- name: Pipe42
   diameter: 450
   build_year:
   Pipe_number: 42
   location1: 86
   location2: 90
   length: 60000
-- intervention_name: Pipe43
+- name: Pipe43
   diameter: 450
   build_year:
   Pipe_number: 43
   location1: 88
   location2: 90
   length: 26000
-- intervention_name: Pipe44
+- name: Pipe44
   diameter: 600
   build_year:
   Pipe_number: 44
   location1: 105
   location2: 90
   length: 70000
-- intervention_name: Pipe45
+- name: Pipe45
   diameter: 900
   build_year:
   Pipe_number: 45
   location1: 92
   location2: 94
   length: 128000
-- intervention_name: Pipe46
+- name: Pipe46
   diameter: 600
   build_year:
   Pipe_number: 46
   location1: 95
   location2: 97
   length: 34000
-- intervention_name: Pipe47
+- name: Pipe47
   diameter: 700
   build_year:
   Pipe_number: 47
   location1: 97
   location2: 99
   length: 60000
-- intervention_name: Pipe48
+- name: Pipe48
   diameter: 700
   build_year:
   Pipe_number: 48
   location1: 100
   location2: 104
   length: 60000
-- intervention_name: Pipe49
+- name: Pipe49
   diameter: 900
   build_year:
   Pipe_number: 49
   location1: 95
   location2: 104
   length: 186000
-- intervention_name: Pipe50
+- name: Pipe50
   diameter: 1100
   build_year:
   Pipe_number: 50
   location1: 112
   location2: 104
   length: 65000
-- intervention_name: Pipe51
+- name: Pipe51
   diameter: 900
   build_year:
   Pipe_number: 51
   location1: 109
   location2: 51
   length: 51000
-- intervention_name: Pipe52
+- name: Pipe52
   diameter: 1546
   build_year:
   Pipe_number: 52
   location1: 42
   location2: 113
   length: 50000
-- intervention_name: Pipe53
+- name: Pipe53
   diameter: 900
   build_year:
   Pipe_number: 53
   location1: 111
   location2: 115
   length: 41000
-- intervention_name: Pipe54
+- name: Pipe54
   diameter: 1373
   build_year:
   Pipe_number: 54

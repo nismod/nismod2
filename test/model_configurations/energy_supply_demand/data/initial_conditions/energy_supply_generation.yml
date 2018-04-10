@@ -1,4 +1,4 @@
-- intervention_name: Generator1
+- name: Generator1
   minpower: 188
   gentype: CCGT
   pumpscapacity:
@@ -6,7 +6,7 @@
   gennum: 1
   maxpower: 470
   genname: Abernedd Power Station
-- intervention_name: Generator2
+- name: Generator2
   minpower: 220.8
   gentype: CCGT
   pumpscapacity:
@@ -14,7 +14,7 @@
   gennum: 2
   maxpower: 552
   genname: Baglan Bay
-- intervention_name: Generator3
+- name: Generator3
   minpower: 200
   gentype: CCGT
   pumpscapacity:
@@ -22,7 +22,7 @@
   gennum: 3
   maxpower: 500
   genname: Barking - unit 1
-- intervention_name: Generator4
+- name: Generator4
   minpower: 188
   gentype: CCGT
   pumpscapacity:
@@ -30,7 +30,7 @@
   gennum: 4
   maxpower: 470
   genname: Barking Power Station C
-- intervention_name: Generator5
+- name: Generator5
   minpower: 98
   gentype: CCGT
   pumpscapacity:
@@ -38,7 +38,7 @@
   gennum: 5
   maxpower: 245
   genname: Barry
-- intervention_name: Generator6
+- name: Generator6
   minpower: 104
   gentype: CCGT
   pumpscapacity:
@@ -46,7 +46,7 @@
   gennum: 6
   maxpower: 260
   genname: Brigg
-- intervention_name: Generator7
+- name: Generator7
   minpower: 182
   gentype: CCGT
   pumpscapacity:
@@ -54,7 +54,7 @@
   gennum: 7
   maxpower: 455
   genname: Carrington - unit 1
-- intervention_name: Generator8
+- name: Generator8
   minpower: 182
   gentype: CCGT
   pumpscapacity:
@@ -62,7 +62,7 @@
   gennum: 8
   maxpower: 455
   genname: Carrington - unit 2
-- intervention_name: Generator9
+- name: Generator9
   minpower: 132
   gentype: CCGT
   pumpscapacity:
@@ -70,7 +70,7 @@
   gennum: 9
   maxpower: 330
   genname: Connahs Quay - unit 2
-- intervention_name: Generator10
+- name: Generator10
   minpower: 162.8
   gentype: CCGT
   pumpscapacity:
@@ -78,7 +78,7 @@
   gennum: 10
   maxpower: 407
   genname: Corby
-- intervention_name: Generator11
+- name: Generator11
   minpower: 160
   gentype: CCGT
   pumpscapacity:
@@ -86,7 +86,7 @@
   gennum: 11
   maxpower: 400
   genname: Coryton - unit 1
-- intervention_name: Generator12
+- name: Generator12
   minpower: 160.8
   gentype: CCGT
   pumpscapacity:
@@ -94,7 +94,7 @@
   gennum: 12
   maxpower: 402
   genname: Damhead Creek - unit 1
-- intervention_name: Generator13
+- name: Generator13
   minpower: 197.2
   gentype: CCGT
   pumpscapacity:
@@ -102,7 +102,7 @@
   gennum: 13
   maxpower: 493
   genname: Damhead Creek II - unit 1
-- intervention_name: Generator14
+- name: Generator14
   minpower: 68
   gentype: CCGT
   pumpscapacity:
@@ -110,7 +110,7 @@
   gennum: 14
   maxpower: 170
   genname: Deeside - unit 1
-- intervention_name: Generator15
+- name: Generator15
   minpower: 208
   gentype: CCGT
   pumpscapacity:
@@ -118,7 +118,7 @@
   gennum: 15
   maxpower: 520
   genname: Didcot B - unit 1
-- intervention_name: Generator16
+- name: Generator16
   minpower: 208
   gentype: CCGT
   pumpscapacity:
@@ -126,7 +126,7 @@
   gennum: 16
   maxpower: 520
   genname: Didcot B - unit 2
-- intervention_name: Generator17
+- name: Generator17
   minpower: 176
   gentype: CCGT
   pumpscapacity:
@@ -134,7 +134,7 @@
   gennum: 17
   maxpower: 440
   genname: Drakelow D - unit 1
-- intervention_name: Generator18
+- name: Generator18
   minpower: 176
   gentype: CCGT
   pumpscapacity:
@@ -142,7 +142,7 @@
   gennum: 18
   maxpower: 440
   genname: Drakelow D - unit 2
-- intervention_name: Generator19
+- name: Generator19
   minpower: 163.2
   gentype: CCGT
   pumpscapacity:
@@ -150,7 +150,7 @@
   gennum: 19
   maxpower: 408
   genname: Enfield
-- intervention_name: Generator20
+- name: Generator20
   minpower: 172
   gentype: CCGT
   pumpscapacity:
@@ -158,7 +158,7 @@
   gennum: 20
   maxpower: 430
   genname: Grain (Stage 2&3) - unit 1
-- intervention_name: Generator21
+- name: Generator21
   minpower: 172
   gentype: CCGT
   pumpscapacity:
@@ -166,7 +166,7 @@
   gennum: 21
   maxpower: 430
   genname: Grain (Stage 2&3) - unit 2
-- intervention_name: Generator22
+- name: Generator22
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -174,7 +174,7 @@
   gennum: 22
   maxpower: 420
   genname: Great Yarmouth
-- intervention_name: Generator23
+- name: Generator23
   minpower: 160
   gentype: CCGT
   pumpscapacity:
@@ -182,7 +182,7 @@
   gennum: 23
   maxpower: 400
   genname: Keadby - unit 1
-- intervention_name: Generator24
+- name: Generator24
   minpower: 180
   gentype: CCGT
   pumpscapacity:
@@ -190,7 +190,7 @@
   gennum: 24
   maxpower: 450
   genname: Killingholme - unit 1
-- intervention_name: Generator25
+- name: Generator25
   minpower: 266
   gentype: CCGT
   pumpscapacity:
@@ -198,7 +198,7 @@
   gennum: 25
   maxpower: 665
   genname: Killingholme 2
-- intervention_name: Generator26
+- name: Generator26
   minpower: 39.6
   gentype: CCGT
   pumpscapacity:
@@ -206,7 +206,7 @@
   gennum: 26
   maxpower: 99
   genname: Kings Lynn A
-- intervention_name: Generator27
+- name: Generator27
   minpower: 196
   gentype: CCGT
   pumpscapacity:
@@ -214,7 +214,7 @@
   gennum: 27
   maxpower: 490
   genname: Kings Lynn B - unit 1
-- intervention_name: Generator28
+- name: Generator28
   minpower: 196
   gentype: CCGT
   pumpscapacity:
@@ -222,7 +222,7 @@
   gennum: 28
   maxpower: 490
   genname: Kings Lynn B - unit 2
-- intervention_name: Generator29
+- name: Generator29
   minpower: 200
   gentype: CCGT
   pumpscapacity:
@@ -230,7 +230,7 @@
   gennum: 29
   maxpower: 500
   genname: Knottingley - unit 1
-- intervention_name: Generator30
+- name: Generator30
   minpower: 200
   gentype: CCGT
   pumpscapacity:
@@ -238,7 +238,7 @@
   gennum: 30
   maxpower: 500
   genname: Knottingley - unit 2
-- intervention_name: Generator31
+- name: Generator31
   minpower: 170.8
   gentype: CCGT
   pumpscapacity:
@@ -246,7 +246,7 @@
   gennum: 31
   maxpower: 427
   genname: Knottingley - unit 3
-- intervention_name: Generator32
+- name: Generator32
   minpower: 180
   gentype: CCGT
   pumpscapacity:
@@ -254,7 +254,7 @@
   gennum: 32
   maxpower: 450
   genname: Langage - unit 1
-- intervention_name: Generator33
+- name: Generator33
   minpower: 100
   gentype: CCGT
   pumpscapacity:
@@ -262,7 +262,7 @@
   gennum: 33
   maxpower: 250
   genname: Langage - unit 2
-- intervention_name: Generator34
+- name: Generator34
   minpower: 148
   gentype: CCGT
   pumpscapacity:
@@ -270,7 +270,7 @@
   gennum: 34
   maxpower: 370
   genname: Little Barford
-- intervention_name: Generator35
+- name: Generator35
   minpower: 148
   gentype: CCGT
   pumpscapacity:
@@ -278,7 +278,7 @@
   gennum: 35
   maxpower: 370
   genname: Little Barford (additional capacity)
-- intervention_name: Generator36
+- name: Generator36
   minpower: 180
   gentype: CCGT
   pumpscapacity:
@@ -286,7 +286,7 @@
   gennum: 36
   maxpower: 450
   genname: Marchwood - unit 1
-- intervention_name: Generator37
+- name: Generator37
   minpower: 140
   gentype: CCGT
   pumpscapacity:
@@ -294,7 +294,7 @@
   gennum: 37
   maxpower: 350
   genname: Medway - unit 1
-- intervention_name: Generator38
+- name: Generator38
   minpower: 140
   gentype: CCGT
   pumpscapacity:
@@ -302,7 +302,7 @@
   gennum: 38
   maxpower: 350
   genname: Medway - unit 2
-- intervention_name: Generator39
+- name: Generator39
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -310,7 +310,7 @@
   gennum: 39
   maxpower: 420
   genname: Pembroke (Stage 3) - unit 1
-- intervention_name: Generator40
+- name: Generator40
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -318,7 +318,7 @@
   gennum: 40
   maxpower: 420
   genname: Pembroke (Stage 3) - unit 2
-- intervention_name: Generator41
+- name: Generator41
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -326,7 +326,7 @@
   gennum: 41
   maxpower: 420
   genname: Pembroke (Stage 3) - unit 3
-- intervention_name: Generator42
+- name: Generator42
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -334,7 +334,7 @@
   gennum: 42
   maxpower: 420
   genname: Pembroke (Stage 3) - unit 4
-- intervention_name: Generator43
+- name: Generator43
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -342,7 +342,7 @@
   gennum: 43
   maxpower: 420
   genname: Pembroke (Stage 3) - unit 5
-- intervention_name: Generator44
+- name: Generator44
   minpower: 162
   gentype: CCGT
   pumpscapacity:
@@ -350,7 +350,7 @@
   gennum: 44
   maxpower: 405
   genname: Peterborough
-- intervention_name: Generator45
+- name: Generator45
   minpower: 236
   gentype: CCGT
   pumpscapacity:
@@ -358,7 +358,7 @@
   gennum: 45
   maxpower: 590
   genname: Peterhead - unit 1
-- intervention_name: Generator46
+- name: Generator46
   minpower: 236
   gentype: CCGT
   pumpscapacity:
@@ -366,7 +366,7 @@
   gennum: 46
   maxpower: 590
   genname: Peterhead - unit 2
-- intervention_name: Generator47
+- name: Generator47
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -374,7 +374,7 @@
   gennum: 47
   maxpower: 410
   genname: Rocksavage - unit 1
-- intervention_name: Generator48
+- name: Generator48
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -382,7 +382,7 @@
   gennum: 48
   maxpower: 410
   genname: Rocksavage - unit 2
-- intervention_name: Generator49
+- name: Generator49
   minpower: 91.6
   gentype: CCGT
   pumpscapacity:
@@ -390,7 +390,7 @@
   gennum: 49
   maxpower: 229
   genname: Roosecote
-- intervention_name: Generator50
+- name: Generator50
   minpower: 286
   gentype: CCGT
   pumpscapacity:
@@ -398,7 +398,7 @@
   gennum: 50
   maxpower: 715
   genname: Rye House
-- intervention_name: Generator51
+- name: Generator51
   minpower: 148
   gentype: CCGT
   pumpscapacity:
@@ -406,7 +406,7 @@
   gennum: 51
   maxpower: 370
   genname: Saltend - unit 1
-- intervention_name: Generator52
+- name: Generator52
   minpower: 148
   gentype: CCGT
   pumpscapacity:
@@ -414,7 +414,7 @@
   gennum: 52
   maxpower: 370
   genname: Saltend - unit 2
-- intervention_name: Generator53
+- name: Generator53
   minpower: 148
   gentype: CCGT
   pumpscapacity:
@@ -422,7 +422,7 @@
   gennum: 53
   maxpower: 370
   genname: Saltend - unit 3
-- intervention_name: Generator54
+- name: Generator54
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -430,7 +430,7 @@
   gennum: 54
   maxpower: 410
   genname: Seabank - unit 1
-- intervention_name: Generator55
+- name: Generator55
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -438,7 +438,7 @@
   gennum: 55
   maxpower: 410
   genname: Seabank - unit 2
-- intervention_name: Generator56
+- name: Generator56
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -446,7 +446,7 @@
   gennum: 56
   maxpower: 410
   genname: Seabank - unit 3
-- intervention_name: Generator57
+- name: Generator57
   minpower: 164.8
   gentype: CCGT
   pumpscapacity:
@@ -454,7 +454,7 @@
   gennum: 57
   maxpower: 412
   genname: Seabank 3 - unit 1
-- intervention_name: Generator58
+- name: Generator58
   minpower: 164.8
   gentype: CCGT
   pumpscapacity:
@@ -462,7 +462,7 @@
   gennum: 58
   maxpower: 412
   genname: Seabank 3 - unit 2
-- intervention_name: Generator59
+- name: Generator59
   minpower: 170
   gentype: CCGT
   pumpscapacity:
@@ -470,7 +470,7 @@
   gennum: 59
   maxpower: 425
   genname: Severn Power - unit 1
-- intervention_name: Generator60
+- name: Generator60
   minpower: 170
   gentype: CCGT
   pumpscapacity:
@@ -478,7 +478,7 @@
   gennum: 60
   maxpower: 425
   genname: Severn Power - unit 2
-- intervention_name: Generator61
+- name: Generator61
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -486,7 +486,7 @@
   gennum: 61
   maxpower: 420
   genname: Shoreham
-- intervention_name: Generator62
+- name: Generator62
   minpower: 172
   gentype: CCGT
   pumpscapacity:
@@ -494,7 +494,7 @@
   gennum: 62
   maxpower: 430
   genname: South Humberbank - unit 1
-- intervention_name: Generator63
+- name: Generator63
   minpower: 172
   gentype: CCGT
   pumpscapacity:
@@ -502,7 +502,7 @@
   gennum: 63
   maxpower: 430
   genname: South Humberbank - unit 2
-- intervention_name: Generator64
+- name: Generator64
   minpower: 176
   gentype: CCGT
   pumpscapacity:
@@ -510,7 +510,7 @@
   gennum: 64
   maxpower: 440
   genname: Spalding - unit 1
-- intervention_name: Generator65
+- name: Generator65
   minpower: 176
   gentype: CCGT
   pumpscapacity:
@@ -518,7 +518,7 @@
   gennum: 65
   maxpower: 440
   genname: Spalding - unit 2
-- intervention_name: Generator66
+- name: Generator66
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -526,7 +526,7 @@
   gennum: 66
   maxpower: 420
   genname: Spalding Energy Expansion - unit 1
-- intervention_name: Generator67
+- name: Generator67
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -534,7 +534,7 @@
   gennum: 67
   maxpower: 420
   genname: Spalding Energy Expansion - unit 2
-- intervention_name: Generator68
+- name: Generator68
   minpower: 172.8
   gentype: CCGT
   pumpscapacity:
@@ -542,7 +542,7 @@
   gennum: 68
   maxpower: 432
   genname: Staythorpe C - unit 1
-- intervention_name: Generator69
+- name: Generator69
   minpower: 172.8
   gentype: CCGT
   pumpscapacity:
@@ -550,7 +550,7 @@
   gennum: 69
   maxpower: 432
   genname: Staythorpe C - unit 2
-- intervention_name: Generator70
+- name: Generator70
   minpower: 164
   gentype: CCGT
   pumpscapacity:
@@ -558,7 +558,7 @@
   gennum: 70
   maxpower: 410
   genname: Sutton Bridge - unit 1
-- intervention_name: Generator71
+- name: Generator71
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -566,7 +566,7 @@
   gennum: 71
   maxpower: 420
   genname: Thames Haven - unit 1
-- intervention_name: Generator72
+- name: Generator72
   minpower: 168
   gentype: CCGT
   pumpscapacity:
@@ -574,7 +574,7 @@
   gennum: 72
   maxpower: 420
   genname: Thames Haven - unit 2
-- intervention_name: Generator73
+- name: Generator73
   minpower: 192
   gentype: CCGT
   pumpscapacity:
@@ -582,7 +582,7 @@
   gennum: 73
   maxpower: 480
   genname: Thorpe Marsh - unit 1
-- intervention_name: Generator74
+- name: Generator74
   minpower: 180
   gentype: CCGT
   pumpscapacity:
@@ -590,7 +590,7 @@
   gennum: 74
   maxpower: 450
   genname: Tilbury C - unit 1
-- intervention_name: Generator75
+- name: Generator75
   minpower: 180
   gentype: CCGT
   pumpscapacity:
@@ -598,7 +598,7 @@
   gennum: 75
   maxpower: 450
   genname: Tilbury C - unit 2
-- intervention_name: Generator76
+- name: Generator76
   minpower: 228
   gentype: CCGT
   pumpscapacity:
@@ -606,7 +606,7 @@
   gennum: 76
   maxpower: 570
   genname: Trafford Power Station
-- intervention_name: Generator77
+- name: Generator77
   minpower: 190
   gentype: CCGT
   pumpscapacity:
@@ -614,7 +614,7 @@
   gennum: 77
   maxpower: 475
   genname: Trafford - unit 1
-- intervention_name: Generator78
+- name: Generator78
   minpower: 174
   gentype: CCGT
   pumpscapacity:
@@ -622,7 +622,7 @@
   gennum: 78
   maxpower: 435
   genname: West Burton B - unit 1
-- intervention_name: Generator79
+- name: Generator79
   minpower: 174
   gentype: CCGT
   pumpscapacity:
@@ -630,7 +630,7 @@
   gennum: 79
   maxpower: 435
   genname: West Burton B - unit 2
-- intervention_name: Generator80
+- name: Generator80
   minpower: 344.8
   gentype: Clean coal + CCS
   pumpscapacity:
@@ -638,7 +638,7 @@
   gennum: 80
   maxpower: 862
   genname: Ayrshire Power Clean Coal
-- intervention_name: Generator81
+- name: Generator81
   minpower: 315.2
   gentype: Clean coal + CCS
   pumpscapacity:
@@ -646,7 +646,7 @@
   gennum: 81
   maxpower: 788
   genname: Ayrshire Power Clean Coal
-- intervention_name: Generator82
+- name: Generator82
   minpower: 320
   gentype: IGCC with CCS
   pumpscapacity:
@@ -654,7 +654,7 @@
   gennum: 82
   maxpower: 800
   genname: Hatfield Power Station
-- intervention_name: Generator83
+- name: Generator83
   minpower: 264
   gentype: Large Unit Coal + AGT + CCS
   pumpscapacity:
@@ -662,7 +662,7 @@
   gennum: 83
   maxpower: 660
   genname: Drax - unit 1
-- intervention_name: Generator84
+- name: Generator84
   minpower: 200
   gentype: Large Unit Coal + AGT + CCS
   pumpscapacity:
@@ -670,7 +670,7 @@
   gennum: 84
   maxpower: 500
   genname: West Burton - unit 1
-- intervention_name: Generator85
+- name: Generator85
   minpower: 200
   gentype: Large Unit Coal + AGT + CCS
   pumpscapacity:
@@ -678,7 +678,7 @@
   gennum: 85
   maxpower: 500
   genname: West Burton - unit 2
-- intervention_name: Generator86
+- name: Generator86
   minpower: 156
   gentype: Large Unit Coal + AGT + CCS
   pumpscapacity:
@@ -686,7 +686,7 @@
   gennum: 86
   maxpower: 390
   genname: West Burton - unit 3
-- intervention_name: Generator87
+- name: Generator87
   minpower: 1054
   gentype: Nuclear AGR
   pumpscapacity:
@@ -694,7 +694,7 @@
   gennum: 87
   maxpower: 1074
   genname: Neilston
-- intervention_name: Generator88
+- name: Generator88
   minpower: 2386
   gentype: Nuclear AGR
   pumpscapacity:
@@ -702,7 +702,7 @@
   gennum: 88
   maxpower: 2406
   genname: Penworthham
-- intervention_name: Generator89
+- name: Generator89
   minpower: 1061
   gentype: Nuclear AGR
   pumpscapacity:
@@ -710,7 +710,7 @@
   gennum: 89
   maxpower: 1081
   genname: Sellindge
-- intervention_name: Generator90
+- name: Generator90
   minpower: 1187
   gentype: Nuclear AGR
   pumpscapacity:
@@ -718,7 +718,7 @@
   gennum: 90
   maxpower: 1207
   genname: Stella West
-- intervention_name: Generator91
+- name: Generator91
   minpower: 1241
   gentype: Nuclear AGR
   pumpscapacity:
@@ -726,7 +726,7 @@
   gennum: 91
   maxpower: 1261
   genname: SWP
-- intervention_name: Generator92
+- name: Generator92
   minpower: 1195
   gentype: Nuclear AGR
   pumpscapacity:
@@ -734,7 +734,7 @@
   gennum: 92
   maxpower: 1215
   genname: Torness
-- intervention_name: Generator93
+- name: Generator93
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -742,7 +742,7 @@
   gennum: 93
   maxpower: 20
   genname:  Aigas
-- intervention_name: Generator94
+- name: Generator94
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -750,7 +750,7 @@
   gennum: 94
   maxpower: 11
   genname:  Cashlie
-- intervention_name: Generator95
+- name: Generator95
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -758,7 +758,7 @@
   gennum: 95
   maxpower: 10
   genname:  Cassley
-- intervention_name: Generator96
+- name: Generator96
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -766,7 +766,7 @@
   gennum: 96
   maxpower: 20
   genname:  Ceannacroc
-- intervention_name: Generator97
+- name: Generator97
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -774,7 +774,7 @@
   gennum: 97
   maxpower: 40
   genname:  Clachan
-- intervention_name: Generator98
+- name: Generator98
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -782,7 +782,7 @@
   gennum: 98
   maxpower: 61
   genname:  Clunie
-- intervention_name: Generator99
+- name: Generator99
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -790,7 +790,7 @@
   gennum: 99
   maxpower: 19
   genname:  Culligran
-- intervention_name: Generator100
+- name: Generator100
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -798,7 +798,7 @@
   gennum: 100
   maxpower: 38
   genname:  Deanie
-- intervention_name: Generator101
+- name: Generator101
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -806,7 +806,7 @@
   gennum: 101
   maxpower: 75
   genname:  Errochty
-- intervention_name: Generator102
+- name: Generator102
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -814,7 +814,7 @@
   gennum: 102
   maxpower: 8
   genname:  Fasnakyle Compensation Hydro (Unit 4)
-- intervention_name: Generator103
+- name: Generator103
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -822,7 +822,7 @@
   gennum: 103
   maxpower: 46
   genname:  Fasnakyle G1 & G3
-- intervention_name: Generator104
+- name: Generator104
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -830,7 +830,7 @@
   gennum: 104
   maxpower: 23
   genname:  Fasnakyle G2
-- intervention_name: Generator105
+- name: Generator105
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -838,7 +838,7 @@
   gennum: 105
   maxpower: 16
   genname:  Finlarig
-- intervention_name: Generator106
+- name: Generator106
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -846,7 +846,7 @@
   gennum: 106
   maxpower: 52
   genname:  Glendoe Fort Augustus Stage 1
-- intervention_name: Generator107
+- name: Generator107
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -854,7 +854,7 @@
   gennum: 107
   maxpower: 48
   genname:  Glendoe Fort Augustus Stage 2
-- intervention_name: Generator108
+- name: Generator108
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -862,7 +862,7 @@
   gennum: 108
   maxpower: 37
   genname:  Glenmorrison
-- intervention_name: Generator109
+- name: Generator109
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -870,7 +870,7 @@
   gennum: 109
   maxpower: 22
   genname:  Grudie Bridge
-- intervention_name: Generator110
+- name: Generator110
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -878,7 +878,7 @@
   gennum: 110
   maxpower: 25
   genname:  Inverawe
-- intervention_name: Generator111
+- name: Generator111
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -886,7 +886,7 @@
   gennum: 111
   maxpower: 20
   genname:  Invergarry
-- intervention_name: Generator112
+- name: Generator112
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -894,7 +894,7 @@
   gennum: 112
   maxpower: 20
   genname:  Kilmorack
-- intervention_name: Generator113
+- name: Generator113
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -902,7 +902,7 @@
   gennum: 113
   maxpower: 20
   genname:  Kinlochleven
-- intervention_name: Generator114
+- name: Generator114
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -910,7 +910,7 @@
   gennum: 114
   maxpower: 15
   genname:  Livishie
-- intervention_name: Generator115
+- name: Generator115
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -918,7 +918,7 @@
   gennum: 115
   maxpower: 47
   genname:  Lochay
-- intervention_name: Generator116
+- name: Generator116
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -926,7 +926,7 @@
   gennum: 116
   maxpower: 34
   genname:  Luichart
-- intervention_name: Generator117
+- name: Generator117
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -934,7 +934,7 @@
   gennum: 117
   maxpower: 19
   genname:  Mossford
-- intervention_name: Generator118
+- name: Generator118
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -942,7 +942,7 @@
   gennum: 118
   maxpower: 15
   genname:  Nant
-- intervention_name: Generator119
+- name: Generator119
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -950,7 +950,7 @@
   gennum: 119
   maxpower: 18
   genname:  Orrin
-- intervention_name: Generator120
+- name: Generator120
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -958,7 +958,7 @@
   gennum: 120
   maxpower: 15
   genname:  Pitlochry
-- intervention_name: Generator121
+- name: Generator121
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -966,7 +966,7 @@
   gennum: 121
   maxpower: 18
   genname:  Quoich
-- intervention_name: Generator122
+- name: Generator122
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -974,7 +974,7 @@
   gennum: 122
   maxpower: 44
   genname:  Rannoch
-- intervention_name: Generator123
+- name: Generator123
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -982,7 +982,7 @@
   gennum: 123
   maxpower: 19
   genname:  Shin
-- intervention_name: Generator124
+- name: Generator124
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -990,7 +990,7 @@
   gennum: 124
   maxpower: 72
   genname:  Sloy G1 & G4
-- intervention_name: Generator125
+- name: Generator125
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -998,7 +998,7 @@
   gennum: 125
   maxpower: 80
   genname:  Sloy G2 & G3
-- intervention_name: Generator126
+- name: Generator126
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -1006,7 +1006,7 @@
   gennum: 126
   maxpower: 17
   genname:  St Fillans
-- intervention_name: Generator127
+- name: Generator127
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -1014,7 +1014,7 @@
   gennum: 127
   maxpower: 33
   genname:  Tongland
-- intervention_name: Generator128
+- name: Generator128
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -1022,7 +1022,7 @@
   gennum: 128
   maxpower: 15
   genname:  Torr Achilty
-- intervention_name: Generator129
+- name: Generator129
   minpower: 0
   gentype:  Hydro
   pumpscapacity:
@@ -1030,7 +1030,7 @@
   gennum: 129
   maxpower: 34
   genname:  Tummel
-- intervention_name: Generator130
+- name: Generator130
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1038,7 +1038,7 @@
   gennum: 130
   maxpower: 500
   genname:  East-West Interconnector 1
-- intervention_name: Generator131
+- name: Generator131
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1046,7 +1046,7 @@
   gennum: 131
   maxpower: 375
   genname:  East-West Interconnector 2
-- intervention_name: Generator132
+- name: Generator132
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1054,7 +1054,7 @@
   gennum: 132
   maxpower: 1988
   genname:  French Interconnector
-- intervention_name: Generator133
+- name: Generator133
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1062,7 +1062,7 @@
   gennum: 133
   maxpower: 80
   genname:  Moyle Interconnector (Import)
-- intervention_name: Generator134
+- name: Generator134
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1070,7 +1070,7 @@
   gennum: 134
   maxpower: 800
   genname:  Netherlands Interconnector Stage 2
-- intervention_name: Generator135
+- name: Generator135
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1078,7 +1078,7 @@
   gennum: 135
   maxpower: 400
   genname:  Netherlands Interconnector Stage 3
-- intervention_name: Generator136
+- name: Generator136
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1086,7 +1086,7 @@
   gennum: 136
   maxpower: 1500
   genname: NEW1
-- intervention_name: Generator137
+- name: Generator137
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1094,7 +1094,7 @@
   gennum: 137
   maxpower: 1500
   genname: NEW2
-- intervention_name: Generator138
+- name: Generator138
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1102,7 +1102,7 @@
   gennum: 138
   maxpower: 2125
   genname: NEW3
-- intervention_name: Generator139
+- name: Generator139
   minpower: 0
   gentype:  Interconnector
   pumpscapacity:
@@ -1110,7 +1110,7 @@
   gennum: 139
   maxpower: 2125
   genname: NEW4
-- intervention_name: Generator140
+- name: Generator140
   minpower: 0
   gentype:  Pumped Storage
   pumpscapacity: '2000'
@@ -1118,7 +1118,7 @@
   gennum: 140
   maxpower: 440
   genname:  Cruachan
-- intervention_name: Generator141
+- name: Generator141
   minpower: 0
   gentype:  Pumped Storage
   pumpscapacity: '9000'
@@ -1126,7 +1126,7 @@
   gennum: 141
   maxpower: 1644
   genname:  Dinorwig
-- intervention_name: Generator142
+- name: Generator142
   minpower: 0
   gentype:  Pumped Storage
   pumpscapacity: '2000'
@@ -1134,7 +1134,7 @@
   gennum: 142
   maxpower: 360
   genname:  Ffestiniog
-- intervention_name: Generator143
+- name: Generator143
   minpower: 0
   gentype:  Pumped Storage
   pumpscapacity: '1500'
@@ -1142,7 +1142,7 @@
   gennum: 143
   maxpower: 300
   genname:  Foyers
-- intervention_name: Generator144
+- name: Generator144
   minpower: 960
   gentype: Nuclear Magnox
   pumpscapacity:
@@ -1150,7 +1150,7 @@
   gennum: 144
   maxpower: 980
   genname: Deeside
-- intervention_name: Generator145
+- name: Generator145
   minpower: 450.4
   gentype: Nuclear Magnox
   pumpscapacity:
@@ -1158,7 +1158,7 @@
   gennum: 145
   maxpower: 470.4
   genname: Melksham
-- intervention_name: Generator146
+- name: Generator146
   minpower: 1180
   gentype: Nuclear PWR
   pumpscapacity:
@@ -1166,7 +1166,7 @@
   gennum: 146
   maxpower: 1200
   genname: Bramford
-- intervention_name: Generator147
+- name: Generator147
   minpower: 30
   gentype: OCGT
   pumpscapacity:
@@ -1174,7 +1174,7 @@
   gennum: 147
   maxpower: 100
   genname: Melksham
-- intervention_name: Generator148
+- name: Generator148
   minpower: 45
   gentype: OCGT
   pumpscapacity:

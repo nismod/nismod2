@@ -137,25 +137,25 @@ class EnergySupplyWrapper(SectorModel):
 
         # Sum all inputs ready for writing to tables
 
-        heatload_res_inputs = np.array(
+        heatload_res_inputs = np.array([
             input_residential_gas_boiler_gas,
             input_residential_electricity_boiler_electricity,
             input_residential_gas_stirling_micro_CHP,
             input_residential_electricity_heat_pumps_electricity,
             input_residential_electricity_district_heating_electricity,
             input_residential_gas_district_heating_gas
-            )
-        heatload_res = np.add.reduce(heatload_res_inputs, axis=1)
+            ])
+        heatload_res = np.add.reduce(heatload_res_inputs, axis=0)
 
         heatload_com_inputs = np.array(
-            input_service_gas_boiler_gas,
+            [input_service_gas_boiler_gas,
             input_service_electricity_boiler_electricity,
             input_service_gas_stirling_micro_CHP,
             input_service_electricity_heat_pumps_electricity,
             input_service_electricity_district_heating_electricity,
-            input_service_gas_district_heating_gas
+            input_service_gas_district_heating_gas]
         )
-        heatload_com = np.add.reduce(heatload_com_inputs, axis=1)
+        heatload_com = np.add.reduce(heatload_com_inputs, axis=0)
 
         gasload_non_heat_res = input_residential_gas_non_heating
         elecload_non_heat_res = input_residential_electricity_non_heating
@@ -163,35 +163,57 @@ class EnergySupplyWrapper(SectorModel):
         elecload_non_heat_com = input_service_electricity_non_heating
 
         elecload_tran_inputs = np.array(
-            input_industry_electricity_boiler_electricity,
+            [input_industry_electricity_boiler_electricity,
             input_industry_electricity_heat_pumps_electricity,
             input_industry_electricity_district_heating_electricity,
-            input_industry_electricity_non_heating)
+            input_industry_electricity_non_heating])
 
-        elecload_tran = np.add.reduce(elecload_tran_inputs, axis=1)
+        elecload_tran = np.add.reduce(elecload_tran_inputs, axis=0)
 
         gasload_eh_input = np.array(
-            input_industry_gas_boiler_gas,
+           [input_industry_gas_boiler_gas,
             input_industry_biomass_boiler_biomass,
             input_industry_gas_stirling_micro_CHP,
             input_industry_gas_district_heating_gas,
             input_industry_biomass_district_heating_biomass,
-            input_industry_gas_non_heating
+            input_industry_gas_non_heating]
         )
 
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
-        gasload_eh = np.add.reduce(gasload_eh_input, axis=1)
+        gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
         gasload_tran = remap_gas(gasload_eh, gas_map)
 
-        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res")
-        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com")
-        write_input_timestep(elecload_tran, "elecload")
-        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res")
-        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com")
-        write_input_timestep(gasload_tran, "gasload")
-        write_input_timestep(heatload_res, "heatload_res")
-        write_input_timestep(heatload_com, "heatload_com")
+        region_names, interval_names = self.get_names(data, "residential_electricity_non_heating")
+        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
+                             now, region_names, interval_names)
+        region_names, interval_names = self.get_names(data, "service_electricity_non_heating")
+        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
+                             now, region_names, interval_names)
+        write_input_timestep(elecload_tran, "elecload", 
+                             now, region_names, interval_names)
+        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
+                             now, region_names, interval_names)
+        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
+                             now, region_names, interval_names)
+        write_input_timestep(gasload_tran, "gasload", 
+                             now, region_names, interval_names)
+        write_input_timestep(heatload_res, "heatload_res", 
+                             now, region_names, interval_names)
+        write_input_timestep(heatload_com, "heatload_com", 
+                             now, region_names, interval_names)
+
+        def get_model_executable(self):
+            """Return path of current python interpreter
+            """
+            executable = '/vagrant/models/energy_supply/test/MISTRAL_ES.exe'
+
+            return os.path.join(executable)
+
+        # Run the model
+        arguments = [self.get_model_executable()]
+        print(check_output(arguments))
+
 
         # This results mapping maps output_parameters to sectormodel output names
         timestep_results = {
@@ -236,6 +258,16 @@ class EnergySupplyWrapper(SectorModel):
 
     def extract_obj(self, results):
         return 0
+
+    def get_names(self, data_handle, name):
+
+        spatial_resolution = self.inputs.get_spatial_res(name).name
+        region_names = self.get_region_names(data_handle, 
+                                             spatial_resolution)
+        temporal_resolution = self.inputs.get_temporal_res(name).name
+        interval_names = self.get_interval_names(data_handle, 
+                                                 temporal_resolution)
+        return region_names, interval_names
 
 def establish_connection():
     """Connect to an existing database
@@ -422,7 +454,7 @@ def write_load_shed_costs(loadshedcost_elec,
     # Connect to an existing database
     conn = establish_connection()
 
-    sql = """INSERT INTO "LoadShedCosts" (eshedc, gshedc) VALUES (%s, %s);"""
+    sql = """INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);"""
 
     print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
 
@@ -436,7 +468,6 @@ def write_load_shed_costs(loadshedcost_elec,
 
     conn.close()
     
-
 def build_gas_stores(gas_stores):
     """Set up the initial system from a list of interventions
 
@@ -466,7 +497,7 @@ def build_gas_stores(gas_stores):
 
     for store in gas_stores:
 
-        sql = """INSERT INTO "GasStorage" (StorageNum, GasNode, Name, Year, InFlowCap, OutFlowCap, StorageCap, OutFlowCost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
 
         data = (store['storagenumber'],
                 store['gasnode'],
@@ -513,7 +544,7 @@ def get_region_mapping(input_parameter_name):
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name):
+def write_input_timestep(input_data, parameter_name, year):
     """Writes input data into database table 
     
     Uses the index of the numpy array as a reference to interval and region definitions
@@ -524,11 +555,14 @@ def write_input_timestep(input_data, parameter_name):
         Residential heating data
     parameter_name : string
         Name of the input parameter
+    year : integer
+        The year for which the data needs to be written
 
     Notes
     -----
     Database table columns are::
 
+        year
         season
         day
         period
@@ -541,7 +575,7 @@ def write_input_timestep(input_data, parameter_name):
 
     cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s;""", (parameter_name, ))
 
-    sql = """INSERT INTO "input_timestep" (season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s)"""
+    sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     region_mapping = get_region_mapping(parameter_name)
 
@@ -550,11 +584,12 @@ def write_input_timestep(input_data, parameter_name):
         cell = it[0]
 
         region, interval = it.multi_index
-        season, day, period = parse_season_day_period(interval + 1)
-        insert_data = (season,
+        season, day, period = parse_season_day_period(interval + 1))
+        insert_data = (year,
+                       season,
                        day,
                        period,
-                       region_mapping[str(region + 1)],
+                       region_mapping[region + 1],
                        parameter_name,
                        float(cell))
 

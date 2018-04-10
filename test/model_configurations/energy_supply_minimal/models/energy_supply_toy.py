@@ -50,8 +50,7 @@ class EnergySupplyWrapper(SectorModel):
 
         heatload = np.add.reduce(heatload_inputs, axis=0)
 
-        region_names = self.get_region_names(data, self.inputs.get_spatial_res('residential_electricity_boiler_electricity').name)
-        interval_names = self.get_interval_names(data, self.inputs.get_temporal_res('residential_electricity_boiler_electricity').name)
+        region_names, interval_names = self.get_names(data, 'residential_electricity_boiler_electricity')
 
         write_input_timestep(
             heatload, 
@@ -78,6 +77,16 @@ class EnergySupplyWrapper(SectorModel):
         data.set_results("tran_gas_fired", output_tran_gas_fired)
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
+
+    def get_names(self, data_handle, name):
+
+        spatial_resolution = self.inputs.get_spatial_res(name).name
+        region_names = self.get_region_names(data_handle, 
+                                             spatial_resolution)
+        temporal_resolution = self.inputs.get_temporal_res(name).name
+        interval_names = self.get_interval_names(data_handle, 
+                                                 temporal_resolution)
+        return region_names, interval_names
 
     def get_model_executable(self):
         """Return path of current python interpreter
