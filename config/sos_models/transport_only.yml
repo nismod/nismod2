@@ -4,12 +4,12 @@ sector_models:
   - transport
 # Scenario data
 scenario_sets:
-  - passenger_vehicle_OD
+  - population
 dependencies:
-  - source_model: passenger_vehicle_OD
-    source_model_output: flow
+  - source_model: population
+    source_model_output: population
     sink_model: transport
-    sink_model_input: base_year_passenger_vehicle_OD_matrix
+    sink_model_input: population
 # Narratives
 narrative_sets: []
 # Iteration settings

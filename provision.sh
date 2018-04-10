@@ -31,8 +31,16 @@ pip3 install smif~=0.7 --upgrade
 pip3 install psycopg2 pytest
 
 # copy bash config to vagrant home
-cat /vagrant/config/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
+cat /vagrant/provision/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
+
+# Clean get_data of windows newlines
+tr -d '\r' < /vagrant/provision/get_data.sh > /tmp/get_data.sh
+mv /tmp/get_data.sh /vagrant/provision/get_data.sh
+
+# Clean config.ini of windows newlines
+tr -d '\r' < /vagrant/provision/config.ini > /tmp/config.ini
+mv /tmp/config.ini /vagrant/provision/config.ini
 
 # # Provision digital_comms model
 # tr -d '\r' < /vagrant/provision/digital_comms.sh > /tmp/digital_comms.sh
@@ -51,5 +59,5 @@ bash /tmp/energy_supply.sh
 # bash /tmp/solid_waste.sh
 
 # # Provision transport model
-# tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
-# bash /tmp/transport.sh
+tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
+bash /tmp/transport.sh
