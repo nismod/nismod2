@@ -431,7 +431,6 @@ def write_input_timestep(input_data, parameter_name, year,
     sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     region_mapping = get_region_mapping(parameter_name)
-    print(region_mapping)
 
     it = np.nditer(input_data, flags=['multi_index'])
     while not it.finished:

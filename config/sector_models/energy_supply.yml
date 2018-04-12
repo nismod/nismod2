@@ -1,7 +1,7 @@
 interventions: 
 - energy_supply_interventions.yml
 initial_conditions: []
-path: models/energy_supplyenergy_supply.py
+path: models/energy_supply/energy_supply.py
 name: energy_supply
 parameters:
 - suggested_range:
@@ -36,7 +36,7 @@ inputs:
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
-  name: residential_gas_stirling_micro_CHP
+  name: residential_gas_stirling_micro_gas
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
@@ -48,7 +48,7 @@ inputs:
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
-  name: residential_gas_district_heating_gas
+  name: residential_gas_district_heating_CHP_gas
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
@@ -68,7 +68,7 @@ inputs:
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
-  name: service_gas_stirling_micro_CHP
+  name: service_gas_stirling_micro_gas
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
@@ -104,7 +104,7 @@ inputs:
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
-  name: industry_gas_stirling_micro_CHP
+  name: industry_gas_stirling_micro_CHP_gas
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
@@ -116,7 +116,7 @@ inputs:
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
-  name: industry_gas_district_heating_gas
+  name: industry_gas_district_heating_CHP_gas
   spatial_resolution: eh_regions
 - temporal_resolution: seasonal_week
   units: MW
@@ -131,7 +131,7 @@ inputs:
   name: industry_electricity_non_heating
   spatial_resolution: eh_regions
 - temporal_resolution: annual
-  units: GBP/kgCO2
+  units: GBP/kg
   name: cost_of_carbon
   spatial_resolution: national
 - temporal_resolution: annual

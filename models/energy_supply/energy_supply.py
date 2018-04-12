@@ -21,9 +21,13 @@ class EnergySupplyWrapper(SectorModel):
 
     def simulate(self, data):
 
+        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
+
         # Get the current timestep
         now = data.current_timestep
         self.logger.info("Energy supplyWrapper received inputs in %s", now)
+
+        clear_results(now)
 
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
@@ -53,7 +57,7 @@ class EnergySupplyWrapper(SectorModel):
         input_residential_electricity_district_heating_electricity = data.get_data("residential_electricity_district_heating_electricity")
         self.logger.info('Input Residential electricity district heating electricity: %s', input_residential_electricity_district_heating_electricity)
         
-        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_gas")
+        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_CHP_gas")
         self.logger.info('Input Residential gas district heating gas: %s', input_residential_gas_district_heating_gas)
         
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
@@ -95,8 +99,8 @@ class EnergySupplyWrapper(SectorModel):
         input_industry_biomass_boiler_biomass = data.get_data("industry_biomass_boiler_biomass")
         self.logger.info('Input Industry biomass boiler biomass: %s', input_industry_biomass_boiler_biomass)
         
-        input_industry_gas_stirling_micro_CHP = data.get_data("industry_gas_stirling_micro_CHP")
-        self.logger.info('Input Industry gas stirling micro chp: %s', input_industry_gas_stirling_micro_CHP)
+        input_industry_gas_stirling_micro_gas = data.get_data("industry_gas_stirling_micro_CHP_gas")
+        self.logger.info('Input Industry gas stirling micro chp: %s', input_industry_gas_stirling_micro_gas)
     
         input_industry_electricity_heat_pumps_electricity = data.get_data("industry_electricity_heat_pumps_electricity")
         self.logger.info('Input Industry electricity heat pumps electricity: %s', input_industry_electricity_heat_pumps_electricity)
@@ -104,7 +108,7 @@ class EnergySupplyWrapper(SectorModel):
         input_industry_electricity_district_heating_electricity = data.get_data("industry_electricity_district_heating_electricity")
         self.logger.info('Input Industry electricity district heating electricity: %s', input_industry_electricity_district_heating_electricity)
     
-        input_industry_gas_district_heating_gas = data.get_data("industry_gas_district_heating_gas")
+        input_industry_gas_district_heating_gas = data.get_data("industry_gas_district_heating_CHP_gas")
         self.logger.info('Input Industry gas district heating gas: %s', input_industry_gas_district_heating_gas)
     
         input_industry_biomass_district_heating_biomass = data.get_data("industry_biomass_district_heating_biomass")
@@ -173,7 +177,7 @@ class EnergySupplyWrapper(SectorModel):
         gasload_eh_input = np.array(
            [input_industry_gas_boiler_gas,
             input_industry_biomass_boiler_biomass,
-            input_industry_gas_stirling_micro_CHP,
+            input_industry_gas_stirling_micro_gas,
             input_industry_gas_district_heating_gas,
             input_industry_biomass_district_heating_biomass,
             input_industry_gas_non_heating]
@@ -202,13 +206,6 @@ class EnergySupplyWrapper(SectorModel):
                              now, region_names, interval_names)
         write_input_timestep(heatload_com, "heatload_com", 
                              now, region_names, interval_names)
-
-        def get_model_executable(self):
-            """Return path of current python interpreter
-            """
-            executable = '/vagrant/models/energy_supply/test/MISTRAL_ES.exe'
-
-            return os.path.join(executable)
 
         # Run the model
         arguments = [self.get_model_executable()]
@@ -267,11 +264,39 @@ class EnergySupplyWrapper(SectorModel):
         interval_names = self.get_interval_names(temporal_resolution)
         return region_names, interval_names
 
+    def get_model_executable(self):
+        """Return path of current python interpreter
+        """
+        executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
+
+        return os.path.join(executable)
+
 def establish_connection():
     """Connect to an existing database
     """
     conn = psycopg2.connect("dbname=vagrant user=vagrant")
     return conn
+
+def clear_results(year):
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    sql = """DELETE FROM "output_timestep" WHERE year=%s;"""
+
+    cur.execute(sql, (year,))
+
+    sql = """DELETE FROM "output_annual" WHERE year=%s;"""
+
+    cur.execute(sql, (year,))
+
+    # Make the changes to the database persistent
+    conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
@@ -542,7 +567,8 @@ def get_region_mapping(input_parameter_name):
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year):
+def write_input_timestep(input_data, parameter_name, year, 
+                         region_names, interval_names):
     """Writes input data into database table 
     
     Uses the index of the numpy array as a reference to interval and region definitions
@@ -553,8 +579,6 @@ def write_input_timestep(input_data, parameter_name, year):
         Residential heating data
     parameter_name : string
         Name of the input parameter
-    year : integer
-        The year for which the data needs to be written
 
     Notes
     -----
@@ -582,12 +606,12 @@ def write_input_timestep(input_data, parameter_name, year):
         cell = it[0]
 
         region, interval = it.multi_index
-        season, day, period = parse_season_day_period(interval + 1))
+        season, day, period = parse_season_day_period(int(interval_names[interval]))
         insert_data = (year,
                        season,
                        day,
                        period,
-                       region_mapping[region + 1],
+                       region_mapping[int(region_names[region])],
                        parameter_name,
                        float(cell))
 

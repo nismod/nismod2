@@ -33,12 +33,25 @@ scenario_sets:
   facets:
   - name: gas_price
     description: ''
+  - name: electricity_price
+    description: ''
+  - name: gas_price
+    description: ''
+  - name: oil_price
+    description: ''
+  - name: coal_price
+    description: ''
+  - name: nuclearFuel_price
+    description: ''
+  - name: cost_of_carbon
+    description: ''
 # ------------------------------------------------
 region_definitions:
 # shared understanding of regions within the modelled area (e.g. GB)
 - name: lad_uk_2016
   description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
-  filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp #lad_uk_2016-12/lad_uk_2016-12.shp
+  filename: lad_uk_2016-12/lad_uk_2016-12.shp
+  #../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp #lad_uk_2016-12/lad_uk_2016-12.shp
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
   name: lad_southampton
@@ -51,8 +64,11 @@ region_definitions:
 - description: Boundary of Great Britain
   filename: national.shp
   name: national
-- description: Boundaries of Energy Hubs
+- description: Boundaries of 2 Energy Hubs (ES test data set)
   filename: eh_region.shp
+  name: eh_regions_min
+- description: Boundaries of all 39 Energy Hubs 
+  filename: eh_region_full.shp
   name: eh_regions
 # ------------------------------------------------
 interval_definitions:
@@ -153,6 +169,31 @@ scenarios:
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
+  - filename: electricity_price.csv
+    name: electricity_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: oil_price.csv
+    name: oil_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: coal_price.csv
+    name: coal_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: nuclear_fuel_price.csv
+    name: nuclearFuel_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: cost_of_carbon.csv
+    name: cost_of_carbon
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/t
   scenario_set: es_prices
 # ------------------------------------------------
 narrative_sets:
