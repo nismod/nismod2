@@ -25,7 +25,7 @@ Then on the command line, from this directory, run:
     git submodule init
     git submodule update
 
-Add the credentials for the Smif FTP server to `provision/config.ini':
+Add the credentials for the Smif FTP server to `provision/ftp.ini':
 
 ```
 [ftp-config]
