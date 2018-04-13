@@ -7,6 +7,12 @@ import os
 import psycopg2
 from collections import namedtuple
 
+def read_gas_remap():
+    with open("./GasLoadMapV1.csv", 'r') as load_map:
+        reader = DictReader(load_map, fieldnames='node,eh_conn_hub,share')
+        gas_remap = dict(reader)
+        return gas_remap
+
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
@@ -42,6 +48,10 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential gas boiler gas: %s', 
             input_residential_gas_boiler_gas)
         
+        gas_remap = read_gas_remap()
+        
+
+
         input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)

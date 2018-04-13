@@ -52,10 +52,6 @@ inputs:
   spatial_resolution: lad_uk_2016
   temporal_resolution: hourly
   units: GW
-- name: service_electricity_stirling_micro_CHP_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
-  units: GW
 - name: industry_gas_boiler_gas
   spatial_resolution: lad_uk_2016
   temporal_resolution: hourly

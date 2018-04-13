@@ -60,10 +60,6 @@ dependencies:
   source_model_output: service_gas_stirling_micro_CHP_gas
   source_model: energy_demand_constrained
 - sink_model: convert_ed_to_es
-  sink_model_input: service_electricity_stirling_micro_CHP_electricity
-  source_model_output: service_electricity_stirling_micro_CHP_electricity
-  source_model: energy_demand_constrained
-- sink_model: convert_ed_to_es
   sink_model_input: industry_gas_boiler_gas
   source_model_output: industry_gas_boiler_gas
   source_model: energy_demand_constrained

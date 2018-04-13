@@ -130,27 +130,27 @@ inputs:
   units: MW
   name: industry_electricity_non_heating
   spatial_resolution: eh_regions
-- temporal_resolution: annual
-  units: GBP/kg
+- temporal_resolution: seasons
+  units: GBP/t
   name: cost_of_carbon
   spatial_resolution: national
-- temporal_resolution: annual
+- temporal_resolution: seasons
   units: GBP/MWh
   name: electricity_price
   spatial_resolution: national
-- temporal_resolution: annual
+- temporal_resolution: seasons
   units: GBP/MWh
   name: gas_price
   spatial_resolution: national
-- temporal_resolution: annual
+- temporal_resolution: seasons
   units: GBP/MWh
   name: nuclearFuel_price
   spatial_resolution: national
-- temporal_resolution: annual
+- temporal_resolution: seasons
   units: GBP/MWh
   name: oil_price
   spatial_resolution: national
-- temporal_resolution: annual
+- temporal_resolution: seasons
   units: GBP/MWh
   name: coal_price
   spatial_resolution: national

@@ -6,6 +6,13 @@ from subprocess import check_output
 import os
 import psycopg2
 from collections import namedtuple
+from csv import DictReader
+
+def read_gas_remap():
+    with open("./GasLoadMapV1.csv", 'r') as load_map:
+        reader = DictReader(load_map, fieldnames='node,eh_conn_hub,share')
+        gas_remap = dict(reader)
+        return gas_remap
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -17,6 +24,7 @@ class EnergySupplyWrapper(SectorModel):
                 if str(intervention['intervention_name']).startswith('gasstore'):
                     gas_stores.append(intervention)
         build_gas_stores(gas_stores)
+
 
 
     def simulate(self, data):
@@ -48,7 +56,7 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)
         
-        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_CHP")
+        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_gas")
         self.logger.info('Input Residential gas stirling micro chp: %s', input_residential_gas_stirling_micro_CHP)
         
         input_residential_electricity_heat_pumps_electricity = data.get_data("residential_electricity_heat_pumps_electricity")
@@ -72,7 +80,7 @@ class EnergySupplyWrapper(SectorModel):
         input_service_electricity_boiler_electricity = data.get_data("service_electricity_boiler_electricity")
         self.logger.info('Input Service electricity boiler electricity: %s', input_service_electricity_boiler_electricity)
         
-        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_CHP")
+        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_gas")
         self.logger.info('Input Service gas stirling micro chp: %s', input_service_gas_stirling_micro_CHP)
         
         input_service_electricity_heat_pumps_electricity = data.get_data("service_electricity_heat_pumps_electricity")
@@ -138,9 +146,7 @@ class EnergySupplyWrapper(SectorModel):
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
          
-
         # Sum all inputs ready for writing to tables
-
         heatload_res_inputs = np.array([
             input_residential_gas_boiler_gas,
             input_residential_electricity_boiler_electricity,
@@ -186,7 +192,10 @@ class EnergySupplyWrapper(SectorModel):
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
         gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
-        gasload_tran = remap_gas(gasload_eh, gas_map)
+        gasload_tran = remap_gas(gasload_eh, read_gas_remap())
+        region_names = self.get_region_names('')
+        write_input_timestep(gasload_tran, "gasload", 
+                             now, region_names, interval_names)
 
         region_names, interval_names = self.get_names(data, "residential_electricity_non_heating")
         write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
@@ -200,8 +209,7 @@ class EnergySupplyWrapper(SectorModel):
                              now, region_names, interval_names)
         write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
                              now, region_names, interval_names)
-        write_input_timestep(gasload_tran, "gasload", 
-                             now, region_names, interval_names)
+        
         write_input_timestep(heatload_res, "heatload_res", 
                              now, region_names, interval_names)
         write_input_timestep(heatload_com, "heatload_com", 

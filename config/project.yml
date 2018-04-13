@@ -50,8 +50,7 @@ region_definitions:
 # shared understanding of regions within the modelled area (e.g. GB)
 - name: lad_uk_2016
   description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
-  filename: lad_uk_2016-12/lad_uk_2016-12.shp
-  #../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp #lad_uk_2016-12/lad_uk_2016-12.shp
+  filename: ../energy_demand/region_definitions/lad_2016_uk_simplified_fix/lad_2016_uk_simplified.shp #../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp # lad_uk_2016/lad_uk_2016-12.shp #lad_uk_2016-12/lad_uk_2016-12.shp
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
   name: lad_southampton
@@ -68,7 +67,7 @@ region_definitions:
   filename: eh_region.shp
   name: eh_regions_min
 - description: Boundaries of all 39 Energy Hubs 
-  filename: eh_region_full.shp
+  filename: EH_Region_Boundaries.shp #eh_region_full.shp
   name: eh_regions
 # ------------------------------------------------
 interval_definitions:
@@ -152,12 +151,12 @@ scenarios:
   facets:
   - filename: residential_gas_boiler_gas.csv
     name: residential_gas_boiler_gas
-    spatial_resolution: eh_regions
+    spatial_resolution: eh_regions_min
     temporal_resolution: seasonal_week
     units: MW
   - filename: residential_electricity_boiler_electricity.csv
     name: residential_electricity_boiler_electricity
-    spatial_resolution: eh_regions
+    spatial_resolution: eh_regions_min
     temporal_resolution: seasonal_week
     units: MW
   scenario_set: es_residential
