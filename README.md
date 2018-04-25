@@ -11,8 +11,8 @@ provide a reproducible development environment.
 
 To use it, first install:
 
-1. [Virtualbox](www.virtualbox.org)
-1. [Vagrant](vagrantup.com)
+1. [Virtualbox](https://www.virtualbox.org)
+1. [Vagrant](https://vagrantup.com)
 
 If you see only 32-bit options in Virtualbox, please ensure that:
 1. Hardware virtualization is enabled in the BIOS
