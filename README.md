@@ -16,8 +16,8 @@ To use it, first install:
 
 If you see only 32-bit options in Virtualbox, please ensure that:
 1. Hardware virtualization is enabled in the BIOS
-  - For Intel x64: VT-x (Intel Virtualization Technology) and VT-d are both enabled
-  - For AMD x64: AMD SVM (Secure Virtual Machine) is enabled
+    - For Intel x64: VT-x (Intel Virtualization Technology) and VT-d are both enabled
+    - For AMD x64: AMD SVM (Secure Virtual Machine) is enabled
 2. For Windows: in Windows Features, "Hyper-V platform" is disabled.
 
 Note for Ubuntu 17.10 users: If you are experiencing the issue *The box
