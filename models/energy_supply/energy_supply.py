@@ -128,25 +128,7 @@ class EnergySupplyWrapper(SectorModel):
         
         input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
         self.logger.info('Input Service electricity non heating: %s', input_service_electricity_non_heating)
-        
-        input_industry_gas_boiler_gas = data.get_data("industry_gas_boiler_gas")
-        self.logger.info('Input Industry gas boiler gas: %s', input_industry_gas_boiler_gas)
-       
-        input_industry_biomass_boiler_biomass = data.get_data("industry_biomass_boiler_biomass")
-        self.logger.info('Input Industry biomass boiler biomass: %s', input_industry_biomass_boiler_biomass)
-        
-        input_industry_gas_stirling_micro_gas = data.get_data("industry_gas_stirling_micro_CHP_gas")
-        self.logger.info('Input Industry gas stirling micro chp: %s', input_industry_gas_stirling_micro_gas)
-        
-        input_industry_gas_district_heating_gas = data.get_data("industry_gas_district_heating_CHP_gas")
-        self.logger.info('Input Industry gas district heating gas: %s', input_industry_gas_district_heating_gas)
-    
-        input_industry_biomass_district_heating_biomass = data.get_data("industry_biomass_district_heating_biomass")
-        self.logger.info('Input Industry biomass district heating biomass: %s', input_industry_biomass_district_heating_biomass)
-    
-        input_industry_gas_non_heating = data.get_data("industry_gas_non_heating")
-        self.logger.info('Input Industry gas non heating: %s', input_industry_gas_non_heating)
-    
+            
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
     
@@ -191,15 +173,8 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        gasload_eh_input = np.array(
-           [input_industry_gas_boiler_gas,
-            input_industry_biomass_boiler_biomass,
-            input_industry_gas_stirling_micro_gas,
-            input_industry_gas_district_heating_gas,
-            input_industry_biomass_district_heating_biomass,
-            input_industry_gas_non_heating]
-        )
-
+        gasload_eh_input = data.get_data("gasload")
+        self.logger.info('Input gasload: %s', gasload_eh_input)
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
         gasload_eh = np.add.reduce(gasload_eh_input, axis=0)

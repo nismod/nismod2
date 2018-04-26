@@ -70,5 +70,5 @@ class ConvertDemandToSupply(SectorModel):
             
             data_handle.set_results(input_name, results)
 
-    def extract_obj(arg):
+    def extract_obj(self, arg):
         pass

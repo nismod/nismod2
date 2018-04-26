@@ -140,6 +140,23 @@ dependencies:
   sink_model_input: cost_of_carbon
   source_model: es_prices
   source_model_output: cost_of_carbon
+# Convertor to aggregate elecload
+- sink_model: aggregate_elecload
+  sink_model_input: industry_electricity_non_heating
+  source_model_output: industry_electricity_non_heating
+  source_model: convert_ed_to_es
+- sink_model: aggregate_elecload
+  sink_model_input: industry_electricity_boiler_electricity
+  source_model_output: industry_electricity_boiler_electricity
+  source_model: convert_ed_to_es
+- sink_model: aggregate_elecload
+  sink_model_input: industry_electricity_heat_pumps_electricity
+  source_model_output: industry_electricity_heat_pumps_electricity
+  source_model: convert_ed_to_es
+- sink_model: aggregate_elecload
+  sink_model_input: industry_electricity_district_heating_electricity
+  source_model_output: industry_electricity_district_heating_electricity
+  source_model: convert_ed_to_es
 # Convertor to Energy Supply
 - sink_model: energy_supply
   sink_model_input: residential_gas_boiler_gas
@@ -190,38 +207,6 @@ dependencies:
   source_model_output: service_gas_stirling_micro_gas
   source_model: convert_ed_to_es
 - sink_model: energy_supply
-  sink_model_input: industry_gas_boiler_gas
-  source_model_output: industry_gas_boiler_gas
-  source_model: convert_ed_to_es
-- sink_model: aggregate_elecload
-  sink_model_input: industry_electricity_boiler_electricity
-  source_model_output: industry_electricity_boiler_electricity
-  source_model: convert_ed_to_es
-- sink_model: energy_supply
-  sink_model_input: industry_biomass_boiler_biomass
-  source_model_output: industry_biomass_boiler_biomass
-  source_model: convert_ed_to_es
-- sink_model: aggregate_elecload
-  sink_model_input: industry_electricity_heat_pumps_electricity
-  source_model_output: industry_electricity_heat_pumps_electricity
-  source_model: convert_ed_to_es
-- sink_model: energy_supply
-  sink_model_input: industry_gas_district_heating_CHP_gas
-  source_model_output: industry_gas_district_heating_CHP_gas
-  source_model: convert_ed_to_es
-- sink_model: aggregate_elecload
-  sink_model_input: industry_electricity_district_heating_electricity
-  source_model_output: industry_electricity_district_heating_electricity
-  source_model: convert_ed_to_es
-- sink_model: energy_supply
-  sink_model_input: industry_biomass_district_heating_biomass
-  source_model_output: industry_biomass_district_heating_biomass
-  source_model: convert_ed_to_es
-- sink_model: energy_supply
-  sink_model_input: industry_gas_stirling_micro_CHP_gas
-  source_model_output: industry_gas_stirling_micro_CHP_gas
-  source_model: convert_ed_to_es
-- sink_model: energy_supply
   sink_model_input: residential_gas_non_heating
   source_model_output: residential_gas_non_heating
   source_model: convert_ed_to_es
@@ -237,17 +222,40 @@ dependencies:
   sink_model_input: service_electricity_non_heating
   source_model_output: service_electricity_non_heating
   source_model: convert_ed_to_es
-- sink_model: energy_supply
+# Convertor to aggregate gasload
+- sink_model: aggregate_gasload
+  sink_model_input: industry_gas_boiler_gas
+  source_model_output: industry_gas_boiler_gas
+  source_model: convert_ed_to_es
+- sink_model: aggregate_gasload
+  sink_model_input: industry_biomass_boiler_biomass
+  source_model_output: industry_biomass_boiler_biomass
+  source_model: convert_ed_to_es
+- sink_model: aggregate_gasload
+  sink_model_input: industry_gas_district_heating_CHP_gas
+  source_model_output: industry_gas_district_heating_CHP_gas
+  source_model: convert_ed_to_es
+- sink_model: aggregate_gasload
+  sink_model_input: industry_biomass_district_heating_biomass
+  source_model_output: industry_biomass_district_heating_biomass
+  source_model: convert_ed_to_es
+- sink_model: aggregate_gasload
+  sink_model_input: industry_gas_stirling_micro_CHP_gas
+  source_model_output: industry_gas_stirling_micro_CHP_gas
+  source_model: convert_ed_to_es
+- sink_model: aggregate_gasload
   sink_model_input: industry_gas_non_heating
   source_model_output: industry_gas_non_heating
   source_model: convert_ed_to_es
-- sink_model: aggregate_elecload
-  sink_model_input: industry_electricity_non_heating
-  source_model_output: industry_electricity_non_heating
-  source_model: convert_ed_to_es
+# Aggregate elecload to energy supply
 - source_model: aggregate_elecload
   sink_model_input: elecload
   source_model_output: elecload
+  sink_model: energy_supply
+# Aggregate gasload to energy supply
+- source_model: aggregate_gasload
+  sink_model_input: gasload
+  source_model_output: gasload
   sink_model: energy_supply
 description: A full version of the energy demand - energy supply system-of-systems
   model
@@ -262,3 +270,4 @@ sector_models:
 - energy_demand_constrained
 - convert_ed_to_es
 - aggregate_elecload
+- aggregate_gasload

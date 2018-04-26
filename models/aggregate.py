@@ -23,5 +23,5 @@ class AggregateInputs(SectorModel):
         for output_name in self.outputs.keys():
             data_handle.set_results(output_name, aggregate_data)
 
-    def extract_obj(arg):
+    def extract_obj(self, arg):
         pass
