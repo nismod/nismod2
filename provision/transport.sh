@@ -25,5 +25,5 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_se
    bye
 !
 
-unzip -fo $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/transport_$release $MODEL_DIR/transport
-rm -r $MODEL_DIR/transport/transport_$release
+rm -r $MODEL_DIR/transport
+unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/transport_$release $MODEL_DIR/transport
