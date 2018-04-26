@@ -8,11 +8,42 @@ import psycopg2
 from collections import namedtuple
 from csv import DictReader
 
-def read_gas_remap():
-    with open("./GasLoadMapV1.csv", 'r') as load_map:
-        reader = DictReader(load_map, fieldnames='node,eh_conn_hub,share')
-        gas_remap = dict(reader)
-        return gas_remap
+def read_gas_remap(file_name):
+    with open(file_name, 'r') as load_map:
+        reader = DictReader(load_map)
+        gas_remap = [{'node': int(x['Node']), 'eh': int(x['EH_Conn_Num']), 'share': x['Load Share'] } for x in reader]
+        
+        mapper = {}
+        for row in gas_remap:
+            if row['eh'] in mapper.keys():
+                mapper[int(row['eh'])].update({row['node']: row['share']})
+            else:
+                mapper[int(row['eh'])] = {row['node']: row['share']}
+                
+        return mapper
+
+def remap_gas(data, remap_filename):
+    """Remaps `data` using the mapping file `remap_filename`
+
+    Builds a coefficient matrix and reshapes the regions of the `data`
+
+    Returns
+    -------
+    reshaped_data : numpy.ndarray
+        An array of data with dimensions regions-by-intervals
+    gas_nodes : list
+        A list of the gas node region names
+    """
+
+    mapper = read_gas_remap(remap_filename)
+
+    coefficients = np.zeros((29, 86), dtype=float)
+    for hub, gas_nodeshare in mapper.items():
+        for gas_node, share in gas_nodeshare.items():
+            coefficients[hub - 1, gas_node - 1] = share
+            
+    reshaped_data = np.dot(data.T, coefficients).T
+    return reshaped_data, list(range(1, 87))
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -192,33 +223,41 @@ class EnergySupplyWrapper(SectorModel):
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
         gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
-        gasload_tran = remap_gas(gasload_eh, read_gas_remap())
-        region_names = self.get_region_names('')
+        remap_file = "/vagrant/models/energy_supply/GasLoadMapV1.csv"
+        gasload_tran, region_names = remap_gas(gasload_eh, remap_file)
+        _, interval_names = self.get_names('industry_gas_boiler_gas')
+        self.logger.info('Writing %s to database', "gasload")
         write_input_timestep(gasload_tran, "gasload", 
                              now, region_names, interval_names)
 
-        region_names, interval_names = self.get_names(data, "residential_electricity_non_heating")
+        region_names, interval_names = self.get_names( "residential_electricity_non_heating")
+        self.logger.info('Writing %s to database', "elecload_non_heat_res")
         write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
                              now, region_names, interval_names)
-        region_names, interval_names = self.get_names(data, "service_electricity_non_heating")
+        region_names, interval_names = self.get_names( "service_electricity_non_heating")
+        self.logger.info('Writing %s to database', "elecload_non_heat_com")
         write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "elecload")
         write_input_timestep(elecload_tran, "elecload", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "gasload_non_heat_res")
         write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "gasload_non_heat_com")
         write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
                              now, region_names, interval_names)
-        
+        self.logger.info('Writing %s to database', "heatload_res")
         write_input_timestep(heatload_res, "heatload_res", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "heatload_com")
         write_input_timestep(heatload_com, "heatload_com", 
                              now, region_names, interval_names)
 
         # Run the model
+        self.logger.info("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
-        print(check_output(arguments))
-
+        self.logger.info(check_output(arguments))
 
         # This results mapping maps output_parameters to sectormodel output names
         timestep_results = {
@@ -248,7 +287,7 @@ class EnergySupplyWrapper(SectorModel):
             'load_shed_elec': 'elec_load_shed'}
 
         annual_results = {
-            'total_opt_cost': 'total_opt_cost',
+            # 'total_opt_cost': 'total_opt_cost',
             'emissions_elec': 'e_emissions'}
 
         # Write timestep results to data handler
@@ -256,15 +295,15 @@ class EnergySupplyWrapper(SectorModel):
             data.set_results(model_output, get_timestep_output(parameter))
         
         # Write annual results to data handler
-        for parameter in annual_results.items():
-            data.set_results(parameter, get_annual_output(parameter))
+        for model_output, parameter in annual_results.items():
+            data.set_results(model_output, get_annual_output(parameter))
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
     def extract_obj(self, results):
         return 0
 
-    def get_names(self, data_handle, name):
+    def get_names(self, name):
 
         spatial_resolution = self.inputs.get_spatial_res(name).name
         region_names = self.get_region_names(spatial_resolution)
@@ -446,7 +485,7 @@ def get_annual_output(output_parameter):
     conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        sql = """SELECT r.name AS region, '1', o.value AS value
+        sql = """SELECT r.name AS region, '1' AS interval, o.value AS value
                  FROM "output_annual" AS o
                  INNER JOIN region AS r ON o.region_id = r.id
                  WHERE parameter = %s;"""
@@ -603,7 +642,7 @@ def write_input_timestep(input_data, parameter_name, year,
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s;""", (parameter_name, ))
+    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s AND year=%s;""", (parameter_name, year))
 
     sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 

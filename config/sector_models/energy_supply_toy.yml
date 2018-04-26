@@ -8,11 +8,11 @@ initial_conditions:
 - energy_supply_generation.yml
 inputs:
 - name: residential_gas_boiler_gas
-  spatial_resolution: eh_regions_min
+  spatial_resolution: energy_hub_min
   temporal_resolution: seasonal_week
   units: MW
 - name: residential_electricity_boiler_electricity
-  spatial_resolution: eh_regions_min
+  spatial_resolution: energy_hub_min
   temporal_resolution: seasonal_week
   units: MW
 - name: gas_price

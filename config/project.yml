@@ -65,10 +65,10 @@ region_definitions:
   name: national
 - description: Boundaries of 2 Energy Hubs (ES test data set)
   filename: eh_region.shp
-  name: eh_regions_min
+  name: energy_hub_min
 - description: Boundaries of all 39 Energy Hubs 
   filename: EH_Region_Boundaries.shp #eh_region_full.shp
-  name: eh_regions
+  name: energy_hub
 # ------------------------------------------------
 interval_definitions:
 # shared understanding of time intervals within a year
@@ -151,12 +151,12 @@ scenarios:
   facets:
   - filename: residential_gas_boiler_gas.csv
     name: residential_gas_boiler_gas
-    spatial_resolution: eh_regions_min
+    spatial_resolution: energy_hub_min
     temporal_resolution: seasonal_week
     units: MW
   - filename: residential_electricity_boiler_electricity.csv
     name: residential_electricity_boiler_electricity
-    spatial_resolution: eh_regions_min
+    spatial_resolution: energy_hub_min
     temporal_resolution: seasonal_week
     units: MW
   scenario_set: es_residential
