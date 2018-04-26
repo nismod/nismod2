@@ -1,8 +1,9 @@
 # NISMOD v2.0
 
-NISMOD v2 will import the integration framework and each of the sector models
-to be developed as part of the MISTRAL project, building on work done for
-ITRC/NISMOD v1.
+NISMOD v2.0 includes the integration framework smif and released versions
+for each of the sector models developed as part of the ITRC-MISTRAL project
+together with the configuration necessary to get the model communicating as a 
+system-of-systems model.
 
 ## Vagrant notes
 
@@ -14,18 +15,46 @@ To use it, first install:
 1. [Virtualbox](www.virtualbox.org)
 1. [Vagrant](vagrantup.com)
 
-
 Note for Ubuntu 17.10 users: If you are experiencing the issue *The box ‘bento/ubuntu-16.04’ could not be found or could not be accessed in the remote catalog.* Make sure that you have the latest version of Vagrant (>v2) installed. This version is currently not in the standard package archive (PPA) but can be downloaded from the vagrant website.
 
-### Running for the first time
+Note for Windows users: Virtualbox requires that Hyper-V is disabled.
 
+## Download NISMOD v2.0
+
+The latest release of NISMOD v2.0 is available from [Github Releases](https://github.com/nismod/nismod/releases/latest).
+
+Download the .zip archive and unzip it into a directory.
+
+Now, goto [Running for the first time](Running for the first time)
+
+## Installing NISMOD v2.0 in Development Mode
+
+Clone the NISMOD v2.0 repository using the command
+
+    git clone http://github.com/nismod/nismod
+    
 Then on the command line, from this directory, run:
 
     git checkout v2 # Checks out the NISMOD v2.0 branch
     git submodule init
     git submodule update
 
-Add the credentials for the Smif FTP server to `provision/config.ini':
+Now, goto [Running for the first time](Running for the first time)
+
+## Updating your NISMOD v2.0
+
+If a new version of NISMOD v2.0 is released, follow these instructions:
+
+    git checkout v2
+    git pull # Pull down the latest changes
+    git submodule update # Update the sector models
+    vagrant reload --provision # Restart and re-provision the virtual machine
+
+Now, goto [Running for the first time](Running for the first time)
+
+## Running for the first time
+
+In the install directory, add the credentials for the smif FTP server to `provision/config.ini':
 
 ```
 [ftp-config]
@@ -38,32 +67,23 @@ Create and configure the guest machine:
 
     vagrant up
 
-This will download a virtual machine image and install all the packages and
-software which are required to test and run NISMOD onto that virtual machine.
+This will download a virtual machine image, install all the packages and
+software which are required to test and run NISMOD onto that virtual machine
+and download the data and model releases from the FTP.
 
-Once that has finished, restart the machine.
+Once that has finished successfully, restart the machine.
 
     vagrant reload
 
 Now, enter the virtual machine, navigate to the project folder
-and run the tests:
+and run smif:
 
     vagrant ssh
-    cd /vagrant/test
-    pytest
+    cd /vagrant
+    smif list
 
-Within `test/model_configurations` there are a set of sample model
-configurations.
-
-### Updating your NISMOD v2.0
-
-If a new version of NISMOD v2.0 is released, follow these instructions:
-
-    git checkout v2
-    git pull # Pull down the latest changes
-    git submodule update # Update the sector models
-    vagrant reload --provision # Restart and re-provision the virtual machine
-
+All model configuration is contained in the `config` folder, data in the `data`
+folder, model wrappers in the `model` folder, and results in the `results` folder
 
 ### Integration testing
 
