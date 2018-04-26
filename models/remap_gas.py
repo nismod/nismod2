@@ -51,7 +51,7 @@ class RemapEnergyHubToGasNode(SectorModel):
     def simulate(self, data_handle):
         """Remaps energy demand from energy hubs to gas nodes
         """
-        gasload_eh = data_handle.get_data('gasload_eh')
+        gasload_eh = data_handle.get_data('gasload')
 
         remap_file = "/vagrant/data/energy_supply/data/_GasLoadMap.csv"
         gasload_nodes = remap_gas(gasload_eh, remap_file)

@@ -7,42 +7,6 @@ import os
 import psycopg2
 from collections import namedtuple
 
-def read_gas_remap(file_name):
-    with open(file_name, 'r') as load_map:
-        reader = DictReader(load_map)
-        gas_remap = [{'node': int(x['Node']), 'eh': int(x['EH_Conn_Num']), 'share': x['Load Share'] } for x in reader]
-        
-        mapper = {}
-        for row in gas_remap:
-            if row['eh'] in mapper.keys():
-                mapper[int(row['eh'])].update({row['node']: row['share']})
-            else:
-                mapper[int(row['eh'])] = {row['node']: row['share']}
-                
-        return mapper
-
-def remap_gas(data, remap_filename):
-    """Remaps `data` using the mapping file `remap_filename`
-
-    Builds a coefficient matrix and reshapes the regions of the `data`
-
-    Returns
-    -------
-    reshaped_data : numpy.ndarray
-        An array of data with dimensions regions-by-intervals
-    gas_nodes : list
-        A list of the gas node region names
-    """
-
-    mapper = read_gas_remap(remap_filename)
-
-    coefficients = np.zeros((29, 86), dtype=float)
-    for hub, gas_nodeshare in mapper.items():
-        for gas_node, share in gas_nodeshare.items():
-            coefficients[hub - 1, gas_node - 1] = share
-            
-    reshaped_data = np.dot(data.T, coefficients).T
-    return reshaped_data, list(range(1, 87))
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -172,20 +136,6 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        gasload_eh = data.get_data("gasload")
-        self.logger.info('Input gasload: %s', gasload_eh)
-        # These gasload values are provided at the energy hub regions,
-        # but must be mapped to gas nodes using provided gas load map
-        remap_file = "/vagrant/data/energy_supply/data/_GasLoadMap.csv"
-        gasload_tran, region_names = remap_gas(gasload_eh, remap_file)
-        _, interval_names = self.get_names('gasload')
-        
-        gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names( "gasload")
-        self.logger.info('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload", 
-                             now, region_names, interval_names)
-
         region_names, interval_names = self.get_names( "residential_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_res")
         write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
@@ -210,6 +160,12 @@ class EnergySupplyWrapper(SectorModel):
         elecload_tran = data.get_data('elecload')
         self.logger.info('Writing %s to database', "elecload")
         write_input_timestep(elecload_tran, "elecload", 
+                             now, region_names, interval_names)
+
+        gasload = data.get_data('gasload')
+        region_names, interval_names = self.get_names( "gasload")
+        self.logger.info('Writing %s to database', "gasload")
+        write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
         # Run the model
