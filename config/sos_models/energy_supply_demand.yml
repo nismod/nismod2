@@ -252,8 +252,13 @@ dependencies:
   sink_model_input: elecload
   source_model_output: elecload
   sink_model: energy_supply
-# Aggregate gasload to energy supply
+# Aggregate gasload to remap_gas
 - source_model: aggregate_gasload
+  sink_model_input: gasload
+  source_model_output: gasload
+  sink_model: remap_gas
+# Aggregate gasload to energy supply
+- source_model: remap_gas
   sink_model_input: gasload
   source_model_output: gasload
   sink_model: energy_supply
@@ -271,3 +276,4 @@ sector_models:
 - convert_ed_to_es
 - aggregate_elecload
 - aggregate_gasload
+- remap_gas

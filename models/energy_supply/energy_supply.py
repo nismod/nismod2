@@ -6,7 +6,6 @@ from subprocess import check_output
 import os
 import psycopg2
 from collections import namedtuple
-from csv import DictReader
 
 def read_gas_remap(file_name):
     with open(file_name, 'r') as load_map:
@@ -173,16 +172,18 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        gasload_eh_input = data.get_data("gasload")
-        self.logger.info('Input gasload: %s', gasload_eh_input)
+        gasload_eh = data.get_data("gasload")
+        self.logger.info('Input gasload: %s', gasload_eh)
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
-        gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
         remap_file = "/vagrant/data/energy_supply/data/_GasLoadMap.csv"
         gasload_tran, region_names = remap_gas(gasload_eh, remap_file)
-        _, interval_names = self.get_names('industry_gas_boiler_gas')
+        _, interval_names = self.get_names('gasload')
+        
+        gasload = data.get_data('gasload')
+        region_names, interval_names = self.get_names( "gasload")
         self.logger.info('Writing %s to database', "gasload")
-        write_input_timestep(gasload_tran, "gasload", 
+        write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
         region_names, interval_names = self.get_names( "residential_electricity_non_heating")
