@@ -7,7 +7,7 @@ apt-get install -y default-jre
 . /vagrant/provision/get_data.sh transport
 
 # Download the model jar
-source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/config.ini))
+source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/ftp.ini))
 source <(grep = <(grep -A3 "\[transport\]" /vagrant/provision/config.ini))
 
 MODEL_DIR=/vagrant/install
