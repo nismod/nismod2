@@ -193,7 +193,7 @@ dependencies:
   sink_model_input: industry_gas_boiler_gas
   source_model_output: industry_gas_boiler_gas
   source_model: convert_ed_to_es
-- sink_model: energy_supply
+- sink_model: aggregate_elecload
   sink_model_input: industry_electricity_boiler_electricity
   source_model_output: industry_electricity_boiler_electricity
   source_model: convert_ed_to_es
@@ -201,7 +201,7 @@ dependencies:
   sink_model_input: industry_biomass_boiler_biomass
   source_model_output: industry_biomass_boiler_biomass
   source_model: convert_ed_to_es
-- sink_model: energy_supply
+- sink_model: aggregate_elecload
   sink_model_input: industry_electricity_heat_pumps_electricity
   source_model_output: industry_electricity_heat_pumps_electricity
   source_model: convert_ed_to_es
@@ -209,7 +209,7 @@ dependencies:
   sink_model_input: industry_gas_district_heating_CHP_gas
   source_model_output: industry_gas_district_heating_CHP_gas
   source_model: convert_ed_to_es
-- sink_model: energy_supply
+- sink_model: aggregate_elecload
   sink_model_input: industry_electricity_district_heating_electricity
   source_model_output: industry_electricity_district_heating_electricity
   source_model: convert_ed_to_es
@@ -241,10 +241,14 @@ dependencies:
   sink_model_input: industry_gas_non_heating
   source_model_output: industry_gas_non_heating
   source_model: convert_ed_to_es
-- sink_model: energy_supply
+- sink_model: aggregate_elecload
   sink_model_input: industry_electricity_non_heating
   source_model_output: industry_electricity_non_heating
   source_model: convert_ed_to_es
+- source_model: aggregate_elecload
+  sink_model_input: elecload
+  source_model_output: elecload
+  sink_model: energy_supply
 description: A full version of the energy demand - energy supply system-of-systems
   model
 max_iterations: '100'
@@ -257,3 +261,4 @@ sector_models:
 - energy_supply
 - energy_demand_constrained
 - convert_ed_to_es
+- aggregate_elecload

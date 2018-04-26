@@ -131,22 +131,13 @@ class EnergySupplyWrapper(SectorModel):
         
         input_industry_gas_boiler_gas = data.get_data("industry_gas_boiler_gas")
         self.logger.info('Input Industry gas boiler gas: %s', input_industry_gas_boiler_gas)
-        
-        input_industry_electricity_boiler_electricity = data.get_data("industry_electricity_boiler_electricity")
-        self.logger.info('Input Industry electricity boiler electricity: %s', input_industry_electricity_boiler_electricity)
        
         input_industry_biomass_boiler_biomass = data.get_data("industry_biomass_boiler_biomass")
         self.logger.info('Input Industry biomass boiler biomass: %s', input_industry_biomass_boiler_biomass)
         
         input_industry_gas_stirling_micro_gas = data.get_data("industry_gas_stirling_micro_CHP_gas")
         self.logger.info('Input Industry gas stirling micro chp: %s', input_industry_gas_stirling_micro_gas)
-    
-        input_industry_electricity_heat_pumps_electricity = data.get_data("industry_electricity_heat_pumps_electricity")
-        self.logger.info('Input Industry electricity heat pumps electricity: %s', input_industry_electricity_heat_pumps_electricity)
-    
-        input_industry_electricity_district_heating_electricity = data.get_data("industry_electricity_district_heating_electricity")
-        self.logger.info('Input Industry electricity district heating electricity: %s', input_industry_electricity_district_heating_electricity)
-    
+        
         input_industry_gas_district_heating_gas = data.get_data("industry_gas_district_heating_CHP_gas")
         self.logger.info('Input Industry gas district heating gas: %s', input_industry_gas_district_heating_gas)
     
@@ -155,9 +146,6 @@ class EnergySupplyWrapper(SectorModel):
     
         input_industry_gas_non_heating = data.get_data("industry_gas_non_heating")
         self.logger.info('Input Industry gas non heating: %s', input_industry_gas_non_heating)
-    
-        input_industry_electricity_non_heating = data.get_data("industry_electricity_non_heating")
-        self.logger.info('Input Industry electricity non heating: %s', input_industry_electricity_non_heating)
     
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
@@ -203,14 +191,6 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        elecload_tran_inputs = np.array(
-            [input_industry_electricity_boiler_electricity,
-            input_industry_electricity_heat_pumps_electricity,
-            input_industry_electricity_district_heating_electricity,
-            input_industry_electricity_non_heating])
-
-        elecload_tran = np.add.reduce(elecload_tran_inputs, axis=0)
-
         gasload_eh_input = np.array(
            [input_industry_gas_boiler_gas,
             input_industry_biomass_boiler_biomass,
@@ -223,7 +203,7 @@ class EnergySupplyWrapper(SectorModel):
         # These gasload values are provided at the energy hub regions,
         # but must be mapped to gas nodes using provided gas load map
         gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
-        remap_file = "/vagrant/models/energy_supply/GasLoadMapV1.csv"
+        remap_file = "/vagrant/data/energy_supply/data/_GasLoadMap.csv"
         gasload_tran, region_names = remap_gas(gasload_eh, remap_file)
         _, interval_names = self.get_names('industry_gas_boiler_gas')
         self.logger.info('Writing %s to database', "gasload")
@@ -238,9 +218,6 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Writing %s to database', "elecload_non_heat_com")
         write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
                              now, region_names, interval_names)
-        self.logger.info('Writing %s to database', "elecload")
-        write_input_timestep(elecload_tran, "elecload", 
-                             now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_res")
         write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
                              now, region_names, interval_names)
@@ -252,6 +229,11 @@ class EnergySupplyWrapper(SectorModel):
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_com")
         write_input_timestep(heatload_com, "heatload_com", 
+                             now, region_names, interval_names)
+
+        elecload_tran = data.get_data('elecload')
+        self.logger.info('Writing %s to database', "elecload")
+        write_input_timestep(elecload_tran, "elecload", 
                              now, region_names, interval_names)
 
         # Run the model

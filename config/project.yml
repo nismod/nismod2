@@ -192,7 +192,7 @@ scenarios:
     name: cost_of_carbon
     spatial_resolution: national
     temporal_resolution: seasons
-    units: GBP/t
+    units: GBP/Mt
   scenario_set: es_prices
 # ------------------------------------------------
 narrative_sets:
