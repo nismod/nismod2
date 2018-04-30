@@ -7,6 +7,7 @@ import os
 import psycopg2
 from collections import namedtuple
 
+
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
@@ -19,11 +20,16 @@ class EnergySupplyWrapper(SectorModel):
         build_gas_stores(gas_stores)
 
 
+
     def simulate(self, data):
+
+        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
 
         # Get the current timestep
         now = data.current_timestep
         self.logger.info("Energy supplyWrapper received inputs in %s", now)
+
+        clear_results(now)
 
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
@@ -44,7 +50,7 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)
         
-        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_CHP")
+        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_gas")
         self.logger.info('Input Residential gas stirling micro chp: %s', input_residential_gas_stirling_micro_CHP)
         
         input_residential_electricity_heat_pumps_electricity = data.get_data("residential_electricity_heat_pumps_electricity")
@@ -53,7 +59,7 @@ class EnergySupplyWrapper(SectorModel):
         input_residential_electricity_district_heating_electricity = data.get_data("residential_electricity_district_heating_electricity")
         self.logger.info('Input Residential electricity district heating electricity: %s', input_residential_electricity_district_heating_electricity)
         
-        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_gas")
+        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_CHP_gas")
         self.logger.info('Input Residential gas district heating gas: %s', input_residential_gas_district_heating_gas)
         
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
@@ -68,7 +74,7 @@ class EnergySupplyWrapper(SectorModel):
         input_service_electricity_boiler_electricity = data.get_data("service_electricity_boiler_electricity")
         self.logger.info('Input Service electricity boiler electricity: %s', input_service_electricity_boiler_electricity)
         
-        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_CHP")
+        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_gas")
         self.logger.info('Input Service gas stirling micro chp: %s', input_service_gas_stirling_micro_CHP)
         
         input_service_electricity_heat_pumps_electricity = data.get_data("service_electricity_heat_pumps_electricity")
@@ -85,37 +91,7 @@ class EnergySupplyWrapper(SectorModel):
         
         input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
         self.logger.info('Input Service electricity non heating: %s', input_service_electricity_non_heating)
-        
-        input_industry_gas_boiler_gas = data.get_data("industry_gas_boiler_gas")
-        self.logger.info('Input Industry gas boiler gas: %s', input_industry_gas_boiler_gas)
-        
-        input_industry_electricity_boiler_electricity = data.get_data("industry_electricity_boiler_electricity")
-        self.logger.info('Input Industry electricity boiler electricity: %s', input_industry_electricity_boiler_electricity)
-       
-        input_industry_biomass_boiler_biomass = data.get_data("industry_biomass_boiler_biomass")
-        self.logger.info('Input Industry biomass boiler biomass: %s', input_industry_biomass_boiler_biomass)
-        
-        input_industry_gas_stirling_micro_CHP = data.get_data("industry_gas_stirling_micro_CHP")
-        self.logger.info('Input Industry gas stirling micro chp: %s', input_industry_gas_stirling_micro_CHP)
-    
-        input_industry_electricity_heat_pumps_electricity = data.get_data("industry_electricity_heat_pumps_electricity")
-        self.logger.info('Input Industry electricity heat pumps electricity: %s', input_industry_electricity_heat_pumps_electricity)
-    
-        input_industry_electricity_district_heating_electricity = data.get_data("industry_electricity_district_heating_electricity")
-        self.logger.info('Input Industry electricity district heating electricity: %s', input_industry_electricity_district_heating_electricity)
-    
-        input_industry_gas_district_heating_gas = data.get_data("industry_gas_district_heating_gas")
-        self.logger.info('Input Industry gas district heating gas: %s', input_industry_gas_district_heating_gas)
-    
-        input_industry_biomass_district_heating_biomass = data.get_data("industry_biomass_district_heating_biomass")
-        self.logger.info('Input Industry biomass district heating biomass: %s', input_industry_biomass_district_heating_biomass)
-    
-        input_industry_gas_non_heating = data.get_data("industry_gas_non_heating")
-        self.logger.info('Input Industry gas non heating: %s', input_industry_gas_non_heating)
-    
-        input_industry_electricity_non_heating = data.get_data("industry_electricity_non_heating")
-        self.logger.info('Input Industry electricity non heating: %s', input_industry_electricity_non_heating)
-    
+            
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
     
@@ -134,9 +110,7 @@ class EnergySupplyWrapper(SectorModel):
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
          
-
         # Sum all inputs ready for writing to tables
-
         heatload_res_inputs = np.array([
             input_residential_gas_boiler_gas,
             input_residential_electricity_boiler_electricity,
@@ -162,58 +136,42 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        elecload_tran_inputs = np.array(
-            [input_industry_electricity_boiler_electricity,
-            input_industry_electricity_heat_pumps_electricity,
-            input_industry_electricity_district_heating_electricity,
-            input_industry_electricity_non_heating])
-
-        elecload_tran = np.add.reduce(elecload_tran_inputs, axis=0)
-
-        gasload_eh_input = np.array(
-           [input_industry_gas_boiler_gas,
-            input_industry_biomass_boiler_biomass,
-            input_industry_gas_stirling_micro_CHP,
-            input_industry_gas_district_heating_gas,
-            input_industry_biomass_district_heating_biomass,
-            input_industry_gas_non_heating]
-        )
-
-        # These gasload values are provided at the energy hub regions,
-        # but must be mapped to gas nodes using provided gas load map
-        gasload_eh = np.add.reduce(gasload_eh_input, axis=0)
-        gasload_tran = remap_gas(gasload_eh, gas_map)
-
-        region_names, interval_names = self.get_names(data, "residential_electricity_non_heating")
+        region_names, interval_names = self.get_names( "residential_electricity_non_heating")
+        self.logger.info('Writing %s to database', "elecload_non_heat_res")
         write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
                              now, region_names, interval_names)
-        region_names, interval_names = self.get_names(data, "service_electricity_non_heating")
+        region_names, interval_names = self.get_names( "service_electricity_non_heating")
+        self.logger.info('Writing %s to database', "elecload_non_heat_com")
         write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
                              now, region_names, interval_names)
-        write_input_timestep(elecload_tran, "elecload", 
-                             now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "gasload_non_heat_res")
         write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "gasload_non_heat_com")
         write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
                              now, region_names, interval_names)
-        write_input_timestep(gasload_tran, "gasload", 
-                             now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "heatload_res")
         write_input_timestep(heatload_res, "heatload_res", 
                              now, region_names, interval_names)
+        self.logger.info('Writing %s to database', "heatload_com")
         write_input_timestep(heatload_com, "heatload_com", 
                              now, region_names, interval_names)
 
-        def get_model_executable(self):
-            """Return path of current python interpreter
-            """
-            executable = '/vagrant/models/energy_supply/test/MISTRAL_ES.exe'
+        elecload_tran = data.get_data('elecload')
+        self.logger.info('Writing %s to database', "elecload")
+        write_input_timestep(elecload_tran, "elecload", 
+                             now, region_names, interval_names)
 
-            return os.path.join(executable)
+        gasload = data.get_data('gasload')
+        region_names, interval_names = self.get_names( "gasload")
+        self.logger.info('Writing %s to database', "gasload")
+        write_input_timestep(gasload, "gasload", 
+                             now, region_names, interval_names)
 
         # Run the model
+        self.logger.info("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
-        print(check_output(arguments))
-
+        self.logger.info(check_output(arguments))
 
         # This results mapping maps output_parameters to sectormodel output names
         timestep_results = {
@@ -243,7 +201,7 @@ class EnergySupplyWrapper(SectorModel):
             'load_shed_elec': 'elec_load_shed'}
 
         annual_results = {
-            'total_opt_cost': 'total_opt_cost',
+            # 'total_opt_cost': 'total_opt_cost',
             'emissions_elec': 'e_emissions'}
 
         # Write timestep results to data handler
@@ -251,15 +209,15 @@ class EnergySupplyWrapper(SectorModel):
             data.set_results(model_output, get_timestep_output(parameter))
         
         # Write annual results to data handler
-        for parameter in annual_results.items():
-            data.set_results(parameter, get_annual_output(parameter))
+        for model_output, parameter in annual_results.items():
+            data.set_results(model_output, get_annual_output(parameter))
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
     def extract_obj(self, results):
         return 0
 
-    def get_names(self, data_handle, name):
+    def get_names(self, name):
 
         spatial_resolution = self.inputs.get_spatial_res(name).name
         region_names = self.get_region_names(spatial_resolution)
@@ -267,11 +225,39 @@ class EnergySupplyWrapper(SectorModel):
         interval_names = self.get_interval_names(temporal_resolution)
         return region_names, interval_names
 
+    def get_model_executable(self):
+        """Return path of current python interpreter
+        """
+        executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
+
+        return os.path.join(executable)
+
 def establish_connection():
     """Connect to an existing database
     """
     conn = psycopg2.connect("dbname=vagrant user=vagrant")
     return conn
+
+def clear_results(year):
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    sql = """DELETE FROM "output_timestep" WHERE year=%s;"""
+
+    cur.execute(sql, (year,))
+
+    sql = """DELETE FROM "output_annual" WHERE year=%s;"""
+
+    cur.execute(sql, (year,))
+
+    # Make the changes to the database persistent
+    conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
@@ -413,7 +399,7 @@ def get_annual_output(output_parameter):
     conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        sql = """SELECT r.name AS region, '1', o.value AS value
+        sql = """SELECT r.name AS region, '1' AS interval, o.value AS value
                  FROM "output_annual" AS o
                  INNER JOIN region AS r ON o.region_id = r.id
                  WHERE parameter = %s;"""
@@ -542,7 +528,8 @@ def get_region_mapping(input_parameter_name):
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year):
+def write_input_timestep(input_data, parameter_name, year, 
+                         region_names, interval_names):
     """Writes input data into database table 
     
     Uses the index of the numpy array as a reference to interval and region definitions
@@ -553,8 +540,6 @@ def write_input_timestep(input_data, parameter_name, year):
         Residential heating data
     parameter_name : string
         Name of the input parameter
-    year : integer
-        The year for which the data needs to be written
 
     Notes
     -----
@@ -571,7 +556,7 @@ def write_input_timestep(input_data, parameter_name, year):
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s;""", (parameter_name, ))
+    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s AND year=%s;""", (parameter_name, year))
 
     sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
@@ -582,12 +567,12 @@ def write_input_timestep(input_data, parameter_name, year):
         cell = it[0]
 
         region, interval = it.multi_index
-        season, day, period = parse_season_day_period(interval + 1))
+        season, day, period = parse_season_day_period(int(interval_names[interval]))
         insert_data = (year,
                        season,
                        day,
                        period,
-                       region_mapping[region + 1],
+                       region_mapping[int(region_names[region])],
                        parameter_name,
                        float(cell))
 

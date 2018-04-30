@@ -2,10 +2,30 @@
 """
 import numpy as np
 from smif.model.sector_model import SectorModel
+from csv import DictReader
 import subprocess
 import os
 import psycopg2
 from collections import namedtuple
+
+def read_gas_remap(file_name):
+    with open(file_name, 'r') as load_map:
+        reader = DictReader(load_map)
+        gas_remap = [{'node': int(x['Node']), 'eh': int(x['EH_Conn_Num']), 'share': x['Load Share'] } for x in reader]
+        
+        mapper = {}
+        nodes = set()
+        for row in gas_remap:
+            if row['eh'] in mapper.keys():
+                nodes.add(row['node'])
+                mapper[int(row['eh'])].update({row['node']: row['share']})
+            else:
+                nodes.add(row['node'])
+                mapper[int(row['eh'])] = {row['node']: row['share']}
+                
+        hubs = sorted(mapper.keys())
+        return hubs, nodes, mapper
+    
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -42,6 +62,27 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential gas boiler gas: %s', 
             input_residential_gas_boiler_gas)
         
+        hubs, gas_nodes, mapper = read_gas_remap("/vagrant/models/energy_supply/GasLoadMap_minimal.csv")
+
+        coefficients = np.zeros((max(hubs), max(gas_nodes)), dtype=float)
+        for hub, gas_nodeshare in mapper.items():
+            for gas_node, share in gas_nodeshare.items():
+                coefficients[hub - 1, gas_node - 1] = share
+               
+        reshaped_heat = np.dot(input_residential_gas_boiler_gas.T, 
+                               coefficients).T
+        _, interval_names = self.get_names('residential_gas_boiler_gas')
+        region_names = list(gas_nodes)
+
+        self.logger.debug("Writing %s array of shape %s to database", 
+                          'gasload', reshaped_heat.shape)
+        write_input_timestep(
+            reshaped_heat, 
+            'gasload',
+            now,
+            region_names,
+            interval_names)
+        
         input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)
@@ -53,7 +94,8 @@ class EnergySupplyWrapper(SectorModel):
 
         heatload = np.add.reduce(heatload_inputs, axis=0)
 
-        region_names, interval_names = self.get_names(data, 'residential_electricity_boiler_electricity')
+        region_names, interval_names = self.get_names(
+            'residential_electricity_boiler_electricity')
 
         write_input_timestep(
             heatload, 
@@ -83,12 +125,13 @@ class EnergySupplyWrapper(SectorModel):
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
-    def get_names(self, data_handle, name):
+    def get_names(self, name):
 
         spatial_resolution = self.inputs.get_spatial_res(name).name
         region_names = self.get_region_names(spatial_resolution)
         temporal_resolution = self.inputs.get_temporal_res(name).name
         interval_names = self.get_interval_names(temporal_resolution)
+
         return region_names, interval_names
 
     def get_model_executable(self):
@@ -430,7 +473,10 @@ def write_input_timestep(input_data, parameter_name, year,
 
     sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
+    print(input_data.shape, region_names)
+
     region_mapping = get_region_mapping(parameter_name)
+
     print(region_mapping)
 
     it = np.nditer(input_data, flags=['multi_index'])
