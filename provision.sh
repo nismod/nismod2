@@ -32,34 +32,33 @@ pip3 install smif~=0.7 --upgrade
 # Install pyscopg2 (required by some run.py wrappers)
 pip3 install psycopg2 pytest
 
+# We MUST clean ALL the windows newlines
+shopt -s nullglob
+to_clean=(/vagrant/provision/*)
+shopt -u nullglob
+
+for filename in ${to_clean[@]}; do
+    bname=$(basename $filename)
+    tr -d '\r' < $filename > /tmp/$bname
+    mv /tmp/$bname $filename
+    echo $bname
+done;
+
 # copy bash config to vagrant home
-cat /vagrant/provision/.bashrc | tr -d '\r' > /home/vagrant/.bashrc
+cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
 
-# Clean get_data of windows newlines
-tr -d '\r' < /vagrant/provision/get_data.sh > /tmp/get_data.sh
-mv /tmp/get_data.sh /vagrant/provision/get_data.sh
-
-# Clean config.ini of windows newlines
-tr -d '\r' < /vagrant/provision/config.ini > /tmp/config.ini
-mv /tmp/config.ini /vagrant/provision/config.ini
-
 # # Provision digital_comms model
-# tr -d '\r' < /vagrant/provision/digital_comms.sh > /tmp/digital_comms.sh
-# bash /tmp/digital_comms.sh
+# bash /vagrant/provision/digital_comms.sh
 
 # Provision energy_demand model
-tr -d '\r' < /vagrant/provision/energy_demand.sh > /tmp/energy_demand.sh
-bash /tmp/energy_demand.sh
+bash /vagrant/provision/energy_demand.sh
 
 # Provision energy_supply model
-tr -d '\r' < /vagrant/provision/energy_supply.sh > /tmp/energy_supply.sh
-bash /tmp/energy_supply.sh
+bash /vagrant/provision/energy_supply.sh
 
 # # Provision solid_waste model
-# tr -d '\r' < /vagrant/provision/solid_waste.sh > /tmp/solid_waste.sh
-# bash /tmp/solid_waste.sh
+# bash /vagrant/provision/solid_waste.sh
 
 # # Provision transport model
-tr -d '\r' < /vagrant/provision/transport.sh > /tmp/transport.sh
-bash /tmp/transport.sh
+bash /vagrant/provision/transport.sh

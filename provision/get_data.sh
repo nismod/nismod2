@@ -21,7 +21,7 @@ if [ $? -ne 0 ]; then
     RED='\033[0;31m'
     NC='\033[0m' # No Color
     printf "${RED}Unable to download the ${1} datafiles from the SFTP server.${NC}\n"
-    printf "${RED}Make sure that the server is responsive and the config.ini information is correct.${NC}\n"
+    printf "${RED}Make sure that the server is responsive and the credentionals in provision/ftp.ini are correct.${NC}\n"
     exit 1
 fi
 
