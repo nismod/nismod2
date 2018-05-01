@@ -11,7 +11,9 @@ from collections import namedtuple
 def read_gas_remap(file_name):
     with open(file_name, 'r') as load_map:
         reader = DictReader(load_map)
-        gas_remap = [{'node': int(x['Node']), 'eh': int(x['EH_Conn_Num']), 'share': x['Load Share'] } for x in reader]
+        gas_remap = [{'node': int(x['Node']), 
+                      'eh': int(x['EH_Conn_Num']), 
+                      'share': x['Load Share'] } for x in reader]
         
         mapper = {}
         nodes = set()
@@ -62,7 +64,8 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential gas boiler gas: %s', 
             input_residential_gas_boiler_gas)
         
-        hubs, gas_nodes, mapper = read_gas_remap("/vagrant/models/energy_supply/GasLoadMap_minimal.csv")
+        filepath = "/vagrant/data/energy_supply/minimal/_GasLoadMap_minimal.csv"
+        hubs, gas_nodes, mapper = read_gas_remap(filepath)
 
         coefficients = np.zeros((max(hubs), max(gas_nodes)), dtype=float)
         for hub, gas_nodeshare in mapper.items():
@@ -83,7 +86,8 @@ class EnergySupplyWrapper(SectorModel):
             region_names,
             interval_names)
         
-        input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
+        input_residential_electricity_boiler_electricity = data.get_data(
+            "residential_electricity_boiler_electricity")
         self.logger.info('Input Residential electricity boiler electricity: %s', 
             input_residential_electricity_boiler_electricity)
 
