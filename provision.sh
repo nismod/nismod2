@@ -7,6 +7,9 @@ apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
 
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
+# Configure /vagrant folder as default on vagrant ssh
+echo "cd /vagrant" >> /home/vagrant/.bashrc
+
 # Create vagrant role if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
     | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant';\" "
