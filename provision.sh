@@ -31,6 +31,10 @@ pip3 install -U setuptools
 pip3 install pyscaffold
 pip3 install smif~=0.7 --upgrade
 
+# Install Jupyter Notebook for Results Viewer
+pip3 install jupyter notebook
+pip3 install networkx matplotlib numpy ipywidgets
+
 # Install pyscopg2 (required by some run.py wrappers)
 pip3 install psycopg2-binary pytest
 
