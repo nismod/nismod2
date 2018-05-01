@@ -215,29 +215,5 @@ outputs:
   units: MW
   name: industry_electricity_non_heating
   spatial_resolution: energy_hub
-- temporal_resolution: annual
-  units: GBP/Mt
-  name: cost_of_carbon
-  spatial_resolution: national
-- temporal_resolution: annual
-  units: GBP/MWh
-  name: electricity_price
-  spatial_resolution: national
-- temporal_resolution: annual
-  units: GBP/MWh
-  name: gas_price
-  spatial_resolution: national
-- temporal_resolution: annual
-  units: GBP/MWh
-  name: nuclearFuel_price
-  spatial_resolution: national
-- temporal_resolution: annual
-  units: GBP/MWh
-  name: oil_price
-  spatial_resolution: national
-- temporal_resolution: annual
-  units: GBP/MWh
-  name: coal_price
-  spatial_resolution: national
 parameters: []
 path: models/convert.py
