@@ -89,8 +89,18 @@ logout               # log out of the virtual machine (or shortcut: CTRL+D)
 
 Then results are written to subfolders within the results directory – I’m working with Will on a reasonable way to view intermediate and final results at the moment.
 
+### Viewing Results
 
-### Database connection
+The vagrant box hosts a local jupyter notebook server which can be accessed by
+nagivating your browser to [`localhost:8910`](http://localhost:8910/notebooks/Results%20Viewer%20-%20Split%20Out.ipynb)
+
+First, spin up the notebook server in the background with the command:
+
+    vagrant ssh
+    cd /vagrant
+    jupyter notebook &> /dev/null &
+
+### Database Connection
 
 Some sector models use a database which runs within the virtual machine and is
 set up when the virtual machine is provisioned.
