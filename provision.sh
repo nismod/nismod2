@@ -49,7 +49,7 @@ cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
 chown vagrant:vagrant /home/vagrant/.bashrc
 
 # # Provision digital_comms model
-# bash /vagrant/provision/digital_comms.sh
+bash /vagrant/provision/digital_comms.sh
 
 # Provision energy_demand model
 bash /vagrant/provision/energy_demand.sh
