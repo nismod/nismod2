@@ -16,4 +16,4 @@ mkdir -p "$target"
 . /vagrant/provision/get_data.sh energy-demand
 
 # Post install
-energy_demand minimal_setup -d /vagrant/data_energy_demand
+energy_demand minimal_setup -d /vagrant/data/energy_demand
