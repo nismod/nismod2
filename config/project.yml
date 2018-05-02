@@ -50,7 +50,7 @@ region_definitions:
 # shared understanding of regions within the modelled area (e.g. GB)
 - name: lad_uk_2016
   description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
-  filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified_fix/lad_2016_uk_simplified.shp 
+  filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp 
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
   name: lad_southampton
