@@ -28,7 +28,7 @@ from energy_demand.basic import lookup_tables
 # you only running smif, use the following configuration: FAST_SMIF_RUN == True
 # -----------
 FAST_SMIF_RUN = True
-WRITEOUTSMIFRESULTS = True # Set to True i
+WRITEOUTSMIFRESULTS = True # Set to True
 
 NR_OF_MODELLEd_REGIONS = 391 # uk: 391 (including ireland), england.: 380
 
@@ -94,7 +94,8 @@ class EDWrapper(SectorModel):
 
         self.user_data['data']['paths'] = data_loader.load_paths(
             resource_filename(
-                Requirement.parse("energy_demand"), "energy_demand/config_data"))
+                Requirement.parse("energy_demand"),
+                os.path.join("energy_demand", "config_data")))
 
         # downloaded (FTP) data
         self.user_data['data']['local_paths'] = data_loader.load_local_paths(
