@@ -21,7 +21,7 @@ echo "host    all             all             all                     md5" >> /e
 service postgresql restart
 
 # use ubuntu package to install latest pip
-pip install --upgrade pip
+pip3 install --upgrade pip
 pip3 install --upgrade pip3
 
 # Install smif
@@ -30,7 +30,7 @@ pip3 install pyscaffold
 pip3 install smif~=0.7 --upgrade
 
 # Install pyscopg2 (required by some run.py wrappers)
-pip3 install psycopg2 pytest
+pip3 install psycopg2-binary pytest
 
 # We MUST clean ALL the windows newlines
 shopt -s nullglob
