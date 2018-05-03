@@ -22,7 +22,6 @@ service postgresql restart
 
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
-pip3 install --upgrade pip3
 
 # Install smif
 pip3 install -U setuptools
