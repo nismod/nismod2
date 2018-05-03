@@ -136,7 +136,7 @@ outputs:
   name: residential_gas_district_heating_CHP_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: residential_gas_non_heating
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
@@ -168,7 +168,7 @@ outputs:
   name: service_gas_district_heating_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: service_gas_non_heating
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
@@ -176,7 +176,7 @@ outputs:
   name: service_electricity_non_heating
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_boiler_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
@@ -184,11 +184,11 @@ outputs:
   name: industry_electricity_boiler_electricity
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_biomass_boiler_biomass
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_stirling_micro_CHP_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
@@ -200,15 +200,15 @@ outputs:
   name: industry_electricity_district_heating_electricity
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_district_heating_CHP_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_biomass_district_heating_biomass
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_non_heating
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
