@@ -3,27 +3,27 @@ description: 'Aggregates industry gas and biomass energy demand outputs for ener
 initial_conditions: []
 inputs:
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_boiler_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_biomass_boiler_biomass
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_stirling_micro_CHP_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_district_heating_CHP_gas
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_biomass_district_heating_biomass
   spatial_resolution: energy_hub
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: industry_gas_non_heating
   spatial_resolution: energy_hub
 interventions: []
@@ -32,6 +32,6 @@ outputs:
 - name: gasload
   spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
 parameters: []
 path: models/aggregate.py

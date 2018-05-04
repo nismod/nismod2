@@ -8,7 +8,9 @@ from csv import DictReader
 def read_gas_remap(file_name):
     with open(file_name, 'r') as load_map:
         reader = DictReader(load_map)
-        gas_remap = [{'node': int(x['Node']), 'eh': int(x['EH_Conn_Num']), 'share': x['Load Share'] } for x in reader]
+        gas_remap = [{'node': int(x['Node']), 
+                      'eh': int(x['EH_Conn_Num']), 
+                      'share': x['Load Share'] } for x in reader]
         
         mapper = {}
         for row in gas_remap:

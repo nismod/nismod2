@@ -31,6 +31,8 @@ class EnergySupplyWrapper(SectorModel):
 
         clear_results(now)
 
+        write_simduration(now)
+
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
         self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
@@ -294,6 +296,25 @@ def compute_interval_id(season, day, period):
     """
     return 1 + (168 * (season - 1)) + (24 * (day - 1)) + (period - 1)
 
+def write_simduration(year):
+    """
+    """
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    cur.execute("""DELETE FROM "SimDuration";""")
+
+    sql = """INSERT INTO "SimDuration" ("TimeStep", "Year", "Seasons", "Days", "Periods") VALUES (%s, %s, %s, %s, %s);"""
+
+    cur.execute(sql, ('1', year, '4', '7', '24'))
+
+    # Make the changes to the database persistent
+    conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
 def write_gas_price(year, data):
     """
 
@@ -310,7 +331,7 @@ def write_gas_price(year, data):
 
     cur.execute("""DELETE FROM "FuelData" WHERE year=%s AND fuel_id=1;""", (year, ))
 
-    sql = """INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost) VALUES (%s, %s, %s, %s, %s)"""
+    sql = """INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost) VALUES (%s, %s, %s, %s, %s);"""
 
     it = np.nditer(data, flags=['multi_index'])
     while not it.finished:

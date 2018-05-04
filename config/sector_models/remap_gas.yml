@@ -3,7 +3,7 @@ description: 'Remaps data from energy hub regions to gas nodes'
 initial_conditions: []
 inputs:
 - temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
   name: gasload
   spatial_resolution: energy_hub
 interventions: []
@@ -12,6 +12,6 @@ outputs:
 - name: gasload
   spatial_resolution: gas_nodes
   temporal_resolution: seasonal_week
-  units: MW
+  units: mcm
 parameters: []
 path: models/remap_gas.py

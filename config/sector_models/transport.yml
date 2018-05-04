@@ -23,7 +23,7 @@ outputs:
   - name: energy_consumption_electricity
     spatial_resolution: whole_system
     temporal_resolution: annual_day
-    units: kwh
+    units: kWh
   - name: energy_consumption_hydrogen
     spatial_resolution: whole_system
     temporal_resolution: annual_day

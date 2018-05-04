@@ -70,6 +70,7 @@ class TransportWrapper(SectorModel):
             '-cp',
             path_to_jar,
             'nismod.transport.App',
+            '-c',
             path_to_config
         ]
 
@@ -119,7 +120,10 @@ class TransportWrapper(SectorModel):
         # base/current   [LAD,...]
         # 2015,          247000,129000,179000,139000
         # 2020,          247000,129000,179000,139000
-        with open(os.path.join(working_dir, 'csvfiles', 'population.csv') ,'w') as file_handle:
+        if not os.path.exists(os.path.join(working_dir, 'data')):
+            os.mkdir(os.path.join(working_dir, 'data'))
+
+        with open(os.path.join(working_dir, 'data', 'population.csv') ,'w') as file_handle:
             w = csv.writer(file_handle)
 
             pop_region_names = self._input_region_names("population")
@@ -145,15 +149,22 @@ class TransportWrapper(SectorModel):
         # energyConsumptions.csv
         # year,PETROL,DIESEL,LPG,ELECTRICITY,HYDROGEN,HYBRID
         # 2020,11632.72,17596.62,2665.98,7435.64,94.57,714.32
-        with open(os.path.join(working_dir, 'data', 'energyConsumptions.csv')) as fh:
-            r = csv.reader(fh)
-            header = next(r)[1:]
-            values = next(r)[1:]
-            for fuel, val in zip(header, values):
-                data_handle.set_results(
-                    "energy_consumption__{}".format(fuel.lower()),
-                    np.array([[float(val)]])
-                )
+
+        energy_consumption_file = os.path.join(working_dir, 'output', 'energyConsumptions.csv')
+
+        if not os.path.exists(energy_consumption_file):
+            raise FileNotFoundError("Cannot find the energy consumption file at %s",
+                str(energy_consumption_file))
+        else:
+            with open(os.path.join(working_dir, 'output', 'energyConsumptions.csv')) as fh:
+                r = csv.reader(fh)
+                header = next(r)[1:]
+                values = next(r)[1:]
+                for fuel, val in zip(header, values):
+                    data_handle.set_results(
+                        "energy_consumption__{}".format(fuel.lower()),
+                        np.array([[float(val)]])
+                    )
 
     def extract_obj(self, results):
         """Return value of objective function, to-be-defined
