@@ -1,68 +1,105 @@
 """Digital demand dummy model
 """
+import os
+import fiona
+import configparser
 import numpy as np
-from smif.model.sector_model import SectorModel
+np.set_printoptions(threshold=np.nan)
 
+from digital_comms.fixed_network.model import ICTManager
+from digital_comms.fixed_network.interventions import decide_interventions
+
+from smif.model.sector_model import SectorModel
 
 class DigitalCommsWrapper(SectorModel):
     """Digital model
     """
+    def __init__(self, name):
+        super().__init__(name)
+
+        self.user_data = {}
+
     def initialise(self, initial_conditions):
-        pass
+        print('initialise')
 
-    def simulate(self, data):
+    def before_model_run(self, data_handle):
+        print('before model run')
+        """Implement this method to conduct pre-model run tasks
 
-        # Get the current timestep
+        Arguments
+        ---------
+        data_handle: smif.data_layer.DataHandle
+            Access parameter values (before any model is run, no dependency
+            input data or state is guaranteed to be available)
+        """
 
-        now = data.current_timestep
+        # Get wrapper configuration
+        path_main = os.path.dirname(os.path.abspath(__file__))
+        config = configparser.ConfigParser()
+        config.read(os.path.join(path_main, 'wrapperconfig.ini'))
+        data_path = config['PATHS']['path_local_data']
+
+        # Get modelrun configuration
+        parameters = data_handle.get_parameters()
+        
+        # Load assets
+        assets = {}
+        assets['premises'] = read_shapefile(os.path.join(data_path, 'assets_layer5_premises.shp'))
+        assets['distributions'] = read_shapefile(os.path.join(data_path, 'assets_layer4_distributions.shp'))
+        assets['cabinets'] = read_shapefile(os.path.join(data_path, 'assets_layer3_cabinets.shp'))
+        assets['exchanges'] = read_shapefile(os.path.join(data_path, 'assets_layer2_exchanges.shp'))
+        
+        # Load links
+        links = []
+        links.extend(read_shapefile(os.path.join(data_path, 'links_layer5_premises.shp')))
+        links.extend(read_shapefile(os.path.join(data_path, 'links_layer4_distributions.shp')))
+        links.extend(read_shapefile(os.path.join(data_path, 'links_layer3_cabinets.shp')))
+
+        self.logger.info("DigitalCommsWrapper - Intitialise system")
+        self.system = ICTManager(assets, links, parameters)
+
+    def simulate(self, data_handle):
+        
+        # -----
+        # Start
+        # -----
+        now = data_handle.current_timestep
         self.logger.info("DigitalCommsWrapper received inputs in %s",
                          now)
 
-        # Demonstrates how to get the value for a model parameter
-        parameter_value = data.get_parameter('smart_meter_savings')
-        self.logger.info('Smart meter savings: %s', parameter_value)
+        # -----------------------
+        # Run fixed network model
+        # -----------------------
+        self.logger.info("DigitalCommsWrapper - Decide interventions")
+        interventions, budget, spend = decide_interventions('rollout_fttp_per_distribution', data_handle.get_parameter('annual_budget'), data_handle.get_parameter('service_obligation_capacity'), self.system, now)
 
-        # Demonstrates how to get the value for a model input
-        # (defaults to the current time period)
-        current_energy_demand = data.get_data('energy_demand')
-        self.logger.info("Current energy demand in %s is %s",
-                         now, current_energy_demand)
+        self.logger.info("DigitalCommsWrapper - Upgrading system")
+        self.system.upgrade(interventions)
 
-        # Demonstrates how to get the value for a model input from the base
-        # timeperiod
-        base_energy_demand = data.get_base_timestep_data('energy_demand')
-        base_year = data.base_timestep
-        self.logger.info("Base year energy demand in %s was %s", base_year,
-                         base_energy_demand)
+        # -------------
+        # Write outputs
+        # -------------
+        interventions_lut = {intervention[0]:intervention for intervention in interventions}
+        
+        distribution_upgrades = np.empty((self.system.number_of_assets['distributions'],1))
+        for idx, distribution in enumerate(data_handle.get_region_names('broadband_distributions')):
+            distribution_upgrades[idx, 0] = interventions_lut[distribution][2] if distribution in interventions_lut else 0
+        data_handle.set_results('distribution_upgrades', distribution_upgrades)
 
-        # Demonstrates how to get the value for a model input from the previous
-        # timeperiod
-        if now > base_year:
-            prev_energy_demand = data.get_previous_timestep_data('energy_demand')
-            prev_year = data.previous_timestep
-            self.logger.info("Previous energy demand in %s was %s",
-                             prev_year, prev_energy_demand)
+        distribution_upgrade_costs_fttp = np.empty((self.system.number_of_assets['distributions'],1))
+        for idx, distribution in enumerate(self.system.assets['distributions']):
+            distribution_upgrade_costs_fttp[idx, 0] = distribution.upgrade_costs['fttp']
+        data_handle.set_results('distribution_upgrade_costs_fttp', distribution_upgrade_costs_fttp)
 
-        # Pretend to call the 'energy model'
-        # This code prints out debug logging messages for each input
-        # defined in the energy_demand configuration
-        for name in self.inputs.names:
-            time_intervals = self.inputs[name].get_interval_names()
-            regions = self.inputs[name].get_region_names()
-            for i, region in enumerate(regions):
-                for j, interval in enumerate(time_intervals):
-                    self.logger.info(
-                        "%s %s %s",
-                        interval,
-                        region,
-                        data.get_data(name)[i, j])
-
-        # Write pretend results to data handler
-        data.set_results("cost", np.ones((3, 1)) * 3)
-        data.set_results("water_demand", np.ones((3, 1)) * 3)
-
+        # ----
+        # Exit
+        # ----
         self.logger.info("DigitalCommsWrapper produced outputs in %s",
                          now)
-
+    
     def extract_obj(self, results):
         return 0
+
+def read_shapefile(file):
+    with fiona.open(file, 'r') as source:
+        return [f['properties'] for f in source]
