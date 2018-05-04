@@ -50,7 +50,7 @@ region_definitions:
 # shared understanding of regions within the modelled area (e.g. GB)
 - name: lad_uk_2016
   description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
-  filename: ../energy_demand/region_definitions/lad_2016_uk_simplified_fix/lad_2016_uk_simplified.shp #../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp # lad_uk_2016/lad_uk_2016-12.shp #lad_uk_2016-12/lad_uk_2016-12.shp
+  filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp #../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp # lad_uk_2016/lad_uk_2016-12.shp #lad_uk_2016-12/lad_uk_2016-12.shp
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
   name: lad_southampton
@@ -66,12 +66,12 @@ region_definitions:
 - description: Boundaries of 2 Energy Hubs (ES test data set)
   filename: eh_region.shp
   name: energy_hub_min
-- description: Boundaries of all 39 Energy Hubs 
-  filename: EH_Region_Boundaries.shp #eh_region_full.shp
-  name: energy_hub
-- description: Points of all 87 gas offtake nodes
-  filename: gas_nodes.shp #eh_region_full.shp
-  name: gas_nodes
+- description: Broadband network distributions (Fixed network)
+  filename: assets_broadband_network/assets_layer4_distributions.shp
+  name: broadband_distributions
+- description: Broadband network cabinets (Fixed network)
+  filename: assets_broadband_network/assets_layer3_cabinets.shp
+  name: broadband_cabinets
 # ------------------------------------------------
 interval_definitions:
 # shared understanding of time intervals within a year
