@@ -4,6 +4,3 @@
 [submodule "models/water_supply"]
 	path = models/water_supply
 	url = https://github.com/nismod/water_supply.git
-[submodule "models/digital_comms"]
-	path = models/digital_comms
-	url = https://github.com/nismod/digital_comms.git

@@ -1,0 +1,10 @@
+decision_module: ''
+description: ''
+name: digital_comms_test
+narratives: {}
+scenarios: {}
+sos_model: digital_comms_only
+stamp: '2018-05-01T12:36:34.374Z'
+timesteps:
+- 2015
+- 2020
