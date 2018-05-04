@@ -1,0 +1,6 @@
+before_script:
+  - bash provision.sh
+
+test:
+  script:
+    - smif -V
