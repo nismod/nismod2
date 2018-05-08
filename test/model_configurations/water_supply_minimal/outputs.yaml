@@ -1,4 +1,0 @@
-- name: Restriction_Frequency_L3
-  # both water zones, dissolved to an area with the name 'thames_severn'
-  spatial_resolution: modelled_area
-  temporal_resolution: daily

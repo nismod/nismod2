@@ -1,6 +1,0 @@
-- name: electricity_demand
-  spatial_resolution: es_regions
-  temporal_resolution: es_hourly
-- name: gas_demand
-  spatial_resolution: es_regions
-  temporal_resolution: es_hourly
