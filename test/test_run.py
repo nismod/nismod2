@@ -6,7 +6,7 @@ Example manual usage to run transport_minimal with debug logging::
 """
 import os, shutil, sys
 from glob import glob
-from unittest.mock import MagicMock
+from subprocess import run
 
 from smif.cli import execute_model_run
 
@@ -16,15 +16,9 @@ def model_configuration_run(config_dirname, modelrun_name):
        - Run model
        - Expect results and no errors
     """
-    test_dir = os.path.dirname(__file__)
-    model_config = os.path.join(
-        str(test_dir),
-        "model_configurations",
-        config_dirname
-    )
 
     # Clear results
-    results_folder = os.path.join(model_config, 'results')
+    results_folder = os.path.join(config_dirname, 'results')
     if os.path.isdir(results_folder):
         for file in os.listdir(results_folder):
             file_path = os.path.join(results_folder, file)
@@ -36,10 +30,7 @@ def model_configuration_run(config_dirname, modelrun_name):
                 print(e)
 
     # Run Model
-    mock_args = MagicMock()
-    mock_args.directory = model_config
-    mock_args.modelrun = modelrun_name
-    execute_model_run(mock_args)
+    run("smif run "  + modelrun_name + " -d" + config_dirname, shell=True, check=True)
 
     # Expect results
     assert os.path.isdir(os.path.join(results_folder, modelrun_name))
@@ -48,34 +39,36 @@ def model_configuration_run(config_dirname, modelrun_name):
 def check_result_exists(config_dirname, modelrun_name, sector_model_name, result_file_name):
     """ Check if a certain result file was generated a modelrun
     """
-    test_dir = os.path.dirname(__file__)
     results_folder = os.path.join(
-        str(test_dir),
-        "model_configurations",
         config_dirname,
-        'results'
+        modelrun_name,
+        os.listdir(os.path.join(config_dirname, modelrun_name))[0],
+        sector_model_name
     )
 
-    assert os.path.exists(os.path.join(results_folder, modelrun_name, sector_model_name, result_file_name))
+    files = os.listdir(results_folder)
+    assert os.path.exists(os.path.join(results_folder, result_file_name))
 
 
 def test_digital_comms_run():
-    # model_configuration_run('digital_comms_minimal')
-    pass
+    model_configuration_run('/vagrant', 'digital_comms_test')
+
+    check_result_exists(os.path.join('/vagrant', 'results'), 'digital_comms_test', 'digital_comms',
+                        'output_distribution_upgrade_costs_fttp_timestep_2015_regions_broadband_distributions_intervals_annual.dat')
+    check_result_exists(os.path.join('/vagrant', 'results'), 'digital_comms_test', 'digital_comms',
+                        'output_distribution_upgrade_costs_fttp_timestep_2020_regions_broadband_distributions_intervals_annual.dat')
+    check_result_exists(os.path.join('/vagrant', 'results'), 'digital_comms_test', 'digital_comms',
+                        'output_distribution_upgrades_timestep_2015_regions_broadband_distributions_intervals_annual.dat')
+    check_result_exists(os.path.join('/vagrant', 'results'), 'digital_comms_test', 'digital_comms',
+                        'output_distribution_upgrades_timestep_2020_regions_broadband_distributions_intervals_annual.dat')                        
 
 
 def test_energy_demand_run():
-    model_configuration_run('energy_demand_minimal', 'energy_demand_test')
-
-    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand',
-                        'output_residential_solid_fuel_boiler_solid_fuel_timestep_2015_regions_national_intervals_hourly.csv')
-    check_result_exists('energy_demand_minimal', 'energy_demand_test', 'energy_demand',
-                        'output_residential_solid_fuel_boiler_solid_fuel_timestep_2016_regions_national_intervals_hourly.csv')
+    model_configuration_run('/vagrant', 'energy_demand_test')
 
 
 def test_energy_supply_run():
-    # model_configuration_run('energy_supply_minimal')
-    pass
+    model_configuration_run('/vagrant', 'energy_supply_test')
 
 
 def test_solid_waste_run():
@@ -84,7 +77,7 @@ def test_solid_waste_run():
 
 
 def test_transport_run():
-    model_configuration_run('transport_minimal', 'transport_test')
+    model_configuration_run('/vagrant', 'transport_test')
 
 
 def test_water_supply_run():
