@@ -1,9 +1,0 @@
-- name: total_cost
-  spatial_resolution: es_regions
-  temporal_resolution: es_hourly
-- name: water_demand
-  spatial_resolution: es_regions
-  temporal_resolution: es_hourly
-- name: total_emissions
-  spatial_resolution: es_regions
-  temporal_resolution: es_hourly
