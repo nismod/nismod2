@@ -8,7 +8,7 @@ sector_models: # Select 1 or more of the sector models
 - et_module
 - energy_demand_constrained
 - energy_supply
-scenario_dependencies:
+dependencies:
 - source_scenario: population
   scenario_parameter: population
   sink_model: energy_demand_constrained
@@ -21,7 +21,6 @@ scenario_dependencies:
   scenario_parameter: electricity
   sink_model: et_module
   model_input: electricity
-model_dependencies:
 - source_model: et_module
   output: electricity
   sink_model: energy_supply
