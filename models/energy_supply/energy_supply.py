@@ -200,11 +200,16 @@ class EnergySupplyWrapper(SectorModel):
             'heat_gasboiler': 'eh_gas_boiler',
             'heat_heatpump': 'eh_heat_pump',
             'load_shed_gas': 'gas_load_shed',
-            'load_shed_elec': 'elec_load_shed'}
+            'load_shed_elec': 'elec_load_shed',
+            'load_shed_gas_eh': 'gas_load_shed_eh',
+            'load_shed_elec_eh': 'elec_load_shed_eh',
+            'emissions_eh': 'e_emissions_eh',
+            'emissions_bb': 'e_emissions'}
 
         annual_results = {
             # 'total_opt_cost': 'total_opt_cost',
-            'emissions_elec': 'e_emissions'}
+            # 'emissions_elec': 'e_emissions'
+            }
 
         # Write timestep results to data handler
         for model_output, parameter in timestep_results.items():
