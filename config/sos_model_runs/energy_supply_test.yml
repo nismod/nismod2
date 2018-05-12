@@ -1,6 +1,6 @@
 decision_module: ''
 description: ''
-name: energy_supply_toy
+name: energy_supply_test
 narratives:
   technology:
   - test_narrative

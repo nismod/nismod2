@@ -72,6 +72,15 @@ region_definitions:
 - description: Points of all 87 gas offtake nodes
   filename: ../energy_supply/region_definitions/gas_nodes.shp
   name: gas_nodes
+- description: Points of electricity transmission bus bars
+  filename: ../energy_supply/region_definitions/bus_bars.shp
+  name: bus_bars
+- description: Broadband network distributions (Fixed network)
+  filename: assets_broadband_network/assets_layer4_distributions.shp
+  name: broadband_distributions
+- description: Broadband network cabinets (Fixed network)
+  filename: assets_broadband_network/assets_layer3_cabinets.shp
+  name: broadband_cabinets
 # ------------------------------------------------
 interval_definitions:
 # shared understanding of time intervals within a year
