@@ -25,6 +25,7 @@ service postgresql restart
 
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
+hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
 
 # Install smif
 pip3 install -U setuptools
