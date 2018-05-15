@@ -174,6 +174,8 @@ framework. In outline, tests here should:
 - All development occurs on the `develop` branch
 - New features are never added to an existing release branch
 
+For further detail, see this [article](http://nvie.com/posts/a-successful-git-branching-model/)
+
 ### Developing a new feature
 
 1. Create a new feature branch from the develop branch `git checkout -b feature/<feature_name> develop`
