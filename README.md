@@ -191,7 +191,7 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
 1. Now, create a branch from develop e.g. `checkout -b release-x.y develop`
 1. Tag this as a release candidate `git tag -a vx.y-rc1`
 1. Any bugfixes are committed to this branch and should be tagged with incremented 
-   release candidate tags
+   release candidate tags e.g. `git tag -a vx.y-rc2`
 1. Once the release candidate is stable, submit a pull request to the master branch
 1. Merge the pull request and tag `git tag -a vx.y.0`
 
