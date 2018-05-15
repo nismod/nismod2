@@ -164,3 +164,38 @@ framework. In outline, tests here should:
     1. without unexpected error
     1. with the expected type contract of results
     1. (optionally) with regression tests against known-good modelled outputs
+
+## Development
+
+### General Guidelines
+
+- v2 branch is protected against push and force-push.
+- The v2 branch should be treated as live and is used for major releases only
+- All development occurs on the `develop` branch
+- New features are never added to an existing release branch
+
+### Developing a new feature
+
+1. Create a new feature branch from the develop branch `git checkout -b feature/<feature_name> develop`
+1. Develop your feature
+1. Submit a pull request against the develop branch
+1. Merge the changes into the develop branch
+
+### Release Process
+
+1. Update the changelog under the heading Version X.Y
+1. Check versions of models and data specified in `provision/config.ini`
+
+1. Now, create a branch from develop e.g. `checkout -b release-x.y develop`
+1. Tag this as a release candidate `git tag -a vx.y-rc1`
+1. Any bugfixes are committed to this branch and should be tagged with incremented 
+   release candidate tags
+1. Once the release candidate is stable, submit a pull request to the master branch
+1. Merge the pull request and tag `git tag -a vx.y.0`
+
+### Fixing a Bug in a release
+
+1. Create a branch from master `git checkout -b hotfix/<bug_name> master`
+1. Fix the bug by committing to the branch
+1. Submit a pull request to master and tag the fix `git tag -a vx.y.z` 
+   incrementing the minor `z` digit
