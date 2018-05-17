@@ -76,7 +76,7 @@ class TransportWrapper(SectorModel):
 
         try:
             output = check_output(arguments)
-            self.logger.debug(output)
+            self.logger.debug(output.decode("utf-8"))
         except CalledProcessError as ex:
             self.logger.exception("Transport model failed %s", ex)
             raise ex
