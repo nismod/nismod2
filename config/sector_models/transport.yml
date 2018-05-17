@@ -7,6 +7,10 @@ inputs:
     spatial_resolution: lad_uk_2016
     temporal_resolution: annual
     units: people
+  - name: gva
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GBP
 outputs:
   - name: energy_consumption_petrol
     spatial_resolution: whole_system

@@ -5,11 +5,16 @@ sector_models:
 # Scenario data
 scenario_sets:
   - population
+  - gva
 dependencies:
   - source_model: population
     source_model_output: population
     sink_model: transport
     sink_model_input: population
+  - source_model: gva
+    source_model_output: gva
+    sink_model: transport
+    sink_model_input: gva
 # Narratives
 narrative_sets: []
 # Iteration settings
