@@ -135,6 +135,18 @@ class TransportWrapper(SectorModel):
             current_population = [int(population) for population in data_handle.get_data("population")[:,0]]
             w.writerow((data_handle.current_timestep, ) + tuple(current_population))
 
+        with open(os.path.join(working_dir, 'data', 'gva.csv') ,'w') as file_handle:
+            w = csv.writer(file_handle)
+
+            gva_region_names = self._input_region_names("gva")
+            w.writerow(('year', ) + tuple(gva_region_names))
+
+            base_gva = [int(gva) for gva in data_handle.get_base_timestep_data("gva")[:,0]]
+            w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
+
+            current_gva = [int(gva) for gva in data_handle.get_data("gva")[:,0]]
+            w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
+
         # TODO base and current gva_per_head
         # GVAFile = GVA.csv
         # year,          E06000045,E07000086,E07000091,E06000046
