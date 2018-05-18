@@ -163,19 +163,19 @@ class TransportWrapper(SectorModel):
         # year,PETROL,DIESEL,LPG,ELECTRICITY,HYDROGEN,HYBRID
         # 2020,11632.72,17596.62,2665.98,7435.64,94.57,714.32
 
-        energy_consumption_file = os.path.join(working_dir, 'output', 'energyConsumptions.csv')
+        energy_consumption_file = os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
 
         if not os.path.exists(energy_consumption_file):
             raise FileNotFoundError("Cannot find the energy consumption file at %s",
                 str(energy_consumption_file))
         else:
-            with open(os.path.join(working_dir, 'output', 'energyConsumptions.csv')) as fh:
+            with open(os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')) as fh:
                 r = csv.reader(fh)
                 header = next(r)[1:]
                 values = next(r)[1:]
                 for fuel, val in zip(header, values):
                     data_handle.set_results(
-                        "energy_consumption__{}".format(fuel.lower()),
+                        "energy_consumption_{}".format(fuel.lower()),
                         np.array([[float(val)]])
                     )
 
