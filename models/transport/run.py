@@ -142,10 +142,10 @@ class TransportWrapper(SectorModel):
             gva_region_names = self._input_region_names("gva")
             w.writerow(('year', ) + tuple(gva_region_names))
 
-            base_gva = [int(gva) for gva in data_handle.get_base_timestep_data("gva")[:,0]]
+            base_gva = data_handle.get_base_timestep_data("gva")[:,0]
             w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
 
-            current_gva = [int(gva) for gva in data_handle.get_data("gva")[:,0]]
+            current_gva = data_handle.get_data("gva")[:,0]
             w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
 
         # TODO base and current gva_per_head
