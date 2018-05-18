@@ -38,10 +38,11 @@ class TransportWrapper(SectorModel):
         ---------
         data_handle: smif.data_layer.DataHandle
         """
-        self._set_parameters(data_handle)
-        self._set_inputs(data_handle)
-        self._run_model_subprocess(data_handle)
-        self._set_outputs(data_handle)
+        if data_handle.current_timestep != data_handle.base_timestep:
+            self._set_parameters(data_handle)
+            self._set_inputs(data_handle)
+            self._run_model_subprocess(data_handle)
+            self._set_outputs(data_handle)
 
     def _run_model_subprocess(self, data_handle):
         path_to_jar = self._get_path_to_jar()
