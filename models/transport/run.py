@@ -111,16 +111,7 @@ class TransportWrapper(SectorModel):
         """Get model inputs from data handle and write to input files
         """
         working_dir = self._get_working_dir()
-        # TODO with OA-level data
-        # areaCodeFileName = nomisPopulation.csv
-        # area_code,zone_code,population
-        # OA        LAD       integer count of people
 
-        # populationFile = population.csv
-        # year,          E06000045,E07000086,E07000091,E06000046
-        # base/current   [LAD,...]
-        # 2015,          247000,129000,179000,139000
-        # 2020,          247000,129000,179000,139000
         if not os.path.exists(os.path.join(working_dir, 'data')):
             os.mkdir(os.path.join(working_dir, 'data'))
 
@@ -148,20 +139,10 @@ class TransportWrapper(SectorModel):
             current_gva = data_handle.get_data("gva")[:,0]
             w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
 
-        # TODO base and current gva_per_head
-        # GVAFile = GVA.csv
-        # year,          E06000045,E07000086,E07000091,E06000046
-        # base/current   [LAD,...]
-        # 2015,          23535.00,27860.00,24418.00,17739.00
-        # 2020,          23535.00,27860.00,24418.00,17739.00
-
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
         """
         working_dir = self._get_working_dir()
-        # energyConsumptions.csv
-        # year,PETROL,DIESEL,LPG,ELECTRICITY,HYDROGEN,HYBRID
-        # 2020,11632.72,17596.62,2665.98,7435.64,94.57,714.32
 
         energy_consumption_file = os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
 
