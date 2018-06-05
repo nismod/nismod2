@@ -21,8 +21,8 @@ class TransportWrapper(SectorModel):
     def _get_path_to_jar(self):
         return os.path.join(os.path.dirname(__file__), '..', '..', 'install', 'transport',  'transport.jar')
 
-    def _get_path_to_config_template(self):
-        return os.path.join(os.path.dirname(__file__), 'template.properties')
+    def _get_path_to_config_templates(self):
+        return os.path.join(os.path.dirname(__file__), 'templates')
 
     def initialise(self, initial_conditions):
         """Set up model state using initial conditions (any data required for
@@ -41,29 +41,19 @@ class TransportWrapper(SectorModel):
         if data_handle.current_timestep != data_handle.base_timestep:
             self._set_parameters(data_handle)
             self._set_inputs(data_handle)
+            self._set_properties(data_handle)
             self._run_model_subprocess(data_handle)
             self._set_outputs(data_handle)
 
     def _run_model_subprocess(self, data_handle):
-        path_to_jar = self._get_path_to_jar()
-
-        path_to_config_template = self._get_path_to_config_template()
+        """Run the transport model jar and feed log messages
+        into the smif logger
+        """
 
         working_dir = self._get_working_dir()
+        path_to_jar = self._get_path_to_jar()
 
-        path_to_config = os.path.join(working_dir, 'config.properties')
-
-        with open(path_to_config_template, 'r') as template_fh:
-            config = Template(template_fh.read())
-
-        config_str = config.substitute({
-            'base_timestep': data_handle.base_timestep,
-            'current_timestep': data_handle.current_timestep,
-            'relative_path': os.path.abspath(working_dir)
-        })
-
-        with open(path_to_config, 'w') as template_fh:
-            template_fh.write(config_str)
+        path_to_config = os.path.join(working_dir, 'config.properties')        
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = [
@@ -138,6 +128,27 @@ class TransportWrapper(SectorModel):
 
             current_gva = data_handle.get_data("gva")[:,0]
             w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
+
+    def _set_properties(self, data_handle):
+        """Set the transport model properties, such as paths and interventions
+        """
+        working_dir = self._get_working_dir()
+        path_to_config_templates = self._get_path_to_config_templates()
+
+        for root, directories, filenames in os.walk(path_to_config_templates):
+            for filename in filenames: 
+                with open(os.path.join(root,filename), 'r') as template_fh:
+                    config = Template(template_fh.read())
+                
+                config_str = config.substitute({
+                    'base_timestep': data_handle.base_timestep,
+                    'current_timestep': data_handle.current_timestep,
+                    'relative_path': os.path.abspath(working_dir)
+                })   
+                
+                with open(os.path.join(working_dir, os.path.relpath(root, path_to_config_templates), 
+                            filename.replace('.template', '')), 'w') as template_fh:    
+                    template_fh.write(config_str)
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
