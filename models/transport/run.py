@@ -44,6 +44,15 @@ class TransportWrapper(SectorModel):
             self._set_properties(data_handle)
             self._run_model_subprocess(data_handle)
             self._set_outputs(data_handle)
+        else:
+            self.logger.warning('This model is using a workaround to produce outputs for the baseyear')
+            
+            data_handle.set_results("energy_consumption_diesel", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_electricity", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_hybrid", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_hydrogen", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_lpg", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_petrol", np.array([[float(0)]]))
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
