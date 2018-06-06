@@ -20,8 +20,8 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_se
 if [ $? -ne 0 ]; then
     RED='\033[0;31m'
     NC='\033[0m' # No Color
-    printf "${RED}Unable to download the ${1} datafiles from the SFTP server.${NC}\n"
-    printf "${RED}Make sure that the server is responsive and the credentionals in provision/ftp.ini are correct.${NC}\n"
+    printf "${RED}Unable to download the ${1} data files from the SFTP server.${NC}\n"
+    printf "${RED}Make sure that the server is responsive and the credentials in provision/ftp.ini are correct.${NC}\n"
     exit 1
 fi
 

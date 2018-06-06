@@ -21,8 +21,8 @@ class TransportWrapper(SectorModel):
     def _get_path_to_jar(self):
         return os.path.join(os.path.dirname(__file__), '..', '..', 'install', 'transport',  'transport.jar')
 
-    def _get_path_to_config_template(self):
-        return os.path.join(os.path.dirname(__file__), 'template.properties')
+    def _get_path_to_config_templates(self):
+        return os.path.join(os.path.dirname(__file__), 'templates')
 
     def initialise(self, initial_conditions):
         """Set up model state using initial conditions (any data required for
@@ -38,31 +38,31 @@ class TransportWrapper(SectorModel):
         ---------
         data_handle: smif.data_layer.DataHandle
         """
-        self._set_parameters(data_handle)
-        self._set_inputs(data_handle)
-        self._run_model_subprocess(data_handle)
-        self._set_outputs(data_handle)
+        if data_handle.current_timestep != data_handle.base_timestep:
+            self._set_parameters(data_handle)
+            self._set_inputs(data_handle)
+            self._set_properties(data_handle)
+            self._run_model_subprocess(data_handle)
+            self._set_outputs(data_handle)
+        else:
+            self.logger.warning('This model is using a workaround to produce outputs for the baseyear')
+            
+            data_handle.set_results("energy_consumption_diesel", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_electricity", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_hybrid", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_hydrogen", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_lpg", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_petrol", np.array([[float(0)]]))
 
     def _run_model_subprocess(self, data_handle):
-        path_to_jar = self._get_path_to_jar()
-
-        path_to_config_template = self._get_path_to_config_template()
+        """Run the transport model jar and feed log messages
+        into the smif logger
+        """
 
         working_dir = self._get_working_dir()
+        path_to_jar = self._get_path_to_jar()
 
-        path_to_config = os.path.join(working_dir, 'config.properties')
-
-        with open(path_to_config_template, 'r') as template_fh:
-            config = Template(template_fh.read())
-
-        config_str = config.substitute({
-            'base_timestep': data_handle.base_timestep,
-            'current_timestep': data_handle.current_timestep,
-            'relative_path': os.path.abspath(working_dir)
-        })
-
-        with open(path_to_config, 'w') as template_fh:
-            template_fh.write(config_str)
+        path_to_config = os.path.join(working_dir, 'config.properties')        
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = [
@@ -76,7 +76,7 @@ class TransportWrapper(SectorModel):
 
         try:
             output = check_output(arguments)
-            self.logger.debug(output)
+            self.logger.debug(output.decode("utf-8"))
         except CalledProcessError as ex:
             self.logger.exception("Transport model failed %s", ex)
             raise ex
@@ -110,16 +110,7 @@ class TransportWrapper(SectorModel):
         """Get model inputs from data handle and write to input files
         """
         working_dir = self._get_working_dir()
-        # TODO with OA-level data
-        # areaCodeFileName = nomisPopulation.csv
-        # area_code,zone_code,population
-        # OA        LAD       integer count of people
 
-        # populationFile = population.csv
-        # year,          E06000045,E07000086,E07000091,E06000046
-        # base/current   [LAD,...]
-        # 2015,          247000,129000,179000,139000
-        # 2020,          247000,129000,179000,139000
         if not os.path.exists(os.path.join(working_dir, 'data')):
             os.mkdir(os.path.join(working_dir, 'data'))
 
@@ -129,40 +120,63 @@ class TransportWrapper(SectorModel):
             pop_region_names = self._input_region_names("population")
             w.writerow(('year', ) + tuple(pop_region_names))
 
-            base_population = data_handle.get_base_timestep_data("population")[:,0]
+            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:,0]]
             w.writerow((data_handle.base_timestep, ) + tuple(base_population))
 
-            current_population = data_handle.get_data("population")[:,0]
+            current_population = [int(population) for population in data_handle.get_data("population")[:,0]]
             w.writerow((data_handle.current_timestep, ) + tuple(current_population))
 
-        # TODO base and current gva_per_head
-        # GVAFile = GVA.csv
-        # year,          E06000045,E07000086,E07000091,E06000046
-        # base/current   [LAD,...]
-        # 2015,          23535.00,27860.00,24418.00,17739.00
-        # 2020,          23535.00,27860.00,24418.00,17739.00
+        with open(os.path.join(working_dir, 'data', 'gva.csv') ,'w') as file_handle:
+            w = csv.writer(file_handle)
+
+            gva_region_names = self._input_region_names("gva")
+            w.writerow(('year', ) + tuple(gva_region_names))
+
+            base_gva = data_handle.get_base_timestep_data("gva")[:,0]
+            w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
+
+            current_gva = data_handle.get_data("gva")[:,0]
+            w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
+
+    def _set_properties(self, data_handle):
+        """Set the transport model properties, such as paths and interventions
+        """
+        working_dir = self._get_working_dir()
+        path_to_config_templates = self._get_path_to_config_templates()
+
+        for root, directories, filenames in os.walk(path_to_config_templates):
+            for filename in filenames: 
+                with open(os.path.join(root,filename), 'r') as template_fh:
+                    config = Template(template_fh.read())
+                
+                config_str = config.substitute({
+                    'base_timestep': data_handle.base_timestep,
+                    'current_timestep': data_handle.current_timestep,
+                    'relative_path': os.path.abspath(working_dir)
+                })   
+                
+                with open(os.path.join(working_dir, os.path.relpath(root, path_to_config_templates), 
+                            filename.replace('.template', '')), 'w') as template_fh:    
+                    template_fh.write(config_str)
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
         """
         working_dir = self._get_working_dir()
-        # energyConsumptions.csv
-        # year,PETROL,DIESEL,LPG,ELECTRICITY,HYDROGEN,HYBRID
-        # 2020,11632.72,17596.62,2665.98,7435.64,94.57,714.32
 
-        energy_consumption_file = os.path.join(working_dir, 'output', 'energyConsumptions.csv')
+        energy_consumption_file = os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
 
         if not os.path.exists(energy_consumption_file):
             raise FileNotFoundError("Cannot find the energy consumption file at %s",
                 str(energy_consumption_file))
         else:
-            with open(os.path.join(working_dir, 'output', 'energyConsumptions.csv')) as fh:
+            with open(os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')) as fh:
                 r = csv.reader(fh)
                 header = next(r)[1:]
                 values = next(r)[1:]
                 for fuel, val in zip(header, values):
                     data_handle.set_results(
-                        "energy_consumption__{}".format(fuel.lower()),
+                        "energy_consumption_{}".format(fuel.lower()),
                         np.array([[float(val)]])
                     )
 
