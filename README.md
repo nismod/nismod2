@@ -183,7 +183,7 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
 1. Submit a pull request against the develop branch
 1. Merge the changes into the develop branch
 
-### Release Process
+### Release Process
 
 1. Update the changelog under the heading Version X.Y
 1. Check versions of models and data specified in `provision/config.ini`
@@ -192,7 +192,7 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
 1. Tag this as a release candidate `git tag -a vx.y-rc1`
 1. Any bugfixes are committed to this branch and should be tagged with incremented 
    release candidate tags e.g. `git tag -a vx.y-rc2`
-1. Once the release candidate is stable, submit a pull request to the master branch
+1. Once the release candidate is stable, submit a pull request to the `v2` branch
 1. Merge the pull request and tag `git tag -a vx.y.0`
 
 ### Fixing a Bug in a release
