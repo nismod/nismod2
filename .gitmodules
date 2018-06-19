@@ -1,3 +1,0 @@
-[submodule "models/solid_waste"]
-	path = models/solid_waste
-	url = https://github.com/nismod/solid_waste.git
