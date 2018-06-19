@@ -25,6 +25,7 @@ xphostid
 # Python
 *.pyc
 __pycache__
+.pytest_cache
 
 # smif creates log files and results files
 smif.log
