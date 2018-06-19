@@ -147,15 +147,15 @@ outputs:
   temporal_resolution: seasonal_week
   units: MW
 - name: gasfired_gen_eh
-  spatial_resolution: national
+  spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
   units: MW
 - name: wind_gen_eh
-  spatial_resolution: national
+  spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
   units: MW
 - name: pv_gen_eh
-  spatial_resolution: national
+  spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
   units: MW
 - name: lng_supply
@@ -183,11 +183,11 @@ outputs:
   temporal_resolution: seasonal_week
   units: MW
 - name: load_shed_gas_eh
-  spatial_resolution: national
+  spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
   units: mcm
 - name: load_shed_elec_eh
-  spatial_resolution: national
+  spatial_resolution: energy_hub
   temporal_resolution: seasonal_week
   units: MW
 - name: elec_cost

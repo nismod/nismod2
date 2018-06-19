@@ -36,82 +36,82 @@ class EnergySupplyWrapper(SectorModel):
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
         self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
-        
+
         parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
         self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
 
-        write_load_shed_costs(parameter_LoadShed_elec, 
+        write_load_shed_costs(parameter_LoadShed_elec,
                               parameter_LoadShed_gas)
-        
+
         # Get model inputs
         input_residential_gas_boiler_gas = data.get_data("residential_gas_boiler_gas")
-        self.logger.info('Input Residential gas boiler gas: %s', 
+        self.logger.info('Input Residential gas boiler gas: %s',
             input_residential_gas_boiler_gas)
-        
+
         input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
-        self.logger.info('Input Residential electricity boiler electricity: %s', 
+        self.logger.info('Input Residential electricity boiler electricity: %s',
             input_residential_electricity_boiler_electricity)
-        
+
         input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_gas")
         self.logger.info('Input Residential gas stirling micro chp: %s', input_residential_gas_stirling_micro_CHP)
-        
+
         input_residential_electricity_heat_pumps_electricity = data.get_data("residential_electricity_heat_pumps_electricity")
         self.logger.info('Input Residential electricity heat pumps electricity: %s', input_residential_electricity_heat_pumps_electricity)
-        
+
         input_residential_electricity_district_heating_electricity = data.get_data("residential_electricity_district_heating_electricity")
         self.logger.info('Input Residential electricity district heating electricity: %s', input_residential_electricity_district_heating_electricity)
-        
+
         input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_CHP_gas")
         self.logger.info('Input Residential gas district heating gas: %s', input_residential_gas_district_heating_gas)
-        
+
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
-        
+
         input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
         self.logger.info('Input Residential electricity non heating: %s', input_residential_electricity_non_heating)
-        
+
         input_service_gas_boiler_gas = data.get_data("service_gas_boiler_gas")
         self.logger.info('Input Service gas boiler gas: %s', input_service_gas_boiler_gas)
-        
+
         input_service_electricity_boiler_electricity = data.get_data("service_electricity_boiler_electricity")
         self.logger.info('Input Service electricity boiler electricity: %s', input_service_electricity_boiler_electricity)
-        
+
         input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_gas")
         self.logger.info('Input Service gas stirling micro chp: %s', input_service_gas_stirling_micro_CHP)
-        
+
         input_service_electricity_heat_pumps_electricity = data.get_data("service_electricity_heat_pumps_electricity")
         self.logger.info('Input Service electricity heat pumps electricity: %s', input_service_electricity_heat_pumps_electricity)
-        
+
         input_service_electricity_district_heating_electricity = data.get_data("service_electricity_district_heating_electricity")
         self.logger.info('Input Service electricity district heating electricity: %s', input_service_electricity_district_heating_electricity)
-        
+
         input_service_gas_district_heating_gas = data.get_data("service_gas_district_heating_gas")
         self.logger.info('Input Service gas district heating gas: %s', input_service_gas_district_heating_gas)
-        
+
         input_service_gas_non_heating = data.get_data("service_gas_non_heating")
         self.logger.info('Input Service gas non heating: %s', input_service_gas_non_heating)
-        
+
         input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
         self.logger.info('Input Service electricity non heating: %s', input_service_electricity_non_heating)
-            
+
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
-    
+
         input_electricity_price = data.get_data("electricity_price")
         self.logger.info('Input Electricity price: %s', input_electricity_price)
-    
+
         input_gas_price = data.get_data("gas_price")
         self.logger.info('Input Gas price: %s', input_gas_price)
-    
+
         input_nuclearFuel_price = data.get_data("nuclearFuel_price")
         self.logger.info('Input Nuclearfuel price: %s', input_nuclearFuel_price)
-    
+
         input_oil_price = data.get_data("oil_price")
         self.logger.info('Input Oil price: %s', input_oil_price)
-    
+
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
-         
+
         # Sum all inputs ready for writing to tables
         heatload_res_inputs = np.array([
             input_residential_gas_boiler_gas,
@@ -140,34 +140,34 @@ class EnergySupplyWrapper(SectorModel):
 
         region_names, interval_names = self.get_names( "residential_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_res")
-        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
+        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res",
                              now, region_names, interval_names)
         region_names, interval_names = self.get_names( "service_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_com")
-        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
+        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_res")
-        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
+        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_com")
-        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
+        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_res")
-        write_input_timestep(heatload_res, "heatload_res", 
+        write_input_timestep(heatload_res, "heatload_res",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_com")
-        write_input_timestep(heatload_com, "heatload_com", 
+        write_input_timestep(heatload_com, "heatload_com",
                              now, region_names, interval_names)
 
         elecload_tran = data.get_data('elecload')
         self.logger.info('Writing %s to database', "elecload")
-        write_input_timestep(elecload_tran, "elecload", 
+        write_input_timestep(elecload_tran, "elecload",
                              now, region_names, interval_names)
 
         gasload = data.get_data('gasload')
         region_names, interval_names = self.get_names( "gasload")
         self.logger.info('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload", 
+        write_input_timestep(gasload, "gasload",
                              now, region_names, interval_names)
 
         # Run the model
@@ -176,6 +176,7 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info(check_output(arguments))
 
         # This results mapping maps output_parameters to sectormodel output names
+        # external => internal
         timestep_results = {
             'gasfired_gen_tran': 'tran_gas_fired',
             'coal_gen_tran': 'tran_coal',
@@ -204,28 +205,49 @@ class EnergySupplyWrapper(SectorModel):
             'load_shed_gas_eh': 'gas_load_shed_eh',
             'load_shed_elec_eh': 'elec_load_shed_eh',
             'emissions_eh': 'e_emissions_eh',
-            'emissions_bb': 'e_emissions'}
+            'emissions_bb': 'e_emissions'
+        }
 
         annual_results = {
             # 'total_opt_cost': 'total_opt_cost',
             # 'emissions_elec': 'e_emissions'
-            }
+        }
+
+        # Open database connection
+        conn = establish_connection()
 
         # Write timestep results to data handler
-        for model_output, parameter in timestep_results.items():
-            data.set_results(model_output, get_timestep_output(parameter))
-        
+        for external_name, internal_name in timestep_results.items():
+            self.set_results(internal_name, external_name, data, conn)
+
         # Write annual results to data handler
-        for model_output, parameter in annual_results.items():
-            data.set_results(model_output, get_annual_output(parameter))
+        for external_name, internal_name in annual_results.items():
+            self.set_results(internal_name, external_name, data, conn, is_annual=True)
+
+        # Close database connection
+        conn.close()
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
-    def extract_obj(self, results):
-        return 0
+    def set_results(self, internal_parameter_name, external_parameter_name, data_handle, conn, is_annual=False):
+        """Pass results from database to data handle
+        """
+        # long way around to get canonical entry names for spatial/temporal resolution
+        regions = self.outputs[external_parameter_name].spatial_resolution.get_entry_names()
+        intervals = self.outputs[external_parameter_name].temporal_resolution.get_entry_names()
+
+        # read from database - need to be careful with internal vs external param name
+        if is_annual:
+            output = get_annual_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
+        else:
+            output = get_timestep_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
+
+        # set on smif DataHandle
+        data_handle.set_results(external_parameter_name, output)
 
     def get_names(self, name):
-
+        """Get region and interval names for a given input
+        """
         spatial_resolution = self.inputs.get_spatial_res(name).name
         region_names = self.get_region_names(spatial_resolution)
         temporal_resolution = self.inputs.get_temporal_res(name).name
@@ -238,6 +260,10 @@ class EnergySupplyWrapper(SectorModel):
         executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
 
         return os.path.join(executable)
+
+    def extract_obj(self, results):
+        return 0
+
 
 def establish_connection():
     """Connect to an existing database
@@ -268,7 +294,7 @@ def clear_results(year):
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
-    
+
     Argument
     --------
     time_id : int
@@ -345,9 +371,9 @@ def write_gas_price(year, data):
         _, interval_index = it.multi_index
         fuel_id = 1
         fueltype = 'Gas'
-        insert_data = (fuel_id, 
-                       fueltype, 
-                       year, 
+        insert_data = (fuel_id,
+                       fueltype,
+                       year,
                        interval_index + 1,
                        float(cell))
 
@@ -363,8 +389,9 @@ def write_gas_price(year, data):
     cur.close()
     conn.close()
 
-def write_annual_rows_into_array(list_of_row_tuples):
-    """Writes annual query results into a numpy array
+
+def write_rows_into_array(list_of_row_tuples, regions, intervals):
+    """Writes query results into a numpy array
 
     Arguments
     ---------
@@ -375,89 +402,61 @@ def write_annual_rows_into_array(list_of_row_tuples):
     numpy.ndarray
 
     """
-    regions = []
-    intervals = []
-    values = []
-
-    for row in list_of_row_tuples:
-        regions.append(int(row[0]))
-        intervals.append(int(row[1]))
-        values.append(float(row[2]))
-
-    array = np.zeros((len(regions), len(intervals)))
-    for region, interval, value in zip(regions, intervals, values):
-        array[region - 1, interval - 1] = value
-    return array
-
-def write_timestep_rows_into_array(list_of_row_tuples):
-    """Writes timestep query results into a numpy array
-
-    Arguments
-    ---------
-    list_of_row_tuples : list
-
-    Returns
-    -------
-    numpy.ndarray
-
-    """
-    regions = []
-    intervals = []
-    values = []
-
-    for row in list_of_row_tuples:
-        regions.append(int(row[3]))
-        intervals.append(compute_interval_id(int(row[0]), 
-                                             int(row[1]), 
-                                             int(row[2])))
-        values.append(float(row[4]))
-
-    array = np.zeros((len(regions), len(intervals)))
-    for region, interval, value in zip(regions, intervals, values):
+    num_regions = len(regions)
+    num_intervals = len(intervals)
+    array = np.zeros((num_regions, num_intervals))
+    for region, interval, value in list_of_row_tuples:
+        if region - 1 >= num_regions:
+            raise KeyError("Region %s out of bounds" % region)
+        if interval - 1 >= num_intervals:
+            raise KeyError("Interval %s out of bounds" % interval)
         array[region - 1, interval - 1] = value
     return array
 
 
-def get_annual_output(output_parameter):
+def get_annual_output(conn, output_parameter, year, regions, intervals):
     """Retrieves annual parameters from the database
     """
-    # Connect to an existing database
-    conn = establish_connection()
-    # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        sql = """SELECT r.name AS region, '1' AS interval, o.value AS value
+        sql = """SELECT r.name AS region, '1', o.value AS value
                  FROM "output_annual" AS o
                  INNER JOIN region AS r ON o.region_id = r.id
-                 WHERE parameter = %s;"""
-        cur.execute(sql, (output_parameter, ))
-        results = cur.fetchall()
+                 WHERE parameter = %s AND year = %s;"""
+        cur.execute(sql, (output_parameter, year))
+        try:
+            results = write_rows_into_array(cur, regions, intervals)
+        except(KeyError) as ex:
+            raise KeyError(str(ex) + " in parameter %s" % output_parameter) from ex
+    return results
 
-    conn.close()
 
-    return write_annual_rows_into_array(results)
-
-
-def get_timestep_output(output_parameter):
+def get_timestep_output(conn, output_parameter, year, regions, intervals):
+    """Retrieves parameters with intervals from the database
     """
-    """
-    # Connect to an existing database
-    conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        sql = """SELECT o.season, o.day, o.period, 
+        sql = """SELECT o.season, o.day, o.period,
                  r.name AS region, o.value AS value
                  FROM "output_timestep" AS o
                  INNER JOIN region AS r ON o.region_id = r.id
-                 WHERE parameter = %s;"""
-        cur.execute(sql, (output_parameter, ))
-        results = cur.fetchall()
+                 WHERE parameter = %s AND year = %s;"""
+        cur.execute(sql, (output_parameter, year))
+        region_interval_value_generator = (
+            (
+                row[3],  # region id
+                compute_interval_id(int(row[0]), int(row[1]), int(row[2])),  # interval id
+                row[4]  # value
+            )
+            for row in cur
+        )
+        try:
+            results = write_rows_into_array(region_interval_value_generator, regions, intervals)
+        except(KeyError) as ex:
+            raise KeyError(str(ex) + " in parameter %s" % output_parameter) from ex
+    return results
 
-    conn.close()
 
-    return write_timestep_rows_into_array(results)
-
-
-def write_load_shed_costs(loadshedcost_elec, 
+def write_load_shed_costs(loadshedcost_elec,
                           loadshedcost_gas):
     """
     """
@@ -473,11 +472,11 @@ def write_load_shed_costs(loadshedcost_elec,
         cur.execute("""DELETE FROM "LoadShedCosts";""")
     with conn.cursor() as cur:
         cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
-    
+
     conn.commit()
 
     conn.close()
-    
+
 def build_gas_stores(gas_stores):
     """Set up the initial system from a list of interventions
 
@@ -544,22 +543,22 @@ def get_region_mapping(input_parameter_name):
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
         cur.execute("""SELECT name, id
-                        FROM region 
+                        FROM region
                         WHERE regiontype = (
-                            SELECT regiontype from input_parameter 
-                            WHERE name=%s);""", 
-                    (input_parameter_name, ))    
+                            SELECT regiontype from input_parameter
+                            WHERE name=%s);""",
+                    (input_parameter_name, ))
         mapping = cur.fetchall()
     conn.close()
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year, 
+def write_input_timestep(input_data, parameter_name, year,
                          region_names, interval_names):
-    """Writes input data into database table 
-    
+    """Writes input data into database table
+
     Uses the index of the numpy array as a reference to interval and region definitions
-    
+
     Arguments
     ---------
     input_data : numpy.ndarray
