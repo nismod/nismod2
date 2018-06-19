@@ -176,6 +176,7 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info(check_output(arguments))
 
         # This results mapping maps output_parameters to sectormodel output names
+        # external => internal
         timestep_results = {
             'gasfired_gen_tran': 'tran_gas_fired',
             'coal_gen_tran': 'tran_coal',
@@ -401,8 +402,14 @@ def write_rows_into_array(list_of_row_tuples, regions, intervals):
     numpy.ndarray
 
     """
-    array = np.zeros((len(regions), len(intervals)))
+    num_regions = len(regions)
+    num_intervals = len(intervals)
+    array = np.zeros((num_regions, num_intervals))
     for region, interval, value in list_of_row_tuples:
+        if region - 1 >= num_regions:
+            raise KeyError("Region %s out of bounds" % region)
+        if interval - 1 >= num_intervals:
+            raise KeyError("Interval %s out of bounds" % interval)
         array[region - 1, interval - 1] = value
     return array
 
@@ -416,7 +423,10 @@ def get_annual_output(conn, output_parameter, year, regions, intervals):
                  INNER JOIN region AS r ON o.region_id = r.id
                  WHERE parameter = %s AND year = %s;"""
         cur.execute(sql, (output_parameter, year))
-        results = write_rows_into_array(cur, regions, intervals)
+        try:
+            results = write_rows_into_array(cur, regions, intervals)
+        except(KeyError) as ex:
+            raise KeyError(str(ex) + " in parameter %s" % output_parameter) from ex
     return results
 
 
@@ -439,7 +449,10 @@ def get_timestep_output(conn, output_parameter, year, regions, intervals):
             )
             for row in cur
         )
-        results = write_rows_into_array(region_interval_value_generator, regions, intervals)
+        try:
+            results = write_rows_into_array(region_interval_value_generator, regions, intervals)
+        except(KeyError) as ex:
+            raise KeyError(str(ex) + " in parameter %s" % output_parameter) from ex
     return results
 
 
