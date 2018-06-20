@@ -36,7 +36,7 @@ Note for Windows users: Virtualbox requires that Hyper-V is disabled.
 
 ## Download NISMOD v2.0
 
-The latest release of NISMOD v2.0 is available from [Github Releases](https://github.com/nismod/nismod/releases/latest).
+The latest release of NISMOD v2.0 is available from [Github Releases](https://github.com/nismod/nismod2/releases/latest).
 
 Download the .zip archive and unzip it into a directory.
 
@@ -51,7 +51,7 @@ NISMOD folder, either downloaded as a release or cloned from a git repository),
 run:
 
 ```bash
-git checkout v2      # check out the NISMOD v2 branch
+git checkout master  # check out the NISMOD2 master branch
 git submodule init
 git submodule update
 ```
@@ -135,9 +135,8 @@ To update NISMOD to the latest development version:
 
 ```bash
 cd projects/nismod   # or to wherever you’ve put the nismod folder
-git checkout v2      # to make sure you’re on the v2 branch
+git checkout master  # to make sure you’re on the master branch
 git pull             # pull changes from Github to your local machine
-git submodule update # update the sector models
 ```
 
 Then reload and re-provision the virtual machine:
@@ -201,3 +200,4 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
 1. Fix the bug by committing to the branch
 1. Submit a pull request to master and tag the fix `git tag -a vx.y.z` 
    incrementing the minor `z` digit
+
