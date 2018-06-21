@@ -1,14 +1,13 @@
 """This adapter aggregates all inputs and writes the aggregate
-values to each output 
+values to each output
 """
 import numpy as np
 from smif.model.sector_model import SectorModel
 
 class AggregateInputs(SectorModel):
-
-    def initialise(self, initial_conditions):
-        pass
-
+    """An implementation of SectorModel which acts as a data adapter, aggregating all inputs
+    and outputting the same aggregate to each output.
+    """
     def simulate(self, data_handle):
         """Aggregates inputs to output
         """

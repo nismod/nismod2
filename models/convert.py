@@ -16,7 +16,8 @@ class InputOutputConvertor(SpaceTimeUnitConvertor):
         super().__init__()
 
     def convert_data(self, data_handle, model_input, model_output):
-
+        """Convert between resolutions
+        """
         self.logger.info("Converting data for input '%s'",
                          model_input.name)
 
@@ -41,24 +42,22 @@ class InputOutputConvertor(SpaceTimeUnitConvertor):
 
         space_time_result = SpaceTimeUnitConvertor.convert(
             self,
-            data, 
-            from_spatial, 
-            to_spatial, 
-            from_temporal, 
+            data,
+            from_spatial,
+            to_spatial,
+            from_temporal,
             to_temporal,
             from_unit,
             to_unit)
-        
+
         return space_time_result
 
 class ConvertDemandToSupply(SectorModel):
     """Converts energy demand data to energy supply
     """
-    def initialise(self, initial_conditions):
-        pass
-
     def simulate(self, data_handle):
-
+        """Convert data between configured resolutions
+        """
         convertor = InputOutputConvertor()
 
         for input_name, model_input in self.inputs.items():
@@ -67,7 +66,7 @@ class ConvertDemandToSupply(SectorModel):
             results = convertor.convert_data(data_handle,
                                              model_input,
                                              model_output)
-            
+
             data_handle.set_results(input_name, results)
 
     def extract_obj(self, arg):

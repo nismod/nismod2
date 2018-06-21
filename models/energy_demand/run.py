@@ -240,9 +240,6 @@ class EDWrapper(SectorModel):
         self.user_data['init_cont'], self.user_data['data']['fuel_disagg'] = scenario_initalisation(
             self.user_data['data']['data_path'], self.user_data['data'])
 
-    def initialise(self, initial_conditions):
-        pass
-
     def simulate(self, data_handle):
         """Runs the Energy Demand model for one `timestep`
 

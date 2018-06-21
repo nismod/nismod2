@@ -32,7 +32,9 @@ def read_gas_remap(file_name):
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
-    def initialise(self, initial_conditions):
+    def before_model_run(self, data):
+        initial_conditions = data.get_state()
+
         gas_stores = []
         for intervention in initial_conditions:
             if 'intervention_name' in intervention.keys():

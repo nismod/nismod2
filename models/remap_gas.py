@@ -1,5 +1,5 @@
 """This adapter aggregates all inputs and writes the aggregate
-values to each output 
+values to each output
 """
 import numpy as np
 from smif.model.sector_model import SectorModel
@@ -8,17 +8,17 @@ from csv import DictReader
 def read_gas_remap(file_name):
     with open(file_name, 'r') as load_map:
         reader = DictReader(load_map)
-        gas_remap = [{'node': int(x['Node']), 
-                      'eh': int(x['EH_Conn_Num']), 
+        gas_remap = [{'node': int(x['Node']),
+                      'eh': int(x['EH_Conn_Num']),
                       'share': x['Load Share'] } for x in reader]
-        
+
         mapper = {}
         for row in gas_remap:
             if row['eh'] in mapper.keys():
                 mapper[int(row['eh'])].update({row['node']: row['share']})
             else:
                 mapper[int(row['eh'])] = {row['node']: row['share']}
-                
+
         return mapper
 
 def remap_gas(data, remap_filename):
@@ -40,16 +40,14 @@ def remap_gas(data, remap_filename):
     for hub, gas_nodeshare in mapper.items():
         for gas_node, share in gas_nodeshare.items():
             coefficients[hub - 1, gas_node - 1] = share
-            
+
     reshaped_data = np.dot(data.T, coefficients).T
     return reshaped_data
 
 
 class RemapEnergyHubToGasNode(SectorModel):
-
-    def initialise(self, initial_conditions):
-        pass
-
+    """Convert spatial resolution (energy hubs to gas nodes)
+    """
     def simulate(self, data_handle):
         """Remaps energy demand from energy hubs to gas nodes
         """

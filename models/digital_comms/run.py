@@ -16,11 +16,7 @@ class DigitalCommsWrapper(SectorModel):
     """
     def __init__(self, name):
         super().__init__(name)
-
         self.user_data = {}
-
-    def initialise(self, initial_conditions):
-        print('initialise')
 
     def before_model_run(self, data_handle):
         print('before model run')
@@ -41,14 +37,14 @@ class DigitalCommsWrapper(SectorModel):
 
         # Get modelrun configuration
         parameters = data_handle.get_parameters()
-        
+
         # Load assets
         assets = {}
         assets['premises'] = read_shapefile(os.path.join(data_path, 'assets_layer5_premises.shp'))
         assets['distributions'] = read_shapefile(os.path.join(data_path, 'assets_layer4_distributions.shp'))
         assets['cabinets'] = read_shapefile(os.path.join(data_path, 'assets_layer3_cabinets.shp'))
         assets['exchanges'] = read_shapefile(os.path.join(data_path, 'assets_layer2_exchanges.shp'))
-        
+
         # Load links
         links = []
         links.extend(read_shapefile(os.path.join(data_path, 'links_layer5_premises.shp')))
@@ -59,7 +55,7 @@ class DigitalCommsWrapper(SectorModel):
         self.system = ICTManager(assets, links, parameters)
 
     def simulate(self, data_handle):
-        
+
         # -----
         # Start
         # -----
@@ -80,7 +76,7 @@ class DigitalCommsWrapper(SectorModel):
         # Write outputs
         # -------------
         interventions_lut = {intervention[0]:intervention for intervention in interventions}
-        
+
         distribution_upgrades = np.empty((self.system.number_of_assets['distributions'],1))
         for idx, distribution in enumerate(data_handle.get_region_names('broadband_distributions')):
             distribution_upgrades[idx, 0] = interventions_lut[distribution][2] if distribution in interventions_lut else 0
@@ -96,7 +92,7 @@ class DigitalCommsWrapper(SectorModel):
         # ----
         self.logger.info("DigitalCommsWrapper produced outputs in %s",
                          now)
-    
+
     def extract_obj(self, results):
         return 0
 
