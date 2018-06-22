@@ -1,0 +1,149 @@
+name,gennum,genname,gentype,minpower,maxpower,pumpscapacity,busnum
+Generator1,1,Abernedd Power Station,CCGT,188,470,,18
+Generator2,2,Baglan Bay,CCGT,220.8,552,,23
+Generator3,3,Barking - unit 1,CCGT,200,500,,25
+Generator4,4,Barking Power Station C,CCGT,188,470,,25
+Generator5,5,Barry,CCGT,98,245,,23
+Generator6,6,Brigg,CCGT,104,260,,16
+Generator7,7,Carrington - unit 1,CCGT,182,455,,13
+Generator8,8,Carrington - unit 2,CCGT,182,455,,13
+Generator9,9,Connahs Quay - unit 2,CCGT,132,330,,12
+Generator10,10,Corby,CCGT,162.8,407,,19
+Generator11,11,Coryton - unit 1,CCGT,160,400,,26
+Generator12,12,Damhead Creek - unit 1,CCGT,160.8,402,,25
+Generator13,13,Damhead Creek II - unit 1,CCGT,197.2,493,,25
+Generator14,14,Deeside - unit 1,CCGT,68,170,,12
+Generator15,15,Didcot B - unit 1,CCGT,208,520,,24
+Generator16,16,Didcot B - unit 2,CCGT,208,520,,24
+Generator17,17,Drakelow D - unit 1,CCGT,176,440,,18
+Generator18,18,Drakelow D - unit 2,CCGT,176,440,,18
+Generator19,19,Enfield,CCGT,163.2,408,,25
+Generator20,20,Grain (Stage 2&3) - unit 1,CCGT,172,430,,26
+Generator21,21,Grain (Stage 2&3) - unit 2,CCGT,172,430,,26
+Generator22,22,Great Yarmouth,CCGT,168,420,,20
+Generator23,23,Keadby - unit 1,CCGT,160,400,,16
+Generator24,24,Killingholme - unit 1,CCGT,180,450,,16
+Generator25,25,Killingholme 2,CCGT,266,665,,16
+Generator26,26,Kings Lynn A,CCGT,39.6,99,,19
+Generator27,27,Kings Lynn B - unit 1,CCGT,196,490,,19
+Generator28,28,Kings Lynn B - unit 2,CCGT,196,490,,19
+Generator29,29,Knottingley - unit 1,CCGT,200,500,,15
+Generator30,30,Knottingley - unit 2,CCGT,200,500,,15
+Generator31,31,Knottingley - unit 3,CCGT,170.8,427,,15
+Generator32,32,Langage - unit 1,CCGT,180,450,,29
+Generator33,33,Langage - unit 2,CCGT,100,250,,29
+Generator34,34,Little Barford,CCGT,148,370,,21
+Generator35,35,Little Barford (additional capacity),CCGT,148,370,,21
+Generator36,36,Marchwood - unit 1,CCGT,180,450,,28
+Generator37,37,Medway - unit 1,CCGT,140,350,,26
+Generator38,38,Medway - unit 2,CCGT,140,350,,26
+Generator39,39,Pembroke (Stage 3) - unit 1,CCGT,168,420,,23
+Generator40,40,Pembroke (Stage 3) - unit 2,CCGT,168,420,,23
+Generator41,41,Pembroke (Stage 3) - unit 3,CCGT,168,420,,23
+Generator42,42,Pembroke (Stage 3) - unit 4,CCGT,168,420,,23
+Generator43,43,Pembroke (Stage 3) - unit 5,CCGT,168,420,,23
+Generator44,44,Peterborough,CCGT,162,405,,19
+Generator45,45,Peterhead - unit 1,CCGT,236,590,,2
+Generator46,46,Peterhead - unit 2,CCGT,236,590,,2
+Generator47,47,Rocksavage - unit 1,CCGT,164,410,,12
+Generator48,48,Rocksavage - unit 2,CCGT,164,410,,12
+Generator49,49,Roosecote,CCGT,91.6,229,,11
+Generator50,50,Rye House,CCGT,286,715,,25
+Generator51,51,Saltend - unit 1,CCGT,148,370,,16
+Generator52,52,Saltend - unit 2,CCGT,148,370,,16
+Generator53,53,Saltend - unit 3,CCGT,148,370,,16
+Generator54,54,Seabank - unit 1,CCGT,164,410,,23
+Generator55,55,Seabank - unit 2,CCGT,164,410,,23
+Generator56,56,Seabank - unit 3,CCGT,164,410,,23
+Generator57,57,Seabank 3 - unit 1,CCGT,164.8,412,,23
+Generator58,58,Seabank 3 - unit 2,CCGT,164.8,412,,23
+Generator59,59,Severn Power - unit 1,CCGT,170,425,,23
+Generator60,60,Severn Power - unit 2,CCGT,170,425,,23
+Generator61,61,Shoreham,CCGT,168,420,,28
+Generator62,62,South Humberbank - unit 1,CCGT,172,430,,16
+Generator63,63,South Humberbank - unit 2,CCGT,172,430,,16
+Generator64,64,Spalding - unit 1,CCGT,176,440,,19
+Generator65,65,Spalding - unit 2,CCGT,176,440,,19
+Generator66,66,Spalding Energy Expansion - unit 1,CCGT,168,420,,19
+Generator67,67,Spalding Energy Expansion - unit 2,CCGT,168,420,,19
+Generator68,68,Staythorpe C - unit 1,CCGT,172.8,432,,16
+Generator69,69,Staythorpe C - unit 2,CCGT,172.8,432,,16
+Generator70,70,Sutton Bridge - unit 1,CCGT,164,410,,19
+Generator71,71,Thames Haven - unit 1,CCGT,168,420,,26
+Generator72,72,Thames Haven - unit 2,CCGT,168,420,,26
+Generator73,73,Thorpe Marsh - unit 1,CCGT,192,480,,15
+Generator74,74,Tilbury C - unit 1,CCGT,180,450,,25
+Generator75,75,Tilbury C - unit 2,CCGT,180,450,,25
+Generator76,76,Trafford Power Station,CCGT,228,570,,13
+Generator77,77,Trafford - unit 1,CCGT,190,475,,13
+Generator78,78,West Burton B - unit 1,CCGT,174,435,,16
+Generator79,79,West Burton B - unit 2,CCGT,174,435,,16
+Generator80,80,Ayrshire Power Clean Coal,Clean coal + CCS,344.8,862,,4
+Generator81,81,Ayrshire Power Clean Coal,Clean coal + CCS,315.2,788,,4
+Generator82,82,Hatfield Power Station,IGCC with CCS,320,800,,15
+Generator83,83,Drax - unit 1,Large Unit Coal + AGT + CCS,264,660,,15
+Generator84,84,West Burton - unit 1,Large Unit Coal + AGT + CCS,200,500,,16
+Generator85,85,West Burton - unit 2,Large Unit Coal + AGT + CCS,200,500,,16
+Generator86,86,West Burton - unit 3,Large Unit Coal + AGT + CCS,156,390,,16
+Generator87,87,Neilston,Nuclear AGR,1054,1074,,5
+Generator88,88,Penworthham,Nuclear AGR,2386,2406,,11
+Generator89,89,Sellindge,Nuclear AGR,1061,1081,,27
+Generator90,90,Stella West,Nuclear AGR,1187,1207,,10
+Generator91,91,SWP,Nuclear AGR,1241,1261,,29
+Generator92,92,Torness,Nuclear AGR,1195,1215,,7
+Generator93,93,Aigas,Hydro,0,20,,1
+Generator94,94,Cashlie,Hydro,0,11,,3
+Generator95,95,Cassley,Hydro,0,10,,1
+Generator96,96,Ceannacroc,Hydro,0,20,,1
+Generator97,97,Clachan,Hydro,0,40,,5
+Generator98,98,Clunie,Hydro,0,61,,3
+Generator99,99,Culligran,Hydro,0,19,,1
+Generator100,100,Deanie,Hydro,0,38,,1
+Generator101,101,Errochty,Hydro,0,75,,3
+Generator102,102,Fasnakyle Compensation Hydro (Unit 4),Hydro,0,8,,1
+Generator103,103,Fasnakyle G1 & G3,Hydro,0,46,,1
+Generator104,104,Fasnakyle G2,Hydro,0,23,,1
+Generator105,105,Finlarig,Hydro,0,16,,1
+Generator106,106,Glendoe Fort Augustus Stage 1,Hydro,0,52,,1
+Generator107,107,Glendoe Fort Augustus Stage 2,Hydro,0,48,,1
+Generator108,108,Glenmorrison,Hydro,0,37,,1
+Generator109,109,Grudie Bridge,Hydro,0,22,,3
+Generator110,110,Inverawe,Hydro,0,25,,3
+Generator111,111,Invergarry,Hydro,0,20,,1
+Generator112,112,Kilmorack,Hydro,0,20,,1
+Generator113,113,Kinlochleven,Hydro,0,20,,3
+Generator114,114,Livishie,Hydro,0,15,,3
+Generator115,115,Lochay,Hydro,0,47,,3
+Generator116,116,Luichart,Hydro,0,34,,1
+Generator117,117,Mossford,Hydro,0,19,,1
+Generator118,118,Nant,Hydro,0,15,,3
+Generator119,119,Orrin,Hydro,0,18,,1
+Generator120,120,Pitlochry,Hydro,0,15,,3
+Generator121,121,Quoich,Hydro,0,18,,3
+Generator122,122,Rannoch,Hydro,0,44,,3
+Generator123,123,Shin,Hydro,0,19,,1
+Generator124,124,Sloy G1 & G4,Hydro,0,72,,3
+Generator125,125,Sloy G2 & G3,Hydro,0,80,,3
+Generator126,126,St Fillans,Hydro,0,17,,3
+Generator127,127,Tongland,Hydro,0,33,,6
+Generator128,128,Torr Achilty,Hydro,0,15,,1
+Generator129,129,Tummel,Hydro,0,34,,3
+Generator130,130,East-West Interconnector 1,Interconnector,0,500,,12
+Generator131,131,East-West Interconnector 2,Interconnector,0,375,,12
+Generator132,132,French Interconnector,Interconnector,0,1988,,26
+Generator133,133,Moyle Interconnector (Import),Interconnector,0,80,,5
+Generator134,134,Netherlands Interconnector Stage 2,Interconnector,0,800,,27
+Generator135,135,Netherlands Interconnector Stage 3,Interconnector,0,400,,27
+Generator136,136,NEW1,Interconnector,0,1500,,12
+Generator137,137,NEW2,Interconnector,0,1500,,26
+Generator138,138,NEW3,Interconnector,0,2125,,16
+Generator139,139,NEW4,Interconnector,0,2125,,19
+Generator140,140,Cruachan,Pumped Storage,0,440,2000,4
+Generator141,141,Dinorwig,Pumped Storage,0,1644,9000,12
+Generator142,142,Ffestiniog,Pumped Storage,0,360,2000,12
+Generator143,143,Foyers,Pumped Storage,0,300,1500,1
+Generator144,144,Deeside,Nuclear Magnox,960,980,,12
+Generator145,145,Melksham,Nuclear Magnox,450.4,470.4,,23
+Generator146,146,Bramford,Nuclear PWR,1180,1200,,20
+Generator147,147,Melksham,OCGT,30,100,,23
+Generator148,148,SWP,OCGT,45,140,,29
