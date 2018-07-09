@@ -70,6 +70,7 @@ def initialise_viewer(dep_graph, modelrun, models):
 
     click_from(None)
     click_to(None)
+    click_convert(None)
 
 
 load_button = widgets.Button(
@@ -144,10 +145,48 @@ def plot_results(store, modelrun, model, parameter, year, axes):
     
     display(axes.figure)
 
+def save_data_as_csv(store, modelrun, model, parameter, year):
+    if isinstance(model, ScenarioModel):
+        msg = "No need to use this function as data is already in csv format"
+        raise ValueError(msg)
+    else:
+        spatial_resolution = model.outputs[parameter].spatial_resolution.name
+        temporal_resolution = model.outputs[parameter].temporal_resolution.name
+
+        handle = DataHandle(store, modelrun.name, year, modelrun.model_horizon, 
+                            model, decision_iteration=0)
+        data = handle.get_results(parameter)
+
+        results_path_dat = store._get_results_path(
+            modelrun.name, model.name, parameter, spatial_resolution,
+            temporal_resolution,
+            year, None, 0)
+        results_path = results_path_dat[:-4] + ".csv"
+        os.makedirs(os.path.dirname(results_path), exist_ok=True)
+
+        region_names = store.read_region_names(spatial_resolution)
+        interval_names = store.read_interval_names(temporal_resolution)
+        assert data.shape == (len(region_names), len(interval_names))
+
+        csv_data = store.ndarray_to_data_list(data, 
+                                              region_names, 
+                                              interval_names, 
+                                              timestep=year)
+        store._write_data_to_csv(results_path, csv_data)
+        print("Writing file to %s", results_path)
+
 def on_model_change(change):
     if model.value in models:
         from_model.options = [x.name for x in dep_graph.predecessors(models[model.value])]
+        if from_model.value in models:
+            data_in.options = get_predecessor_outputs(models, model.value, from_model.value)
+        else:
+            data_in.options = []
         to_model.options = [x.name for x in dep_graph[models[model.value]]]
+    if to_model.value in models:
+        data_out.options = get_predecessor_outputs(models, to_model.value, model.value)     
+    else:
+        data_out.options = []
 
 def from_model_change(change):
     if from_model.value in models:
@@ -160,6 +199,9 @@ def to_model_change(change):
         data_out.options = get_predecessor_outputs(models, to_model.value, model.value)     
     else:
         data_out.options = []
+
+def click_convert(b):
+    save_data_as_csv(store, modelrun, models[from_model.value], data_in.value, year.value)
 
 def click_from(b):
     outputs_from.clear_output(wait=True)
@@ -220,7 +262,9 @@ button_to = widgets.Button(
 button_from.on_click(click_from)
 button_to.on_click(click_to)
 
-
+button_convert = widgets.Button(
+    description="Save CSV")
+button_convert.on_click(click_convert)
 
 
 # In[ ]:
@@ -273,8 +317,8 @@ view_results = widgets.VBox([
         year, model]),
         widgets.HBox([
             widgets.VBox([from_model, data_in, button_from, outputs_from]), 
-            widgets.VBox([to_model, data_out, button_to, outputs_to
-                    ])
+            widgets.VBox([to_model, data_out, button_to, outputs_to]),
+            button_convert
         ])
                  ])
 
