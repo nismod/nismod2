@@ -6,7 +6,8 @@ import ipywidgets as widgets
 from IPython.display import display
 import os
 
-from smif.cli import get_model_run_definition, build_model_run, load_resolution_sets
+from smif.controller.build import get_model_run_definition, build_model_run
+from smif.controller.load import load_resolution_sets
 from smif.data_layer.datafile_interface import DatafileInterface
 from smif.data_layer.data_handle import DataHandle
 from smif.model.scenario_model import ScenarioModel
@@ -16,21 +17,6 @@ handler = DatafileInterface('./')
 available_modelrun = widgets.RadioButtons(
     description='Model Runs:',
     options=sorted([x['name'] for x in handler.read_sos_model_runs()]))
-
-stamps = {x: [] for x in available_modelrun.options}
-for name in os.listdir(os.path.join("results")):
-    if os.path.isdir(os.path.join('results', name)):
-        stamps[name] = [x for x in os.listdir(os.path.join('results', name)) 
-                        if os.path.isdir(os.path.join('results', name, x))]
-
-timestamp = widgets.Select(
-    description='Results:',
-    options=sorted(stamps[available_modelrun.value]))
-
-def update_timestamps(change):
-    timestamp.options = sorted(stamps[available_modelrun.value])
-    
-available_modelrun.observe(update_timestamps, names='value')
 
 plt.ioff()
 dep_ax=plt.gca()
@@ -51,28 +37,27 @@ def plot_dep_graph(dep_graph):
         display(dep_ax.figure)
 
 def load_model_run_results(click):
-    if timestamp.value:
-        model_run_config = get_model_run_definition('./', available_modelrun.value)
+    model_run_config = get_model_run_definition('./', available_modelrun.value)
 
-        global modelrun
-        modelrun = build_model_run(model_run_config)
+    global modelrun
+    modelrun = build_model_run(model_run_config)
 
-        global store
-        store = DatafileInterface('./', timestamp=timestamp.value)
+    global store
+    store = DatafileInterface('./')
 
-        global dep_graph
-        modelrun.sos_model.make_dependency_graph()
-        dep_graph = modelrun.sos_model.dependency_graph
-        try:
-            plot_dep_graph(dep_graph)
-        except ValueError:
-            pass
-        
-        global models
-        models = modelrun.sos_model.models 
+    global dep_graph
+    modelrun.sos_model.make_dependency_graph()
+    dep_graph = modelrun.sos_model.dependency_graph
+    try:
+        plot_dep_graph(dep_graph)
+    except ValueError:
+        pass
+    
+    global models
+    models = modelrun.sos_model.models 
 
-        initialise_viewer(dep_graph, modelrun, models)
-        initialise_model_viewer(dep_graph, models)
+    initialise_viewer(dep_graph, modelrun, models)
+    initialise_model_viewer(dep_graph, models)
 
 def initialise_viewer(dep_graph, modelrun, models):
 
@@ -91,12 +76,6 @@ load_button = widgets.Button(
     description="Load Results")
 
 load_button.on_click(load_model_run_results)
-
-
-
-
-# In[ ]:
-
 
 def get_predecessor_outputs(models, model_name, source_model_name):
     """
@@ -135,7 +114,8 @@ def plot_subgraph(model):
 def plot_results(store, modelrun, model, parameter, year, axes):
     axes.clear()
     
-    handle = DataHandle(store, modelrun.name, year, modelrun.model_horizon, model)
+    handle = DataHandle(store, modelrun.name, year, modelrun.model_horizon, model,
+    decision_iteration=0)
     
     spatial_resolution = model.outputs[parameter].spatial_resolution
     temporal_resolution = model.outputs[parameter].temporal_resolution
@@ -284,7 +264,7 @@ outputs.observe(outputs_change, names='value')
 
 
 choose_modelrun = widgets.VBox([
-    widgets.HBox([available_modelrun, timestamp, load_button]), 
+    widgets.HBox([available_modelrun, load_button]), 
     show_dep_graph
 ])
 
