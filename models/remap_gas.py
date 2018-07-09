@@ -36,7 +36,7 @@ def remap_gas(data, remap_filename):
 
     mapper = read_gas_remap(remap_filename)
 
-    coefficients = np.zeros((29, 86), dtype=float)
+    coefficients = np.zeros((29, 87), dtype=float)
     for hub, gas_nodeshare in mapper.items():
         for gas_node, share in gas_nodeshare.items():
             coefficients[hub - 1, gas_node - 1] = share
