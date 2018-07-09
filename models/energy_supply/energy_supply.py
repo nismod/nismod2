@@ -15,29 +15,28 @@ class EnergySupplyWrapper(SectorModel):
     def initialise(self, initial_conditions):
         pass
 
-    def before_model_run(self, initial_conditions):
+    def before_model_run(self, data):
 
-        # gas_stores = []
-        # for intervention in initial_conditions:
-        #     if 'intervention_name' in intervention.keys():
-        #         if str(intervention['intervention_name']).startswith('gasstore'):
-        #             gas_stores.append(intervention)
-        # build_gas_stores(gas_stores)
+        state = data.get_state()
 
         retirees = []
         generators = []
         distributors = []
+        gas_stores = []
 
-        for intervention in initial_conditions:
+        for intervention in state:
             self.logger.info(intervention)
             if intervention['table_name'] == 'GeneratorData':
                 if intervention['retire']:
                     retirees.append(intervention)
                 else:
                     generators.append(intervention)
+            elif str(intervention['intervention_name']).startswith('gasstore'):
+                gas_stores.append(intervention)
             else:
                 distributors.append(intervention)
 
+        build_gas_stores(gas_stores)
         retire_generator(retirees)
         build_generator(generators)
         build_distributed(distributors)
@@ -66,49 +65,11 @@ class EnergySupplyWrapper(SectorModel):
                               parameter_LoadShed_gas)
         
         # Get model inputs
-        input_residential_gas_boiler_gas = data.get_data("residential_gas_boiler_gas")
-        self.logger.info('Input Residential gas boiler gas: %s', 
-            input_residential_gas_boiler_gas)
-        
-        input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
-        self.logger.info('Input Residential electricity boiler electricity: %s', 
-            input_residential_electricity_boiler_electricity)
-        
-        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_gas")
-        self.logger.info('Input Residential gas stirling micro chp: %s', input_residential_gas_stirling_micro_CHP)
-        
-        input_residential_electricity_heat_pumps_electricity = data.get_data("residential_electricity_heat_pumps_electricity")
-        self.logger.info('Input Residential electricity heat pumps electricity: %s', input_residential_electricity_heat_pumps_electricity)
-        
-        input_residential_electricity_district_heating_electricity = data.get_data("residential_electricity_district_heating_electricity")
-        self.logger.info('Input Residential electricity district heating electricity: %s', input_residential_electricity_district_heating_electricity)
-        
-        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_CHP_gas")
-        self.logger.info('Input Residential gas district heating gas: %s', input_residential_gas_district_heating_gas)
-        
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
         
         input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
         self.logger.info('Input Residential electricity non heating: %s', input_residential_electricity_non_heating)
-        
-        input_service_gas_boiler_gas = data.get_data("service_gas_boiler_gas")
-        self.logger.info('Input Service gas boiler gas: %s', input_service_gas_boiler_gas)
-        
-        input_service_electricity_boiler_electricity = data.get_data("service_electricity_boiler_electricity")
-        self.logger.info('Input Service electricity boiler electricity: %s', input_service_electricity_boiler_electricity)
-        
-        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_gas")
-        self.logger.info('Input Service gas stirling micro chp: %s', input_service_gas_stirling_micro_CHP)
-        
-        input_service_electricity_heat_pumps_electricity = data.get_data("service_electricity_heat_pumps_electricity")
-        self.logger.info('Input Service electricity heat pumps electricity: %s', input_service_electricity_heat_pumps_electricity)
-        
-        input_service_electricity_district_heating_electricity = data.get_data("service_electricity_district_heating_electricity")
-        self.logger.info('Input Service electricity district heating electricity: %s', input_service_electricity_district_heating_electricity)
-        
-        input_service_gas_district_heating_gas = data.get_data("service_gas_district_heating_gas")
-        self.logger.info('Input Service gas district heating gas: %s', input_service_gas_district_heating_gas)
         
         input_service_gas_non_heating = data.get_data("service_gas_non_heating")
         self.logger.info('Input Service gas non heating: %s', input_service_gas_non_heating)
@@ -134,26 +95,11 @@ class EnergySupplyWrapper(SectorModel):
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
          
-        # Sum all inputs ready for writing to tables
-        heatload_res_inputs = np.array([
-            input_residential_gas_boiler_gas,
-            input_residential_electricity_boiler_electricity,
-            input_residential_gas_stirling_micro_CHP,
-            input_residential_electricity_heat_pumps_electricity,
-            input_residential_electricity_district_heating_electricity,
-            input_residential_gas_district_heating_gas
-            ])
-        heatload_res = np.add.reduce(heatload_res_inputs, axis=0)
+        heatload_res = data.get_data('residential_heatload')
+        self.logger.info('Residential heatload: %s', heatload_res)
 
-        heatload_com_inputs = np.array(
-            [input_service_gas_boiler_gas,
-            input_service_electricity_boiler_electricity,
-            input_service_gas_stirling_micro_CHP,
-            input_service_electricity_heat_pumps_electricity,
-            input_service_electricity_district_heating_electricity,
-            input_service_gas_district_heating_gas]
-        )
-        heatload_com = np.add.reduce(heatload_com_inputs, axis=0)
+        heatload_com = data.get_data('service_heatload')
+        self.logger.info('Service heatload: %s', heatload_com)
 
         gasload_non_heat_res = input_residential_gas_non_heating
         elecload_non_heat_res = input_residential_electricity_non_heating

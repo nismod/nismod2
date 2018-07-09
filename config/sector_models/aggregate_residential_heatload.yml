@@ -1,0 +1,37 @@
+classname: AggregateInputs
+description: 'Aggregates energy demand outputs for energy supply residential heatload'
+initial_conditions: []
+inputs:
+- name: residential_gas_boiler_gas
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_electricity_boiler_electricity
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_gas_stirling_micro_gas
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_electricity_heat_pumps_electricity
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_electricity_district_heating_electricity
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+- name: residential_gas_district_heating_CHP_gas
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+interventions: []
+name: aggregate_residential_heatload
+outputs:
+- name: residential_heatload
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW
+parameters: []
+path: models/aggregate.py
