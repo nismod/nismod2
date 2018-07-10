@@ -70,8 +70,6 @@ def initialise_viewer(dep_graph, modelrun, models):
 
     click_from(None)
     click_to(None)
-    click_convert(None)
-
 
 load_button = widgets.Button(
     description="Load Results")
@@ -265,9 +263,6 @@ button_to.on_click(click_to)
 button_convert = widgets.Button(
     description="Save CSV")
 button_convert.on_click(click_convert)
-
-
-# In[ ]:
 
 def initialise_model_viewer(dep_graph, models):
     model_only.options = [x.name for x in dep_graph.nodes()]
