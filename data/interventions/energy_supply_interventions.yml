@@ -11,7 +11,7 @@
   diameter_unit:
   location2: nodeNumber2
   diameter:
-  location1: busNumber1
+  location: busNumber1
 - start_year: 2025
   length_unit:
   name: nuclear_plantA
@@ -25,7 +25,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: busNumber2
+  location: busNumber2
 - start_year: 2020
   length_unit:
   name: wind_plantA
@@ -39,7 +39,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: busNumber3
+  location: busNumber3
 - start_year: 2020
   length_unit:
   name: pv_farmA
@@ -53,7 +53,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: busNumber4
+  location: busNumber4
 - start_year: 2025
   length_unit:
   name: batteryStoreA
@@ -67,7 +67,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: busNumber5
+  location: busNumber5
 - start_year: 2025
   length_unit:
   name: elec_interconnectorA
@@ -81,7 +81,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: elec_terminal2
+  location: elec_terminal2
 - start_year: 2030
   length_unit:
   name: gas_interconnectorB
@@ -95,7 +95,7 @@
   diameter_unit:
   location2:
   diameter:
-  location1: gas_terminal3
+  location: gas_terminal3
 - start_year: 2025
   length_unit: km
   name: pipeA
@@ -109,7 +109,7 @@
   diameter_unit: mm
   location2: nodeNumber3
   diameter: 900
-  location1: nodeNumber1
+  location: nodeNumber1
 - start_year: 2020
   length_unit: km
   name: lineA_AC
@@ -123,7 +123,7 @@
   diameter_unit:
   location2: busNumber5
   diameter:
-  location1: busNumber3
+  location: busNumber3
 - start_year: 2020
   length_unit: km
   name: lineB_DC
@@ -137,4 +137,4 @@
   diameter_unit:
   location2: busNumber12
   diameter:
-  location1: busNumber5
+  location: busNumber5

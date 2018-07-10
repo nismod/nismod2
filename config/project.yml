@@ -84,8 +84,8 @@ scenario_sets:
     description: ''
   - name: service_electricity_non_heating
     description: ''
-region_definitions:
 # shared understanding of regions within the modelled area (e.g. GB)
+region_definitions:
 - name: lad_uk_2016
   description: Local Authority Districts (data from 2016, unchanged since 2009)
   filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp

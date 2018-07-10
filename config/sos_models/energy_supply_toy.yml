@@ -23,4 +23,4 @@ scenario_sets:
 - es_residential
 - es_prices
 sector_models:
-- energy_supply_toy
+- energy_supply
