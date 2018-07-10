@@ -110,6 +110,9 @@ region_definitions:
 - description: Points of all 87 gas offtake nodes
   filename: ../energy_supply/region_definitions/gas_nodes.shp
   name: gas_nodes
+- description: Points of just 3 gas offtake nodes
+  filename: ../energy_supply/region_definitions/gas_nodes_minimal.shp
+  name: gas_nodes_minimal
 - description: Points of electricity transmission bus bars
   filename: ../energy_supply/region_definitions/bus_bars.shp
   name: bus_bars
@@ -213,77 +216,121 @@ scenarios:
 - description: Dummy prices data to pass to the energy_supply toy model
   name: es_prices_dummy
   facets:
-  - filename: gas_price.csv
+  - filename: ../energy_supply/scenarios/price/gas_price.csv
     name: gas_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: electricity_price.csv
+  - filename: ../energy_supply/scenarios/price/electricity_price.csv
     name: electricity_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: oil_price.csv
+  - filename: ../energy_supply/scenarios/price/oil_price.csv
     name: oil_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: coal_price.csv
+  - filename: ../energy_supply/scenarios/price/coal_price.csv
     name: coal_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: nuclear_fuel_price.csv
+  - filename: ../energy_supply/scenarios/price/nuclear_fuel_price.csv
     name: nuclearFuel_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: cost_of_carbon.csv
+  - filename: ../energy_supply/scenarios/price/cost_of_carbon.csv
     name: cost_of_carbon
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/Mt
   scenario_set: es_prices
+- name: es_energy_demand_minimal
+  scenario_set: dummy_energy_demands
+  description: ''
+  facets:
+  - filename: ../energy_supply/scenarios/minimal/elecload.csv
+    name: elecload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/gasload.csv
+    name: gasload
+    spatial_resolution: gas_nodes_minimal
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_heatload.csv
+    name: residential_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/residential_gas_non_heating.csv
+    name: residential_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_electricity_non_heating.csv
+    name: residential_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_heatload.csv
+    name: service_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_gas_non_heating.csv
+    name: service_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/service_electricity_non_heating.csv
+    name: service_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
 - name: es_energy_demand_dummy
   scenario_set: dummy_energy_demands
   description: ''
   facets:
-  - filename: energy_supply/elecload.csv
+  - filename: ../energy_supply/scenarios/full/elecload.csv
     name: elecload
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
     units: MW
-  - filename: energy_supply/gasload.csv
+  - filename: ../energy_supply/scenarios/full/gasload.csv
     name: gasload
     spatial_resolution: gas_nodes
     temporal_resolution: seasonal_week
     units: mcm
-  - filename: energy_supply/residential_heatload.csv
+  - filename: ../energy_supply/scenarios/full/residential_heatload.csv
     name: residential_heatload
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
     units: MW
-  - filename: energy_supply/residential_gas_non_heating.csv
+  - filename: ../energy_supply/scenarios/full/residential_gas_non_heating.csv
     name: residential_gas_non_heating
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
     units: mcm
-  - filename: energy_supply/residential_electricity_non_heating.csv
+  - filename: ../energy_supply/scenarios/full/residential_electricity_non_heating.csv
     name: residential_electricity_non_heating
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
     units: MW
-  - filename: energy_supply/service_heatload.csv
+  - filename: ../energy_supply/scenarios/full/service_heatload.csv
     name: service_heatload
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
     units: MW
-  - filename: energy_supply/service_gas_non_heating.csv
+  - filename: ../energy_supply/scenarios/full/service_gas_non_heating.csv
     name: service_gas_non_heating
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
-    units: MW
-  - filename: energy_supply/service_electricity_non_heating.csv
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/service_electricity_non_heating.csv
     name: service_electricity_non_heating
     spatial_resolution: energy_hub
     temporal_resolution: seasonal_week
