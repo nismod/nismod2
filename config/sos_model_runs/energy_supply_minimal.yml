@@ -1,13 +1,12 @@
 decision_module: ''
 description: ''
-name: energy_supply_demand
+name: energy_supply_minimal
 narratives: {}
 scenarios:
   es_prices: es_prices_dummy
-  gva: gva_baseline
-  population: pop_high
-sos_model: energy_supply_demand
-stamp: '2018-02-23T12:00:22.154Z'
+  dummy_energy_demands: es_energy_demand_minimal
+sos_model: energy_supply_toy
+stamp: '2018-01-31T10:10:41.791Z'
 timesteps:
 - 2015
 - 2020
@@ -15,4 +14,4 @@ strategies:
 - strategy: pre-specified-planning
   description: high_renewables
   filename: high_renewables.yml
-  model_name: energy_supply
+  model_name: energy_supply_toy

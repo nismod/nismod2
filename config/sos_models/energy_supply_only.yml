@@ -1,6 +1,62 @@
 convergence_absolute_tolerance: 1.0e-05
 convergence_relative_tolerance: 1.0e-05
-dependencies: []
+dependencies:
+- sink_model_input: gas_price
+  source_model: es_prices
+  source_model_output: gas_price
+  sink_model: energy_supply
+- sink_model_input: electricity_price
+  source_model: es_prices
+  source_model_output: electricity_price
+  sink_model: energy_supply
+- sink_model_input: oil_price
+  source_model: es_prices
+  source_model_output: oil_price
+  sink_model: energy_supply
+- sink_model_input: coal_price
+  source_model: es_prices
+  source_model_output: coal_price
+  sink_model: energy_supply
+- sink_model_input: nuclearFuel_price
+  source_model: es_prices
+  source_model_output: nuclearFuel_price
+  sink_model: energy_supply
+- sink_model_input: cost_of_carbon
+  source_model: es_prices
+  source_model_output: cost_of_carbon
+  sink_model: energy_supply
+- sink_model_input: residential_gas_non_heating
+  source_model: dummy_energy_demands
+  source_model_output: residential_gas_non_heating
+  sink_model: energy_supply
+- sink_model_input: residential_electricity_non_heating
+  source_model: dummy_energy_demands
+  source_model_output: residential_electricity_non_heating
+  sink_model: energy_supply
+- sink_model_input: service_gas_non_heating
+  source_model: dummy_energy_demands
+  source_model_output: service_gas_non_heating
+  sink_model: energy_supply
+- sink_model_input: service_electricity_non_heating
+  source_model: dummy_energy_demands
+  source_model_output: service_electricity_non_heating
+  sink_model: energy_supply
+- sink_model_input: elecload
+  source_model: dummy_energy_demands
+  source_model_output: elecload
+  sink_model: energy_supply
+- sink_model_input: gasload
+  source_model: dummy_energy_demands
+  source_model_output: gasload
+  sink_model: energy_supply
+- source_model: dummy_energy_demands
+  source_model_output: service_heatload
+  sink_model_input: service_heatload
+  sink_model: energy_supply
+- source_model: dummy_energy_demands
+  source_model_output: residential_heatload
+  sink_model_input: residential_heatload
+  sink_model: energy_supply
 description: Test model for energy_supply
 max_iterations: 1
 name: energy_supply_only
@@ -9,3 +65,6 @@ narrative_sets:
 - governance
 sector_models:
 - energy_supply
+scenario_sets:
+- es_prices
+- dummy_energy_demands

@@ -1,35 +1,35 @@
-name: "NISMOD v2.0.0"
+name: NISMOD v2.0.0
 # ------------------------------------------------
 scenario_sets:
 - name: population
-  description: 'UK population, total people'
+  description: UK population, total people
   facets:
   - name: population
     description: ''
 - name: gva
-  description: 'Gross value added'
+  description: Gross value added
   facets:
   - name: gva
     description: ''
 - name: transport_energy_demand
-  description: 'Hourly electricity demand of transport model'
+  description: Hourly electricity demand of transport model
   facets:
   - name: electricity
     description: ''
-- description: Passenger OD flows for transport base year
-  name: passenger_vehicle_OD
+- name: passenger_vehicle_OD
+  description: Passenger OD flows for transport base year
   facets:
   - name: flow
     description: ''
-- description: Dummy data for energy_supply model residential inputs
-  name: es_residential
+- name: es_residential
+  description: Dummy data for energy_supply model residential inputs
   facets:
   - name: residential_gas_boiler_gas
     description: ''
   - name: residential_electricity_boiler_electricity
     description: ''
-- description: Dummy data for energy_supply prices data
-  name: es_prices
+- name: es_prices
+  description: Dummy data for energy_supply prices data
   facets:
   - name: gas_price
     description: ''
@@ -45,11 +45,49 @@ scenario_sets:
     description: ''
   - name: cost_of_carbon
     description: ''
-# ------------------------------------------------
-region_definitions:
+- name: dummy_energy_demands
+  description: Dummy energy demand data for the energy supply model
+  facets:
+  - name: elecload
+    description: ''
+  - name: gasload
+    description: ''
+  - name: residential_gas_boiler_gas
+    description: ''
+  - name: residential_electricity_boiler_electricity
+    description: ''
+  - name: residential_gas_stirling_micro_gas
+    description: ''
+  - name: residential_electricity_heat_pumps_electricity
+    description: ''
+  - name: residential_electricity_district_heating_electricity
+    description: ''
+  - name: residential_gas_district_heating_CHP_gas
+    description: ''
+  - name: residential_gas_non_heating
+    description: ''
+  - name: residential_electricity_non_heating
+    description: ''
+  - name: service_gas_boiler_gas
+    description: ''
+  - name: service_electricity_boiler_electricity
+    description: ''
+  - name: service_gas_stirling_micro_gas
+    description: ''
+  - name: service_electricity_heat_pumps_electricity
+    description: ''
+  - name: service_electricity_district_heating_electricity
+    description: ''
+  - name: service_gas_district_heating_gas
+    description: ''
+  - name: service_gas_non_heating
+    description: ''
+  - name: service_electricity_non_heating
+    description: ''
 # shared understanding of regions within the modelled area (e.g. GB)
+region_definitions:
 - name: lad_uk_2016
-  description: 'Local Authority Districts (data from 2016, unchanged since 2009)'
+  description: Local Authority Districts (data from 2016, unchanged since 2009)
   filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp
 - description: Southampton LAD for transport test
   filename: lad_southampton/zones.shp
@@ -72,6 +110,9 @@ region_definitions:
 - description: Points of all 87 gas offtake nodes
   filename: ../energy_supply/region_definitions/gas_nodes.shp
   name: gas_nodes
+- description: Points of just 3 gas offtake nodes
+  filename: ../energy_supply/region_definitions/gas_nodes_minimal.shp
+  name: gas_nodes_minimal
 - description: Points of electricity transmission bus bars
   filename: ../energy_supply/region_definitions/bus_bars.shp
   name: bus_bars
@@ -85,7 +126,7 @@ region_definitions:
 interval_definitions:
 # shared understanding of time intervals within a year
 - name: hourly
-  description: 'Every hour in a year'
+  description: Every hour in a year
   filename: hourly_intervals.csv
 - description: One annual interval of 8760 hours
   filename: annual_intervals.csv
@@ -105,7 +146,7 @@ units: units.txt
 scenarios:
 # given input data, required values for every year of a model run
 - name: et_demand_baseline
-  description: 'Baseline GWh of transport for the UK'
+  description: Baseline GWh of transport for the UK
   scenario_set: transport_energy_demand
   facets:
   - name: electricity
@@ -114,7 +155,7 @@ scenarios:
     temporal_resolution: annual
     units: GWh
 - name: pop_baseline
-  description: 'Baseline population for the UK'
+  description: Baseline population for the UK
   scenario_set: population
   facets:
   - name: population
@@ -123,7 +164,7 @@ scenarios:
     temporal_resolution: annual
     units: people
 - name: pop_high
-  description: 'High population for the UK'
+  description: High population for the UK
   scenario_set: population
   facets:
   - name: population
@@ -132,7 +173,7 @@ scenarios:
     temporal_resolution: annual
     units: people
 - name: pop_low
-  description: 'Low population for the UK'
+  description: Low population for the UK
   scenario_set: population
   facets:
   - name: population
@@ -141,7 +182,7 @@ scenarios:
     temporal_resolution: annual
     units: people
 - name: gva_baseline
-  description: 'Baseline gva for the UK'
+  description: Baseline gva for the UK
   scenario_set: gva
   facets:
   - name: gva
@@ -153,11 +194,11 @@ scenarios:
   description: Test data for transport base year
   scenario_set: passenger_vehicle_OD
   facets:
-    - name: flow
-      filename: soton_passenger_vehicle_OD.csv
-      spatial_resolution: od_southampton
-      temporal_resolution: annual_day
-      units: vehicles
+  - name: flow
+    filename: soton_passenger_vehicle_OD.csv
+    spatial_resolution: od_southampton
+    temporal_resolution: annual_day
+    units: vehicles
 - description: Dummy data for residential inputs to energy supply model
   name: es_residential_dummy
   facets:
@@ -175,37 +216,125 @@ scenarios:
 - description: Dummy prices data to pass to the energy_supply toy model
   name: es_prices_dummy
   facets:
-  - filename: gas_price.csv
+  - filename: ../energy_supply/scenarios/price/gas_price.csv
     name: gas_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: electricity_price.csv
+  - filename: ../energy_supply/scenarios/price/electricity_price.csv
     name: electricity_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: oil_price.csv
+  - filename: ../energy_supply/scenarios/price/oil_price.csv
     name: oil_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: coal_price.csv
+  - filename: ../energy_supply/scenarios/price/coal_price.csv
     name: coal_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: nuclear_fuel_price.csv
+  - filename: ../energy_supply/scenarios/price/nuclear_fuel_price.csv
     name: nuclearFuel_price
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/MWh
-  - filename: cost_of_carbon.csv
+  - filename: ../energy_supply/scenarios/price/cost_of_carbon.csv
     name: cost_of_carbon
     spatial_resolution: national
     temporal_resolution: seasons
     units: GBP/Mt
   scenario_set: es_prices
+- name: es_energy_demand_minimal
+  scenario_set: dummy_energy_demands
+  description: ''
+  facets:
+  - filename: ../energy_supply/scenarios/minimal/elecload.csv
+    name: elecload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/gasload.csv
+    name: gasload
+    spatial_resolution: gas_nodes_minimal
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_heatload.csv
+    name: residential_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/residential_gas_non_heating.csv
+    name: residential_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_electricity_non_heating.csv
+    name: residential_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_heatload.csv
+    name: service_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_gas_non_heating.csv
+    name: service_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/service_electricity_non_heating.csv
+    name: service_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+- name: es_energy_demand_dummy
+  scenario_set: dummy_energy_demands
+  description: ''
+  facets:
+  - filename: ../energy_supply/scenarios/full/elecload.csv
+    name: elecload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/gasload.csv
+    name: gasload
+    spatial_resolution: gas_nodes
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/residential_heatload.csv
+    name: residential_heatload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/residential_gas_non_heating.csv
+    name: residential_gas_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/residential_electricity_non_heating.csv
+    name: residential_electricity_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/service_heatload.csv
+    name: service_heatload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/service_gas_non_heating.csv
+    name: service_gas_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/service_electricity_non_heating.csv
+    name: service_electricity_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
 # ------------------------------------------------
 narrative_sets:
 - description: Describes the evolution of technology
@@ -214,11 +343,11 @@ narrative_sets:
   name: governance
 # ------------------------------------------------
 narratives:
-- name: 'High Tech Demand Side Management'
-  description: 'High penetration of SMART technology on the demand side'
+- name: High Tech Demand Side Management
+  description: High penetration of SMART technology on the demand side
   filename: high_tech_dsm.yml
   narrative_set: technology
-- name: 'test_narrative'
-  description: 'High penetration of SMART technology on the demand side'
+- name: test_narrative
+  description: High penetration of SMART technology on the demand side
   filename: ../energy_demand/narratives/narrative_test.yml
   narrative_set: technology

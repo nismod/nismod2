@@ -1,5 +1,5 @@
 - economic_lifetime:
-  location1: busNumber1
+  location: busNumber1
   capacity_value: 800
   start_year: 2020
   length_unit:
@@ -13,7 +13,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber2
+  location: busNumber2
   capacity_value: 1000
   start_year: 2025
   length_unit:
@@ -27,7 +27,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber3
+  location: busNumber3
   capacity_value: 200
   start_year: 2020
   length_unit:
@@ -41,7 +41,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber4
+  location: busNumber4
   capacity_value: 100
   start_year: 2020
   length_unit:
@@ -55,7 +55,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber5
+  location: busNumber5
   capacity_value: 50
   start_year: 2025
   length_unit:
@@ -69,7 +69,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: elec_terminal2
+  location: elec_terminal2
   capacity_value: 1000
   start_year: 2025
   length_unit:
@@ -83,7 +83,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: gas_terminal3
+  location: gas_terminal3
   capacity_value: 100
   start_year: 2030
   length_unit:
@@ -97,7 +97,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: nodeNumber1
+  location: nodeNumber1
   capacity_value: 95
   start_year: 2025
   length_unit: km
@@ -111,7 +111,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber3
+  location: busNumber3
   capacity_value: 2000
   start_year: 2020
   length_unit: km
@@ -125,7 +125,7 @@
   capital_cost_value:
   operational_lifetime:
 - economic_lifetime:
-  location1: busNumber4
+  location: busNumber4
   capacity_value: 2000
   start_year: 2020
   length_unit: km

@@ -11,14 +11,35 @@ from collections import namedtuple
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
-    def initialise(self, initial_conditions):
-        gas_stores = []
-        for intervention in initial_conditions:
-            if 'intervention_name' in intervention.keys():
-                if str(intervention['intervention_name']).startswith('gasstore'):
-                    gas_stores.append(intervention)
-        build_gas_stores(gas_stores)
 
+    def initialise(self, initial_conditions):
+        pass
+
+    def before_model_run(self, data):
+
+        state = data.get_state()
+
+        retirees = []
+        generators = []
+        distributors = []
+        gas_stores = []
+
+        for intervention in state:
+            self.logger.info(intervention)
+            if intervention['table_name'] == 'GeneratorData':
+                if intervention['retire']:
+                    retirees.append(intervention)
+                else:
+                    generators.append(intervention)
+            elif str(intervention['intervention_name']).startswith('gasstore'):
+                gas_stores.append(intervention)
+            else:
+                distributors.append(intervention)
+
+        build_gas_stores(gas_stores)
+        retire_generator(retirees)
+        build_generator(generators)
+        build_distributed(distributors)
 
 
     def simulate(self, data):
@@ -36,102 +57,49 @@ class EnergySupplyWrapper(SectorModel):
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
         self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
-
+        
         parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
         self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
 
-        write_load_shed_costs(parameter_LoadShed_elec,
+        write_load_shed_costs(parameter_LoadShed_elec, 
                               parameter_LoadShed_gas)
-
+        
         # Get model inputs
-        input_residential_gas_boiler_gas = data.get_data("residential_gas_boiler_gas")
-        self.logger.info('Input Residential gas boiler gas: %s',
-            input_residential_gas_boiler_gas)
-
-        input_residential_electricity_boiler_electricity = data.get_data("residential_electricity_boiler_electricity")
-        self.logger.info('Input Residential electricity boiler electricity: %s',
-            input_residential_electricity_boiler_electricity)
-
-        input_residential_gas_stirling_micro_CHP = data.get_data("residential_gas_stirling_micro_gas")
-        self.logger.info('Input Residential gas stirling micro chp: %s', input_residential_gas_stirling_micro_CHP)
-
-        input_residential_electricity_heat_pumps_electricity = data.get_data("residential_electricity_heat_pumps_electricity")
-        self.logger.info('Input Residential electricity heat pumps electricity: %s', input_residential_electricity_heat_pumps_electricity)
-
-        input_residential_electricity_district_heating_electricity = data.get_data("residential_electricity_district_heating_electricity")
-        self.logger.info('Input Residential electricity district heating electricity: %s', input_residential_electricity_district_heating_electricity)
-
-        input_residential_gas_district_heating_gas = data.get_data("residential_gas_district_heating_CHP_gas")
-        self.logger.info('Input Residential gas district heating gas: %s', input_residential_gas_district_heating_gas)
-
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
-
+        
         input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
         self.logger.info('Input Residential electricity non heating: %s', input_residential_electricity_non_heating)
-
-        input_service_gas_boiler_gas = data.get_data("service_gas_boiler_gas")
-        self.logger.info('Input Service gas boiler gas: %s', input_service_gas_boiler_gas)
-
-        input_service_electricity_boiler_electricity = data.get_data("service_electricity_boiler_electricity")
-        self.logger.info('Input Service electricity boiler electricity: %s', input_service_electricity_boiler_electricity)
-
-        input_service_gas_stirling_micro_CHP = data.get_data("service_gas_stirling_micro_gas")
-        self.logger.info('Input Service gas stirling micro chp: %s', input_service_gas_stirling_micro_CHP)
-
-        input_service_electricity_heat_pumps_electricity = data.get_data("service_electricity_heat_pumps_electricity")
-        self.logger.info('Input Service electricity heat pumps electricity: %s', input_service_electricity_heat_pumps_electricity)
-
-        input_service_electricity_district_heating_electricity = data.get_data("service_electricity_district_heating_electricity")
-        self.logger.info('Input Service electricity district heating electricity: %s', input_service_electricity_district_heating_electricity)
-
-        input_service_gas_district_heating_gas = data.get_data("service_gas_district_heating_gas")
-        self.logger.info('Input Service gas district heating gas: %s', input_service_gas_district_heating_gas)
-
+        
         input_service_gas_non_heating = data.get_data("service_gas_non_heating")
         self.logger.info('Input Service gas non heating: %s', input_service_gas_non_heating)
-
+        
         input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
         self.logger.info('Input Service electricity non heating: %s', input_service_electricity_non_heating)
-
+            
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
-
+    
         input_electricity_price = data.get_data("electricity_price")
         self.logger.info('Input Electricity price: %s', input_electricity_price)
-
+    
         input_gas_price = data.get_data("gas_price")
         self.logger.info('Input Gas price: %s', input_gas_price)
-
+    
         input_nuclearFuel_price = data.get_data("nuclearFuel_price")
         self.logger.info('Input Nuclearfuel price: %s', input_nuclearFuel_price)
-
+    
         input_oil_price = data.get_data("oil_price")
         self.logger.info('Input Oil price: %s', input_oil_price)
-
+    
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
+         
+        heatload_res = data.get_data('residential_heatload')
+        self.logger.info('Residential heatload: %s', heatload_res)
 
-        # Sum all inputs ready for writing to tables
-        heatload_res_inputs = np.array([
-            input_residential_gas_boiler_gas,
-            input_residential_electricity_boiler_electricity,
-            input_residential_gas_stirling_micro_CHP,
-            input_residential_electricity_heat_pumps_electricity,
-            input_residential_electricity_district_heating_electricity,
-            input_residential_gas_district_heating_gas
-            ])
-        heatload_res = np.add.reduce(heatload_res_inputs, axis=0)
-
-        heatload_com_inputs = np.array(
-            [input_service_gas_boiler_gas,
-            input_service_electricity_boiler_electricity,
-            input_service_gas_stirling_micro_CHP,
-            input_service_electricity_heat_pumps_electricity,
-            input_service_electricity_district_heating_electricity,
-            input_service_gas_district_heating_gas]
-        )
-        heatload_com = np.add.reduce(heatload_com_inputs, axis=0)
+        heatload_com = data.get_data('service_heatload')
+        self.logger.info('Service heatload: %s', heatload_com)
 
         gasload_non_heat_res = input_residential_gas_non_heating
         elecload_non_heat_res = input_residential_electricity_non_heating
@@ -140,34 +108,34 @@ class EnergySupplyWrapper(SectorModel):
 
         region_names, interval_names = self.get_names( "residential_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_res")
-        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res",
+        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
                              now, region_names, interval_names)
         region_names, interval_names = self.get_names( "service_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_com")
-        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com",
+        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_res")
-        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res",
+        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_com")
-        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com",
+        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_res")
-        write_input_timestep(heatload_res, "heatload_res",
+        write_input_timestep(heatload_res, "heatload_res", 
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_com")
-        write_input_timestep(heatload_com, "heatload_com",
+        write_input_timestep(heatload_com, "heatload_com", 
                              now, region_names, interval_names)
 
         elecload_tran = data.get_data('elecload')
         self.logger.info('Writing %s to database', "elecload")
-        write_input_timestep(elecload_tran, "elecload",
+        write_input_timestep(elecload_tran, "elecload", 
                              now, region_names, interval_names)
 
         gasload = data.get_data('gasload')
         region_names, interval_names = self.get_names( "gasload")
         self.logger.info('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload",
+        write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
         # Run the model
@@ -205,13 +173,12 @@ class EnergySupplyWrapper(SectorModel):
             'load_shed_gas_eh': 'gas_load_shed_eh',
             'load_shed_elec_eh': 'elec_load_shed_eh',
             'emissions_eh': 'e_emissions_eh',
-            'emissions_bb': 'e_emissions'
-        }
+            'emissions_bb': 'e_emissions'}
 
         annual_results = {
             # 'total_opt_cost': 'total_opt_cost',
             # 'emissions_elec': 'e_emissions'
-        }
+            }
 
         # Open database connection
         conn = establish_connection()
@@ -294,7 +261,7 @@ def clear_results(year):
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
-
+    
     Argument
     --------
     time_id : int
@@ -371,9 +338,9 @@ def write_gas_price(year, data):
         _, interval_index = it.multi_index
         fuel_id = 1
         fueltype = 'Gas'
-        insert_data = (fuel_id,
-                       fueltype,
-                       year,
+        insert_data = (fuel_id, 
+                       fueltype, 
+                       year, 
                        interval_index + 1,
                        float(cell))
 
@@ -456,7 +423,7 @@ def get_timestep_output(conn, output_parameter, year, regions, intervals):
     return results
 
 
-def write_load_shed_costs(loadshedcost_elec,
+def write_load_shed_costs(loadshedcost_elec, 
                           loadshedcost_gas):
     """
     """
@@ -472,9 +439,160 @@ def write_load_shed_costs(loadshedcost_elec,
         cur.execute("""DELETE FROM "LoadShedCosts";""")
     with conn.cursor() as cur:
         cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
-
+    
     conn.commit()
 
+    conn.close()
+    
+def retire_generator(plants):
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for plant in plants:
+
+        sql = """DELETE FROM "GeneratorData" WHERE "GeneratorName"=%s"""
+
+        cur.execute(sql, (str(plant['name']), ))
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close() 
+
+def build_generator(plants):
+    """Writes an intervention into the GeneratorData table
+
+    Arguments
+    ---------
+    plants : list
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for plant in plants:
+
+        if 'EH' in plant['name']:
+
+            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "EH_Conn_Num","MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        elif 'bus' in plant['name']:
+
+            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName",  "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        data = (plant['type'],
+                plant['name'],
+                plant['location'],
+                plant['min_power']['value'],
+                plant['capacity']['value'],
+                plant['build_year'],
+                plant['build_year'] + plant['operational_lifetime']['value'],
+                plant['sys_layer']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def get_distributed_eh(location, year):
+
+    sql =  """SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity" FROM "WindPVData_EH" WHERE "EH_Conn_Num"=%s AND "Year"=%s;"""
+
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    with conn.cursor() as cur:
+        cur.execute(sql, (location, year))    
+        mapping = cur.fetchone()
+    conn.close()
+    print(mapping)
+    return mapping
+
+def get_distributed_tran(location, year):
+
+    sql =  """SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity" FROM "WindPVData_Tran" WHERE "BusNum"=%s AND "Year"=%s;"""
+
+    conn = establish_connection()
+    # Open a cursor to perform database operations
+    with conn.cursor() as cur:
+        cur.execute(sql, (location, year))    
+        mapping = cur.fetchone()
+    conn.close()
+    print(mapping)
+    return mapping
+
+def build_distributed(plants):
+    """Writes a list of interventions into the WindPVData_* table
+
+    Arguments
+    ---------
+    plants : list
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    plant_remap = {x: {'build_year': 0, 
+                       'offshore': 0, 
+                       'onshore': 0, 
+                       'pv': 0,
+                       'table_name': ''} 
+                   for x in range(1, 30)}
+
+    for plant in plants:
+        location = int(plant['location'])
+        if location in plant_remap:
+            plant_remap[location]['build_year'] = plant['build_year']
+            plant_remap[location]['table_name'] = plant['table_name']
+            if 'offshore' in plant['name']:
+                plant_remap[location]['offshore'] =  plant['capacity']['value']
+            elif 'onshore' in plant['name']:
+                plant_remap[location]['onshore'] = plant['capacity']['value']
+            elif 'pv' in plant['name']:
+                plant_remap[location]['pv'] = plant['capacity']['value']
+
+
+    for location, plant in plant_remap.items():
+
+        on = 0
+        off = 0
+        pv = 0
+
+        if plant['table_name'] == 'WindPVData_EH':
+            # sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
+            sql = """UPDATE "WindPVData_EH" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "EH_Conn_Num"=(%s) AND "Year"=(%s);"""
+
+            previous = get_distributed_eh(location, plant['build_year'])
+            if previous:
+                on, off, pv = previous
+        else:
+            # sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
+            sql = """UPDATE "WindPVData_Tran" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "BusNum"=(%s) AND "Year"=(%s);"""
+
+            previous = get_distributed_tran(location, plant['build_year'])
+            if previous:
+                on, off, pv = previous
+
+        data = (
+                on + plant['onshore'],
+                off + plant['offshore'],
+                pv + plant['pv'],
+                location,
+                plant['build_year'])
+
+        print("Updating location {} into table {}".format(location, plant['table_name']))
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
     conn.close()
 
 def build_gas_stores(gas_stores):
@@ -506,7 +624,7 @@ def build_gas_stores(gas_stores):
 
     for store in gas_stores:
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
         data = (store['storagenumber'],
                 store['gasnode'],
@@ -543,22 +661,22 @@ def get_region_mapping(input_parameter_name):
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
         cur.execute("""SELECT name, id
-                        FROM region
+                        FROM region 
                         WHERE regiontype = (
-                            SELECT regiontype from input_parameter
-                            WHERE name=%s);""",
-                    (input_parameter_name, ))
+                            SELECT regiontype from input_parameter 
+                            WHERE name=%s);""", 
+                    (input_parameter_name, ))    
         mapping = cur.fetchall()
     conn.close()
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year,
+def write_input_timestep(input_data, parameter_name, year, 
                          region_names, interval_names):
-    """Writes input data into database table
-
+    """Writes input data into database table 
+    
     Uses the index of the numpy array as a reference to interval and region definitions
-
+    
     Arguments
     ---------
     input_data : numpy.ndarray

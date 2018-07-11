@@ -178,8 +178,7 @@ cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 cd /vagrant
 
 # Run migrations
-su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -d $DATA_DIR/data $MIGRATIONS"
-su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -u $DATA_DIR/data $MIGRATIONS"
+su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_full $MIGRATIONS"
 
 # Setup environment variables on login
 echo "source /opt/xpressmp/bin/xpvars.sh" >> /home/vagrant/.bashrc
