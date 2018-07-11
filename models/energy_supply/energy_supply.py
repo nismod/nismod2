@@ -17,7 +17,23 @@ class EnergySupplyWrapper(SectorModel):
 
     def before_model_run(self, data):
 
+        pass
+
+    def get_model_parameters(self, data):
+        # Get model parameters
+        parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
+        self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
+        
+        parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
+        self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
+
+        write_load_shed_costs(parameter_LoadShed_elec, 
+                              parameter_LoadShed_gas)
+
+    def build_interventions(self, data):
+        # Build interventions
         state = data.get_state()
+        self.logger.info("Current state: %s", state)
 
         retirees = []
         generators = []
@@ -41,30 +57,9 @@ class EnergySupplyWrapper(SectorModel):
         build_generator(generators)
         build_distributed(distributors)
 
-
-    def simulate(self, data):
-
-        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
-
-        # Get the current timestep
-        now = data.current_timestep
-        self.logger.info("Energy supplyWrapper received inputs in %s", now)
-
-        clear_results(now)
-
-        write_simduration(now)
-
-        # Get model parameters
-        parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
-        self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
-        
-        parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
-        self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
-
-        write_load_shed_costs(parameter_LoadShed_elec, 
-                              parameter_LoadShed_gas)
-        
+    def get_model_inputs(self, data, now):
         # Get model inputs
+        self.logger.info("Energy Supply Wrapper received inputs in %s", now)
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
         
@@ -138,13 +133,32 @@ class EnergySupplyWrapper(SectorModel):
         write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
-        # Run the model
+    def simulate(self, data):
+
+        # Get the current timestep
+        now = data.current_timestep
+        clear_results(now)
+        write_simduration(now)
+        self.get_model_parameters(data)
+        self.build_interventions(data)
+        self.get_model_inputs(data, now)
+        self.run_the_model()
+        self.retrieve_outputs(data, now)
+
+    def run_the_model(self):
+        """Run the model
+        """
+        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
         self.logger.info("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
         self.logger.info(check_output(arguments))
 
-        # This results mapping maps output_parameters to sectormodel output names
-        # external => internal
+    def retrieve_outputs(self, data, now):
+        """Retrieves results from the model
+        
+        This results mapping maps output_parameters to sectormodel output names
+        external => internal
+        """
         timestep_results = {
             'gasfired_gen_tran': 'tran_gas_fired',
             'coal_gen_tran': 'tran_coal',
@@ -196,6 +210,7 @@ class EnergySupplyWrapper(SectorModel):
 
         self.logger.info("Energy supplyWrapper produced outputs in %s", now)
 
+
     def set_results(self, internal_parameter_name, external_parameter_name, data_handle, conn, is_annual=False):
         """Pass results from database to data handle
         """
@@ -230,7 +245,6 @@ class EnergySupplyWrapper(SectorModel):
 
     def extract_obj(self, results):
         return 0
-
 
 def establish_connection():
     """Connect to an existing database
