@@ -1,0 +1,947 @@
+- type: 4
+  capital_cost:
+    value: 40
+    units: £M
+  table_name: GeneratorData
+  location: 9
+  capacity:
+    value: 1000
+    units: £M
+  build_year: 2015
+  name: Nuclear_large_bus9
+  min_power:
+    value: 800
+    units: MW
+  operational_lifetime:
+    value: 40
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 15
+    units: years
+- type: 4
+  capital_cost:
+    value: 40
+    units: £M
+  table_name: GeneratorData
+  location: 18
+  capacity:
+    value: 1366
+    units: £M
+  build_year: 2015
+  name: Nuclear_large_bus18
+  min_power:
+    value: 700
+    units: MW
+  operational_lifetime:
+    value: 40
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 15
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 11
+  capacity:
+    value: 896
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus11
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 12
+  capacity:
+    value: 900
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus12
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 19
+  capacity:
+    value: 950
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus19A
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 19
+  capacity:
+    value: 850
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus19B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 20
+  capacity:
+    value: 900
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus20A
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 20
+  capacity:
+    value: 840
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus20B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 15
+    units: £M
+  table_name: WindPVData_Tran
+  location: 28
+  capacity:
+    value: 1100
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus28A
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 15
+    units: £M
+  table_name: WindPVData_Tran
+  location: 28
+  capacity:
+    value: 850
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus28B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 29
+  capacity:
+    value: 1000
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus29
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 2
+  capacity:
+    value: 1200
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus2A
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 2
+  capacity:
+    value: 1300
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus2B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 2
+  capacity:
+    value: 1150
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus2C
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 2
+  capacity:
+    value: 1200
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus2D
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 7
+  capacity:
+    value: 1000
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus7A
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 7
+  capacity:
+    value: 1250
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus7B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 30
+    units: £M
+  table_name: WindPVData_Tran
+  location: 7
+  capacity:
+    value: 1100
+    units: £M
+  build_year: 2015
+  name: Wind_farm_offshore_bus7C
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 8
+    units: £M
+  table_name: WindPVData_Tran
+  location: 12
+  capacity:
+    value: 351
+    units: £M
+  build_year: 2015
+  name: Wind_farm_onshore_bus12
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 7
+    units: £M
+  table_name: WindPVData_Tran
+  location: 14
+  capacity:
+    value: 200
+    units: £M
+  build_year: 2015
+  name: Wind_farm_onshore_bus14
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 9
+    units: £M
+  table_name: WindPVData_Tran
+  location: 19
+  capacity:
+    value: 350
+    units: £M
+  build_year: 2015
+  name: Wind_farm_onshore_bus17
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 7
+    units: £M
+  table_name: WindPVData_Tran
+  location: 18
+  capacity:
+    value: 550
+    units: £M
+  build_year: 2015
+  name: Wind_farm_onshore_bus18
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- capital_cost:
+    value: 10
+    units: £M
+  table_name: WindPVData_Tran
+  location: 29
+  capacity:
+    value: 400
+    units: £M
+  build_year: 2015
+  name: Wind_farm_onshore_bus29
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 25
+    units: years
+  retire: false
+  sys_layer: 1
+  economic_lifetime:
+    value: 10
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 13
+  capacity:
+    value: 900
+    units: £M
+  build_year: 2015
+  name: Carrington
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 12
+  capacity:
+    value: 1380
+    units: £M
+  build_year: 2015
+  name: Connahs Quay
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 22
+  capacity:
+    value: 401
+    units: £M
+  build_year: 2015
+  name: Corby
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 24
+  capacity:
+    value: 1470
+    units: £M
+  build_year: 2015
+  name: Didcot B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 26
+  capacity:
+    value: 1404
+    units: £M
+  build_year: 2015
+  name: Grain CHP
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 18
+  capacity:
+    value: 2180
+    units: £M
+  build_year: 2015
+  name: Pembroke
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 1
+  capacity:
+    value: 1180
+    units: £M
+  build_year: 2015
+  name: Peterhead
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 15
+  capacity:
+    value: 1200
+    units: £M
+  build_year: 2015
+  name: Saltend
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 16
+  capacity:
+    value: 1310
+    units: £M
+  build_year: 2015
+  name: South Humber Bank
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 17
+  capacity:
+    value: 1772
+    units: £M
+  build_year: 2015
+  name: Staythorpe C
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 16
+  capacity:
+    value: 1240
+    units: £M
+  build_year: 2015
+  name: VPI Immingham
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 1
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 16
+  capacity:
+    value: 1332
+    units: £M
+  build_year: 2015
+  name: West Burton CCGT
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 15
+  capacity:
+    value: 1980
+    units: £M
+  build_year: 2015
+  name: Drax - coal units
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 16
+  capacity:
+    value: 2008
+    units: £M
+  build_year: 2015
+  name: Cottam
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 16
+  capacity:
+    value: 2012
+    units: £M
+  build_year: 2015
+  name: West Burton
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 15
+  capacity:
+    value: 1960
+    units: £M
+  build_year: 2015
+  name: Eggborough
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 18
+  capacity:
+    value: 1586
+    units: £M
+  build_year: 2015
+  name: Aberthaw B
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 11
+  capacity:
+    value: 1961
+    units: £M
+  build_year: 2015
+  name: Fiddler's Ferry
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 24
+  capacity:
+    value: 35
+    units: £M
+  build_year: 2015
+  name: Slough
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 18
+  capacity:
+    value: 230
+    units: £M
+  build_year: 2015
+  name: Uskmouth Power
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
+- type: 2
+  capital_cost:
+    value: 0
+    units: £M
+  table_name: GeneratorData
+  location: 13
+  capacity:
+    value: 2000
+    units: £M
+  build_year: 2015
+  name: Ratcliffe
+  min_power:
+    value: 0
+    units: MW
+  operational_lifetime:
+    value: 0
+    units: years
+  retire: true
+  sys_layer: 1
+  economic_lifetime:
+    value: 0
+    units: years
