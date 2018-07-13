@@ -52,33 +52,13 @@ scenario_sets:
     description: ''
   - name: gasload
     description: ''
-  - name: residential_gas_boiler_gas
-    description: ''
-  - name: residential_electricity_boiler_electricity
-    description: ''
-  - name: residential_gas_stirling_micro_gas
-    description: ''
-  - name: residential_electricity_heat_pumps_electricity
-    description: ''
-  - name: residential_electricity_district_heating_electricity
-    description: ''
-  - name: residential_gas_district_heating_CHP_gas
+  - name: residential_heatload
     description: ''
   - name: residential_gas_non_heating
     description: ''
   - name: residential_electricity_non_heating
     description: ''
-  - name: service_gas_boiler_gas
-    description: ''
-  - name: service_electricity_boiler_electricity
-    description: ''
-  - name: service_gas_stirling_micro_gas
-    description: ''
-  - name: service_electricity_heat_pumps_electricity
-    description: ''
-  - name: service_electricity_district_heating_electricity
-    description: ''
-  - name: service_gas_district_heating_gas
+  - name: service_heatload
     description: ''
   - name: service_gas_non_heating
     description: ''
