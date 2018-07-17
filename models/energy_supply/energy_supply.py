@@ -16,8 +16,23 @@ class EnergySupplyWrapper(SectorModel):
         pass
 
     def before_model_run(self, data):
-
         pass
+
+    def simulate(self, data):
+        """Run the energy supply operational simulation
+        """
+        # Get the current timestep
+        now = data.current_timestep
+        clear_results(now)
+        write_simduration(now)
+        self.get_model_parameters(data)
+
+        self.clear_input_tables()
+
+        self.build_interventions(data)
+        self.get_model_inputs(data, now)
+        self.run_the_model()
+        self.retrieve_outputs(data, now)
 
     def get_model_parameters(self, data):
         # Get model parameters
@@ -30,32 +45,52 @@ class EnergySupplyWrapper(SectorModel):
         write_load_shed_costs(parameter_LoadShed_elec, 
                               parameter_LoadShed_gas)
 
+    def clear_input_tables(self):
+        """Removes all state data from database tables
+
+        Removes data from:
+        - GeneratorData
+        - WindPVData_EH
+        - WindPVData_Tran
+        - GasStorage
+        """
+        delete_from("GeneratorData")
+        delete_from("WindPVData_EH")
+        delete_from("WindPVData_Tran")
+        delete_from("GasStorage")
+
     def build_interventions(self, data):
         # Build interventions
         state = data.get_state()
         self.logger.info("Current state: %s", state)
-
+        current_interventions = self.get_current_interventions(state)
+        print([ci.name for ci in self.interventions])
+        print([ci['name'] for ci in current_interventions])
         retirees = []
         generators = []
         distributors = []
         gas_stores = []
 
-        for intervention in state:
+        for intervention in current_interventions:
             self.logger.info(intervention)
             if intervention['table_name'] == 'GeneratorData':
                 if intervention['retire']:
                     retirees.append(intervention)
                 else:
                     generators.append(intervention)
-            elif str(intervention['intervention_name']).startswith('gasstore'):
+            elif str(intervention['name']).startswith('gasstore'):
                 gas_stores.append(intervention)
             else:
                 distributors.append(intervention)
 
+        self.logger.info('Writing %s gas stores to database', len(gas_stores))
         build_gas_stores(gas_stores)
-        retire_generator(retirees)
+        self.logger.info('Building %s generators', len(generators))
         build_generator(generators)
+        self.logger.info('Building %s distributed generators', len(distributors))    
         build_distributed(distributors)
+        self.logger.info('Retiring %s generators', len(retirees))
+        retire_generator(retirees)
 
     def get_model_inputs(self, data, now):
         # Get model inputs
@@ -133,17 +168,6 @@ class EnergySupplyWrapper(SectorModel):
         write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
-    def simulate(self, data):
-
-        # Get the current timestep
-        now = data.current_timestep
-        clear_results(now)
-        write_simduration(now)
-        self.get_model_parameters(data)
-        self.build_interventions(data)
-        self.get_model_inputs(data, now)
-        self.run_the_model()
-        self.retrieve_outputs(data, now)
 
     def run_the_model(self):
         """Run the model
@@ -501,7 +525,7 @@ def build_generator(plants):
                 plant['min_power']['value'],
                 plant['capacity']['value'],
                 plant['build_year'],
-                plant['build_year'] + plant['operational_lifetime']['value'],
+                float(plant['build_year']) + float(plant['operational_lifetime']['value']),
                 plant['sys_layer']
                 )
 
@@ -604,6 +628,19 @@ def build_distributed(plants):
 
         # Make the changes to the database persistent
         conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def delete_from(table_name):
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    sql = '''DELETE FROM "''' + table_name + '''";'''
+    cur.execute(sql)
+    # Make the changes to the database persistent
+    conn.commit()
 
     # Close communication with the database
     cur.close()
