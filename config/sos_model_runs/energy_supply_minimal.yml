@@ -13,5 +13,9 @@ timesteps:
 strategies:
 - strategy: pre-specified-planning
   description: high_renewables
-  filename: high_renewables.yml
+  filename: high_renewables.csv
+  model_name: energy_supply_toy
+- strategy: pre-specified-planning
+  description: high_distributed
+  filename: high_distributed.csv
   model_name: energy_supply_toy
