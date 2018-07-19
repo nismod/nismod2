@@ -8,10 +8,11 @@ sos_model: energy_supply_toy
 stamp: '2018-01-31T10:10:41.791Z'
 timesteps:
 - 2015
+- 2020
 strategies:
 - strategy: pre-specified-planning
   description: high_renewables
-  filename: high_renewable.csv
+  filename: ../energy_supply/strategies/high_renewable.csv
   model_name: energy_supply_toy
 # - strategy: pre-specified-planning
 #   description: high_distributed

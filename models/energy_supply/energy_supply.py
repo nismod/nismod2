@@ -736,7 +736,7 @@ def build_gas_stores(gas_stores, current_timestep):
 
         sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
-        data = (store_num,
+        data = (store_num + 1,
                 store['location'],
                 store['name'],
                 current_timestep,
