@@ -1,6 +1,7 @@
 classname: EnergySupplyWrapper
 description: energy_supply model description
-initial_conditions: []
+initial_conditions:
+- ../energy_supply/initial_conditions/historical_interventions.csv
 inputs:
 - name: elecload
   spatial_resolution: energy_hub
@@ -59,11 +60,12 @@ inputs:
   temporal_resolution: seasons
   units: GBP/MWh
 interventions:
-- es_elec_network.csv
-- es_gaspipes.csv
-- es_gasstorage.csv
-- es_gasterminals.csv
-- es_generators.csv
+- ../energy_supply/interventions/full/es_elec_network.csv
+- ../energy_supply/interventions/full/es_gaspipes.csv
+- ../energy_supply/interventions/full/es_gasstorage.csv
+- ../energy_supply/interventions/full/es_gasterminals.csv
+- ../energy_supply/interventions/full/es_generators.csv
+- ../energy_supply/interventions/full/es_heattech.csv
 name: energy_supply
 outputs:
 - name: gasfired_gen_tran

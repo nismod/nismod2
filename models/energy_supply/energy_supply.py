@@ -57,6 +57,7 @@ class EnergySupplyWrapper(SectorModel):
         delete_from("GasStorage")
         delete_from("PipeData")
         delete_from("LineData")
+        delete_from("HeatTechData")
 
     def build_interventions(self, data, current_timestep):
         # Build interventions
@@ -67,11 +68,13 @@ class EnergySupplyWrapper(SectorModel):
         # print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
         retirees = []
         generators = []
-        distributors = []
+        dist_eh = []
+        dist_tran = []
         gas_stores = []
         pipes = []
         lines = []
         gasterminal = []
+        heattech = []
 
         for intervention in current_interventions:
             self.logger.info(intervention)
@@ -84,12 +87,16 @@ class EnergySupplyWrapper(SectorModel):
                 gas_stores.append(intervention)
             elif intervention['table_name'] == 'GasTerminal':
                 gasterminal.append(intervention)
-            elif intervention['table_name'].startswith('WindPVData'):
-                distributors.append(intervention)
+            elif intervention['table_name'].startswith('WindPVData_EH'):
+                dist_eh.append(intervention)
+            elif intervention['table_name'].startswith('WindPVData_Tran'):
+                dist_tran.append(intervention)
             elif intervention['table_name'] == 'PipeData':
                 pipes.append(intervention)
             elif intervention['table_name'] == 'LineData':
                 lines.append(intervention)
+            elif intervention['table_name'] == 'HeatTechData':
+                heattech.append(intervention)
             else:
                 print("Not sure what to do with {}".format(intervention['name']))
                 
@@ -103,8 +110,12 @@ class EnergySupplyWrapper(SectorModel):
         build_gas_terminals(gasterminal, current_timestep)
         self.logger.info('Building %s generators', len(generators))
         build_generator(generators, current_timestep)
-        self.logger.info('Building %s distributed generators', len(distributors))    
-        build_distributed(distributors, current_timestep)
+        self.logger.info('Building %s heattech interventions', len(heattech))    
+        build_heattech(heattech, current_timestep)
+        self.logger.info('Building %s eh connected distributed generators', len(dist_eh))
+        build_distributed(dist_eh, current_timestep)
+        self.logger.info('Building %s transmission connected distributed generators', len(dist_tran))
+        build_distributed(dist_tran, current_timestep)
         self.logger.info('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -668,14 +679,14 @@ def build_distributed(plants, current_timestep):
         if location in plant_remap:
             plant_remap[location]['build_year'] = current_timestep
             plant_remap[location]['table_name'] = plant['table_name']
-            if 'offshore' in plant['name']:
+            if  plant['type'] == 'offshorewind':
                 plant_remap[location]['offshore'] += float(plant['capacity']['value'])
-            elif 'onshore' in plant['name']:
+            elif plant['type'] == 'onshorewind':
                 plant_remap[location]['onshore'] += float(plant['capacity']['value'])
-            elif 'pv' in plant['name']:
+            elif plant['type'] == 'pv':
                 plant_remap[location]['pv'] += float(plant['capacity']['value'])
-
-    # print(plant_remap)
+            else:
+                raise ValueError("Cannot read type of {}".format(plant))
 
     for location, plant in plant_remap.items():
 
@@ -686,9 +697,10 @@ def build_distributed(plants, current_timestep):
         if plant['table_name'] == 'WindPVData_EH':
             sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
 
-        else:
+        elif plant['table_name'] == 'WindPVData_Tran':
             sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
-
+        else:
+            raise ValueError("Cannot read table name of {}".format(plant))
 
         data = (
                 location,
@@ -865,6 +877,53 @@ def build_pipes(pipes, current_timestep):
                 pipe['pipeeff'],
                 pipe['minflow'],
                 pipe['maxflow']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_heattech(heat_techs, current_timestep):
+    """Set up system from list of interventions
+
+    Write lines into the HeatTechData table
+
+    Arguments
+    ---------
+    heat_techs : list
+    current_timestep : int
+
+    Notes
+    -----
+       Column    |         Type          |
+    -------------+-----------------------+
+    HeatNum      | integer               | 
+    Type         | integer               | 
+    HeatTechName | character varying(50) | 
+    EH_Conn_Num  | integer               | 
+    MinPower     | double precision      | 
+    MaxPower     | double precision      | 
+    Year         | integer               | 
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for heat_num, heat_tech in enumerate(heat_techs):
+
+        sql = """INSERT INTO "HeatTechData" ("HeatNum", "Type", "HeatTechName", "EH_Conn_Num", "MinPower", "MaxPower", "Year") VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (heat_num + 1,
+                heat_tech['type'],
+                heat_tech['name'],
+                heat_tech['location'],
+                heat_tech['minpower'],
+                heat_tech['capacity']['value'],
+                current_timestep
                 )
 
         cur.execute(sql, data)
