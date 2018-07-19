@@ -12,9 +12,6 @@ class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
 
-    def initialise(self, initial_conditions):
-        pass
-
     def before_model_run(self, data):
         pass
 
@@ -29,7 +26,7 @@ class EnergySupplyWrapper(SectorModel):
 
         self.clear_input_tables()
 
-        self.build_interventions(data)
+        self.build_interventions(data, now)
         self.get_model_inputs(data, now)
         self.run_the_model()
         self.retrieve_outputs(data, now)
@@ -59,13 +56,13 @@ class EnergySupplyWrapper(SectorModel):
         delete_from("WindPVData_Tran")
         delete_from("GasStorage")
 
-    def build_interventions(self, data):
+    def build_interventions(self, data, current_timestep):
         # Build interventions
         state = data.get_state()
         self.logger.info("Current state: %s", state)
         current_interventions = self.get_current_interventions(state)
-        print([ci.name for ci in self.interventions])
-        print([ci['name'] for ci in current_interventions])
+        print("All interventions: {}".format([ci.name for ci in self.interventions]))
+        print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
         retirees = []
         generators = []
         distributors = []
@@ -74,21 +71,24 @@ class EnergySupplyWrapper(SectorModel):
         for intervention in current_interventions:
             self.logger.info(intervention)
             if intervention['table_name'] == 'GeneratorData':
-                if intervention['retire']:
+                if intervention['name'].split("_")[-1] == 'retire':
                     retirees.append(intervention)
                 else:
                     generators.append(intervention)
-            elif str(intervention['name']).startswith('gasstore'):
+            elif intervention['table_name'] == 'GasStorage':
                 gas_stores.append(intervention)
-            else:
+            elif intervention['table_name'].startswith('WindPVData'):
                 distributors.append(intervention)
+            else:
+                print("Not sure what to do with {}".format(intervention['name']))
+                
 
         self.logger.info('Writing %s gas stores to database', len(gas_stores))
-        build_gas_stores(gas_stores)
+        build_gas_stores(gas_stores, current_timestep)
         self.logger.info('Building %s generators', len(generators))
-        build_generator(generators)
+        build_generator(generators, current_timestep)
         self.logger.info('Building %s distributed generators', len(distributors))    
-        build_distributed(distributors)
+        build_distributed(distributors, current_timestep)
         self.logger.info('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -499,7 +499,7 @@ def retire_generator(plants):
     cur.close()
     conn.close() 
 
-def build_generator(plants):
+def build_generator(plants, current_timestep):
     """Writes an intervention into the GeneratorData table
 
     Arguments
@@ -509,25 +509,93 @@ def build_generator(plants):
     conn = establish_connection()
     cur = conn.cursor()
 
+    expected_keys = ['type', 'name', 'location', 'min_power', 'capacity', 
+                     'build_year', 'operational_lifetime', 'sys_layer']
+
     for plant in plants:
 
-        if 'EH' in plant['name']:
+        missing = []
+        valid = True
+        for key in expected_keys:
+            if key not in plant.keys():
+                missing.append(key)
+                valid = False
+
+        if not valid:
+            raise ValueError("Keys {} missing for {}".format(
+                             missing,
+                             plant['name'])
+            )   
+
+        if isinstance(plant['type'], str):
+            plant_type = {'ccgt': 1,
+                          'coal': 2,
+                          'nuclear': 4,
+                          'hydro': 5,
+                          'oil': 6,
+                          'ocgt (flexible generation)': 7,
+                          'biomass': 10,
+                          'interconnector': 11,
+                          'chp gas': 13,
+                          'pumped_storage': 15,
+                          'gas fired generation of ehs': 20,
+                          'dummygenerator': 21}[plant['type'].lower()]
+        elif isinstance(plant['type'], int):
+            plant_type = plant['type']
+        else:
+            raise ValueError("'type' field '{}' is incorrect".format(
+                plant['type']))
+
+        def extract_value(generator, field_name):
+            if isinstance(generator[field_name], dict):
+                value = float(generator[field_name]['value'])
+            else:
+                value = float(generator[field_name])
+            return value
+
+        min_power = extract_value(plant, 'min_power')
+        capacity = extract_value(plant, 'capacity')
+        lifetime = extract_value(plant, 'operational_lifetime')
+
+        if int(plant['sys_layer']) == 2:
 
             sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "EH_Conn_Num","MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"""
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
 
-        elif 'bus' in plant['name']:
+        elif plant_type == 1:
+
+            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "GasNode", "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            data = (plant_type,
+                    plant['name'],
+                    plant['to_location'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
+
+        else:
 
             sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName",  "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-
-        data = (plant['type'],
-                plant['name'],
-                plant['location'],
-                plant['min_power']['value'],
-                plant['capacity']['value'],
-                plant['build_year'],
-                float(plant['build_year']) + float(plant['operational_lifetime']['value']),
-                plant['sys_layer']
-                )
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
 
         cur.execute(sql, data)
 
@@ -548,7 +616,6 @@ def get_distributed_eh(location, year):
         cur.execute(sql, (location, year))    
         mapping = cur.fetchone()
     conn.close()
-    print(mapping)
     return mapping
 
 def get_distributed_tran(location, year):
@@ -561,10 +628,9 @@ def get_distributed_tran(location, year):
         cur.execute(sql, (location, year))    
         mapping = cur.fetchone()
     conn.close()
-    print(mapping)
     return mapping
 
-def build_distributed(plants):
+def build_distributed(plants, current_timestep):
     """Writes a list of interventions into the WindPVData_* table
 
     Arguments
@@ -584,15 +650,16 @@ def build_distributed(plants):
     for plant in plants:
         location = int(plant['location'])
         if location in plant_remap:
-            plant_remap[location]['build_year'] = plant['build_year']
+            plant_remap[location]['build_year'] = current_timestep
             plant_remap[location]['table_name'] = plant['table_name']
             if 'offshore' in plant['name']:
-                plant_remap[location]['offshore'] =  plant['capacity']['value']
+                plant_remap[location]['offshore'] += float(plant['capacity']['value'])
             elif 'onshore' in plant['name']:
-                plant_remap[location]['onshore'] = plant['capacity']['value']
+                plant_remap[location]['onshore'] += float(plant['capacity']['value'])
             elif 'pv' in plant['name']:
-                plant_remap[location]['pv'] = plant['capacity']['value']
+                plant_remap[location]['pv'] += float(plant['capacity']['value'])
 
+    print(plant_remap)
 
     for location, plant in plant_remap.items():
 
@@ -601,28 +668,20 @@ def build_distributed(plants):
         pv = 0
 
         if plant['table_name'] == 'WindPVData_EH':
-            # sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
-            sql = """UPDATE "WindPVData_EH" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "EH_Conn_Num"=(%s) AND "Year"=(%s);"""
+            sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
 
-            previous = get_distributed_eh(location, plant['build_year'])
-            if previous:
-                on, off, pv = previous
         else:
-            # sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
-            sql = """UPDATE "WindPVData_Tran" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "BusNum"=(%s) AND "Year"=(%s);"""
+            sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
 
-            previous = get_distributed_tran(location, plant['build_year'])
-            if previous:
-                on, off, pv = previous
 
         data = (
-                on + plant['onshore'],
-                off + plant['offshore'],
-                pv + plant['pv'],
                 location,
-                plant['build_year'])
+                current_timestep,
+                plant['onshore'],
+                plant['offshore'],
+                plant['pv'])
 
-        print("Updating location {} into table {}".format(location, plant['table_name']))
+        # print("Updating location {} into table {}".format(location, plant['table_name']))
 
         cur.execute(sql, data)
 
@@ -646,7 +705,7 @@ def delete_from(table_name):
     cur.close()
     conn.close()
 
-def build_gas_stores(gas_stores):
+def build_gas_stores(gas_stores, current_timestep):
     """Set up the initial system from a list of interventions
 
     Write in the all interventions with the intervention_name ``gasstore``
@@ -673,17 +732,17 @@ def build_gas_stores(gas_stores):
 
     cur.execute("""DELETE FROM "GasStorage";""")
 
-    for store in gas_stores:
+    for store_num, store in enumerate(gas_stores):
 
         sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
-        data = (store['storagenumber'],
-                store['gasnode'],
+        data = (store_num,
+                store['location'],
                 store['name'],
-                store['build_year'],
+                current_timestep,
                 store['inflowcap'],
                 store['outflowcap'],
-                store['storagecap'],
+                store['capacity']['value'],
                 store['outflowcost']
                 )
 

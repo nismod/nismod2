@@ -59,7 +59,11 @@ inputs:
   temporal_resolution: seasons
   units: GBP/MWh
 interventions:
-- energy_supply_interventions.yml
+- es_elec_network.csv
+- es_gaspipes.csv
+- es_gasstorage.csv
+- es_gasterminals.csv
+- es_generators.csv
 name: energy_supply
 outputs:
 - name: gasfired_gen_tran

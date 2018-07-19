@@ -1,11 +1,7 @@
 classname: EnergySupplyWrapper
 description: CGEN++ simulates the operation of the coupled UK gas and electricity.
 initial_conditions:
-- energy_supply_elecnetwork.yml
-- energy_supply_gasnetwork.yml
-- energy_supply_gasstore.yml
-- energy_supply_gasterminal.yml
-- energy_supply_generation.yml
+- historical_interventions_minimal.csv
 inputs:
 - name: elecload
   spatial_resolution: energy_hub_min
@@ -64,9 +60,13 @@ inputs:
   temporal_resolution: seasons
   units: GBP/MWh
 interventions:
-- energy_supply.yml
-- high_renewables_interventions.yml
-- high_distributed_interventions.yml
+- es_elec_network_minimal.csv
+- es_gaspipes_minimal.csv
+- es_gasstorage_minimal.csv
+- es_gasterminals_minimal.csv
+- es_generators_minimal.csv
+# - high_renewables_interventions.yml
+# - high_distributed_interventions.yml
 name: energy_supply_toy
 outputs:
 - name: gasfired_gen_tran
