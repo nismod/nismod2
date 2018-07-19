@@ -55,6 +55,8 @@ class EnergySupplyWrapper(SectorModel):
         delete_from("WindPVData_EH")
         delete_from("WindPVData_Tran")
         delete_from("GasStorage")
+        delete_from("PipeData")
+        delete_from("LineData")
 
     def build_interventions(self, data, current_timestep):
         # Build interventions
@@ -67,6 +69,8 @@ class EnergySupplyWrapper(SectorModel):
         generators = []
         distributors = []
         gas_stores = []
+        pipes = []
+        lines = []
 
         for intervention in current_interventions:
             self.logger.info(intervention)
@@ -79,10 +83,17 @@ class EnergySupplyWrapper(SectorModel):
                 gas_stores.append(intervention)
             elif intervention['table_name'].startswith('WindPVData'):
                 distributors.append(intervention)
+            elif intervention['table_name'] == 'PipeData':
+                pipes.append(intervention)
+            elif intervention['table_name'] == 'LineData':
+                lines.append(intervention)
             else:
                 print("Not sure what to do with {}".format(intervention['name']))
                 
-
+        self.logger.info("Writing %s pipes to database", len(pipes))
+        build_pipes(pipes, current_timestep)
+        self.logger.info("Writing %s lines to database", len(lines))
+        build_lines(lines, current_timestep)
         self.logger.info('Writing %s gas stores to database', len(gas_stores))
         build_gas_stores(gas_stores, current_timestep)
         self.logger.info('Building %s generators', len(generators))
@@ -755,6 +766,104 @@ def build_gas_stores(gas_stores, current_timestep):
     cur.close()
     conn.close()
 
+def build_pipes(pipes, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all pipes to the PipeData table.
+
+    Arguments
+    ---------
+    pipes : list
+    current_timestep : int
+
+    Notes
+    -----
+    Column  |       Type       | 
+    --------+------------------+
+    PipeNum | integer          |
+    FromNode| integer          |
+    ToNode  | integer          |
+    Year    | integer          |
+    Length  | double precision |
+    Diameter| double precision |
+    PipeEff | double precision |
+    MinFlow | double precision |
+    MaxFlow | double precision |
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for pipe_num, pipe in enumerate(pipes):
+
+        sql = """INSERT INTO "PipeData" ("PipeNum", "FromNode", "ToNode", "Year", "Length", "Diameter", "PipeEff", "MinFlow", "MaxFlow") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (pipe_num + 1,
+                pipe['location'],
+                pipe['to_location'],
+                current_timestep,
+                pipe['length']['value'],
+                pipe['diameter']['value'],
+                pipe['pipeeff'],
+                pipe['minflow'],
+                pipe['maxflow']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_lines(lines, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all lines to the LineData table.
+
+    Arguments
+    ---------
+    lines : list
+    current_timestep : int
+
+    Notes
+    -----
+
+    Column     |       Type       |
+    -----------+------------------+
+    LineNum    | integer          | 
+    FromBus    | integer          | 
+    ToBus      | integer          | 
+    Year       | integer          | 
+    MaxCapacity| double precision | 
+
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for line_num, line in enumerate(lines):
+
+        sql = """INSERT INTO "LineData" ("LineNum", "FromBus", "ToBus", "Year", "MaxCapacity") VALUES (%s, %s, %s, %s, %s);"""
+
+        data = (line_num + 1,
+                line['location'],
+                line['to_location'],
+                current_timestep,
+                line['capacity']['value']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
 def get_region_mapping(input_parameter_name):
     """Return a dict of database ids from region ids
 
@@ -840,3 +949,4 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
+
