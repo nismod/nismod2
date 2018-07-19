@@ -63,14 +63,15 @@ class EnergySupplyWrapper(SectorModel):
         state = data.get_state()
         self.logger.info("Current state: %s", state)
         current_interventions = self.get_current_interventions(state)
-        print("All interventions: {}".format([ci.name for ci in self.interventions]))
-        print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
+        # print("All interventions: {}".format([ci.name for ci in self.interventions]))
+        # print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
         retirees = []
         generators = []
         distributors = []
         gas_stores = []
         pipes = []
         lines = []
+        gasterminal = []
 
         for intervention in current_interventions:
             self.logger.info(intervention)
@@ -81,6 +82,8 @@ class EnergySupplyWrapper(SectorModel):
                     generators.append(intervention)
             elif intervention['table_name'] == 'GasStorage':
                 gas_stores.append(intervention)
+            elif intervention['table_name'] == 'GasTerminal':
+                gasterminal.append(intervention)
             elif intervention['table_name'].startswith('WindPVData'):
                 distributors.append(intervention)
             elif intervention['table_name'] == 'PipeData':
@@ -96,6 +99,8 @@ class EnergySupplyWrapper(SectorModel):
         build_lines(lines, current_timestep)
         self.logger.info('Writing %s gas stores to database', len(gas_stores))
         build_gas_stores(gas_stores, current_timestep)
+        self.logger.info('Writing %s gas terminals to database', len(gasterminal))
+        build_gas_terminals(gasterminal, current_timestep)
         self.logger.info('Building %s generators', len(generators))
         build_generator(generators, current_timestep)
         self.logger.info('Building %s distributed generators', len(distributors))    
@@ -481,7 +486,7 @@ def write_load_shed_costs(loadshedcost_elec,
 
     sql = """INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);"""
 
-    print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
+    # print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
 
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
@@ -670,7 +675,7 @@ def build_distributed(plants, current_timestep):
             elif 'pv' in plant['name']:
                 plant_remap[location]['pv'] += float(plant['capacity']['value'])
 
-    print(plant_remap)
+    # print(plant_remap)
 
     for location, plant in plant_remap.items():
 
@@ -755,6 +760,59 @@ def build_gas_stores(gas_stores, current_timestep):
                 store['outflowcap'],
                 store['capacity']['value'],
                 store['outflowcost']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_gas_terminals(gas_terminals, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all interventions to the GasTerminal table.
+
+    Arguments
+    ---------
+    gas_terminals : list
+
+    Notes
+    -----
+          Column       |          Type          |
+    -------------------+------------------------+
+    TerminalNum        | integer                | 
+    Year               | integer                | 
+    Name               | character varying(255) | 
+    GasNode            | integer                | 
+    GasTerminalOptCost | double precision       | 
+    TerminalCapacity   | double precision       | 
+    LNGCapacity        | double precision       | 
+    InterCapacity      | double precision       | 
+    DomCapacity        | double precision       | 
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    cur.execute("""DELETE FROM "GasTerminal";""")
+
+    for terminal_num, terminal in enumerate(gas_terminals):
+
+        sql = """INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode", "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity", "DomCapacity") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (terminal_num + 1,
+                current_timestep,
+                terminal['name'],
+                terminal['location'],
+                terminal['operational_cost']['value'],
+                terminal['capacity']['value'],
+                terminal['lngcapacity'],
+                terminal['intercapacity'],
+                terminal['domcapacity']
                 )
 
         cur.execute(sql, data)
