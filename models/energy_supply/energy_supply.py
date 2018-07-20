@@ -12,12 +12,24 @@ class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
 
-    def initialise(self, initial_conditions):
-        pass
-
     def before_model_run(self, data):
-
         pass
+
+    def simulate(self, data):
+        """Run the energy supply operational simulation
+        """
+        # Get the current timestep
+        now = data.current_timestep
+        clear_results(now)
+        write_simduration(now)
+        self.get_model_parameters(data)
+
+        self.clear_input_tables()
+
+        self.build_interventions(data, now)
+        self.get_model_inputs(data, now)
+        self.run_the_model()
+        self.retrieve_outputs(data, now)
 
     def get_model_parameters(self, data):
         # Get model parameters
@@ -30,32 +42,81 @@ class EnergySupplyWrapper(SectorModel):
         write_load_shed_costs(parameter_LoadShed_elec, 
                               parameter_LoadShed_gas)
 
-    def build_interventions(self, data):
+    def clear_input_tables(self):
+        """Removes all state data from database tables
+
+        Removes data from:
+        - GeneratorData
+        - WindPVData_EH
+        - WindPVData_Tran
+        - GasStorage
+        """
+        delete_from("GeneratorData")
+        delete_from("WindPVData_EH")
+        delete_from("WindPVData_Tran")
+        delete_from("GasStorage")
+        delete_from("PipeData")
+        delete_from("LineData")
+        delete_from("HeatTechData")
+
+    def build_interventions(self, data, current_timestep):
         # Build interventions
         state = data.get_state()
-        self.logger.info("Current state: %s", state)
-
+        self.logger.info("Current state contains %s interventions", len(state))
+        current_interventions = self.get_current_interventions(state)
+        # print("All interventions: {}".format([ci.name for ci in self.interventions]))
+        # print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
         retirees = []
         generators = []
-        distributors = []
+        dist_eh = []
+        dist_tran = []
         gas_stores = []
+        pipes = []
+        lines = []
+        gasterminal = []
+        heattech = []
 
-        for intervention in state:
-            self.logger.info(intervention)
+        for intervention in current_interventions:
             if intervention['table_name'] == 'GeneratorData':
-                if intervention['retire']:
+                if intervention['name'].split("_")[-1] == 'retire':
                     retirees.append(intervention)
                 else:
                     generators.append(intervention)
-            elif str(intervention['intervention_name']).startswith('gasstore'):
+            elif intervention['table_name'] == 'GasStorage':
                 gas_stores.append(intervention)
+            elif intervention['table_name'] == 'GasTerminal':
+                gasterminal.append(intervention)
+            elif intervention['table_name'].startswith('WindPVData_EH'):
+                dist_eh.append(intervention)
+            elif intervention['table_name'].startswith('WindPVData_Tran'):
+                dist_tran.append(intervention)
+            elif intervention['table_name'] == 'PipeData':
+                pipes.append(intervention)
+            elif intervention['table_name'] == 'LineData':
+                lines.append(intervention)
+            elif intervention['table_name'] == 'HeatTechData':
+                heattech.append(intervention)
             else:
-                distributors.append(intervention)
-
-        build_gas_stores(gas_stores)
+                print("Not sure what to do with {}".format(intervention['name']))
+                
+        self.logger.info("Writing %s pipes to database", len(pipes))
+        build_pipes(pipes, current_timestep)
+        self.logger.info("Writing %s lines to database", len(lines))
+        build_lines(lines, current_timestep)
+        self.logger.info('Writing %s gas stores to database', len(gas_stores))
+        build_gas_stores(gas_stores, current_timestep)
+        self.logger.info('Writing %s gas terminals to database', len(gasterminal))
+        build_gas_terminals(gasterminal, current_timestep)
+        self.logger.info('Building %s generators', len(generators))
+        build_generator(generators, current_timestep)
+        self.logger.info('Building %s heattech interventions', len(heattech))    
+        build_heattech(heattech, current_timestep)
+        self.logger.info('Building %s eh connected distributed generators', len(dist_eh))
+        build_distributed(dist_eh, current_timestep)
+        self.logger.info('Building %s transmission connected distributed generators', len(dist_tran))
+        build_distributed(dist_tran, current_timestep)
+        self.logger.info('Retiring %s generators', len(retirees))
         retire_generator(retirees)
-        build_generator(generators)
-        build_distributed(distributors)
 
     def get_model_inputs(self, data, now):
         # Get model inputs
@@ -133,17 +194,6 @@ class EnergySupplyWrapper(SectorModel):
         write_input_timestep(gasload, "gasload", 
                              now, region_names, interval_names)
 
-    def simulate(self, data):
-
-        # Get the current timestep
-        now = data.current_timestep
-        clear_results(now)
-        write_simduration(now)
-        self.get_model_parameters(data)
-        self.build_interventions(data)
-        self.get_model_inputs(data, now)
-        self.run_the_model()
-        self.retrieve_outputs(data, now)
 
     def run_the_model(self):
         """Run the model
@@ -446,7 +496,7 @@ def write_load_shed_costs(loadshedcost_elec,
 
     sql = """INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);"""
 
-    print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
+    # print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
 
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
@@ -475,7 +525,7 @@ def retire_generator(plants):
     cur.close()
     conn.close() 
 
-def build_generator(plants):
+def build_generator(plants, current_timestep):
     """Writes an intervention into the GeneratorData table
 
     Arguments
@@ -485,25 +535,93 @@ def build_generator(plants):
     conn = establish_connection()
     cur = conn.cursor()
 
+    expected_keys = ['type', 'name', 'location', 'min_power', 'capacity', 
+                     'build_year', 'operational_lifetime', 'sys_layer']
+
     for plant in plants:
 
-        if 'EH' in plant['name']:
+        missing = []
+        valid = True
+        for key in expected_keys:
+            if key not in plant.keys():
+                missing.append(key)
+                valid = False
+
+        if not valid:
+            raise ValueError("Keys {} missing for {}".format(
+                             missing,
+                             plant['name'])
+            )   
+
+        if isinstance(plant['type'], str):
+            plant_type = {'ccgt': 1,
+                          'coal': 2,
+                          'nuclear': 4,
+                          'hydro': 5,
+                          'oil': 6,
+                          'ocgt (flexible generation)': 7,
+                          'biomass': 10,
+                          'interconnector': 11,
+                          'chp gas': 13,
+                          'pumped_storage': 15,
+                          'gas fired generation of ehs': 20,
+                          'dummygenerator': 21}[plant['type'].lower()]
+        elif isinstance(plant['type'], int):
+            plant_type = plant['type']
+        else:
+            raise ValueError("'type' field '{}' is incorrect".format(
+                plant['type']))
+
+        def extract_value(generator, field_name):
+            if isinstance(generator[field_name], dict):
+                value = float(generator[field_name]['value'])
+            else:
+                value = float(generator[field_name])
+            return value
+
+        min_power = extract_value(plant, 'min_power')
+        capacity = extract_value(plant, 'capacity')
+        lifetime = extract_value(plant, 'operational_lifetime')
+
+        if int(plant['sys_layer']) == 2:
 
             sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "EH_Conn_Num","MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"""
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
 
-        elif 'bus' in plant['name']:
+        elif plant_type == 1:
+
+            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "GasNode", "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            data = (plant_type,
+                    plant['name'],
+                    plant['to_location'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
+
+        else:
 
             sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName",  "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-
-        data = (plant['type'],
-                plant['name'],
-                plant['location'],
-                plant['min_power']['value'],
-                plant['capacity']['value'],
-                plant['build_year'],
-                plant['build_year'] + plant['operational_lifetime']['value'],
-                plant['sys_layer']
-                )
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
 
         cur.execute(sql, data)
 
@@ -524,7 +642,6 @@ def get_distributed_eh(location, year):
         cur.execute(sql, (location, year))    
         mapping = cur.fetchone()
     conn.close()
-    print(mapping)
     return mapping
 
 def get_distributed_tran(location, year):
@@ -537,10 +654,9 @@ def get_distributed_tran(location, year):
         cur.execute(sql, (location, year))    
         mapping = cur.fetchone()
     conn.close()
-    print(mapping)
     return mapping
 
-def build_distributed(plants):
+def build_distributed(plants, current_timestep):
     """Writes a list of interventions into the WindPVData_* table
 
     Arguments
@@ -560,45 +676,35 @@ def build_distributed(plants):
     for plant in plants:
         location = int(plant['location'])
         if location in plant_remap:
-            plant_remap[location]['build_year'] = plant['build_year']
+            plant_remap[location]['build_year'] = current_timestep
             plant_remap[location]['table_name'] = plant['table_name']
-            if 'offshore' in plant['name']:
-                plant_remap[location]['offshore'] =  plant['capacity']['value']
-            elif 'onshore' in plant['name']:
-                plant_remap[location]['onshore'] = plant['capacity']['value']
-            elif 'pv' in plant['name']:
-                plant_remap[location]['pv'] = plant['capacity']['value']
-
+            if  plant['type'] == 'offshorewind':
+                plant_remap[location]['offshore'] += float(plant['capacity']['value'])
+            elif plant['type'] == 'onshorewind':
+                plant_remap[location]['onshore'] += float(plant['capacity']['value'])
+            elif plant['type'] == 'pv':
+                plant_remap[location]['pv'] += float(plant['capacity']['value'])
+            else:
+                raise ValueError("Cannot read type of {}".format(plant))
 
     for location, plant in plant_remap.items():
 
-        on = 0
-        off = 0
-        pv = 0
-
         if plant['table_name'] == 'WindPVData_EH':
-            # sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
-            sql = """UPDATE "WindPVData_EH" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "EH_Conn_Num"=(%s) AND "Year"=(%s);"""
+            sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
 
-            previous = get_distributed_eh(location, plant['build_year'])
-            if previous:
-                on, off, pv = previous
+        elif plant['table_name'] == 'WindPVData_Tran':
+            sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
         else:
-            # sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
-            sql = """UPDATE "WindPVData_Tran" SET "OnshoreWindCap" = (%s), "OffshoreWindCap" = (%s), "PvCapacity"= (%s) WHERE "BusNum"=(%s) AND "Year"=(%s);"""
-
-            previous = get_distributed_tran(location, plant['build_year'])
-            if previous:
-                on, off, pv = previous
+            raise ValueError("Cannot read table name of {}".format(plant))
 
         data = (
-                on + plant['onshore'],
-                off + plant['offshore'],
-                pv + plant['pv'],
                 location,
-                plant['build_year'])
+                current_timestep,
+                plant['onshore'],
+                plant['offshore'],
+                plant['pv'])
 
-        print("Updating location {} into table {}".format(location, plant['table_name']))
+        # print("Updating location {} into table {}".format(location, plant['table_name']))
 
         cur.execute(sql, data)
 
@@ -609,7 +715,20 @@ def build_distributed(plants):
     cur.close()
     conn.close()
 
-def build_gas_stores(gas_stores):
+def delete_from(table_name):
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    sql = '''DELETE FROM "''' + table_name + '''";'''
+    cur.execute(sql)
+    # Make the changes to the database persistent
+    conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_gas_stores(gas_stores, current_timestep):
     """Set up the initial system from a list of interventions
 
     Write in the all interventions with the intervention_name ``gasstore``
@@ -636,18 +755,216 @@ def build_gas_stores(gas_stores):
 
     cur.execute("""DELETE FROM "GasStorage";""")
 
-    for store in gas_stores:
+    for store_num, store in enumerate(gas_stores):
 
         sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
-        data = (store['storagenumber'],
-                store['gasnode'],
+        data = (store_num + 1,
+                store['location'],
                 store['name'],
-                store['build_year'],
+                current_timestep,
                 store['inflowcap'],
                 store['outflowcap'],
-                store['storagecap'],
+                store['capacity']['value'],
                 store['outflowcost']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_gas_terminals(gas_terminals, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all interventions to the GasTerminal table.
+
+    Arguments
+    ---------
+    gas_terminals : list
+
+    Notes
+    -----
+          Column       |          Type          |
+    -------------------+------------------------+
+    TerminalNum        | integer                | 
+    Year               | integer                | 
+    Name               | character varying(255) | 
+    GasNode            | integer                | 
+    GasTerminalOptCost | double precision       | 
+    TerminalCapacity   | double precision       | 
+    LNGCapacity        | double precision       | 
+    InterCapacity      | double precision       | 
+    DomCapacity        | double precision       | 
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    cur.execute("""DELETE FROM "GasTerminal";""")
+
+    for terminal_num, terminal in enumerate(gas_terminals):
+
+        sql = """INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode", "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity", "DomCapacity") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (terminal_num + 1,
+                current_timestep,
+                terminal['name'],
+                terminal['location'],
+                terminal['operational_cost']['value'],
+                terminal['capacity']['value'],
+                terminal['lngcapacity'],
+                terminal['intercapacity'],
+                terminal['domcapacity']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_pipes(pipes, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all pipes to the PipeData table.
+
+    Arguments
+    ---------
+    pipes : list
+    current_timestep : int
+
+    Notes
+    -----
+    Column  |       Type       | 
+    --------+------------------+
+    PipeNum | integer          |
+    FromNode| integer          |
+    ToNode  | integer          |
+    Year    | integer          |
+    Length  | double precision |
+    Diameter| double precision |
+    PipeEff | double precision |
+    MinFlow | double precision |
+    MaxFlow | double precision |
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for pipe_num, pipe in enumerate(pipes):
+
+        sql = """INSERT INTO "PipeData" ("PipeNum", "FromNode", "ToNode", "Year", "Length", "Diameter", "PipeEff", "MinFlow", "MaxFlow") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (pipe_num + 1,
+                pipe['location'],
+                pipe['to_location'],
+                current_timestep,
+                pipe['length']['value'],
+                pipe['diameter']['value'],
+                pipe['pipeeff'],
+                pipe['minflow'],
+                pipe['maxflow']
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_heattech(heat_techs, current_timestep):
+    """Set up system from list of interventions
+
+    Write lines into the HeatTechData table
+
+    Arguments
+    ---------
+    heat_techs : list
+    current_timestep : int
+
+    Notes
+    -----
+       Column    |         Type          |
+    -------------+-----------------------+
+    HeatNum      | integer               | 
+    Type         | integer               | 
+    HeatTechName | character varying(50) | 
+    EH_Conn_Num  | integer               | 
+    MinPower     | double precision      | 
+    MaxPower     | double precision      | 
+    Year         | integer               | 
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for heat_num, heat_tech in enumerate(heat_techs):
+
+        sql = """INSERT INTO "HeatTechData" ("HeatNum", "Type", "HeatTechName", "EH_Conn_Num", "MinPower", "MaxPower", "Year") VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+
+        data = (heat_num + 1,
+                heat_tech['type'],
+                heat_tech['name'],
+                heat_tech['location'],
+                heat_tech['minpower'],
+                heat_tech['capacity']['value'],
+                current_timestep
+                )
+
+        cur.execute(sql, data)
+
+        # Make the changes to the database persistent
+        conn.commit()
+
+    # Close communication with the database
+    cur.close()
+    conn.close()
+
+def build_lines(lines, current_timestep):
+    """Set up the initial system from a list of interventions
+
+    Write in the all lines to the LineData table.
+
+    Arguments
+    ---------
+    lines : list
+    current_timestep : int
+
+    Notes
+    -----
+
+    Column     |       Type       |
+    -----------+------------------+
+    LineNum    | integer          | 
+    FromBus    | integer          | 
+    ToBus      | integer          | 
+    Year       | integer          | 
+    MaxCapacity| double precision | 
+
+
+    """
+    conn = establish_connection()
+    cur = conn.cursor()
+
+    for line_num, line in enumerate(lines):
+
+        sql = """INSERT INTO "LineData" ("LineNum", "FromBus", "ToBus", "Year", "MaxCapacity") VALUES (%s, %s, %s, %s, %s);"""
+
+        data = (line_num + 1,
+                line['location'],
+                line['to_location'],
+                current_timestep,
+                line['capacity']['value']
                 )
 
         cur.execute(sql, data)
@@ -744,3 +1061,4 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
+

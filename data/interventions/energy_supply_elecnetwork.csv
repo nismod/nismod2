@@ -1,4 +1,4 @@
-name,line_number,location1,location2,capacity
+name,line_number,location,location2,capacity
 elec_line_1,1,1,2,1050
 elec_line_2,2,1,3,264
 elec_line_3,3,2,4,1520
