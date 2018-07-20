@@ -62,7 +62,7 @@ class EnergySupplyWrapper(SectorModel):
     def build_interventions(self, data, current_timestep):
         # Build interventions
         state = data.get_state()
-        self.logger.info("Current state: %s", state)
+        self.logger.info("Current state contains %s interventions", len(state))
         current_interventions = self.get_current_interventions(state)
         # print("All interventions: {}".format([ci.name for ci in self.interventions]))
         # print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
@@ -77,7 +77,6 @@ class EnergySupplyWrapper(SectorModel):
         heattech = []
 
         for intervention in current_interventions:
-            self.logger.info(intervention)
             if intervention['table_name'] == 'GeneratorData':
                 if intervention['name'].split("_")[-1] == 'retire':
                     retirees.append(intervention)
@@ -689,10 +688,6 @@ def build_distributed(plants, current_timestep):
                 raise ValueError("Cannot read type of {}".format(plant))
 
     for location, plant in plant_remap.items():
-
-        on = 0
-        off = 0
-        pv = 0
 
         if plant['table_name'] == 'WindPVData_EH':
             sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
