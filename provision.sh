@@ -38,7 +38,7 @@ hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
 # Install smif
 pip3 install -U setuptools
 pip3 install pyscaffold
-pip3 install git+https://github.com/nismod/smif.git@bug/unit_decode
+pip3 install smif
 
 # Install Jupyter Notebook for Results Viewer
 pip3 install jupyter notebook
