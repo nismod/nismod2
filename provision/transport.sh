@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
 
+base_path=$1
+
 # install packages
 apt-get install -y default-jre
 
 # Get the data from the ftp
-. /vagrant/provision/get_data.sh transport
+. $base_path/provision/get_data.sh transport $base_path
 
 # Download the model jar
-source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/ftp.ini))
-source <(grep = <(grep -A3 "\[transport\]" /vagrant/provision/config.ini))
+if [ -z "$ftp_username" ] && [ -z "$ftp_password" ]; then
+    source <(grep = <(grep -A3 '\[ftp-config\]' $base_path/provision/ftp.ini))
+fi
 
-MODEL_DIR=/vagrant/install
+source <(grep = <(grep -A3 "\[transport\]" $base_path/provision/config.ini))
+
+MODEL_DIR=$base_path/install
 DATA_DIR=$target
 FILENAME=transport_$release.zip
-TMP=/vagrant/tmp
+TMP=$base_path/tmp
 
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-export SSHPASS=$password
-sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_server << !
+export SSHPASS=$ftp_password
+sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $ftp_username@$ftp_server << !
    lcd $TMP
    get /releases/transport/$FILENAME
    bye
