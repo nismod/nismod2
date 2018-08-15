@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+base_path=$1
+
 # Update package lists
 apt-get update
 # Install OS packages
@@ -23,7 +25,7 @@ pip install --upgrade pip
 # Install xpress
 PKGFILE=xp8.4.4_linux_x86_64.tar.gz
 
-SOURCE=/vagrant
+SOURCE=$base_path
 
 wget -nc https://clientarea.xpress.fico.com/downloads/8.4.4/xp8.4.4_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
 tar xf $SOURCE/xpress.tar
@@ -120,7 +122,7 @@ EOF
 
 
 # Makes a template file containing the connection information to
-cat > /vagrant/template.ini <<EOF
+cat > $base_path/template.ini <<EOF
 [energy_supply]
 Description=Energy Supply Data
 Driver=PostgreSQL Unicode
@@ -140,29 +142,31 @@ FakeOidIndex=No
 ConnSettings=
 EOF
 
-odbcinst -i -l -s -f /vagrant/template.ini
+odbcinst -i -l -s -f $base_path/template.ini
 
 # Setup environment
 . $XPRESSDIR/bin/xpvars.sh
 
 # Get the data from the ftp
-. /vagrant/provision/get_data.sh energy-supply
+. $base_path/provision/get_data.sh energy-supply $base_path
 
 # Now compile and install the energy_supply model
-source <(grep = <(grep -A3 '\[ftp-config\]' /vagrant/provision/ftp.ini))
-source <(grep = <(grep -A3 "\[energy-supply\]" /vagrant/provision/config.ini))
+if [ -z "$ftp_username" ] && [ -z "$ftp_password" ]; then
+  source <(grep = <(grep -A3 '\[ftp-config\]' $base_path/provision/ftp.ini))
+fi
+source <(grep = <(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini))
 
-MODEL_DIR=/vagrant/install
+MODEL_DIR=$base_path/install
 DATA_DIR=$target
 FILENAME=energy_supply_$release.zip
 MIGRATIONS=$MODEL_DIR/energy_supply/migrations
-TMP=/vagrant/tmp
+TMP=$base_path/tmp
 
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-export SSHPASS=$password
-sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $username@$ftp_server << !
+export SSHPASS=$ftp_password
+sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $ftp_username@$ftp_server << !
    lcd $TMP
    get /releases/energy_supply/$FILENAME
    bye
@@ -175,10 +179,10 @@ rm -r $MODEL_DIR/energy_supply/energy_supply_$release
 # This is a bit of a hack which places the compiled BIM files into the XPRESS package directory
 cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
-cd /vagrant
+cd $base_path
 
 # Run migrations
 su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_full $MIGRATIONS"
 
 # Setup environment variables on login
-echo "source /opt/xpressmp/bin/xpvars.sh" >> /home/vagrant/.bashrc
+echo "source /opt/xpressmp/bin/xpvars.sh" >> $base_path/.bashrc

@@ -1,6 +1,7 @@
 name: 'energy_demand_unconstrained'
 description: 'Run energy demand for baseline population scenario'
 stamp: "2017-11-07T14:15:00+00:00"
+strategies: []
 timesteps:
 - 2015
 - 2050
