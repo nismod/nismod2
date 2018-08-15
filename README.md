@@ -201,3 +201,31 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
 1. Submit a pull request to master and tag the fix `git tag -a vx.y.z` 
    incrementing the minor `z` digit
 
+## Gitlab
+
+This git repository is hosted at a second ‘remote’ within the School of Geography. the ouce-gitlab server (https://gitlab.ouce.ox.ac.uk/NISMOD/nismod2). Changes pushed to the gitlab remote will trigger a testing pipeline, this will install the nismod2 system and run a series of tests.
+
+These tests should give feedback on the installation process and perform high level integration tests that validate dependencies between sector models.
+
+### Gitlab-runner
+
+There is a pool of gitlab-runner workers active that pick up and run jobs on each commit/push. A local gitlab-runner can be setup using the following configuration.
+
+```
+concurrent = 1
+check_interval = 0
+
+[[runners]]
+  name = "ubuntu-nismod2"
+  url = "https://gitlab.ouce.ox.ac.uk/"
+  token = "12964bfcd398c966ebf128f1b5b34f"
+  executor = "docker"
+  [runners.docker]
+    tls_verify = false
+    image = "ubuntu:xenial"
+    privileged = false
+    disable_cache = false
+    volumes = ["/cache"]
+    shm_size = 0
+  [runners.cache]
+  ```
