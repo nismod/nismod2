@@ -8,11 +8,15 @@ https://github.com/nismod/smif/compare/develop#diff-719f473c0b17dae486b170c10c23
 """
 import os
 import sys
+import shutil
 from excel2yaml import read_project
 
  
-def _archive_old_config_folder():
-    raise NotImplementedError
+def _archive_old_config_folder(config_folder):
+    """
+    Make an archive of the project folder
+    """
+    shutil.make_archive(os.path.join(config_folder, '..', 'nismod2_migrate_bck'), 'zip', config_folder)
 
 def _rename_modelrunfolder():
     os.rename('config/sos_model_runs', 'config/model_runs')
@@ -67,7 +71,7 @@ def _region_interval_to_dimensions(project_data):
 def _update_narratives(project_data):
     raise NotImplementedError
 
-def _update_project_data(base_folder):
+def _update_project_data(config_folder):
     """
     From:
 
@@ -88,7 +92,7 @@ def _update_project_data(base_folder):
     - dimensions
     - units
     """
-    project_data = read_project(base_folder)
+    project_data = read_project(config_folder)
     # Scenarios and scenario sets -> scenarios
     project_data = _update_scenario_sets(project_data)
     # Region and Interval definitions -> dimensions
@@ -99,7 +103,7 @@ def _update_project_data(base_folder):
 def write(project_data):
     raise NotImplementedError
 
-def _update_sector_model_config(base_folder):
+def _update_sector_model_config(config_folder):
     """Inputs, outputs and parameters all use Spec definition
 
     inputs
@@ -129,7 +133,7 @@ def _update_sector_model_config(base_folder):
     """
     raise NotImplementedError
 
-def _update_sos_model_config(base_folder):
+def _update_sos_model_config(config_folder):
     """
 
     scenario_sets -> scenarios
@@ -152,7 +156,7 @@ def _update_sos_model_config(base_folder):
     """
     raise NotImplementedError
 
-def _move_interval_definitions(base_folder):
+def _move_interval_definitions(config_folder):
     """
 
     data/interval_definitions/* -> data/dimensions
@@ -160,7 +164,7 @@ def _move_interval_definitions(base_folder):
     """
     raise NotImplementedError
 
-def _move_region_definitions(base_folder):
+def _move_region_definitions(config_folder):
     """
 
     data/region_definitions/* -> data/dimensions
@@ -168,7 +172,7 @@ def _move_region_definitions(base_folder):
     """
     raise NotImplementedError
 
-def _update_scenario_data(base_folder):
+def _update_scenario_data(config_folder):
     """
 
     data/scenarios/*.csv -> data/scenarios/*.csv
@@ -179,23 +183,23 @@ def _update_scenario_data(base_folder):
     """
     raise NotImplementedError
 
-def _rewrite_configuration_data(base_folder):
+def _rewrite_configuration_data(config_folder):
     raise NotImplementedError
 
-def main(base_folder):
-    _archive_old_config_folder()
+def main(config_folder):
+    _archive_old_config_folder(config_folder)
     _rename_modelrunfolder()
-    _update_project_data(base_folder)
+    _update_project_data(config_folder)
 
-    _update_sector_model_config(base_folder)
-    _update_sos_model_config(base_folder)
+    _update_sector_model_config(config_folder)
+    _update_sos_model_config(config_folder)
 
-    _move_interval_definitions(base_folder)
-    _move_region_definitions(base_folder)
+    _move_interval_definitions(config_folder)
+    _move_region_definitions(config_folder)
 
-    _update_scenario_data(base_folder)
+    _update_scenario_data(config_folder)
 
-    _rewrite_configuration_data(base_folder)
+    _rewrite_configuration_data(config_folder)
 
 if __name__ == '__main__':
 
