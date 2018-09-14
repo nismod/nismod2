@@ -10,6 +10,7 @@ import os
 import sys
 import shutil
 from excel2yaml import read_project
+from ruamel.yaml import YAML
 
  
 def _archive_old_config_folder(config_folder):
@@ -63,8 +64,53 @@ def _update_scenario_sets(old_project_data):
                 population: population_low.csv
 
     """
+    new_scenarios = []
 
-    raise NotImplementedError
+    for scenario_set in old_project_data['scenario_sets']:
+
+        # General
+        new_scenario = {
+            'name': scenario_set['name'],
+            'description': scenario_set['description'],
+            'provides': [],
+            'variants': []
+        }
+
+        # provides
+        for facet in scenario_set['facets']:
+            new_scenario['provides'].append({
+                'name': facet['name'],
+                'description': facet['description'],
+                'dims': [
+                    [
+                        scenario['facets'][0]['spatial_resolution'] for scenario in old_project_data['scenarios'] 
+                        if scenario['scenario_set'] == scenario_set['name']
+                    ][0] # best guess
+                ],
+                'dtype': 'TODO',
+                'unit': [
+                    scenario['facets'][0]['units'] for scenario in old_project_data['scenarios'] 
+                    if scenario['scenario_set'] == scenario_set['name']
+                ][0] # best guess
+            })
+
+        # variants
+        for scenario in old_project_data['scenarios']:
+            if scenario['scenario_set'] == new_scenario['name']:
+                new_scenario['variants'].append({
+                    'name': scenario['name'],
+                    'description': scenario['description'],
+                    'data': {
+                        facet['name']: facet['filename'] for facet in scenario['facets']
+                    }
+                })
+
+        new_scenarios.append(new_scenario)
+
+    old_project_data['scenarios'] = new_scenarios
+    old_project_data.pop('scenario_sets')
+
+    return old_project_data
 
 def _region_interval_to_dimensions(project_data):
     raise NotImplementedError
@@ -100,6 +146,11 @@ def _update_project_data(config_folder):
     project_data = _region_interval_to_dimensions(project_data)
     # Narrative sets and Narratives -> narratives
     project_data = _update_narratives(project_data)
+
+    # project
+    yaml = YAML()
+    with open(os.path.join(config_folder, 'config', 'project.yaml'), 'w', encoding='utf-8') as project_file:
+        yaml.dump(project_data, project_file)
 
 def write(project_data):
     raise NotImplementedError
