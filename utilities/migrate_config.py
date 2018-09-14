@@ -415,21 +415,34 @@ def _update_sos_model_config(project_folder):
 
         _write_config_file(config_file_path, config_data)
 
-def _move_interval_definitions(project_folder):
+def _move_region_interval_definitions(project_folder):
     """
 
     data/interval_definitions/* -> data/dimensions
-
-    """
-    raise NotImplementedError
-
-def _move_region_definitions(project_folder):
-    """
-
     data/region_definitions/* -> data/dimensions
 
     """
-    raise NotImplementedError
+    region_def_dir = os.path.join(project_folder, 'data', 'region_definitions')
+    interval_def_dir = os.path.join(project_folder, 'data', 'interval_definitions')
+    dimension_dir = os.path.join(project_folder, 'data', 'dimensions')
+
+    try:
+        os.mkdir(dimension_dir)
+    except:
+        pass
+
+    for def_dir in [region_def_dir, interval_def_dir]:
+
+        def_dir_files = os.listdir(def_dir)
+        for def_dir_file in def_dir_files:
+            try:
+                shutil.rmtree(os.path.join(dimension_dir, def_dir_file))
+            except:
+                pass
+            shutil.move(os.path.join(def_dir, def_dir_file), os.path.join(dimension_dir, def_dir_file))
+
+    os.rmdir(region_def_dir)
+    os.rmdir(interval_def_dir)
 
 def _update_scenario_data(project_folder):
     """
@@ -453,8 +466,7 @@ def main(project_folder):
     _update_sector_model_config(project_folder)
     _update_sos_model_config(project_folder)
 
-    _move_interval_definitions(project_folder)
-    _move_region_definitions(project_folder)
+    _move_region_interval_definitions(project_folder)
 
     _update_scenario_data(project_folder)
 
