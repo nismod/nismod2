@@ -18,8 +18,9 @@ def _archive_old_config_folder(config_folder):
     """
     shutil.make_archive(os.path.join(config_folder, '..', 'nismod2_migrate_bck'), 'zip', config_folder)
 
-def _rename_modelrunfolder():
-    os.rename('config/sos_model_runs', 'config/model_runs')
+def _rename_modelrunfolder(config_folder):
+    os.rename(os.path.join(config_folder, 'config/sos_model_runs'), 
+              os.path.join(config_folder, 'config/model_runs'))
 
 def _update_scenario_sets(old_project_data):
     """
@@ -188,7 +189,7 @@ def _rewrite_configuration_data(config_folder):
 
 def main(config_folder):
     _archive_old_config_folder(config_folder)
-    _rename_modelrunfolder()
+    _rename_modelrunfolder(config_folder)
     _update_project_data(config_folder)
 
     _update_sector_model_config(config_folder)
