@@ -90,7 +90,7 @@ def _update_scenario_sets(old_project_data):
                         if scenario['scenario_set'] == scenario_set['name']
                     ][0] # best guess
                 ],
-                'dtype': 'TODO',
+                'dtype': 'TODO', # no info
                 'unit': [
                     scenario['facets'][0]['units'] for scenario in old_project_data['scenarios'] 
                     if scenario['scenario_set'] == scenario_set['name']
@@ -162,8 +162,83 @@ def _region_interval_to_dimensions(old_project_data):
 
     return old_project_data
 
-def _update_narratives(project_data):
-    raise NotImplementedError
+def _update_narratives(old_project_data):
+    """
+    WARNING: ['variant'] are best guess
+
+    From:
+
+    narrative_sets:
+    - name: technology
+      description: Describes the evolution of technology
+    narratives:
+    - name: High Tech Demand Side Management
+      description: High penetration of SMART technology on the demand side
+      filename: high_tech_dsm.yml
+      narrative_set: technology
+
+    To:
+
+    narratives:
+    - name: technology
+        description: Describes the evolution of technology
+        provides:
+        - name: smart_meter_savings
+          description: The savings from smart meters
+          dtype: float
+          unit: '%'
+        - name: clever_water_meter_savings
+          description: The savings from smart water meters
+          dtype: float
+          unit: '%'
+        - name: per_capita_water_demand
+          description: The assumed per capita demand for water
+          dtype: float
+          unit: liter/person
+        variants:
+        - name: high_tech_dsm
+          description: High penetration of SMART technology on the demand side
+          data:
+            smart_meter_savings: high_tech_dsm.csv
+            clever_water_meter_savings: high_tech_dsm.csv
+            per_capita_water_demand: high_tech_dsm.csv  
+    """
+
+    new_narratives = []
+
+    for narrative_set in old_project_data['narrative_sets']:
+
+        # General
+        new_narrative = {
+            'name': narrative_set['name'],
+            'description': narrative_set['description'],
+            'provides': [],
+            'variants': []
+        }
+
+        # provides
+        for narrative in old_project_data['narratives']:
+            if narrative['narrative_set'] == new_narrative['name']:
+                new_narrative['provides'].append({
+                    'name': narrative['name'],
+                    'description': narrative['description'],
+                    'dtype': 'TODO', # no info
+                    'unit': 'TODO' # no info
+                })
+
+        # variants
+        new_narrative['variants'].append({
+            'name': 'TODO', # no info
+            'description': 'TODO', # no info
+            'data': {provide['name']: old_project_data['narratives'][0]['filename'] for provide in new_narrative['provides']}
+        }) # best guess
+
+        new_narratives.append(new_narrative)
+
+    old_project_data['narratives'] = new_narratives
+    old_project_data.pop('narrative_sets')
+
+    return old_project_data
 
 def _update_project_data(config_folder):
     """
