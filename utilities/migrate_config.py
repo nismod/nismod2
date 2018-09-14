@@ -346,12 +346,9 @@ def _update_sector_model_config(project_folder):
 
         # parameters
         for parameter in config_data['parameters']:
-            parameter['abs_range'] = list(literal_eval(parameter['absolute_range']))
-            parameter.pop('absolute_range')
-            parameter['exp_range'] = list(literal_eval(parameter['suggested_range']))
-            parameter.pop('suggested_range')
-            parameter['default'] = parameter['default_value']
-            parameter.pop('default_value')
+            parameter['abs_range'] = list(literal_eval(parameter.pop('absolute_range')))
+            parameter['exp_range'] = list(literal_eval(parameter.pop('suggested_range')))
+            parameter['default'] = parameter.pop('default_value')
             parameter['dtype'] = 'TODO'
 
 
@@ -378,7 +375,45 @@ def _update_sos_model_config(project_folder):
         convergence_absolute_tolerance
 
     """
-    raise NotImplementedError
+    config_dir = os.path.join(project_folder, 'config', 'sos_models')
+    config_files = _get_files_in_dir(config_dir)
+
+    project_config_dir = os.path.join(project_folder, 'config', 'project.yml')
+    project_config = _read_config_file(project_config_dir)
+
+    for config_file in config_files:
+
+        config_file_path = os.path.join(config_dir, config_file)
+        config_data = _read_config_file(config_file_path)
+
+        # scenario_sets -> scenarios
+        config_data['scenarios'] = config_data.pop('scenario_sets')
+        # narrative_sets -> narratives
+        config_data['narratives'] = config_data.pop('narrative_sets')
+
+        # process dependencies
+        config_data['scenario_dependencies'] = []
+        config_data['model_dependencies'] = []
+        for dependency in config_data['dependencies']:
+
+            # preformat the dependency
+            dependency['source'] = dependency.pop('source_model')
+            dependency['source_output'] = dependency.pop('source_model_output')
+            dependency['sink'] = dependency.pop('sink_model')
+            dependency['sink_input'] = dependency.pop('sink_model_input')
+
+            # split up list
+            if dependency['source'] in [scenario['name'] for scenario in project_config['scenarios']]:
+                config_data['scenario_dependencies'].append(dependency)
+            else:
+                config_data['model_dependencies'].append(dependency)
+        config_data.pop('dependencies')
+
+        # drop keys
+        config_data.pop('max_iterations')
+        config_data.pop('convergence_absolute_tolerance')
+
+        _write_config_file(config_file_path, config_data)
 
 def _move_interval_definitions(project_folder):
     """
