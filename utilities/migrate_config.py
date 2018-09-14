@@ -10,19 +10,39 @@ import os
 import sys
 import shutil
 import itertools
-from excel2yaml import read_project
+
+from ast import literal_eval
 from ruamel.yaml import YAML
 
  
-def _archive_old_config_folder(config_folder):
+def _archive_old_project_folder(project_folder):
     """
     Make an archive of the project folder
     """
-    shutil.make_archive(os.path.join(config_folder, '..', 'nismod2_migrate_bck'), 'zip', config_folder)
+    shutil.make_archive(os.path.join(project_folder, '..', 'nismod2_migrate_bck'), 'zip', project_folder)
 
-def _rename_modelrunfolder(config_folder):
-    os.rename(os.path.join(config_folder, 'config/sos_model_runs'), 
-              os.path.join(config_folder, 'config/model_runs'))
+def _rename_modelrunfolder(project_folder):
+    os.rename(os.path.join(project_folder, 'config/sos_model_runs'), 
+              os.path.join(project_folder, 'config/model_runs'))
+
+def _read_config_file(filepath):
+    yaml = YAML()
+    with open(filepath, encoding='utf-8') as file:
+        data = yaml.load(file)
+
+    for key, value in data.items():
+        if value == None:
+            data[key] = []
+
+    return data
+
+def _write_config_file(filepath, data):
+    yaml = YAML()
+    with open(filepath, 'w', encoding='utf-8') as file:
+        yaml.dump(data, file)
+
+def _get_files_in_dir(dirpath):
+    return [f for f in os.listdir(dirpath) if os.path.isfile(os.path.join(dirpath, f))]
 
 def _update_scenario_sets(old_project_data):
     """
@@ -240,7 +260,7 @@ def _update_narratives(old_project_data):
 
     return old_project_data
 
-def _update_project_data(config_folder):
+def _update_project_data(project_folder):
     """
     From:
 
@@ -261,23 +281,23 @@ def _update_project_data(config_folder):
     - dimensions
     - units
     """
-    project_data = read_project(config_folder)
+    project_config_path = os.path.join(project_folder, 'config', 'project.yml')
+
+    project_config_data = _read_config_file(project_config_path)
     # Scenarios and scenario sets -> scenarios
-    project_data = _update_scenario_sets(project_data)
+    project_config_data = _update_scenario_sets(project_config_data)
     # Region and Interval definitions -> dimensions
-    project_data = _region_interval_to_dimensions(project_data)
+    project_config_data = _region_interval_to_dimensions(project_config_data)
     # Narrative sets and Narratives -> narratives
-    project_data = _update_narratives(project_data)
+    project_config_data = _update_narratives(project_config_data)
 
     # project
-    yaml = YAML()
-    with open(os.path.join(config_folder, 'config', 'project.yaml'), 'w', encoding='utf-8') as project_file:
-        yaml.dump(project_data, project_file)
+    _write_config_file(project_config_path, project_config_data)
 
 def write(project_data):
     raise NotImplementedError
 
-def _update_sector_model_config(config_folder):
+def _update_sector_model_config(project_folder):
     """Inputs, outputs and parameters all use Spec definition
 
     inputs
@@ -305,9 +325,39 @@ def _update_sector_model_config(config_folder):
     - units -> unit
 
     """
-    raise NotImplementedError
+    config_dir = os.path.join(project_folder, 'config', 'sector_models')
+    config_files = _get_files_in_dir(config_dir)
 
-def _update_sos_model_config(config_folder):
+    for config_file in config_files:
+
+        config_file_path = os.path.join(config_dir, config_file)
+        config_data = _read_config_file(config_file_path)
+
+        # inputs / outputs
+        for model_io in itertools.chain(config_data['inputs'], config_data['outputs']):
+            model_io['dims'] = [
+                model_io['spatial_resolution'],
+                # model_io['temporal_resolution'], // remove annual (now implicit)
+            ]
+            model_io.pop('spatial_resolution')
+            model_io.pop('temporal_resolution')
+
+            model_io['dtype'] = 'TODO'
+
+        # parameters
+        for parameter in config_data['parameters']:
+            parameter['abs_range'] = list(literal_eval(parameter['absolute_range']))
+            parameter.pop('absolute_range')
+            parameter['exp_range'] = list(literal_eval(parameter['suggested_range']))
+            parameter.pop('suggested_range')
+            parameter['default'] = parameter['default_value']
+            parameter.pop('default_value')
+            parameter['dtype'] = 'TODO'
+
+
+        _write_config_file(config_file_path, config_data)
+
+def _update_sos_model_config(project_folder):
     """
 
     scenario_sets -> scenarios
@@ -330,7 +380,7 @@ def _update_sos_model_config(config_folder):
     """
     raise NotImplementedError
 
-def _move_interval_definitions(config_folder):
+def _move_interval_definitions(project_folder):
     """
 
     data/interval_definitions/* -> data/dimensions
@@ -338,7 +388,7 @@ def _move_interval_definitions(config_folder):
     """
     raise NotImplementedError
 
-def _move_region_definitions(config_folder):
+def _move_region_definitions(project_folder):
     """
 
     data/region_definitions/* -> data/dimensions
@@ -346,7 +396,7 @@ def _move_region_definitions(config_folder):
     """
     raise NotImplementedError
 
-def _update_scenario_data(config_folder):
+def _update_scenario_data(project_folder):
     """
 
     data/scenarios/*.csv -> data/scenarios/*.csv
@@ -357,23 +407,23 @@ def _update_scenario_data(config_folder):
     """
     raise NotImplementedError
 
-def _rewrite_configuration_data(config_folder):
+def _rewrite_configuration_data(project_folder):
     raise NotImplementedError
 
-def main(config_folder):
-    _archive_old_config_folder(config_folder)
-    _rename_modelrunfolder(config_folder)
-    _update_project_data(config_folder)
+def main(project_folder):
+    _archive_old_project_folder(project_folder)
+    _rename_modelrunfolder(project_folder)
+    _update_project_data(project_folder)
 
-    _update_sector_model_config(config_folder)
-    _update_sos_model_config(config_folder)
+    _update_sector_model_config(project_folder)
+    _update_sos_model_config(project_folder)
 
-    _move_interval_definitions(config_folder)
-    _move_region_definitions(config_folder)
+    _move_interval_definitions(project_folder)
+    _move_region_definitions(project_folder)
 
-    _update_scenario_data(config_folder)
+    _update_scenario_data(project_folder)
 
-    _rewrite_configuration_data(config_folder)
+    _rewrite_configuration_data(project_folder)
 
 if __name__ == '__main__':
 
