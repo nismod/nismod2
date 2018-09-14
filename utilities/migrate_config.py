@@ -9,6 +9,7 @@ https://github.com/nismod/smif/compare/develop#diff-719f473c0b17dae486b170c10c23
 import os
 import sys
 import shutil
+import itertools
 from excel2yaml import read_project
 from ruamel.yaml import YAML
 
@@ -25,6 +26,8 @@ def _rename_modelrunfolder(config_folder):
 
 def _update_scenario_sets(old_project_data):
     """
+    WARNING: ['provides']['dims'] and ['provides']['units'] are best guess
+
     From
 
         scenario_sets:
@@ -112,8 +115,52 @@ def _update_scenario_sets(old_project_data):
 
     return old_project_data
 
-def _region_interval_to_dimensions(project_data):
-    raise NotImplementedError
+def _region_interval_to_dimensions(old_project_data):
+    """
+    From
+
+    interval_definitions:
+      - name: annual
+        description: ''
+        filename: annual_intervals.csv
+    region_definitions:
+      - name: national
+        description: ''
+        filename: uk_nations_shp/regions.shp
+      - name: oxfordshire
+        description: ''
+        filename: oxfordshire/regions.geojson
+
+    To
+
+    dimensions:
+      - name: annual
+        description: ''
+        elements: annual_intervals.csv
+      - name: national
+        description: ''
+        elements: uk_nations_shp/regions.shp
+      - name: oxfordshire
+        description: ''
+        elements: oxfordshire/regions.geojson
+    """
+    dimensions = []
+    definitions = itertools.chain(
+        old_project_data['interval_definitions'], 
+        old_project_data['region_definitions']
+    )
+    for definition in definitions:
+        dimensions.append({
+            'name': definition['name'],
+            'description': definition['description'],
+            'elements': definition['filename']
+        })
+    
+    old_project_data.pop('interval_definitions')
+    old_project_data.pop('region_definitions')
+    old_project_data['dimensions'] = dimensions
+
+    return old_project_data
 
 def _update_narratives(project_data):
     raise NotImplementedError
