@@ -1,23 +1,19 @@
 name: transport_only
 description: Test model for transport
 sector_models:
-  - transport
+- transport
 # Scenario data
-scenario_sets:
-  - population
-  - gva
-dependencies:
-  - source_model: population
-    source_model_output: population
-    sink_model: transport
-    sink_model_input: population
-  - source_model: gva
-    source_model_output: gva
-    sink_model: transport
-    sink_model_input: gva
-# Narratives
-narrative_sets: []
-# Iteration settings
-convergence_absolute_tolerance: 1.0e-05
-convergence_relative_tolerance: 1.0e-05
-max_iterations: 1
+scenarios:
+- population
+- gva
+narratives: []
+scenario_dependencies:
+- source: population
+  source_output: population
+  sink: transport
+  sink_input: population
+- source: gva
+  source_output: gva
+  sink: transport
+  sink_input: gva
+model_dependencies: []

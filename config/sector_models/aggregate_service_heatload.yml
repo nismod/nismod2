@@ -1,37 +1,51 @@
 classname: AggregateInputs
-description: 'Aggregates energy demand outputs for energy supply service heatload'
+description: Aggregates energy demand outputs for energy supply service heatload
 initial_conditions: []
 inputs:
 - name: service_gas_boiler_gas
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 - name: service_electricity_boiler_electricity
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 - name: service_electricity_heat_pumps_electricity
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 - name: service_gas_district_heating_gas
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 - name: service_electricity_district_heating_electricity
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 - name: service_gas_stirling_micro_gas
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 interventions: []
 name: aggregate_service_heatload
 outputs:
 - name: service_heatload
-  spatial_resolution: energy_hub
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 parameters: []
 path: models/aggregate.py

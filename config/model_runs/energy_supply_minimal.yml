@@ -10,10 +10,10 @@ timesteps:
 - 2015
 - 2020
 strategies:
-- strategy: pre-specified-planning
-  description: high_renewables
+- description: high_renewables
   filename: ../energy_supply/strategies/high_renewable.csv
   model_name: energy_supply_toy
+  type: pre-specified-planning
 # - strategy: pre-specified-planning
 #   description: high_distributed
 #   filename: high_distributed.csv
