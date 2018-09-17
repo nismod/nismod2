@@ -5,215 +5,267 @@ initial_conditions: []
 inputs:
 # --------------- From energy demand
 - name: residential_gas_boiler_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_electricity_boiler_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_electricity_heat_pumps_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_gas_district_heating_CHP_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_electricity_district_heating_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_gas_stirling_micro_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_gas_boiler_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_electricity_boiler_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_electricity_heat_pumps_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_gas_district_heating_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_electricity_district_heating_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_gas_stirling_micro_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_gas_boiler_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_electricity_boiler_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_biomass_boiler_biomass
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_electricity_heat_pumps_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_gas_district_heating_CHP_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_electricity_district_heating_electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_biomass_district_heating_biomass
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_gas_stirling_micro_CHP_gas
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_gas_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: residential_electricity_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_gas_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: service_electricity_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_gas_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 - name: industry_electricity_non_heating
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GW
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 interventions: []
 name: convert_ed_to_es
 outputs:
-- temporal_resolution: seasonal_week
-  units: MW
+- units: MW
   name: residential_gas_boiler_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_electricity_boiler_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_gas_stirling_micro_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_electricity_heat_pumps_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_electricity_district_heating_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_gas_district_heating_CHP_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: residential_gas_non_heating
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: residential_electricity_non_heating
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_gas_boiler_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_electricity_boiler_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_gas_stirling_micro_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_electricity_heat_pumps_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_electricity_district_heating_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_gas_district_heating_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: service_gas_non_heating
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: service_electricity_non_heating
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_gas_boiler_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: industry_electricity_boiler_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_biomass_boiler_biomass
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_gas_stirling_micro_CHP_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: industry_electricity_heat_pumps_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: industry_electricity_district_heating_electricity
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_gas_district_heating_CHP_gas
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_biomass_district_heating_biomass
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: mcm
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: mcm
   name: industry_gas_non_heating
-  spatial_resolution: energy_hub
-- temporal_resolution: seasonal_week
-  units: MW
+  dims:
+  - energy_hub
+  dtype: TODO
+- units: MW
   name: industry_electricity_non_heating
-  spatial_resolution: energy_hub
+  dims:
+  - energy_hub
+  dtype: TODO
 parameters: []
 path: models/convert.py
