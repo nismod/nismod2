@@ -108,7 +108,12 @@ def _update_scenario_sets(old_project_data):
                     [
                         scenario['facets'][0]['spatial_resolution'] for scenario in old_project_data['scenarios'] 
                         if scenario['scenario_set'] == scenario_set['name']
-                    ][0] # best guess
+                    ][0],
+                    [
+                        scenario['facets'][0]['temporal_resolution'] for scenario in old_project_data['scenarios'] 
+                        if scenario['scenario_set'] == scenario_set['name']
+                    ][0],
+                     # best guess
                 ],
                 'dtype': 'TODO', # no info
                 'unit': [
@@ -444,20 +449,6 @@ def _move_region_interval_definitions(project_folder):
     os.rmdir(region_def_dir)
     os.rmdir(interval_def_dir)
 
-def _update_scenario_data(project_folder):
-    """
-
-    data/scenarios/*.csv -> data/scenarios/*.csv
-
-    year,region,interval,value -> <scenario['name']>,<dim>...<dim>,<provides['name']>
-
-
-    """
-    raise NotImplementedError
-
-def _rewrite_configuration_data(project_folder):
-    raise NotImplementedError
-
 def main(project_folder):
     _archive_old_project_folder(project_folder)
     _rename_modelrunfolder(project_folder)
@@ -467,10 +458,6 @@ def main(project_folder):
     _update_sos_model_config(project_folder)
 
     _move_region_interval_definitions(project_folder)
-
-    _update_scenario_data(project_folder)
-
-    _rewrite_configuration_data(project_folder)
 
 if __name__ == '__main__':
 
