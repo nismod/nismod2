@@ -1,45 +1,37 @@
 classname: AggregateInputs
-description: Aggregates industry gas and biomass energy demand outputs for energy
-  supply input gasload
+description: 'Aggregates industry gas and biomass energy demand outputs for energy supply input gasload'
 initial_conditions: []
 inputs:
-- units: mcm
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_gas_boiler_gas
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: mcm
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_biomass_boiler_biomass
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: mcm
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_gas_stirling_micro_CHP_gas
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: mcm
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_gas_district_heating_CHP_gas
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: mcm
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_biomass_district_heating_biomass
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: mcm
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: mcm
   name: industry_gas_non_heating
-  dims:
-  - energy_hub
-  dtype: TODO
+  spatial_resolution: energy_hub
 interventions: []
 name: aggregate_gasload
 outputs:
 - name: gasload
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - energy_hub
-  dtype: TODO
 parameters: []
 path: models/aggregate.py

@@ -4,75 +4,61 @@ initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions.csv
 inputs:
 - name: elecload
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: gasload
+  spatial_resolution: gas_nodes
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - gas_nodes
-  dtype: TODO
 - name: residential_heatload
-  units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
+  units: MW  
 - name: residential_gas_non_heating
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: residential_electricity_non_heating
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: service_heatload
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: service_gas_non_heating
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: service_electricity_non_heating
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: cost_of_carbon
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/Mt
-  dims:
-  - national
-  dtype: TODO
 - name: electricity_price
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/MWh
-  dims:
-  - national
-  dtype: TODO
 - name: gas_price
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/MWh
-  dims:
-  - national
-  dtype: TODO
 - name: nuclearFuel_price
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/MWh
-  dims:
-  - national
-  dtype: TODO
 - name: oil_price
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/MWh
-  dims:
-  - national
-  dtype: TODO
 - name: coal_price
+  spatial_resolution: national
+  temporal_resolution: seasons
   units: GBP/MWh
-  dims:
-  - national
-  dtype: TODO
 interventions:
 - ../energy_supply/interventions/full/es_elec_network.csv
 - ../energy_supply/interventions/full/es_gaspipes.csv
@@ -83,167 +69,148 @@ interventions:
 name: energy_supply
 outputs:
 - name: gasfired_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: coal_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: hydro_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: pumpedHydro_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: nuclear_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: interconnector_elec_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: renewable_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: wind_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: pv_gen_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: wind_curtail_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: pv_curtail_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: gasfired_gen_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: wind_gen_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: pv_gen_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: lng_supply
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - national
-  dtype: TODO
 - name: domestic_gas
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - national
-  dtype: TODO
 - name: interconnector_gas
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - national
-  dtype: TODO
 - name: storage_gas
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - national
-  dtype: TODO
 - name: load_shed_gas
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - national
-  dtype: TODO
 - name: load_shed_elec
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: load_shed_gas_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: mcm
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: load_shed_elec_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: elec_cost
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: GBP/kWh
-  dims:
-  - national
-  dtype: TODO
 - name: heat_gasboiler
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: heat_heatpump
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: elec_reserve_tran
+  spatial_resolution: national
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - national
-  dtype: TODO
 - name: problem_objective
+  spatial_resolution: national
+  temporal_resolution: annual
   units: GBP
-  dims:
-  - national
-  dtype: TODO
 - name: problem_status
+  spatial_resolution: national
+  temporal_resolution: annual
   units: None
-  dims:
-  - national
-  dtype: TODO
 - name: total_opt_cost
+  spatial_resolution: national
+  temporal_resolution: annual
   units: GBP
-  dims:
-  - national
-  dtype: TODO
 - name: emissions_eh
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: t
-  dims:
-  - energy_hub
-  dtype: TODO
 - name: emissions_bb
+  spatial_resolution: bus_bars
+  temporal_resolution: seasonal_week
   units: t
-  dims:
-  - bus_bars
-  dtype: TODO
 parameters:
-- description: cost of electricity load shedding
+- absolute_range:
+  - 0
+  - inf
+  default_value: 100
+  description: cost of electricity load shedding
   name: LoadShed_elec
+  suggested_range:
+  - 0
+  - 500
   units: GBP/MWh
-  default: 100
-- description: cost of gas load shedding
+- absolute_range:
+  - 0
+  - inf
+  default_value: 300
+  description: cost of gas load shedding
   name: LoadShed_gas
+  suggested_range:
+  - 0
+  - 500
   units: GBP/MWh
-  default: 300
 path: models/energy_supply/energy_supply.py

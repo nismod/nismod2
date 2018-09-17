@@ -1,775 +1,333 @@
 name: NISMOD v2.0.0
+# ------------------------------------------------
+scenario_sets:
+- name: population
+  description: UK population, total people
+  facets:
+  - name: population
+    description: ''
+- name: gva
+  description: Gross value added
+  facets:
+  - name: gva
+    description: ''
+- name: transport_energy_demand
+  description: Hourly electricity demand of transport model
+  facets:
+  - name: electricity
+    description: ''
+- name: passenger_vehicle_OD
+  description: Passenger OD flows for transport base year
+  facets:
+  - name: flow
+    description: ''
+- name: es_residential
+  description: Dummy data for energy_supply model residential inputs
+  facets:
+  - name: residential_gas_boiler_gas
+    description: ''
+  - name: residential_electricity_boiler_electricity
+    description: ''
+- name: es_prices
+  description: Dummy data for energy_supply prices data
+  facets:
+  - name: gas_price
+    description: ''
+  - name: electricity_price
+    description: ''
+  - name: gas_price
+    description: ''
+  - name: oil_price
+    description: ''
+  - name: coal_price
+    description: ''
+  - name: nuclearFuel_price
+    description: ''
+  - name: cost_of_carbon
+    description: ''
+- name: dummy_energy_demands
+  description: Dummy energy demand data for the energy supply model
+  facets:
+  - name: elecload
+    description: ''
+  - name: gasload
+    description: ''
+  - name: residential_heatload
+    description: ''
+  - name: residential_gas_non_heating
+    description: ''
+  - name: residential_electricity_non_heating
+    description: ''
+  - name: service_heatload
+    description: ''
+  - name: service_gas_non_heating
+    description: ''
+  - name: service_electricity_non_heating
+    description: ''
+# shared understanding of regions within the modelled area (e.g. GB)
+region_definitions:
+- name: lad_uk_2016
+  description: Local Authority Districts (data from 2016, unchanged since 2009)
+  filename: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp
+- description: Southampton LAD for transport test
+  filename: lad_southampton/zones.shp
+  name: lad_southampton
+- description: Southampton LAD-LAD Origin-Destination for transport test
+  filename: lad_southampton/od.geojson
+  name: od_southampton
+- description: Southampton whole system for transport test
+  filename: lad_southampton/whole_system.geojson
+  name: whole_system
+- description: Boundary of Great Britain
+  filename: national.shp
+  name: national
+- description: Boundaries of 2 Energy Hubs (ES test data set)
+  filename: ../energy_supply/region_definitions/eh_region.shp
+  name: energy_hub_min
+- description: Boundaries of all 39 Energy Hubs
+  filename: ../energy_supply/region_definitions/EH_Region_Boundaries.shp
+  name: energy_hub
+- description: Points of all 87 gas offtake nodes
+  filename: ../energy_supply/region_definitions/gas_nodes.shp
+  name: gas_nodes
+- description: Points of just 3 gas offtake nodes
+  filename: ../energy_supply/region_definitions/gas_nodes_minimal.shp
+  name: gas_nodes_minimal
+- description: Points of electricity transmission bus bars
+  filename: ../energy_supply/region_definitions/bus_bars.shp
+  name: bus_bars
+- description: Broadband network distributions (Fixed network)
+  filename: assets_broadband_network/assets_layer4_distributions.shp
+  name: broadband_distributions
+- description: Broadband network cabinets (Fixed network)
+  filename: assets_broadband_network/assets_layer3_cabinets.shp
+  name: broadband_cabinets
+# ------------------------------------------------
+interval_definitions:
+# shared understanding of time intervals within a year
+- name: hourly
+  description: Every hour in a year
+  filename: hourly_intervals.csv
+- description: One annual interval of 8760 hours
+  filename: annual_intervals.csv
+  name: annual
+- description: One representative day
+  filename: annual_day.csv
+  name: annual_day
+- description: One week in each season mapped to all other weeks in the season
+  filename: seasonal_week.csv
+  name: seasonal_week
+- description: The seasons covered by the model
+  filename: seasons.csv
+  name: seasons
+# ------------------------------------------------
 units: units.txt
 # ------------------------------------------------
 scenarios:
-- name: population
-  description: UK population, total people
-  provides:
-  - name: population
-    description: ''
-    dims:
-    - lad_uk_2016
-    - annual
-    dtype: float
-    unit: people
-  variants:
-  - name: pop_baseline
-    description: Baseline population for the UK
-    data:
-      population: uk_population_by_district_codes_Baseline.csv
-  - name: pop_high
-    description: High population for the UK
-    data:
-      population: uk_population_by_district_codes_High.csv
-  - name: pop_low
-    description: Low population for the UK
-    data:
-      population: uk_population_by_district_codes_Low.csv
-- name: gva
-  description: Gross value added
-  provides:
-  - name: gva
-    description: ''
-    dims:
-    - lad_uk_2016
-    - annual
-    dtype: float
-    unit: GBP
-  variants:
-  - name: gva_baseline
-    description: Baseline gva for the UK
-    data:
-      gva: gva_sven.csv
-- name: transport_energy_demand
-  description: Hourly electricity demand of transport model
-  provides:
+# given input data, required values for every year of a model run
+- name: et_demand_baseline
+  description: Baseline GWh of transport for the UK
+  scenario_set: transport_energy_demand
+  facets:
   - name: electricity
-    description: ''
-    dims:
-    - lad_uk_2016
-    - annual
-    dtype: float
-    unit: GWh
-  variants:
-  - name: et_demand_baseline
-    description: Baseline GWh of transport for the UK
-    data:
-      electricity: et_demand_electricity.csv
-- name: passenger_vehicle_OD
-  description: Passenger OD flows for transport base year
-  provides:
+    filename: et_demand_electricity.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GWh
+- name: pop_baseline
+  description: Baseline population for the UK
+  scenario_set: population
+  facets:
+  - name: population
+    filename: uk_population_by_district_codes_Baseline.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_high
+  description: High population for the UK
+  scenario_set: population
+  facets:
+  - name: population
+    filename: uk_population_by_district_codes_High.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: pop_low
+  description: Low population for the UK
+  scenario_set: population
+  facets:
+  - name: population
+    filename: uk_population_by_district_codes_Low.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+- name: gva_baseline
+  description: Baseline gva for the UK
+  scenario_set: gva
+  facets:
+  - name: gva
+    filename: gva_sven.csv
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GBP
+- name: Southampton-Southampton test OD
+  description: Test data for transport base year
+  scenario_set: passenger_vehicle_OD
+  facets:
   - name: flow
-    description: ''
-    dims:
-    - od_southampton
-    - annual_day
-    dtype: float
-    unit: vehicles
-  variants:
-  - name: Southampton-Southampton test OD
-    description: Test data for transport base year
-    data:
-      flow: soton_passenger_vehicle_OD.csv
-- name: es_residential
-  description: Dummy data for energy_supply model residential inputs
-  provides:
-  - name: residential_gas_boiler_gas
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: residential_electricity_boiler_electricity
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  variants:
-  - name: es_residential_dummy
-    description: Dummy data for residential inputs to energy supply model
-    data:
-      residential_gas_boiler_gas: residential_gas_boiler_gas.csv
-      residential_electricity_boiler_electricity: residential_electricity_boiler_electricity.csv
-- name: es_prices
-  description: Dummy data for energy_supply prices data
-  provides:
-  - name: gas_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: electricity_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: gas_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: oil_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: coal_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: nuclearFuel_price
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  - name: cost_of_carbon
-    description: ''
-    dims:
-    - national
-    - seasons
-    dtype: float
-    unit: GBP/MWh
-  variants:
-  - name: es_prices_dummy
-    description: Dummy prices data to pass to the energy_supply toy model
-    data:
-      gas_price: ../energy_supply/scenarios/price/gas_price.csv
-      electricity_price: ../energy_supply/scenarios/price/electricity_price.csv
-      oil_price: ../energy_supply/scenarios/price/oil_price.csv
-      coal_price: ../energy_supply/scenarios/price/coal_price.csv
-      nuclearFuel_price: ../energy_supply/scenarios/price/nuclear_fuel_price.csv
-      cost_of_carbon: ../energy_supply/scenarios/price/cost_of_carbon.csv
-- name: dummy_energy_demands
-  description: Dummy energy demand data for the energy supply model
-  provides:
-  - name: elecload
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: gasload
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: residential_heatload
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: residential_gas_non_heating
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: residential_electricity_non_heating
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: service_heatload
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: service_gas_non_heating
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  - name: service_electricity_non_heating
-    description: ''
-    dims:
-    - energy_hub_min
-    - seasonal_week
-    dtype: float
-    unit: MW
-  variants:
-  - name: es_energy_demand_minimal
-    description: ''
-    data:
-      elecload: ../energy_supply/scenarios/minimal/elecload.csv
-      gasload: ../energy_supply/scenarios/minimal/gasload.csv
-      residential_heatload: ../energy_supply/scenarios/minimal/residential_heatload.csv
-      residential_gas_non_heating: ../energy_supply/scenarios/minimal/residential_gas_non_heating.csv
-      residential_electricity_non_heating: ../energy_supply/scenarios/minimal/residential_electricity_non_heating.csv
-      service_heatload: ../energy_supply/scenarios/minimal/service_heatload.csv
-      service_gas_non_heating: ../energy_supply/scenarios/minimal/service_gas_non_heating.csv
-      service_electricity_non_heating: ../energy_supply/scenarios/minimal/service_electricity_non_heating.csv
-  - name: es_energy_demand_dummy
-    description: ''
-    data:
-      elecload: ../energy_supply/scenarios/full/elecload.csv
-      gasload: ../energy_supply/scenarios/full/gasload.csv
-      residential_heatload: ../energy_supply/scenarios/full/residential_heatload.csv
-      residential_gas_non_heating: ../energy_supply/scenarios/full/residential_gas_non_heating.csv
-      residential_electricity_non_heating: ../energy_supply/scenarios/full/residential_electricity_non_heating.csv
-      service_heatload: ../energy_supply/scenarios/full/service_heatload.csv
-      service_gas_non_heating: ../energy_supply/scenarios/full/service_gas_non_heating.csv
-      service_electricity_non_heating: ../energy_supply/scenarios/full/service_electricity_non_heating.csv
+    filename: soton_passenger_vehicle_OD.csv
+    spatial_resolution: od_southampton
+    temporal_resolution: annual_day
+    units: vehicles
+- description: Dummy data for residential inputs to energy supply model
+  name: es_residential_dummy
+  facets:
+  - filename: residential_gas_boiler_gas.csv
+    name: residential_gas_boiler_gas
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: residential_electricity_boiler_electricity.csv
+    name: residential_electricity_boiler_electricity
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  scenario_set: es_residential
+- description: Dummy prices data to pass to the energy_supply toy model
+  name: es_prices_dummy
+  facets:
+  - filename: ../energy_supply/scenarios/price/gas_price.csv
+    name: gas_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: ../energy_supply/scenarios/price/electricity_price.csv
+    name: electricity_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: ../energy_supply/scenarios/price/oil_price.csv
+    name: oil_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: ../energy_supply/scenarios/price/coal_price.csv
+    name: coal_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: ../energy_supply/scenarios/price/nuclear_fuel_price.csv
+    name: nuclearFuel_price
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/MWh
+  - filename: ../energy_supply/scenarios/price/cost_of_carbon.csv
+    name: cost_of_carbon
+    spatial_resolution: national
+    temporal_resolution: seasons
+    units: GBP/Mt
+  scenario_set: es_prices
+- name: es_energy_demand_minimal
+  scenario_set: dummy_energy_demands
+  description: ''
+  facets:
+  - filename: ../energy_supply/scenarios/minimal/elecload.csv
+    name: elecload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/gasload.csv
+    name: gasload
+    spatial_resolution: gas_nodes_minimal
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_heatload.csv
+    name: residential_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/residential_gas_non_heating.csv
+    name: residential_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/residential_electricity_non_heating.csv
+    name: residential_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_heatload.csv
+    name: service_heatload
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/minimal/service_gas_non_heating.csv
+    name: service_gas_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/minimal/service_electricity_non_heating.csv
+    name: service_electricity_non_heating
+    spatial_resolution: energy_hub_min
+    temporal_resolution: seasonal_week
+    units: MW
+- name: es_energy_demand_dummy
+  scenario_set: dummy_energy_demands
+  description: ''
+  facets:
+  - filename: ../energy_supply/scenarios/full/elecload.csv
+    name: elecload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/gasload.csv
+    name: gasload
+    spatial_resolution: gas_nodes
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/residential_heatload.csv
+    name: residential_heatload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/residential_gas_non_heating.csv
+    name: residential_gas_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/residential_electricity_non_heating.csv
+    name: residential_electricity_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/service_heatload.csv
+    name: service_heatload
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+  - filename: ../energy_supply/scenarios/full/service_gas_non_heating.csv
+    name: service_gas_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: mcm
+  - filename: ../energy_supply/scenarios/full/service_electricity_non_heating.csv
+    name: service_electricity_non_heating
+    spatial_resolution: energy_hub
+    temporal_resolution: seasonal_week
+    units: MW
+# ------------------------------------------------
+narrative_sets:
+- description: Describes the evolution of technology
+  name: technology
+- description: Describes the governance landscape
+  name: governance
+# ------------------------------------------------
 narratives:
-- name: technology
-  description: Describes the evolution of technology
-  provides:
-    - description: Relative GSHP (%) to GSHP+ASHP
-      name: gshp_fraction_ey
-      units: decimal
-      default: 0.1
-    - description: Year until demand management assumptions are fully realised
-      name: demand_management_yr_until_changed
-      units: years
-      default: 2050
-    - description: reduction in load factor for enduse demand_management_improvement__rs_space_heating
-      name: demand_management_improvement__rs_space_heating
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_water_heating
-      name: demand_management_improvement__rs_water_heating
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_lighting
-      name: demand_management_improvement__rs_lighting
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_cooking
-      name: demand_management_improvement__rs_cooking
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_cold
-      name: demand_management_improvement__rs_cold
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_wet
-      name: demand_management_improvement__rs_wet
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_consumer_electronics
-      name: demand_management_improvement__rs_consumer_electronics
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__rs_home_computing
-      name: demand_management_improvement__rs_home_computing
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_space_heating
-      name: demand_management_improvement__ss_space_heating
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_water_heating
-      name: demand_management_improvement__ss_water_heating
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_cooling_humidification
-      name: demand_management_improvement__ss_cooling_humidification
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_fans
-      name: demand_management_improvement__ss_fans
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_lighting
-      name: demand_management_improvement__ss_lighting
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_catering
-      name: demand_management_improvement__ss_catering
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_small_power
-      name: demand_management_improvement__ss_small_power
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_ICT_equipment
-      name: demand_management_improvement__ss_ICT_equipment
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_cooled_storage
-      name: demand_management_improvement__ss_cooled_storage
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_other_gas
-      name: demand_management_improvement__ss_other_gas
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__ss_other_electricity
-      name: demand_management_improvement__ss_other_electricity
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_high_temp_process
-      name: demand_management_improvement__is_high_temp_process
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_low_temp_process
-      name: demand_management_improvement__is_low_temp_process
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_drying_separation
-      name: demand_management_improvement__is_drying_separation
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_motors
-      name: demand_management_improvement__is_motors
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_compressed_air
-      name: demand_management_improvement__is_compressed_air
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_lighting
-      name: demand_management_improvement__is_lighting
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_space_heating
-      name: demand_management_improvement__is_space_heating
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_other
-      name: demand_management_improvement__is_other
-      units: decimal
-      default: 0
-    - description: reduction in load factor for enduse demand_management_improvement__is_refrigeration
-      name: demand_management_improvement__is_refrigeration
-      units: decimal
-      default: 0
-    - description: Year until climate temperature changes are fully realised
-      name: climate_change_temp_diff_yr_until_changed
-      units: year
-      default: 2050
-    - description: Temperature change for month Jan
-      name: climate_change_temp_d__Jan
-      units: °C
-      default: 0
-    - description: Temperature change for month Feb
-      name: climate_change_temp_d__Feb
-      units: °C
-      default: 0
-    - description: Temperature change for month Mar
-      name: climate_change_temp_d__Mar
-      units: °C
-      default: 0
-    - description: Temperature change for month Apr
-      name: climate_change_temp_d__Apr
-      units: °C
-      default: 0
-    - description: Temperature change for month May
-      name: climate_change_temp_d__May
-      units: °C
-      default: 0
-    - description: Temperature change for month Jun
-      name: climate_change_temp_d__Jun
-      units: °C
-      default: 0
-    - description: Temperature change for month Jul
-      name: climate_change_temp_d__Jul
-      units: °C
-      default: 0
-    - description: Temperature change for month Aug
-      name: climate_change_temp_d__Aug
-      units: °C
-      default: 0
-    - description: Temperature change for month Sep
-      name: climate_change_temp_d__Sep
-      units: °C
-      default: 0
-    - description: Temperature change for month Oct
-      name: climate_change_temp_d__Oct
-      units: °C
-      default: 0
-    - description: Temperature change for month Nov
-      name: climate_change_temp_d__Nov
-      units: °C
-      default: 0
-    - description: Temperature change for month Dec
-      name: climate_change_temp_d__Dec
-      units: °C
-      default: 0
-    - description: Base temperature assumption residential heating
-      name: rs_t_base_heating_future_yr
-      units: °C
-      default: 15.5
-    - description: Base temperature assumption service sector heating
-      name: ss_t_base_heating_future_yr
-      units: °C
-      default: 15.5
-    - description: Base temperature assumption service sector cooling
-      name: ss_t_base_cooling_future_yr
-      units: °C
-      default: 5
-    - description: Base temperature assumption service sector heating
-      name: is_t_base_heating_future_yr
-      units: °C
-      default: 15.5
-    - description: Improvement of smart meter penetration
-      name: smart_meter_improvement_p
-      units: decimal
-      default: 0.1
-    - description: Year until smart meter assumption is implemented
-      name: smart_meter_yr_until_changed
-      units: year
-      default: 2050
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_cold
-      name: smart_meter_improvement_rs_cold
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_cooking
-      name: smart_meter_improvement_rs_cooking
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_lighting
-      name: smart_meter_improvement_rs_lighting
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_wet
-      name: smart_meter_improvement_rs_wet
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_consumer_electronics
-      name: smart_meter_improvement_rs_consumer_electronics
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_home_computing
-      name: smart_meter_improvement_rs_home_computing
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_rs_space_heating
-      name: smart_meter_improvement_rs_space_heating
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_space_heating
-      name: smart_meter_improvement_ss_space_heating
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_water_heating
-      name: smart_meter_improvement_ss_water_heating
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_cooling_humidification
-      name: smart_meter_improvement_ss_cooling_humidification
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_fans
-      name: smart_meter_improvement_ss_fans
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_lighting
-      name: smart_meter_improvement_ss_lighting
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_catering
-      name: smart_meter_improvement_ss_catering
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_small_power
-      name: smart_meter_improvement_ss_small_power
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_ICT_equipment
-      name: smart_meter_improvement_ss_ICT_equipment
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_cooled_storage
-      name: smart_meter_improvement_ss_cooled_storage
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_other_gas
-      name: smart_meter_improvement_ss_other_gas
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_ss_other_electricity
-      name: smart_meter_improvement_ss_other_electricity
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_high_temp_process
-      name: smart_meter_improvement_is_high_temp_process
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_low_temp_process
-      name: smart_meter_improvement_is_low_temp_process
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_drying_separation
-      name: smart_meter_improvement_is_drying_separation
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_motors
-      name: smart_meter_improvement_is_motors
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_compressed_air
-      name: smart_meter_improvement_is_compressed_air
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_lighting
-      name: smart_meter_improvement_is_lighting
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_space_heating
-      name: smart_meter_improvement_is_space_heating
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_other
-      name: smart_meter_improvement_is_other
-      units: decimal
-      default: 0
-    - description: Smart meter induced savings for enduse smart_meter_improvement_is_refrigeration
-      name: smart_meter_improvement_is_refrigeration
-      units: decimal
-      default: 0
-    - description: Change in cooling of floor area (service sector)
-      name: cooled_floorarea__ss_cooling_humidification
-      units: decimal
-      default: 0.35
-    - description: Year until floor area is fully changed
-      name: cooled_floorarea_yr_until_changed
-      units: year
-      default: 2050
-    - description: Year until cold rolling steel manufacturing change is fully realised
-      name: hot_cold_rolling_yr_until_changed
-      units: year
-      default: 2050
-    - description: Sectoral share of cold rolling in steel manufacturing)
-      name: p_cold_rolling_steel
-      units: decimal
-      default: 0.2
-    - description: Reduction in heat because of heat recovery and recycling (residential
-        sector)
-      name: heat_recoved__rs_space_heating
-      units: decimal
-      default: 0
-    - description: Reduction in heat because of heat recovery and recycling (service sector)
-      name: heat_recoved__ss_space_heating
-      units: decimal
-      default: 0
-    - description: Reduction in heat because of heat recovery and recycling (industry
-        sector)
-      name: heat_recoved__is_space_heating
-      units: decimal
-      default: 0
-    - description: Year until heat recyling is full implemented
-      name: heat_recovered_yr_until_changed
-      units: year
-      default: 2050
-    - description: Reduction in heat because of air leakage improvement (residential sector)
-      name: air_leakage__rs_space_heating
-      units: decimal
-      default: 0
-    - description: Reduction in heat because of of air leakage improvementservice sector)
-      name: air_leakage__ss_space_heating
-      units: decimal
-      default: 0
-    - description: Reduction in heat because of air leakage improvement (industry sector)
-      name: air_leakage__is_space_heating
-      units: decimal
-      default: 0
-    - description: Year until heat air leakage improvement is full implemented
-      name: air_leakage_yr_until_changed
-      units: year
-      default: 2050
-    - description: Year until change in enduse assumption is implemented
-      name: enduse_specific_change_yr_until_changed
-      units: year
-      default: 2050
-    - description: Enduse specific change enduse_change__rs_space_heating
-      name: enduse_change__rs_space_heating
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_water_heating
-      name: enduse_change__rs_water_heating
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_lighting
-      name: enduse_change__rs_lighting
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_cooking
-      name: enduse_change__rs_cooking
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_cold
-      name: enduse_change__rs_cold
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_wet
-      name: enduse_change__rs_wet
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_consumer_electronics
-      name: enduse_change__rs_consumer_electronics
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__rs_home_computing
-      name: enduse_change__rs_home_computing
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_space_heating
-      name: enduse_change__ss_space_heating
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_water_heating
-      name: enduse_change__ss_water_heating
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_cooling_humidification
-      name: enduse_change__ss_cooling_humidification
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_fans
-      name: enduse_change__ss_fans
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_lighting
-      name: enduse_change__ss_lighting
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_catering
-      name: enduse_change__ss_catering
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_small_power
-      name: enduse_change__ss_small_power
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_ICT_equipment
-      name: enduse_change__ss_ICT_equipment
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_cooled_storage
-      name: enduse_change__ss_cooled_storage
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_other_gas
-      name: enduse_change__ss_other_gas
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__ss_other_electricity
-      name: enduse_change__ss_other_electricity
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_high_temp_process
-      name: enduse_change__is_high_temp_process
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_low_temp_process
-      name: enduse_change__is_low_temp_process
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_drying_separation
-      name: enduse_change__is_drying_separation
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_motors
-      name: enduse_change__is_motors
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_compressed_air
-      name: enduse_change__is_compressed_air
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_lighting
-      name: enduse_change__is_lighting
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_space_heating
-      name: enduse_change__is_space_heating
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_other
-      name: enduse_change__is_other
-      units: decimal
-      default: 0
-    - description: Enduse specific change enduse_change__is_refrigeration
-      name: enduse_change__is_refrigeration
-      units: decimal
-      default: 0
-    - description: Fraction achieved of efficiency improvements
-      name: f_eff_achieved
-      units: decimal
-      default: 1.0
-  variants:
-  - name: high_tech_demand_side
-    description: Advanced technological process on the demand side
-    data:
-      High Tech Demand Side Management: high_tech_dsm.yml
-      test_narrative: high_tech_dsm.yml
-dimensions:
-- name: hourly
-  description: Every hour in a year
-  elements: hourly_intervals.csv
-- name: annual
-  description: One annual interval of 8760 hours
-  elements: annual_intervals.csv
-- name: annual_day
-  description: One representative day
-  elements: annual_day.csv
-- name: seasonal_week
-  description: One week in each season mapped to all other weeks in the season
-  elements: seasonal_week.csv
-- name: seasons
-  description: The seasons covered by the model
-  elements: seasons.csv
-- name: lad_uk_2016
-  description: Local Authority Districts (data from 2016, unchanged since 2009)
-  elements: ../energy_demand/region_definitions/same_as_scenario_data/lad_2016_uk_simplified.shp
-- name: lad_southampton
-  description: Southampton LAD for transport test
-  elements: lad_southampton/zones.shp
-- name: od_southampton
-  description: Southampton LAD-LAD Origin-Destination for transport test
-  elements: lad_southampton/od.geojson
-- name: whole_system
-  description: Southampton whole system for transport test
-  elements: lad_southampton/whole_system.geojson
-- name: national
-  description: Boundary of Great Britain
-  elements: national.shp
-- name: energy_hub_min
-  description: Boundaries of 2 Energy Hubs (ES test data set)
-  elements: ../energy_supply/region_definitions/eh_region.shp
-- name: energy_hub
-  description: Boundaries of all 39 Energy Hubs
-  elements: ../energy_supply/region_definitions/EH_Region_Boundaries.shp
-- name: gas_nodes
-  description: Points of all 87 gas offtake nodes
-  elements: ../energy_supply/region_definitions/gas_nodes.shp
-- name: gas_nodes_minimal
-  description: Points of just 3 gas offtake nodes
-  elements: ../energy_supply/region_definitions/gas_nodes_minimal.shp
-- name: bus_bars
-  description: Points of electricity transmission bus bars
-  elements: ../energy_supply/region_definitions/bus_bars.shp
-- name: broadband_distributions
-  description: Broadband network distributions (Fixed network)
-  elements: assets_broadband_network/assets_layer4_distributions.shp
-- name: broadband_cabinets
-  description: Broadband network cabinets (Fixed network)
-  elements: assets_broadband_network/assets_layer3_cabinets.shp
+- name: High Tech Demand Side Management
+  description: High penetration of SMART technology on the demand side
+  filename: high_tech_dsm.yml
+  narrative_set: technology
+- name: test_narrative
+  description: High penetration of SMART technology on the demand side
+  filename: ../energy_demand/narratives/narrative_test.yml
+  narrative_set: technology
