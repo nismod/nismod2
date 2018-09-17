@@ -69,7 +69,7 @@ def _get_files_in_dir(dirpath):
 
 def _update_scenario_sets(old_project_data):
     """
-    WARNING: ['provides']['dims'] and ['provides']['units'] are best guess
+    WARNING: ['provides']['dims'] and ['provides']['unit'] are best guess
 
     From
 
@@ -89,7 +89,7 @@ def _update_scenario_sets(old_project_data):
                 filename: uk_population_by_district_codes_Low.csv
                 spatial_resolution: lad_uk_2016
                 temporal_resolution: annual
-                units: people
+                unit: people
 
     To
 
@@ -140,9 +140,9 @@ def _update_scenario_sets(old_project_data):
                     ][0],
                      # best guess
                 ],
-                'dtype': 'TODO', # no info
+                'dtype': 'float', # no info
                 'unit': [
-                    scenario['facets'][0]['units'] for scenario in old_project_data['scenarios'] 
+                    scenario['facets'][0]['unit'] for scenario in old_project_data['scenarios'] 
                     if scenario['scenario_set'] == scenario_set['name']
                 ][0] # best guess
             })
@@ -297,7 +297,7 @@ def _update_project_data(project_folder):
     - name
     - region_definitions 
     - interval_definitions 
-    - units 
+    - unit 
     - scenario_sets 
     - scenarios 
     - narrative_sets 
@@ -309,7 +309,7 @@ def _update_project_data(project_folder):
     - scenarios
     - narratives
     - dimensions
-    - units
+    - unit
     """
     project_config_path = os.path.join(project_folder, 'config', 'project.yml')
 
@@ -371,14 +371,20 @@ def _update_sector_model_config(project_folder):
 
         # inputs / outputs
         for model_io in itertools.chain(config_data['inputs'], config_data['outputs']):
-            model_io['dims'] = [
-                model_io['spatial_resolution'],
-                # model_io['temporal_resolution'], // remove annual (now implicit)
-            ]
+
+            dims = []
+            if not model_io['temporal_resolution'] == 'national':
+                dims.append(model_io['temporal_resolution'])
+            
+            if not model_io['temporal_resolution'] == 'annual':
+                dims.append(model_io['temporal_resolution'])
+
+            model_io['dims'] = dims
+
             model_io.pop('spatial_resolution')
             model_io.pop('temporal_resolution')
 
-            model_io['dtype'] = 'TODO'
+            model_io['dtype'] = 'float'
 
         # parameters
         for parameter in config_data['parameters']:
