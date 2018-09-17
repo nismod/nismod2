@@ -147,6 +147,11 @@ def _update_scenario_sets(old_project_data):
                 ][0] # best guess
             })
 
+            if 'annual' in new_scenario['dims']:
+                new_scenario['dims'].pop('annual')
+            if 'national' in new_scenario['dims']:
+                new_scenario['dims'].pop('national')
+
         # variants
         for scenario in old_project_data['scenarios']:
             if scenario['scenario_set'] == new_scenario['name']:
@@ -381,6 +386,9 @@ def _update_sector_model_config(project_folder):
 
             model_io['dims'] = dims
 
+            model_io['unit'] = model_io['units']
+
+            model_io.pop('units')
             model_io.pop('spatial_resolution')
             model_io.pop('temporal_resolution')
 
@@ -388,6 +396,7 @@ def _update_sector_model_config(project_folder):
 
         # parameters
         for parameter in config_data['parameters']:
+            parameter['dtype'] = 'float'
             try:
                 parameter['abs_range'] = list(literal_eval(parameter.pop('absolute_range')))
             except ValueError:
