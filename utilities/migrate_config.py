@@ -319,7 +319,7 @@ def _update_project_data(project_folder):
     if 'scenario_sets' in project_config_data:
         project_config_data = _update_scenario_sets(project_config_data)
     # Region and Interval definitions -> dimensions
-    if 'interval_defintions' in project_config_data:
+    if 'interval_definitions' in project_config_data and 'region_definitions' in project_config_data:
         project_config_data = _region_interval_to_dimensions(project_config_data)
     # Narrative sets and Narratives -> narratives
     if 'narrative_sets' in project_config_data:
