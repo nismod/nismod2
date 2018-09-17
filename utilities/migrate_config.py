@@ -142,7 +142,7 @@ def _update_scenario_sets(old_project_data):
                 ],
                 'dtype': 'float', # no info
                 'unit': [
-                    scenario['facets'][0]['unit'] for scenario in old_project_data['scenarios'] 
+                    scenario['facets'][0]['units'] for scenario in old_project_data['scenarios'] 
                     if scenario['scenario_set'] == scenario_set['name']
                 ][0] # best guess
             })
@@ -373,8 +373,8 @@ def _update_sector_model_config(project_folder):
         for model_io in itertools.chain(config_data['inputs'], config_data['outputs']):
 
             dims = []
-            if not model_io['temporal_resolution'] == 'national':
-                dims.append(model_io['temporal_resolution'])
+            if not model_io['spatial_resolution'] == 'national':
+                dims.append(model_io['spatial_resolution'])
             
             if not model_io['temporal_resolution'] == 'annual':
                 dims.append(model_io['temporal_resolution'])
@@ -408,6 +408,29 @@ def _update_sector_model_config(project_folder):
 
         _write_config_file(config_file_path, config_data)
 
+def _update_model_run_config(project_folder):
+    """
+
+    strategies['name'] -> strategies['type']
+    """
+    config_dir = os.path.join(project_folder, 'config', 'model_runs')
+    config_files = _get_files_in_dir(config_dir)
+
+    for config_file in config_files:
+
+        config_file_path = os.path.join(config_dir, config_file)
+        config_data = _read_config_file(config_file_path)
+
+        if not 'strategies' in config_data:
+            config_data['strategies'] = {}
+        for strategy in config_data['strategies']:
+            if 'strategy' in strategy:
+                strategy['type'] = strategy['strategy']
+            strategy.pop('strategy')
+
+        _write_config_file(config_file_path, config_data)
+        LOGGER.info("Sucessfully updated model_run config: %s", config_file_path)
+
 def _update_sos_model_config(project_folder):
     """
 
@@ -427,6 +450,7 @@ def _update_sos_model_config(project_folder):
 
         max_iterations
         convergence_absolute_tolerance
+        convergence_relative_tolerance
 
     """
     config_dir = os.path.join(project_folder, 'config', 'sos_models')
@@ -485,6 +509,7 @@ def _update_sos_model_config(project_folder):
         # drop keys
         config_data.pop('max_iterations')
         config_data.pop('convergence_absolute_tolerance')
+        config_data.pop('convergence_relative_tolerance')
 
         _write_config_file(config_file_path, config_data)
         LOGGER.info("Sucessfully updated sos_model config: %s", config_file_path)
@@ -521,6 +546,7 @@ def _move_region_interval_definitions(project_folder):
 def main(project_folder):
     # _archive_old_project_folder(project_folder)
     _rename_modelrunfolder(project_folder)
+    _update_model_run_config(project_folder)
     _update_project_data(project_folder)
 
     _update_sector_model_config(project_folder)
