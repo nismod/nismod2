@@ -9,8 +9,7 @@ sos_model: energy_demand_only
 decision_module: ''
 scenarios:
   population: pop_baseline
-  gva: gva_baseline
+  gva: gva_baseline  
 narratives:
   technology:
-  - High Tech Demand Side Management
-strategies: {}
+    - 'High Tech Demand Side Management'

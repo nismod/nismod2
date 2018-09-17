@@ -12,7 +12,7 @@ timesteps:
 - 2015
 - 2020
 strategies:
-- description: high_renewables
+- strategy: pre-specified-planning
+  description: high_renewables
   filename: high_renewables.yml
   model_name: energy_supply
-  type: pre-specified-planning
