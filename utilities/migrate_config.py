@@ -147,10 +147,13 @@ def _update_scenario_sets(old_project_data):
                 ][0] # best guess
             })
 
-            if 'annual' in new_scenario['dims']:
-                new_scenario['dims'].pop('annual')
-            if 'national' in new_scenario['dims']:
-                new_scenario['dims'].pop('national')
+            for output in new_scenario['provides']:
+                if 'annual' in output['dims']:
+                    index = output['dims'].index('annual')
+                    output['dims'].pop(index)
+                if 'national' in output['dims']:
+                    index = output['dims'].index('national')
+                    output['dims'].pop(index)
 
         # variants
         for scenario in old_project_data['scenarios']:
@@ -435,7 +438,7 @@ def _update_model_run_config(project_folder):
         for strategy in config_data['strategies']:
             if 'strategy' in strategy:
                 strategy['type'] = strategy['strategy']
-            strategy.pop('strategy')
+                strategy.pop('strategy')
 
         _write_config_file(config_file_path, config_data)
         LOGGER.info("Sucessfully updated model_run config: %s", config_file_path)
