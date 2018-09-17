@@ -3,17 +3,19 @@ description: ''
 path: ../models/et_module/run.py
 classname: ETWrapper
 # ---------------------------------------------------
-inputs: 
+inputs:
 - name: electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: annual
   units: GWh
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 # ---------------------------------------------------
-outputs: 
+outputs:
 - name: electricity
-  spatial_resolution: lad_uk_2016
-  temporal_resolution: hourly
   units: GWh
+  dims:
+  - lad_uk_2016
+  dtype: TODO
 interventions: []
 initial_conditions: []
 parameters: []

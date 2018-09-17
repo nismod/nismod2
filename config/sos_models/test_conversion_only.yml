@@ -1,19 +1,18 @@
-convergence_absolute_tolerance: 1e-05
 convergence_relative_tolerance: 1e-05
-dependencies:
-- sink_model: convert_ed_to_es
-  sink_model_input: residential_gas_boiler_gas
-  source_model: es_residential
-  source_model_output: residential_gas_boiler_gas
-- sink_model: convert_ed_to_es
-  sink_model_input: residential_electricity_boiler_electricity
-  source_model: es_residential
-  source_model_output: residential_electricity_boiler_electricity
 description: Just tests the conversion from energy_demand_toy to energy_supply_toy
-max_iterations: 1
 name: test_conversion_only
-narrative_sets: []
-scenario_sets:
-- es_residential
 sector_models:
 - convert_ed_to_es
+scenarios:
+- es_residential
+narratives: []
+scenario_dependencies:
+- source: es_residential
+  source_output: residential_gas_boiler_gas
+  sink: convert_ed_to_es
+  sink_input: residential_gas_boiler_gas
+- source: es_residential
+  source_output: residential_electricity_boiler_electricity
+  sink: convert_ed_to_es
+  sink_input: residential_electricity_boiler_electricity
+model_dependencies: []

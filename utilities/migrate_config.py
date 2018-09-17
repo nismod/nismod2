@@ -398,6 +398,7 @@ def _update_sector_model_config(project_folder):
             except ValueError:
                 LOGGER.debug("Error reading 'default_value' from %s in config file '%s'", 
                     parameter['name'], config_file)
+            parameter['dtype'] = 'float'
 
 
         _write_config_file(config_file_path, config_data)

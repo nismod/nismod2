@@ -1,70 +1,69 @@
-convergence_absolute_tolerance: 1.0e-05
 convergence_relative_tolerance: 1.0e-05
-dependencies:
-- sink_model_input: gas_price
-  source_model: es_prices
-  source_model_output: gas_price
-  sink_model: energy_supply_toy
-- sink_model_input: electricity_price
-  source_model: es_prices
-  source_model_output: electricity_price
-  sink_model: energy_supply_toy
-- sink_model_input: oil_price
-  source_model: es_prices
-  source_model_output: oil_price
-  sink_model: energy_supply_toy
-- sink_model_input: coal_price
-  source_model: es_prices
-  source_model_output: coal_price
-  sink_model: energy_supply_toy
-- sink_model_input: nuclearFuel_price
-  source_model: es_prices
-  source_model_output: nuclearFuel_price
-  sink_model: energy_supply_toy
-- sink_model_input: cost_of_carbon
-  source_model: es_prices
-  source_model_output: cost_of_carbon
-  sink_model: energy_supply_toy
-- sink_model_input: residential_gas_non_heating
-  source_model: dummy_energy_demands
-  source_model_output: residential_gas_non_heating
-  sink_model: energy_supply_toy
-- sink_model_input: residential_electricity_non_heating
-  source_model: dummy_energy_demands
-  source_model_output: residential_electricity_non_heating
-  sink_model: energy_supply_toy
-- sink_model_input: service_gas_non_heating
-  source_model: dummy_energy_demands
-  source_model_output: service_gas_non_heating
-  sink_model: energy_supply_toy
-- sink_model_input: service_electricity_non_heating
-  source_model: dummy_energy_demands
-  source_model_output: service_electricity_non_heating
-  sink_model: energy_supply_toy
-- sink_model_input: elecload
-  source_model: dummy_energy_demands
-  source_model_output: elecload
-  sink_model: energy_supply_toy
-- sink_model_input: gasload
-  source_model: dummy_energy_demands
-  source_model_output: gasload
-  sink_model: energy_supply_toy
-- source_model: dummy_energy_demands
-  source_model_output: service_heatload
-  sink_model_input: service_heatload
-  sink_model: energy_supply_toy
-- source_model: dummy_energy_demands
-  source_model_output: residential_heatload
-  sink_model_input: residential_heatload
-  sink_model: energy_supply_toy
 description: Toy version of the energy supply model with just 15 inputs, two parameters
   and one output.
-max_iterations: 1
 name: energy_supply_toy
-narrative_sets:
-- technology
-scenario_sets:
-- es_residential
-- es_prices
 sector_models:
 - energy_supply_toy
+scenarios:
+- es_residential
+- es_prices
+narratives:
+- technology
+scenario_dependencies:
+- source: es_prices
+  source_output: gas_price
+  sink: energy_supply_toy
+  sink_input: gas_price
+- source: es_prices
+  source_output: electricity_price
+  sink: energy_supply_toy
+  sink_input: electricity_price
+- source: es_prices
+  source_output: oil_price
+  sink: energy_supply_toy
+  sink_input: oil_price
+- source: es_prices
+  source_output: coal_price
+  sink: energy_supply_toy
+  sink_input: coal_price
+- source: es_prices
+  source_output: nuclearFuel_price
+  sink: energy_supply_toy
+  sink_input: nuclearFuel_price
+- source: es_prices
+  source_output: cost_of_carbon
+  sink: energy_supply_toy
+  sink_input: cost_of_carbon
+- source: dummy_energy_demands
+  source_output: residential_gas_non_heating
+  sink: energy_supply_toy
+  sink_input: residential_gas_non_heating
+- source: dummy_energy_demands
+  source_output: residential_electricity_non_heating
+  sink: energy_supply_toy
+  sink_input: residential_electricity_non_heating
+- source: dummy_energy_demands
+  source_output: service_gas_non_heating
+  sink: energy_supply_toy
+  sink_input: service_gas_non_heating
+- source: dummy_energy_demands
+  source_output: service_electricity_non_heating
+  sink: energy_supply_toy
+  sink_input: service_electricity_non_heating
+- source: dummy_energy_demands
+  source_output: elecload
+  sink: energy_supply_toy
+  sink_input: elecload
+- source: dummy_energy_demands
+  source_output: gasload
+  sink: energy_supply_toy
+  sink_input: gasload
+- source: dummy_energy_demands
+  source_output: service_heatload
+  sink: energy_supply_toy
+  sink_input: service_heatload
+- source: dummy_energy_demands
+  source_output: residential_heatload
+  sink: energy_supply_toy
+  sink_input: residential_heatload
+model_dependencies: []
