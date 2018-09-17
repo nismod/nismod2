@@ -3,6 +3,7 @@ scenario_sets:
 - population
 - es_prices
 - gva
+narrative_sets: []
 sector_models:
 - energy_supply
 - energy_demand_constrained
