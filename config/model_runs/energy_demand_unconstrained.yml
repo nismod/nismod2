@@ -1,6 +1,6 @@
-name: 'energy_demand_unconstrained'
-description: 'Run energy demand for baseline population scenario'
-stamp: "2017-11-07T14:15:00+00:00"
+name: energy_demand_unconstrained
+description: Run energy demand for baseline population scenario
+stamp: '2017-11-07T14:15:00+00:00'
 timesteps:
 - 2015
 - 2050
@@ -11,5 +11,5 @@ scenarios:
   gva: gva_baseline
 narratives:
   technology:
-  - 'test_narrative'
-  
+  - test_narrative
+strategies: {}

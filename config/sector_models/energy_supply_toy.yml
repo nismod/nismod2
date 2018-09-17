@@ -4,61 +4,83 @@ initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
 inputs:
 - name: elecload
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: gasload
-  spatial_resolution: gas_nodes_minimal
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - gas_nodes_minimal
+  - seasonal_week
+  dtype: float
 - name: residential_heatload
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
-  units: MW  
+  units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: residential_gas_non_heating
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: residential_electricity_non_heating
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: service_heatload
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: service_gas_non_heating
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: service_electricity_non_heating
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: cost_of_carbon
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/Mt
+  dims:
+  - seasons
+  dtype: float
 - name: electricity_price
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 - name: gas_price
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 - name: nuclearFuel_price
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 - name: oil_price
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 - name: coal_price
-  spatial_resolution: national
-  temporal_resolution: seasons
   units: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 interventions:
 - ../energy_supply/interventions/minimal/es_elec_network_minimal.csv
 - ../energy_supply/interventions/minimal/es_gaspipes_minimal.csv
@@ -70,148 +92,171 @@ interventions:
 name: energy_supply_toy
 outputs:
 - name: gasfired_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: coal_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: hydro_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: pumpedHydro_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: nuclear_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: interconnector_elec_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: renewable_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: wind_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: pv_gen_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: wind_curtail_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: pv_curtail_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: gasfired_gen_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: wind_gen_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: pv_gen_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: lng_supply
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - seasonal_week
+  dtype: float
 - name: domestic_gas
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - seasonal_week
+  dtype: float
 - name: interconnector_gas
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - seasonal_week
+  dtype: float
 - name: storage_gas
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - seasonal_week
+  dtype: float
 - name: load_shed_gas
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - seasonal_week
+  dtype: float
 - name: load_shed_elec
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: load_shed_gas_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: load_shed_elec_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: elec_cost
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: GBP/kWh
+  dims:
+  - seasonal_week
+  dtype: float
 - name: heat_gasboiler
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: heat_heatpump
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: elec_reserve_tran
-  spatial_resolution: national
-  temporal_resolution: seasonal_week
   units: MW
+  dims:
+  - seasonal_week
+  dtype: float
 - name: problem_objective
-  spatial_resolution: national
-  temporal_resolution: annual
   units: GBP
+  dims: []
+  dtype: float
 - name: problem_status
-  spatial_resolution: national
-  temporal_resolution: annual
   units: None
+  dims: []
+  dtype: float
 - name: total_opt_cost
-  spatial_resolution: national
-  temporal_resolution: annual
   units: GBP
+  dims: []
+  dtype: float
 - name: emissions_eh
-  spatial_resolution: energy_hub_min
-  temporal_resolution: seasonal_week
   units: t
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
 - name: emissions_bb
-  spatial_resolution: bus_bars
-  temporal_resolution: seasonal_week
   units: t
+  dims:
+  - bus_bars
+  - seasonal_week
+  dtype: float
 parameters:
-- absolute_range:
-  - 0
-  - 9999
-  default_value: 100
-  description: cost of electricity load shedding
+- description: cost of electricity load shedding
   name: LoadShed_elec
-  suggested_range:
-  - 0
-  - 500
   units: GBP/MWh
-- absolute_range:
-  - 0
-  - 9999
-  default_value: 300
-  description: cost of gas load shedding
+  default: 100
+- description: cost of gas load shedding
   name: LoadShed_gas
-  suggested_range:
-  - 0
-  - 500
   units: GBP/MWh
+  default: 300
 path: models/energy_supply/energy_supply.py

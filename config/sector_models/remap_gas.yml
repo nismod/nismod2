@@ -1,17 +1,21 @@
 classname: RemapEnergyHubToGasNode
-description: 'Remaps data from energy hub regions to gas nodes'
+description: Remaps data from energy hub regions to gas nodes
 initial_conditions: []
 inputs:
-- temporal_resolution: seasonal_week
-  units: mcm
+- units: mcm
   name: gasload
-  spatial_resolution: energy_hub
+  dims:
+  - energy_hub
+  - seasonal_week
+  dtype: float
 interventions: []
 name: remap_gas
 outputs:
 - name: gasload
-  spatial_resolution: gas_nodes
-  temporal_resolution: seasonal_week
   units: mcm
+  dims:
+  - gas_nodes
+  - seasonal_week
+  dtype: float
 parameters: []
 path: models/remap_gas.py
