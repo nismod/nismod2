@@ -3,86 +3,88 @@ description: transport model description
 path: ./models/transport/run.py
 classname: TransportWrapper
 inputs:
-- name: population
-  units: people
-  dims:
-  - lad_uk_2016
-  dtype: float
-- name: gva
-  units: GBP
-  dims:
-  - lad_uk_2016
-  dtype: float
+  - name: population
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: people
+  - name: gva
+    spatial_resolution: lad_uk_2016
+    temporal_resolution: annual
+    units: GBP
 outputs:
-- name: energy_consumption_petrol
-  units: l
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
-- name: energy_consumption_diesel
-  units: l
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
-- name: energy_consumption_lpg
-  units: l
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
-- name: energy_consumption_electricity
-  units: kWh
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
-- name: energy_consumption_hydrogen
-  units: l
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
-- name: energy_consumption_hybrid
-  units: l
-  dims:
-  - whole_system
-  - annual_day
-  dtype: float
+  - name: energy_consumption_petrol
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_diesel
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_lpg
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_electricity
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: kWh
+  - name: energy_consumption_hydrogen
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
+  - name: energy_consumption_hybrid
+    spatial_resolution: whole_system
+    temporal_resolution: annual_day
+    units: l
 parameters:
-- name: POPULATION_ETA
-  description: Population elasticity for passenger demand
-  units:
-  default: 1
-- name: GVA_ETA
-  description: GVA elasticity for passenger demand
-  units:
-  default: 0.63
-- name: TIME_ETA
-  description: Time elasticity for passenger demand
-  units:
-  default: -0.41
-- name: COST_ETA
-  description: Cost elasticity for passenger demand
-  units:
-  default: -0.215
-- name: POPULATION_FREIGHT_ETA
-  description: Population elasticity for freight demand
-  units:
-  default: 1
-- name: GVA_FREIGHT_ETA
-  description: GVA elasticity for freight demand
-  units:
-  default: 0.7
-- name: TIME_FREIGHT_ETA
-  description: Time elasticity for freight demand
-  units:
-  default: -0.41
-- name: COST_FREIGHT_ETA
-  description: Cost elasticity for freight demand
-  units:
-  default: -0.1
+  - name: POPULATION_ETA
+    description: Population elasticity for passenger demand
+    default_value: 1
+    units:
+    absolute_range:
+    suggested_range:
+  - name: GVA_ETA
+    description: GVA elasticity for passenger demand
+    default_value: 0.63
+    units:
+    absolute_range:
+    suggested_range:
+  - name: TIME_ETA
+    description: Time elasticity for passenger demand
+    default_value: -0.41
+    units:
+    absolute_range:
+    suggested_range:
+  - name: COST_ETA
+    description: Cost elasticity for passenger demand
+    default_value: -0.215
+    units:
+    absolute_range:
+    suggested_range:
+  - name: POPULATION_FREIGHT_ETA
+    description: Population elasticity for freight demand
+    default_value: 1
+    units:
+    absolute_range:
+    suggested_range:
+  - name: GVA_FREIGHT_ETA
+    description: GVA elasticity for freight demand
+    default_value: 0.7
+    units:
+    absolute_range:
+    suggested_range:
+  - name: TIME_FREIGHT_ETA
+    description: Time elasticity for freight demand
+    default_value: -0.41
+    units:
+    absolute_range:
+    suggested_range:
+  - name: COST_FREIGHT_ETA
+    description: Cost elasticity for freight demand
+    default_value: -0.1
+    units:
+    absolute_range:
+    suggested_range:
 interventions:
-- transport_interventions.yml
+  - transport_interventions.yml
 initial_conditions: []

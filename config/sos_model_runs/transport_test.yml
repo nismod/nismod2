@@ -6,6 +6,5 @@ scenarios:
   population: pop_baseline
   gva: gva_baseline
 narratives: {}
-decision_module: []
+decision_module: null
 stamp: '2018-02-13T10:00:00Z'
-strategies: {}
