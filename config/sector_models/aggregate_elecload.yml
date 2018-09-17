@@ -2,33 +2,28 @@ classname: AggregateInputs
 description: 'Aggregates energy demand outputs for energy supply transmission elecload '
 initial_conditions: []
 inputs:
-- units: MW
+- temporal_resolution: seasonal_week
+  units: MW
   name: industry_electricity_boiler_electricity
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: MW
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: MW
   name: industry_electricity_heat_pumps_electricity
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: MW
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: MW
   name: industry_electricity_district_heating_electricity
-  dims:
-  - energy_hub
-  dtype: TODO
-- units: MW
+  spatial_resolution: energy_hub
+- temporal_resolution: seasonal_week
+  units: MW
   name: industry_electricity_non_heating
-  dims:
-  - energy_hub
-  dtype: TODO
+  spatial_resolution: energy_hub
 interventions: []
 name: aggregate_elecload
 outputs:
 - name: elecload
+  spatial_resolution: energy_hub
+  temporal_resolution: seasonal_week
   units: MW
-  dims:
-  - energy_hub
-  dtype: TODO
 parameters: []
 path: models/aggregate.py
