@@ -34,7 +34,10 @@ def _archive_old_project_folder(project_folder):
     """
     Make an archive of the project folder
     """
-    shutil.make_archive(os.path.join(project_folder, '..', 'nismod2_migrate_bck'), 'zip', project_folder)
+    destination_path = os.path.join(project_folder, '..', 'nismod2_migrate_bck')
+
+    if not os.path.exists(destination_path + '.zip'):
+        shutil.make_archive(destination_path, 'zip', project_folder)
 
 def _rename_modelrunfolder(project_folder):
     destination_folder = os.path.join(project_folder, 'config/model_runs')
