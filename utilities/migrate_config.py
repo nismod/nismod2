@@ -11,9 +11,24 @@ import sys
 import shutil
 import itertools
 
+from logging import getLogger, basicConfig, INFO, Formatter, StreamHandler, DEBUG
+
+
 from ast import literal_eval
 from ruamel.yaml import YAML
 
+LOGGER = getLogger(__name__)
+LOG_FILENAME = 'migration.log'
+basicConfig(filename=LOG_FILENAME,level=DEBUG, filemode='w')
+# create console handler and set level to debug
+ch = StreamHandler()
+ch.setLevel(INFO)
+# create formatter
+formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+LOGGER.addHandler(ch)
  
 def _archive_old_project_folder(project_folder):
     """
@@ -22,8 +37,13 @@ def _archive_old_project_folder(project_folder):
     shutil.make_archive(os.path.join(project_folder, '..', 'nismod2_migrate_bck'), 'zip', project_folder)
 
 def _rename_modelrunfolder(project_folder):
-    os.rename(os.path.join(project_folder, 'config/sos_model_runs'), 
-              os.path.join(project_folder, 'config/model_runs'))
+    destination_folder = os.path.join(project_folder, 'config/model_runs')
+    if os.path.exists(destination_folder):
+        LOGGER.warning("Destination folder '%s' already exists", destination_folder)
+    else:
+
+        os.rename(os.path.join(project_folder, 'config/sos_model_runs'),
+                  destination_folder)
 
 def _read_config_file(filepath):
     yaml = YAML()
@@ -90,6 +110,8 @@ def _update_scenario_sets(old_project_data):
     new_scenarios = []
 
     for scenario_set in old_project_data['scenario_sets']:
+
+        LOGGER.info("Updates scenario set: %s", scenario_set['name'])
 
         # General
         new_scenario = {
@@ -289,12 +311,16 @@ def _update_project_data(project_folder):
     project_config_path = os.path.join(project_folder, 'config', 'project.yml')
 
     project_config_data = _read_config_file(project_config_path)
+    
     # Scenarios and scenario sets -> scenarios
-    project_config_data = _update_scenario_sets(project_config_data)
+    if 'scenario_sets' in project_config_data:
+        project_config_data = _update_scenario_sets(project_config_data)
     # Region and Interval definitions -> dimensions
-    project_config_data = _region_interval_to_dimensions(project_config_data)
+    if 'interval_defintions' in project_config_data:
+        project_config_data = _region_interval_to_dimensions(project_config_data)
     # Narrative sets and Narratives -> narratives
-    project_config_data = _update_narratives(project_config_data)
+    if 'narrative_sets' in project_config_data:
+        project_config_data = _update_narratives(project_config_data)
 
     # project
     _write_config_file(project_config_path, project_config_data)
@@ -335,6 +361,8 @@ def _update_sector_model_config(project_folder):
 
     for config_file in config_files:
 
+        LOGGER.info("Updated sector model config file '%s'", config_file)
+
         config_file_path = os.path.join(config_dir, config_file)
         config_data = _read_config_file(config_file_path)
 
@@ -351,10 +379,22 @@ def _update_sector_model_config(project_folder):
 
         # parameters
         for parameter in config_data['parameters']:
-            parameter['abs_range'] = list(literal_eval(parameter.pop('absolute_range')))
-            parameter['exp_range'] = list(literal_eval(parameter.pop('suggested_range')))
-            parameter['default'] = parameter.pop('default_value')
-            parameter['dtype'] = 'TODO'
+            try:
+                parameter['abs_range'] = list(literal_eval(parameter.pop('absolute_range')))
+            except ValueError:
+                LOGGER.debug("Error reading 'absolute_range' from %s in config file '%s'", 
+                    parameter['name'], config_file)
+            
+            try:
+                parameter['exp_range'] = list(literal_eval(parameter.pop('suggested_range')))
+            except ValueError:
+                LOGGER.debug("Error reading 'suggested_range' from %s in config file '%s'", 
+                    parameter['name'], config_file)
+            try:
+                parameter['default'] = parameter.pop('default_value')
+            except ValueError:
+                LOGGER.debug("Error reading 'default_value' from %s in config file '%s'", 
+                    parameter['name'], config_file)
 
 
         _write_config_file(config_file_path, config_data)
@@ -392,9 +432,16 @@ def _update_sos_model_config(project_folder):
         config_data = _read_config_file(config_file_path)
 
         # scenario_sets -> scenarios
-        config_data['scenarios'] = config_data.pop('scenario_sets')
+        try:
+            config_data['scenarios'] = config_data.pop('scenario_sets')
+        except KeyError:
+            LOGGER.debug("Cannot find key 'scenario_sets' in %s", config_file)
         # narrative_sets -> narratives
-        config_data['narratives'] = config_data.pop('narrative_sets')
+        try:
+            config_data['narratives'] = config_data.pop('narrative_sets')
+        except KeyError:
+            LOGGER.debug("Cannot find key 'narrative_sets' in %s", config_file)
+
 
         # process dependencies
         config_data['scenario_dependencies'] = []
@@ -402,11 +449,23 @@ def _update_sos_model_config(project_folder):
         for dependency in config_data['dependencies']:
 
             # preformat the dependency
-            dependency['source'] = dependency.pop('source_model')
-            dependency['source_output'] = dependency.pop('source_model_output')
-            dependency['sink'] = dependency.pop('sink_model')
-            dependency['sink_input'] = dependency.pop('sink_model_input')
-
+            try:
+                dependency['source'] = dependency.pop('source_model')
+            except KeyError:
+                LOGGER.debug("Dependency %s in %s missing 'source_model'", dependency, config_data['name'])
+            try:
+                dependency['source_output'] = dependency.pop('source_model_output')
+            except KeyError:
+                LOGGER.debug("Dependency %s in %s missing 'source_model_output'", dependency, config_data['name'])
+            try:
+                dependency['sink'] = dependency.pop('sink_model')
+            except KeyError:
+                LOGGER.debug("Dependency %s in %s missing 'sink_model'", dependency, config_data['name'])
+            try:
+                dependency['sink_input'] = dependency.pop('sink_model_input')
+            except KeyError:
+                LOGGER.debug("Dependency %s in %s missing 'sink_model_input'", dependency, config_data['name'])
+            
             # split up list
             if dependency['source'] in [scenario['name'] for scenario in project_config['scenarios']]:
                 config_data['scenario_dependencies'].append(dependency)
@@ -419,6 +478,7 @@ def _update_sos_model_config(project_folder):
         config_data.pop('convergence_absolute_tolerance')
 
         _write_config_file(config_file_path, config_data)
+        LOGGER.info("Sucessfully updated sos_model config: %s", config_file_path)
 
 def _move_region_interval_definitions(project_folder):
     """
@@ -450,11 +510,12 @@ def _move_region_interval_definitions(project_folder):
     os.rmdir(interval_def_dir)
 
 def main(project_folder):
-    _archive_old_project_folder(project_folder)
+    # _archive_old_project_folder(project_folder)
     _rename_modelrunfolder(project_folder)
     _update_project_data(project_folder)
 
     _update_sector_model_config(project_folder)
+
     _update_sos_model_config(project_folder)
 
     _move_region_interval_definitions(project_folder)
