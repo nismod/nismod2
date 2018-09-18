@@ -1,8 +1,9 @@
-from subprocess import check_output
 import os
-import psycopg2
 from collections import namedtuple
+from subprocess import check_output
+
 import numpy as np
+import psycopg2
 
 def establish_connection():
     """Connect to an existing database
@@ -12,7 +13,7 @@ def establish_connection():
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
-    
+
     Argument
     --------
     time_id : int
@@ -191,7 +192,7 @@ def write_electricity_demand_data(data):
 
 def write_heat_demand_data(year, data_res, data_com):
     """Writes heat demand data into database table
-    
+
     Arguments
     ---------
     year : int
@@ -267,7 +268,7 @@ def get_cooling_water_demand():
         for row in cur.fetchall():
             cooling_water = _calculate_water_demand(row[2])
             water_demand.append({'id': "{}_{}".format(row[0], row[1]),
-                                    'water_demand': cooling_water})
+                                 'water_demand': cooling_water})
 
     return water_demand
 
@@ -341,11 +342,9 @@ def get_results():
             'electricity_prices': get_prices()}
 
 def get_model_executable():
-    """Return path of current python interpreter
+    """Return path of ES model executable
     """
-    executable = '/vagrant/models/energy_supply/model/MISTRAL_ES.exe'
-
-    return os.path.join(executable)
+    return os.path.join(os.path.dirname(__file__), 'model', 'MISTRAL_ES.exe')
 
 def build_power_station(name, plant_type, region, capacity, build_year,
                         operational_life):

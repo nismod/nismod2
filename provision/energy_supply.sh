@@ -179,10 +179,5 @@ rm -r $MODEL_DIR/energy_supply/energy_supply_$release
 # This is a bit of a hack which places the compiled BIM files into the XPRESS package directory
 cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
-cd $base_path
-
 # Run migrations
-su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_full $MIGRATIONS"
-
-# Setup environment variables on login
-echo "source /opt/xpressmp/bin/xpvars.sh" >> $base_path/.bashrc
+python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_full $MIGRATIONS

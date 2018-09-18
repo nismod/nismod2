@@ -42,7 +42,9 @@ class EnergySupplyWrapper(SectorModel):
 
     def simulate(self, data):
 
-        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
+        nismod_path = os.path.join(os.path.dirname(__file__), "..", "..")
+        os.environ["ES_PATH"] = str(os.path.abspath(os.path.join(
+            nismod_path, "install", "energy_supply")))
 
         # Get the current timestep
         now = data.current_timestep
@@ -64,7 +66,8 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Input Residential gas boiler gas: %s',
             input_residential_gas_boiler_gas)
 
-        filepath = "/vagrant/data/energy_supply/minimal/_GasLoadMap_minimal.csv"
+        filepath = os.path.join(
+            nismod_path, "data", "energy_supply", "minimal", "_GasLoadMap_minimal.csv")
         hubs, gas_nodes, mapper = read_gas_remap(filepath)
 
         coefficients = np.zeros((max(hubs), max(gas_nodes)), dtype=float)
@@ -162,9 +165,8 @@ class EnergySupplyWrapper(SectorModel):
     def get_model_executable(self):
         """Return path of current python interpreter
         """
-        executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
-
-        return os.path.join(executable)
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+        return os.path.join(nismod_dir, 'install', 'energy_supply' 'Energy_Supply_Master.exe')
 
     def extract_obj(self, results):
         return 0
