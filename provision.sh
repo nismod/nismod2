@@ -1,3 +1,9 @@
+if [ -z "$1" ]; then
+    base_path=.
+else
+    base_path=$1
+fi
+
 # Update package lists
 apt-get update
 # Install OS packages
@@ -8,7 +14,9 @@ apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 # Configure /vagrant folder as default on vagrant ssh
-echo "cd /vagrant" >> /home/vagrant/.bashrc
+if [ "$base_path" == "/vagrant" ]; then
+    echo "cd /vagrant" >> /home/vagrant/.bashrc
+fi
 
 # Create vagrant role if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
@@ -41,7 +49,7 @@ pip3 install psycopg2-binary pytest
 
 # We MUST clean ALL the windows newlines
 shopt -s nullglob
-to_clean=(/vagrant/provision/*)
+to_clean=($base_path/provision/*)
 shopt -u nullglob
 
 for filename in ${to_clean[@]}; do
@@ -52,20 +60,22 @@ for filename in ${to_clean[@]}; do
 done;
 
 # copy bash config to vagrant home
-cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
-chown vagrant:vagrant /home/vagrant/.bashrc
+if [ "$base_path" == "/vagrant" ]; then
+    cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
+    chown vagrant:vagrant /home/vagrant/.bashrc
+fi
 
-# # Provision digital_comms model
-bash /vagrant/provision/digital_comms.sh
+# Provision digital_comms model
+bash $base_path/provision/digital_comms.sh $base_path
 
 # Provision energy_demand model
-bash /vagrant/provision/energy_demand.sh
+bash $base_path/provision/energy_demand.sh $base_path
 
 # Provision energy_supply model
-bash /vagrant/provision/energy_supply.sh
+bash $base_path/provision/energy_supply.sh $base_path
 
 # # Provision solid_waste model
-# bash /vagrant/provision/solid_waste.sh
+# bash $base_path//provision/solid_waste.sh
 
-# # Provision transport model
-bash /vagrant/provision/transport.sh
+# Provision transport model
+bash $base_path/provision/transport.sh $base_path
