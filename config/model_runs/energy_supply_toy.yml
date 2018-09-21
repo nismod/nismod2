@@ -7,9 +7,11 @@ narratives:
 scenarios:
   es_prices: es_prices_dummy
   es_residential: es_residential_dummy
+  dummy_energy_demands: es_energy_demand_dummy
 sos_model: energy_supply_toy
 stamp: '2018-01-31T10:10:41.791Z'
 strategies: []
 timesteps:
 - 2015
 - 2020
+strategies: {}
