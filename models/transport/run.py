@@ -74,11 +74,8 @@ class TransportWrapper(SectorModel):
             self.logger.exception("Transport model failed %s", ex)
             raise ex
 
-    def _input_region_names(self, input_name):
-        return self.inputs[input_name].spatial_resolution.get_entry_names()
-
-    def _input_interval_names(self, input_name):
-        return self.inputs[input_name].temporal_resolution.get_entry_names()
+    def _input_dimension_names(self, input_name, dimension_name):
+        return self.inputs[input_name].dim_coords(dimension_name).ids
 
     def _set_parameters(self, data_handle):
         """Read model parameters from data handle and set up config files
@@ -110,25 +107,25 @@ class TransportWrapper(SectorModel):
         with open(os.path.join(working_dir, 'data', 'population.csv') ,'w') as file_handle:
             w = csv.writer(file_handle)
 
-            pop_region_names = self._input_region_names("population")
+            pop_region_names = self._input_dimension_names("population", 'lad_uk_2016')
             w.writerow(('year', ) + tuple(pop_region_names))
 
-            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:,0]]
+            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:]]
             w.writerow((data_handle.base_timestep, ) + tuple(base_population))
 
-            current_population = [int(population) for population in data_handle.get_data("population")[:,0]]
+            current_population = [int(population) for population in data_handle.get_data("population")[:]]
             w.writerow((data_handle.current_timestep, ) + tuple(current_population))
 
         with open(os.path.join(working_dir, 'data', 'gva.csv') ,'w') as file_handle:
             w = csv.writer(file_handle)
 
-            gva_region_names = self._input_region_names("gva")
+            gva_region_names = self._input_dimension_names("gva", 'lad_uk_2016')
             w.writerow(('year', ) + tuple(gva_region_names))
 
-            base_gva = data_handle.get_base_timestep_data("gva")[:,0]
+            base_gva = data_handle.get_base_timestep_data("gva")[:]
             w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
 
-            current_gva = data_handle.get_data("gva")[:,0]
+            current_gva = data_handle.get_data("gva")[:]
             w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
 
     def _set_properties(self, data_handle):

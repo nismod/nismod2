@@ -1,4 +1,4 @@
-value,region,interval,year
+flow,od_southampton,annual_day,timestep
 5000,E06000045-E06000045,annual_day,2015
 6500,E07000086-E06000045,annual_day,2015
 4560,E07000091-E06000045,annual_day,2015
