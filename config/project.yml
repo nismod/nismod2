@@ -139,12 +139,12 @@ scenarios:
   - name: es_prices_dummy
     description: Dummy prices data to pass to the energy_supply toy model
     data:
-      gas_price: ../energy_supply/scenarios/price/gas_price.csv
-      electricity_price: ../energy_supply/scenarios/price/electricity_price.csv
-      oil_price: ../energy_supply/scenarios/price/oil_price.csv
-      coal_price: ../energy_supply/scenarios/price/coal_price.csv
-      nuclearFuel_price: ../energy_supply/scenarios/price/nuclear_fuel_price.csv
-      cost_of_carbon: ../energy_supply/scenarios/price/cost_of_carbon.csv
+      gas_price: ../energy_supply/scenarios/price.csv
+      electricity_price: ../energy_supply/scenarios/price.csv
+      oil_price: ../energy_supply/scenarios/price.csv
+      coal_price: ../energy_supply/scenarios/price.csv
+      nuclearFuel_price: ../energy_supply/scenarios/price.csv
+      cost_of_carbon: ../energy_supply/scenarios/price.csv
 - name: dummy_energy_demands
   description: Dummy energy demand data for the energy supply model
   provides:
@@ -208,14 +208,14 @@ scenarios:
   - name: es_energy_demand_minimal
     description: ''
     data:
-      elecload: ../energy_supply/scenarios/minimal/elecload.csv
-      gasload: ../energy_supply/scenarios/minimal/gasload.csv
-      residential_heatload: ../energy_supply/scenarios/minimal/residential_heatload.csv
-      residential_gas_non_heating: ../energy_supply/scenarios/minimal/residential_gas_non_heating.csv
-      residential_electricity_non_heating: ../energy_supply/scenarios/minimal/residential_electricity_non_heating.csv
-      service_heatload: ../energy_supply/scenarios/minimal/service_heatload.csv
-      service_gas_non_heating: ../energy_supply/scenarios/minimal/service_gas_non_heating.csv
-      service_electricity_non_heating: ../energy_supply/scenarios/minimal/service_electricity_non_heating.csv
+      elecload: ../energy_supply/scenarios/energy_demand_minimal.csv
+      gasload: ../energy_supply/scenarios/energy_demand_minimal_gasload.csv
+      residential_heatload: ../energy_supply/scenarios/energy_demand_minimal.csv
+      residential_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
+      residential_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
+      service_heatload: ../energy_supply/scenarios/energy_demand_minimal.csv
+      service_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
+      service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
   - name: es_energy_demand_dummy
     description: ''
     data:
@@ -300,7 +300,7 @@ dimensions:
   elements: ../energy_supply/region_definitions/bus_bars.shp
 - name: broadband_distributions
   description: Broadband network distributions (Fixed network)
-  elements: assets_broadband_network/assets_layer4_distributions.shp
+  elements: ../digital_comms/assets_layer4_distributions.shp
 - name: broadband_cabinets
   description: Broadband network cabinets (Fixed network)
-  elements: assets_broadband_network/assets_layer3_cabinets.shp
+  elements: ../digital_comms/assets_layer3_cabinets.shp
