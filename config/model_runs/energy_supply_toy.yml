@@ -4,8 +4,7 @@ name: energy_supply_toy
 narratives: {}
 scenarios:
   es_prices: es_prices_dummy
-  es_residential: es_residential_dummy
-  dummy_energy_demands: es_energy_demand_dummy
+  dummy_energy_demands_full: es_energy_demand_dummy_full
 sos_model: energy_supply_toy
 stamp: '2018-01-31T10:10:41.791Z'
 timesteps:

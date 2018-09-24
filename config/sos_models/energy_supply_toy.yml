@@ -4,7 +4,7 @@ sector_models:
 - energy_supply_toy
 scenarios:
 - es_prices
-- dummy_energy_demands
+- dummy_energy_demands_full
 narratives:
 - technology
 scenario_dependencies:
@@ -32,35 +32,35 @@ scenario_dependencies:
   source_output: cost_of_carbon
   sink: energy_supply_toy
   sink_input: cost_of_carbon
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: residential_gas_non_heating
   sink: energy_supply_toy
   sink_input: residential_gas_non_heating
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: residential_electricity_non_heating
   sink: energy_supply_toy
   sink_input: residential_electricity_non_heating
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: service_gas_non_heating
   sink: energy_supply_toy
   sink_input: service_gas_non_heating
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: service_electricity_non_heating
   sink: energy_supply_toy
   sink_input: service_electricity_non_heating
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: elecload
   sink: energy_supply_toy
   sink_input: elecload
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: gasload
   sink: energy_supply_toy
   sink_input: gasload
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: service_heatload
   sink: energy_supply_toy
   sink_input: service_heatload
-- source: dummy_energy_demands
+- source: dummy_energy_demands_full
   source_output: residential_heatload
   sink: energy_supply_toy
   sink_input: residential_heatload
