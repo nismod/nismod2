@@ -1,5 +1,5 @@
 classname: EnergySupplyWrapper
-description: Toy version of the CGEN++ energy supply model with just 15 inputs, two parameters and one output.
+description: Toy version of the CGEN++ energy supply model which uses minimal data
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
 inputs:
@@ -93,56 +93,67 @@ name: energy_supply_toy
 outputs:
 - name: gasfired_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: coal_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: hydro_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: pumpedHydro_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: nuclear_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: interconnector_elec_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: renewable_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: wind_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: pv_gen_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: wind_curtail_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: pv_curtail_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
@@ -166,31 +177,37 @@ outputs:
   dtype: float
 - name: lng_supply
   dims:
+  - national
   - seasonal_week
   unit: mcm
   dtype: float
 - name: domestic_gas
   dims:
+  - national
   - seasonal_week
   unit: mcm
   dtype: float
 - name: interconnector_gas
   dims:
+  - national
   - seasonal_week
   unit: mcm
   dtype: float
 - name: storage_gas
   dims:
+  - national
   - seasonal_week
   unit: mcm
   dtype: float
 - name: load_shed_gas
   dims:
+  - national
   - seasonal_week
   unit: mcm
   dtype: float
 - name: load_shed_elec
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
@@ -208,21 +225,25 @@ outputs:
   dtype: float
 - name: elec_cost
   dims:
+  - national
   - seasonal_week
   unit: GBP/kWh
   dtype: float
 - name: heat_gasboiler
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: heat_heatpump
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
 - name: elec_reserve_tran
   dims:
+  - national
   - seasonal_week
   unit: MW
   dtype: float
