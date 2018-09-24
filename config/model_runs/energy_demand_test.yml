@@ -1,7 +1,6 @@
 name: energy_demand_test
 description: ''
 stamp: '2018-02-12T13:24:11.204Z'
-strategies: []
 timesteps:
 - 2015
 - 2016
