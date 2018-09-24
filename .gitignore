@@ -11,6 +11,7 @@
 
 # Energy supply
 *.xpr
+*.tar.gz
 xpress.tar
 template.ini
 install.sh

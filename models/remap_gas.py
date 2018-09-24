@@ -1,9 +1,11 @@
 """This adapter aggregates all inputs and writes the aggregate
 values to each output 
 """
+import os
+from csv import DictReader
+
 import numpy as np
 from smif.model.sector_model import SectorModel
-from csv import DictReader
 
 def read_gas_remap(file_name):
     with open(file_name, 'r') as load_map:
@@ -54,8 +56,10 @@ class RemapEnergyHubToGasNode(SectorModel):
         """Remaps energy demand from energy hubs to gas nodes
         """
         gasload_eh = data_handle.get_data('gasload')
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..')
+        remap_file = os.path.join(
+            nismod_dir, 'data', 'energy_supply', 'data', '_GasLoadMap.csv')
 
-        remap_file = "/vagrant/data/energy_supply/data/_GasLoadMap.csv"
         gasload_nodes = remap_gas(gasload_eh, remap_file)
 
         data_handle.set_results('gasload', gasload_nodes)

@@ -23,11 +23,11 @@ class EnergySupplyWrapper(SectorModel):
         # Get model parameters
         parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
         self.logger.info('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
-        
+
         parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
         self.logger.info('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
 
-        write_load_shed_costs(parameter_LoadShed_elec, 
+        write_load_shed_costs(parameter_LoadShed_elec,
                               parameter_LoadShed_gas)
 
     def build_interventions(self, data):
@@ -62,34 +62,34 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info("Energy Supply Wrapper received inputs in %s", now)
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
-        
+
         input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
         self.logger.info('Input Residential electricity non heating: %s', input_residential_electricity_non_heating)
-        
+
         input_service_gas_non_heating = data.get_data("service_gas_non_heating")
         self.logger.info('Input Service gas non heating: %s', input_service_gas_non_heating)
-        
+
         input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
         self.logger.info('Input Service electricity non heating: %s', input_service_electricity_non_heating)
-            
+
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.info('Input Cost of carbon: %s', input_cost_of_carbon)
-    
+
         input_electricity_price = data.get_data("electricity_price")
         self.logger.info('Input Electricity price: %s', input_electricity_price)
-    
+
         input_gas_price = data.get_data("gas_price")
         self.logger.info('Input Gas price: %s', input_gas_price)
-    
+
         input_nuclearFuel_price = data.get_data("nuclearFuel_price")
         self.logger.info('Input Nuclearfuel price: %s', input_nuclearFuel_price)
-    
+
         input_oil_price = data.get_data("oil_price")
         self.logger.info('Input Oil price: %s', input_oil_price)
-    
+
         input_coal_price = data.get_data("coal_price")
         self.logger.info('Input Coal price: %s', input_coal_price)
-         
+
         heatload_res = data.get_data('residential_heatload')
         self.logger.info('Residential heatload: %s', heatload_res)
 
@@ -103,34 +103,34 @@ class EnergySupplyWrapper(SectorModel):
 
         region_names, interval_names = self.get_names( "residential_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_res")
-        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res", 
+        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res",
                              now, region_names, interval_names)
         region_names, interval_names = self.get_names( "service_electricity_non_heating")
         self.logger.info('Writing %s to database', "elecload_non_heat_com")
-        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com", 
+        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_res")
-        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res", 
+        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "gasload_non_heat_com")
-        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com", 
+        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_res")
-        write_input_timestep(heatload_res, "heatload_res", 
+        write_input_timestep(heatload_res, "heatload_res",
                              now, region_names, interval_names)
         self.logger.info('Writing %s to database', "heatload_com")
-        write_input_timestep(heatload_com, "heatload_com", 
+        write_input_timestep(heatload_com, "heatload_com",
                              now, region_names, interval_names)
 
         elecload_tran = data.get_data('elecload')
         self.logger.info('Writing %s to database', "elecload")
-        write_input_timestep(elecload_tran, "elecload", 
+        write_input_timestep(elecload_tran, "elecload",
                              now, region_names, interval_names)
 
         gasload = data.get_data('gasload')
         region_names, interval_names = self.get_names( "gasload")
         self.logger.info('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload", 
+        write_input_timestep(gasload, "gasload",
                              now, region_names, interval_names)
 
     def simulate(self, data):
@@ -148,14 +148,16 @@ class EnergySupplyWrapper(SectorModel):
     def run_the_model(self):
         """Run the model
         """
-        os.environ["ES_PATH"] = "/vagrant/install/energy_supply"
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+        os.environ["ES_PATH"] = str(os.path.abspath(os.path.join(
+            nismod_dir, 'install', 'energy_supply')))
         self.logger.info("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
         self.logger.info(check_output(arguments))
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
-        
+
         This results mapping maps output_parameters to sectormodel output names
         external => internal
         """
@@ -239,9 +241,8 @@ class EnergySupplyWrapper(SectorModel):
     def get_model_executable(self):
         """Return path of current python interpreter
         """
-        executable = '/vagrant/install/energy_supply/Energy_Supply_Master.exe'
-
-        return os.path.join(executable)
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+        return os.path.join(nismod_dir, 'install', 'energy_supply' 'Energy_Supply_Master.exe')
 
     def extract_obj(self, results):
         return 0
@@ -275,7 +276,7 @@ def clear_results(year):
 
 def parse_season_day_period(time_id):
     """Returns the season, day and period value from an id
-    
+
     Argument
     --------
     time_id : int
@@ -352,9 +353,9 @@ def write_gas_price(year, data):
         _, interval_index = it.multi_index
         fuel_id = 1
         fueltype = 'Gas'
-        insert_data = (fuel_id, 
-                       fueltype, 
-                       year, 
+        insert_data = (fuel_id,
+                       fueltype,
+                       year,
                        interval_index + 1,
                        float(cell))
 
@@ -437,7 +438,7 @@ def get_timestep_output(conn, output_parameter, year, regions, intervals):
     return results
 
 
-def write_load_shed_costs(loadshedcost_elec, 
+def write_load_shed_costs(loadshedcost_elec,
                           loadshedcost_gas):
     """
     """
@@ -453,11 +454,11 @@ def write_load_shed_costs(loadshedcost_elec,
         cur.execute("""DELETE FROM "LoadShedCosts";""")
     with conn.cursor() as cur:
         cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
-    
+
     conn.commit()
 
     conn.close()
-    
+
 def retire_generator(plants):
     conn = establish_connection()
     cur = conn.cursor()
@@ -473,7 +474,7 @@ def retire_generator(plants):
 
     # Close communication with the database
     cur.close()
-    conn.close() 
+    conn.close()
 
 def build_generator(plants):
     """Writes an intervention into the GeneratorData table
@@ -521,7 +522,7 @@ def get_distributed_eh(location, year):
     conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        cur.execute(sql, (location, year))    
+        cur.execute(sql, (location, year))
         mapping = cur.fetchone()
     conn.close()
     print(mapping)
@@ -534,7 +535,7 @@ def get_distributed_tran(location, year):
     conn = establish_connection()
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        cur.execute(sql, (location, year))    
+        cur.execute(sql, (location, year))
         mapping = cur.fetchone()
     conn.close()
     print(mapping)
@@ -550,11 +551,11 @@ def build_distributed(plants):
     conn = establish_connection()
     cur = conn.cursor()
 
-    plant_remap = {x: {'build_year': 0, 
-                       'offshore': 0, 
-                       'onshore': 0, 
+    plant_remap = {x: {'build_year': 0,
+                       'offshore': 0,
+                       'onshore': 0,
                        'pv': 0,
-                       'table_name': ''} 
+                       'table_name': ''}
                    for x in range(1, 30)}
 
     for plant in plants:
@@ -675,22 +676,22 @@ def get_region_mapping(input_parameter_name):
     # Open a cursor to perform database operations
     with conn.cursor() as cur:
         cur.execute("""SELECT name, id
-                        FROM region 
+                        FROM region
                         WHERE regiontype = (
-                            SELECT regiontype from input_parameter 
-                            WHERE name=%s);""", 
-                    (input_parameter_name, ))    
+                            SELECT regiontype from input_parameter
+                            WHERE name=%s);""",
+                    (input_parameter_name, ))
         mapping = cur.fetchall()
     conn.close()
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year, 
+def write_input_timestep(input_data, parameter_name, year,
                          region_names, interval_names):
-    """Writes input data into database table 
-    
+    """Writes input data into database table
+
     Uses the index of the numpy array as a reference to interval and region definitions
-    
+
     Arguments
     ---------
     input_data : numpy.ndarray

@@ -9,7 +9,7 @@ apt-get update
 # Install OS packages
 apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
     postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
-    libgeos-dev python-glpk glpk-utils sshpass
+    libgeos-dev sshpass
 
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
@@ -56,7 +56,6 @@ for filename in ${to_clean[@]}; do
     bname=$(basename $filename)
     tr -d '\r' < $filename > /tmp/$bname
     mv /tmp/$bname $filename
-    echo $bname
 done;
 
 # copy bash config to vagrant home
@@ -75,7 +74,7 @@ bash $base_path/provision/energy_demand.sh $base_path
 bash $base_path/provision/energy_supply.sh $base_path
 
 # # Provision solid_waste model
-# bash $base_path//provision/solid_waste.sh
+# bash $base_path/provision/solid_waste.sh
 
 # Provision transport model
 bash $base_path/provision/transport.sh $base_path
