@@ -1,9 +1,7 @@
 decision_module: ''
 description: ''
 name: energy_supply_toy
-narratives:
-  technology:
-  - test_narrative
+narratives: {}
 scenarios:
   es_prices: es_prices_dummy
   es_residential: es_residential_dummy

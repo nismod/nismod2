@@ -233,17 +233,17 @@ narratives:
   provides:
   - name: High Tech Demand Side Management
     description: High penetration of SMART technology on the demand side
-    dtype: TODO
+    dtype: float
     unit: TODO
   - name: test_narrative
     description: High penetration of SMART technology on the demand side
-    dtype: TODO
+    dtype: float
     unit: TODO
   variants:
-  - name: TODO
+  - name: test_narrative
     description: TODO
     data:
-      High Tech Demand Side Management: high_tech_dsm.yml
+      'High Tech Demand Side Management': high_tech_dsm.yml
       test_narrative: high_tech_dsm.yml
 - name: governance
   description: Describes the governance landscape

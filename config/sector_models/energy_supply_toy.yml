@@ -1,5 +1,5 @@
 classname: EnergySupplyWrapper
-description: CGEN++ simulates the operation of the coupled UK gas and electricity.
+description: Toy version of the CGEN++ energy supply model with just 15 inputs, two parameters and one output.
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
 inputs:

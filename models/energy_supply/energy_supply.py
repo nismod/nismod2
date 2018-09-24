@@ -61,11 +61,8 @@ class EnergySupplyWrapper(SectorModel):
 
     def build_interventions(self, data, current_timestep):
         # Build interventions
-        state = data.get_state()
-        self.logger.info("Current state contains %s interventions", len(state))
-        current_interventions = self.get_current_interventions(state)
-        # print("All interventions: {}".format([ci.name for ci in self.interventions]))
-        # print("Current interventions: {}".format([ci['name'] for ci in current_interventions]))
+        current_interventions = data.get_current_interventions()
+
         retirees = []
         generators = []
         dist_eh = []
@@ -76,9 +73,10 @@ class EnergySupplyWrapper(SectorModel):
         gasterminal = []
         heattech = []
 
-        for intervention in current_interventions:
+        for name, intervention in current_interventions.items():
+            intervention['name'] = name
             if intervention['table_name'] == 'GeneratorData':
-                if intervention['name'].split("_")[-1] == 'retire':
+                if name.split("_")[-1] == 'retire':
                     retirees.append(intervention)
                 else:
                     generators.append(intervention)
@@ -97,7 +95,7 @@ class EnergySupplyWrapper(SectorModel):
             elif intervention['table_name'] == 'HeatTechData':
                 heattech.append(intervention)
             else:
-                print("Not sure what to do with {}".format(intervention['name']))
+                print("Not sure what to do with {}".format(name))
                 
         self.logger.info("Writing %s pipes to database", len(pipes))
         build_pipes(pipes, current_timestep)
@@ -112,9 +110,9 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.info('Building %s heattech interventions', len(heattech))    
         build_heattech(heattech, current_timestep)
         self.logger.info('Building %s eh connected distributed generators', len(dist_eh))
-        build_distributed(dist_eh, current_timestep)
+        # build_distributed(dist_eh, current_timestep)
         self.logger.info('Building %s transmission connected distributed generators', len(dist_tran))
-        build_distributed(dist_tran, current_timestep)
+        # build_distributed(dist_tran, current_timestep)
         self.logger.info('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -122,6 +120,7 @@ class EnergySupplyWrapper(SectorModel):
         # Get model inputs
         self.logger.info("Energy Supply Wrapper received inputs in %s", now)
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
+
         self.logger.info('Input Residential gas non heating: %s', input_residential_gas_non_heating)
 
         input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
@@ -189,7 +188,7 @@ class EnergySupplyWrapper(SectorModel):
                              now, region_names, interval_names)
 
         gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names( "gasload")
+        region_names, interval_names = self.get_names( "gasload", spatial_name='gas_nodes_minimal')
         self.logger.info('Writing %s to database', "gasload")
         write_input_timestep(gasload, "gasload",
                              now, region_names, interval_names)
@@ -267,25 +266,28 @@ class EnergySupplyWrapper(SectorModel):
         """Pass results from database to data handle
         """
         # long way around to get canonical entry names for spatial/temporal resolution
-        regions = self.outputs[external_parameter_name].spatial_resolution.get_entry_names()
-        intervals = self.outputs[external_parameter_name].temporal_resolution.get_entry_names()
+        dim_names = self.outputs[external_parameter_name].dims
+
+        intervals = self.outputs[external_parameter_name].dim_coords('seasonal_week').ids
+        index = dim_names.index('seasonal_week')
+        dim_names.pop(index)
+        if dim_names:
+            regions = self.outputs[external_parameter_name].dim_coords(dim_names).ids
 
         # read from database - need to be careful with internal vs external param name
         if is_annual:
-            output = get_annual_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
+            output = get_annual_output(conn, internal_parameter_name, data_handle.current_timestep, regions)
         else:
             output = get_timestep_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
 
         # set on smif DataHandle
         data_handle.set_results(external_parameter_name, output)
 
-    def get_names(self, name):
+    def get_names(self, name, spatial_name='energy_hub_min', temporal_name='seasonal_week'):
         """Get region and interval names for a given input
         """
-        spatial_resolution = self.inputs.get_spatial_res(name).name
-        region_names = self.get_region_names(spatial_resolution)
-        temporal_resolution = self.inputs.get_temporal_res(name).name
-        interval_names = self.get_interval_names(temporal_resolution)
+        region_names = self.inputs[name].dim_coords(spatial_name).ids
+        interval_names = self.inputs[name].dim_coords(temporal_name).ids
         return region_names, interval_names
 
     def get_model_executable(self):
@@ -537,7 +539,7 @@ def build_generator(plants, current_timestep):
     cur = conn.cursor()
 
     expected_keys = ['type', 'name', 'location', 'min_power', 'capacity', 
-                     'build_year', 'operational_lifetime', 'sys_layer']
+                     'build_year', 'technical_lifetime', 'sys_layer']
 
     for plant in plants:
 
@@ -582,7 +584,7 @@ def build_generator(plants, current_timestep):
 
         min_power = extract_value(plant, 'min_power')
         capacity = extract_value(plant, 'capacity')
-        lifetime = extract_value(plant, 'operational_lifetime')
+        lifetime = extract_value(plant, 'technical_lifetime')
 
         if int(plant['sys_layer']) == 2:
 
@@ -671,8 +673,8 @@ def build_distributed(plants, current_timestep):
                        'offshore': 0,
                        'onshore': 0,
                        'pv': 0,
-                       'table_name': ''}
-                   for x in range(1, 30)}
+                       'table_name': ''} 
+                   for x in range(1, 3)}
 
     for plant in plants:
         location = int(plant['location'])
@@ -688,7 +690,7 @@ def build_distributed(plants, current_timestep):
             else:
                 raise ValueError("Cannot read type of {}".format(plant))
 
-    for location, plant in plant_remap.items():
+    for index, (location, plant) in enumerate(plant_remap.items()):
 
         if plant['table_name'] == 'WindPVData_EH':
             sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
@@ -696,7 +698,7 @@ def build_distributed(plants, current_timestep):
         elif plant['table_name'] == 'WindPVData_Tran':
             sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
         else:
-            raise ValueError("Cannot read table name of {}".format(plant))
+            raise ValueError("Cannot read table name of element {}: {}".format(index, plant))
 
         data = (
                 location,
@@ -1062,3 +1064,4 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
+    

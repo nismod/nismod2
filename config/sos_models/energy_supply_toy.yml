@@ -1,11 +1,10 @@
-description: Toy version of the energy supply model with just 15 inputs, two parameters
-  and one output.
+description: Links the toy version of the energy supply model to dummy scenarios
 name: energy_supply_toy
 sector_models:
 - energy_supply_toy
 scenarios:
-- es_residential
 - es_prices
+- dummy_energy_demands
 narratives:
 - technology
 scenario_dependencies:
