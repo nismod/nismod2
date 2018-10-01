@@ -1,10 +1,10 @@
-description: Test model for energy_supply
+description: Contains only energy supply wrapper with full data and full energy demand scenarios
 name: energy_supply_only
 sector_models:
 - energy_supply
 scenarios:
 - es_prices
-- dummy_energy_demands_full_full
+- dummy_energy_demands_full
 narratives:
 - technology
 - governance
