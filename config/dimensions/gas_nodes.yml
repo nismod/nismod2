@@ -1,0 +1,3 @@
+name: gas_nodes
+description: Points of all 87 gas offtake nodes
+elements: ../energy_supply/region_definitions/gas_nodes.shp

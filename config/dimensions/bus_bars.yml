@@ -1,0 +1,3 @@
+name: bus_bars
+description: Points of electricity transmission bus bars
+elements: ../energy_supply/region_definitions/bus_bars.shp

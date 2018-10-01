@@ -1,0 +1,3 @@
+name: seasonal_week
+description: One week in each season mapped to all other weeks in the season
+elements: seasonal_week.csv

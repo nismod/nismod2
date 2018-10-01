@@ -1,0 +1,22 @@
+name: population
+description: UK population, total people
+provides:
+  - name: population
+    description: ''
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: people
+variants:
+  - name: pop_baseline
+    description: Baseline population for the UK
+    data:
+      population: uk_population_by_district_codes_Baseline.csv
+  - name: pop_high
+    description: High population for the UK
+    data:
+      population: uk_population_by_district_codes_High.csv
+  - name: pop_low
+    description: Low population for the UK
+    data:
+      population: uk_population_by_district_codes_Low.csv
