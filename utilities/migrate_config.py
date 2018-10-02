@@ -333,11 +333,38 @@ def _update_project_data(project_folder):
     if 'narrative_sets' in project_config_data:
         project_config_data = _update_narratives(project_config_data)
 
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'dimensions') 
+
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'scenarios')     
+
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'narratives')    
+
     # project
     _write_config_file(project_config_path, project_config_data)
 
-def write(project_data):
-    raise NotImplementedError
+def extract_data(project_config_data, project_folder, field_name):
+    
+    config_list = None
+
+    try:
+        config_list = project_config_data[field_name]
+    except KeyError:
+        print("No '{}' in project.yml".format(field_name))
+
+    if config_list:
+        for config_item in config_list:
+            filepath = os.path.join(project_folder, 'config', field_name, config_item['name'] + '.yml')
+            _write_config_file(filepath, config_item)
+
+        project_config_data.pop(field_name)                
+
+    return project_config_data
 
 def _update_sector_model_config(project_folder):
     """Inputs, outputs and parameters all use Spec definition
