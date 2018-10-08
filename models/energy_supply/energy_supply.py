@@ -250,6 +250,7 @@ class EnergySupplyWrapper(SectorModel):
 
         # Write timestep results to data handler
         for external_name, internal_name in timestep_results.items():
+            self.logger.info("Writing results for %s", external_name)
             self.set_results(internal_name, external_name, data, conn)
 
         # Write annual results to data handler
@@ -272,8 +273,7 @@ class EnergySupplyWrapper(SectorModel):
         index = dim_names.index('seasonal_week')
         dim_names.pop(index)
         if dim_names:
-            self.logger.info("Remaining dimension names for %s are %s", external_parameter_name, dim_names)
-            regions = self.outputs[external_parameter_name].dim_coords(dim_names).ids
+            regions = self.outputs[external_parameter_name].dim_coords(dim_names[0]).ids
 
         # read from database - need to be careful with internal vs external param name
         if is_annual:
