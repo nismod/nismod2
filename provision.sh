@@ -9,7 +9,7 @@ apt-get update
 # Install OS packages
 apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
     postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
-    libgeos-dev sshpass
+    libgeos-dev sshpass postgis
 
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
@@ -26,7 +26,7 @@ su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\"
     | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
 # Create nismod_smif database if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'nismod_smif';\" " \
-    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant nismod-smif"
+    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant nismod_smif"
 # Database config to listen on network connection
 sed -i "s/#\?listen_address.*/listen_addresses '*'/" /etc/postgresql/9.5/main/postgresql.conf
 # Allow password connections from any IP (so includes host)

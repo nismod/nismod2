@@ -50,6 +50,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 			# remove provision file
 			subprocess.run(['sudo', 'rm', 'provision-db.sh'])
 
+			'''
 			# get run migrations file
 			sftp.get('run_migrations.py')
 			
@@ -68,11 +69,11 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 			# remove migrations directory
 			subprocess.run(['sudo', 'rm', '-r', 'migrations'])
-
+			'''
 			# populate the database with data
 
 			# hydrate database with data if user said yes to this
-			if auto_hydrate_db:
+			'''if auto_hydrate_db:
 				# get files to populate database and populate
 				sftp.get('database_hydration.py')
 
@@ -81,3 +82,4 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 
 				# remove hydration file
 				subprocess.run(['sudo', 'rm', 'database_hydration.py'])
+			'''
