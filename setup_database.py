@@ -4,6 +4,7 @@
 import pysftp, re, subprocess, os
 from getpass import getpass
 
+# these details should be pulled from the FTP config file
 # ask for SFTP username
 username = input("FTP username:")
 # ask for SFTP password
@@ -22,40 +23,24 @@ else:
 	print("Input incorectly entered - you entered: %s. The API and database will not be setup or populated. Exiting setup." %auto_hydrate_db)
 	exit()
 
+# if hydrate db is true, check database exists. if not create it
 
+
+# set up for sftp connection
 cnopts = pysftp.CnOpts()
 cnopts.hostkeys = None
 
+# don't think any of below is needed. all that is required I think is the code to pull the migration files onto the vm
 # establish connection to SFTP server
 with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=password, cnopts=cnopts) as sftp:
 
 	# change to directory to database
 	with sftp.cd('project/database'):
 
-		# get api wheel
-
-		# get list of files
-		file_names = sftp.listdir()
-
-		# find wheel file
-		for file in file_names:
-			wheel = re.search(".whl", file)
-
-			# when found, get from server
-			if wheel:
-				sftp.get(file)
-
-				# install api from wheel file
-				subprocess.run(['sudo', 'pip3', 'install', file])
-
-				# following install, delete wheel
-				subprocess.run(['sudo', 'rm', file])
-
-				# end search for file
-				break
-
+		# again these files should already be on the vm, loaded by the provision script
+		#   maybe change to checking if they are there and if not, pull over
 		# get the data folder for the database - contains the base data for the database
-			
+
 		# remove data directory so files can be copied over
 		if os.path.isdir('data'):
 			subprocess.run(['sudo', 'rm', '-r', 'data/data'])
@@ -63,6 +48,7 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 		# copy database basedata onto vm
 		sftp.get_r('data', 'data')
 
+		# this section is still needed, at least for now while migration scripts are on the FTP
 		# get provisioning files
 		with sftp.cd('nismod-db-vm'):
 
