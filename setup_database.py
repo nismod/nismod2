@@ -30,23 +30,12 @@ else:
 cnopts = pysftp.CnOpts()
 cnopts.hostkeys = None
 
-# don't think any of below is needed. all that is required I think is the code to pull the migration files onto the vm
+# pull across migration files, run migrations, delete migration files
 # establish connection to SFTP server
 with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=password, cnopts=cnopts) as sftp:
 
-	# change to directory to database
+	# change directory to database
 	with sftp.cd('project/database'):
-
-		# again these files should already be on the vm, loaded by the provision script
-		#   maybe change to checking if they are there and if not, pull over
-		# get the data folder for the database - contains the base data for the database
-
-		# remove data directory so files can be copied over
-		if os.path.isdir('data'):
-			subprocess.run(['sudo', 'rm', '-r', 'data/data'])
-
-		# copy database basedata onto vm
-		sftp.get_r('data', 'data')
 
 		# this section is still needed, at least for now while migration scripts are on the FTP
 		# get provisioning files
@@ -67,16 +56,22 @@ with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=passwor
 			# pull migration files
 			sftp.get_r('migrations', '')
 
+			# run the migrations - down first in case anything exists already
+
 			# run migrations - down
 			subprocess.run(['python3', 'run_migrations.py', 'down'])
-			
+
+			# run the migrations - up to build the database
+
 			# run migrations - up 
 			subprocess.run(['python3', 'run_migrations.py', 'up'])
-			
+
 			# remove migrations directory
 			subprocess.run(['sudo', 'rm', '-r', 'migrations'])
-				
-			# hydrate database with data is set so
+
+			# populate the database with data
+
+			# hydrate database with data if user said yes to this
 			if auto_hydrate_db:
 				# get files to populate database and populate
 				sftp.get('database_hydration.py')
