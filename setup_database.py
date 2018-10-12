@@ -74,17 +74,44 @@ def up_migrations(working_path):
 
 	return True
 
+def ftp_login_details():
+	"""
+
+	:return:
+	"""
+	# create python dictionary to store connection details
+	ftp_details = {}
+
+	# open ftp parameter file
+	f = open('/vagrant/provision/ftp.ini', 'r')
+
+	# read ftp file
+	lines = f.readlines()
+
+	# add values to ftp dictionary
+	for line in lines:
+		if 'ftp_server' in line:
+			ftp_details['server_address'] = line.split('=')[1].strip()
+		elif 'ftp_username' in line:
+			ftp_details['username'] = line.split('=')[1].strip()
+		elif 'ftp_password' in line:
+			# this won't always work if a password contains '='
+			ftp_details['password'] = line.split('=')[1].strip()
+
+	return ftp_details
 
 def main():
 	"""
 
 	:return:
 	"""
-	# these details should be pulled from the FTP config file
-	# ask for SFTP username
-	username = input("FTP username:")
-	# ask for SFTP password
-	password = getpass("Enter password for " + username + ":")
+	# get the sftp settings from the config file
+	ftp_settings = ftp_login_details()
+
+	# set the username and password
+	host_address = ftp_settings['server_address']
+	username = ftp_settings['username']
+	password = ftp_settings['password']
 
 	# ask if user want the database to be populated/hydrated automatically
 	auto_hydrate_db = input("Populate database with data from SFTP (y/n)? ")
@@ -108,7 +135,7 @@ def main():
 
 	# pull across migration files, run migrations, delete migration files
 	# establish connection to SFTP server
-	with pysftp.Connection('ceg-itrc.ncl.ac.uk', username=username, password=password, cnopts=cnopts) as sftp:
+	with pysftp.Connection(host=host_address, username=username, password=password, cnopts=cnopts) as sftp:
 
 		# change directory to database
 		with sftp.cd('project/database'):
@@ -135,22 +162,19 @@ def main():
 				# run the migrations - down first in case anything exists already
 
 				# run migrations - down
-				#subprocess.run(['python3', 'run_migrations.py', 'down'])
 				run_migrations('down')
 
 				# run the migrations - up to build the database
 
 				# run migrations - up
-				#subprocess.run(['python3', 'run_migrations.py', 'up'])
 				run_migrations('up')
 
-				# remove migrations directory
+				# delete the migrations directory
 				subprocess.run(['sudo', 'rm', '-r', 'migrations'])
 
 				# populate the database with data
-
-				# hydrate database with data if user said yes to this
-				'''if auto_hydrate_db:
+				# hydrate database with data if user has said yes to this
+				if auto_hydrate_db:
 					# get files to populate database and populate
 					sftp.get('database_hydration.py')
 	
@@ -158,7 +182,7 @@ def main():
 					subprocess.run(['python3', 'database_hydration.py', 'data'])
 	
 					# remove hydration file
-					subprocess.run(['sudo', 'rm', 'database_hydration.py'])
-				'''
+					#subprocess.run(['sudo', 'rm', 'database_hydration.py'])
+
 
 main()
