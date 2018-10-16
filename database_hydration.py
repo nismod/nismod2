@@ -1,5 +1,6 @@
 import os, sys, subprocess, yaml
 import psycopg2
+from psycopg2.extras import DictCursor
 
 def region_definitions(data_dir):
 	'''
@@ -46,7 +47,7 @@ def interval_definitions(data_dir):
 		# if item is not a file skip it
 		if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
 			continue
-
+		print(item)
 		# need to read the first line of the file to get the column order
 		file = open(os.path.join(data_dir, dir_name, item))
 		columns = file.readline().replace('\n', '').split(',')
@@ -236,7 +237,7 @@ def base_data_hydration(data_dir):
 	dir_name = 'data'
 
 	# get list of files in directory
-	dir_contents = os.listdir(os.path.join(data_dir, dir_name))
+	dir_contents = os.listdir(os.path.join(data_dir))
 	print(dir_contents)
 	# if no files, return to main function
 	if len(dir_contents) == 0: return
@@ -245,12 +246,12 @@ def base_data_hydration(data_dir):
 	for item in dir_contents:
 
 		# if item is not a file skip it
-		if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
+		if os.path.isfile(os.path.join(data_dir, item)) is False:
 			continue
 
 		# hydrate with units file
 		if item == 'units.txt':
-			file = open(os.path.join(data_dir, dir_name, item))
+			file = open(os.path.join(data_dir, item))
 
 			# get name of file - also name of table
 			name = item.split('.')[0]
@@ -266,7 +267,7 @@ def base_data_hydration(data_dir):
 
 		else:
 			# need to read the first line of the file to get the column order
-			file = open(os.path.join(data_dir, dir_name, item))
+			file = open(os.path.join(data_dir, item))
 			columns = file.readline().replace('\n', '').split(',')
 
 			# create a comma separated string of column order
@@ -280,7 +281,7 @@ def base_data_hydration(data_dir):
 			# copy data to database table
 			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
 							'COPY %s(%s) FROM \'%s\' DELIMITER \',\' CSV	HEADER;' % (
-							name, file_columns[:-1], os.path.join('/vagrant', data_dir, dir_name, item))])
+							name, file_columns[:-1], os.path.join('/vagrant', data_dir, item))])
 
 	return
 
@@ -312,16 +313,21 @@ def main():
 	# get data path from passed arguments
 	data_path = sys.argv[1]
 
+	# create database connection and cursor
+	db_connection = psycopg2.connect("host=localhost dbname=nismod_smif user=vagrant password=vagrant")
+	db_cursor = db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
 	# run database hydration for base database data
 	base_data_hydration(data_path)
 
 	# run database hydration for region definitions
+	# only reads in the file names at the moment
 	#region_definitions(data_path)
 	region_definitions('data')
 
 	# run database hydration for interval definitions
 	# this does not work
-	#interval_definitions(data_path)
+	interval_definitions(data_path)
 
 	# run database hydration for interventions
 	# this does not work
@@ -330,5 +336,8 @@ def main():
 	# run database hydration for initial conditions
 	# this does not work
 	#initial_conditions(data_path)
+
+	# close database connection
+	db_connection.close()
 
 main()
