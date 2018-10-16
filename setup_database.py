@@ -173,6 +173,14 @@ def main():
 				# populate the database with data
 				# hydrate database with data if user has said yes to this
 				if auto_hydrate_db:
+
+					# get provision file
+					sftp.get('sectors.txt')
+
+					# move data to data directory
+					subprocess.run(['sudo', 'mv', 'sectors.txt', 'data/sectors.txt'])
+
+
 					# database hydration through python file
 					subprocess.run(['python3', 'database_hydration.py', 'data'])
 
