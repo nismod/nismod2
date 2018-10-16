@@ -1,5 +1,5 @@
 import os, sys, subprocess, yaml
-
+import psycopg2
 
 def region_definitions(data_dir):
 	'''
@@ -237,7 +237,7 @@ def base_data_hydration(data_dir):
 
 	# get list of files in directory
 	dir_contents = os.listdir(os.path.join(data_dir, dir_name))
-
+	print(dir_contents)
 	# if no files, return to main function
 	if len(dir_contents) == 0: return
 
@@ -248,22 +248,39 @@ def base_data_hydration(data_dir):
 		if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
 			continue
 
-		# need to read the first line of the file to get the column order
-		file = open(os.path.join(data_dir, dir_name, item))
-		columns = file.readline().replace('\n', '').split(',')
+		# hydrate with units file
+		if item == 'units.txt':
+			file = open(os.path.join(data_dir, dir_name, item))
 
-		# create a comma seperated string of column order
-		file_columns = ''
-		for col in columns:
-			file_columns += '"%s",' % (col)
+			# get name of file - also name of table
+			name = item.split('.')[0]
 
-		# get name of file - also name of table
-		name = item.split('.')[0]
+			# insert into table line by line
+			# read each line in file
+			for line in file:
+				# split the line on the first '=' s
+				unit, description = line.split('=', 1)
+				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+								'INSERT INTO %s (unit, description) VALUES (\'%s\',\'%s\');' % (
+									name, unit, description)])
 
-		# copy data to database table
-		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
-						'COPY %s(%s) FROM \'%s\' DELIMITER \',\' CSV	HEADER;' % (
-						name, file_columns[:-1], os.path.join('/vagrant', data_dir, dir_name, item))])
+		else:
+			# need to read the first line of the file to get the column order
+			file = open(os.path.join(data_dir, dir_name, item))
+			columns = file.readline().replace('\n', '').split(',')
+
+			# create a comma separated string of column order
+			file_columns = ''
+			for col in columns:
+				file_columns += '"%s",' % (col)
+
+			# get name of file - also name of table
+			name = item.split('.')[0]
+
+			# copy data to database table
+			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+							'COPY %s(%s) FROM \'%s\' DELIMITER \',\' CSV	HEADER;' % (
+							name, file_columns[:-1], os.path.join('/vagrant', data_dir, dir_name, item))])
 
 	return
 
@@ -299,7 +316,8 @@ def main():
 	base_data_hydration(data_path)
 
 	# run database hydration for region definitions
-	region_definitions(data_path)
+	#region_definitions(data_path)
+	region_definitions('data')
 
 	# run database hydration for interval definitions
 	# this does not work
