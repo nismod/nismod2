@@ -99,10 +99,13 @@ def interventions(data_dir):
 
 		# get sector name
 		sector_name = item.split('.')[0]
+		if 'interventions' in sector_name:
+			sector_name = sector_name.replace('_interventions', '')
+		#print(sector_name)
 
 		# loop through the interventions
 		for intervention in data:
-
+			#print(intervention)
 			# get column list from yml
 			# get value list
 			column_list = ''
@@ -110,10 +113,10 @@ def interventions(data_dir):
 
 			# loop through the keys for the intervention
 			for key in intervention.keys():
-
+				#print(key)
 				# check if an attribute, or if a dictionary with sub-attributes
 				if isinstance(intervention[key], dict):
-
+					#print('procesed as a dict')
 					# loop through the sub-attributes
 					for subkey in intervention[key].keys():
 
@@ -127,22 +130,33 @@ def interventions(data_dir):
 							value_list += "%s," % (intervention[key][subkey])
 
 				else:
-					# form column list
-					column_list += "%s," % key
+					#print('processing here')
+					# if this is changed to false don't add column of value to insert statement
+					add_column = True
 
 					# form value list
-					if isinstance(intervention[key], str):
+					if isinstance(intervention[key], str): #if value a string
 						value_list += "'%s'," % (intervention[key])
-					else:
+					elif isinstance(intervention[key], list): #if value a list
+						text = str(intervention[key]).replace('[','{').replace(']','}')
+						value_list += "'%s'," % (text)
+					elif intervention[key] is None: #if value is NoneType
+						add_column = False
+					else: #if value is anything else eg. a number
+						#print('processed as something else')
+						#print(type(intervention[key]))
 						value_list += "%s," % (intervention[key])
 
+					# form column list
+					if add_column is True:
+						column_list += "%s," % key
 
 			# check if intervention type is in the types table - if not add
 			# this will need updating depending on what format the initial conditions will be uploaded in
 			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c', 'INSERT INTO intervention_type (name) SELECT (\'%s\') WHERE NOT EXISTS (SELECT id FROM intervention_type WHERE name=\'%s\');' % (intervention['name'], intervention['name'])])
 
 			# insert intervention into interventions table - get intervention type id and add to table
-			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO interventions (%s,sector,intervention_type_id) VALUES (%s,(SELECT id FROM sectors WHERE name=\'%s\'),(SELECT id FROM intervention_type WHERE name=\'%s\'));' % (column_list[:-1], value_list[:-1], sector_name, intervention['name'])])
+			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO %s (%s,sector,intervention_type_id) VALUES (%s,(SELECT id FROM sectors WHERE name=\'%s\'),(SELECT id FROM intervention_type WHERE name=\'%s\'));' % ('interventions_'+sector_name,column_list[:-1], value_list[:-1], sector_name, intervention['name'])])
 
 	return
 
@@ -268,7 +282,7 @@ def base_data_hydration(data_dir):
 								'INSERT INTO %s (unit, description) VALUES (\'%s\',\'%s\');' % (
 									name, unit, description)])
 
-		if item == 'sectors.txt':
+		elif item == 'sectors.txt':
 			file = open(os.path.join(data_dir, item))
 
 			# get name of file - also name of table
@@ -281,6 +295,7 @@ def base_data_hydration(data_dir):
 				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
 								'INSERT INTO %s (name) VALUES (\'%s\');' % (
 									name, line.strip())])
+
 		else:
 			# need to read the first line of the file to get the column order
 			file = open(os.path.join(data_dir, item))
@@ -346,7 +361,7 @@ def main():
 
 	# run database hydration for interventions
 	# this does not work
-	#interventions(data_path)
+	interventions(data_path)
 
 	# run database hydration for initial conditions
 	# this does not work
