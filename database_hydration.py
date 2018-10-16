@@ -48,7 +48,7 @@ def interval_definitions(data_dir, db_connection, db_cursor):
 		# if item is not a file skip it
 		if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
 			continue
-		
+
 		# need to read the first line of the file to get the column order
 		file = open(os.path.join(data_dir, dir_name, item))
 		columns = file.readline().replace('\n', '').split(',')
@@ -268,6 +268,19 @@ def base_data_hydration(data_dir):
 								'INSERT INTO %s (unit, description) VALUES (\'%s\',\'%s\');' % (
 									name, unit, description)])
 
+		if item == 'sectors.txt':
+			file = open(os.path.join(data_dir, item))
+
+			# get name of file - also name of table
+			name = item.split('.')[0]
+
+			# insert into table line by line
+			# read each line in file
+			for line in file:
+				# split the line on the first '=' s
+				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+								'INSERT INTO %s (name) VALUES (\'%s\');' % (
+									name, line.strip())])
 		else:
 			# need to read the first line of the file to get the column order
 			file = open(os.path.join(data_dir, item))
@@ -329,7 +342,6 @@ def main():
 	region_definitions(data_path)
 
 	# run database hydration for interval definitions
-	# this does not work
 	interval_definitions(data_path, db_connection, db_cursor)
 
 	# run database hydration for interventions
