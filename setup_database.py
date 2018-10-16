@@ -160,12 +160,10 @@ def main():
 				sftp.get_r('migrations', '')
 
 				# run the migrations - down first in case anything exists already
-
 				# run migrations - down
 				run_migrations('down')
 
 				# run the migrations - up to build the database
-
 				# run migrations - up
 				run_migrations('up')
 
@@ -175,14 +173,7 @@ def main():
 				# populate the database with data
 				# hydrate database with data if user has said yes to this
 				if auto_hydrate_db:
-					# get files to populate database and populate
-					sftp.get('database_hydration.py')
-	
 					# database hydration through python file
 					subprocess.run(['python3', 'database_hydration.py', 'data'])
-	
-					# remove hydration file
-					#subprocess.run(['sudo', 'rm', 'database_hydration.py'])
-
 
 main()

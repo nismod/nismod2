@@ -2,6 +2,7 @@ import os, sys, subprocess, yaml
 import psycopg2
 from psycopg2.extras import DictCursor
 
+
 def region_definitions(data_dir):
 	'''
 	imports regions into database
@@ -28,7 +29,7 @@ def region_definitions(data_dir):
 	return
 
 
-def interval_definitions(data_dir):
+def interval_definitions(data_dir, db_connection, db_cursor):
 	'''
 	Insert into the interval_sets and interval tables any interval data within the interval_definitions folder
 	'''
@@ -47,7 +48,7 @@ def interval_definitions(data_dir):
 		# if item is not a file skip it
 		if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
 			continue
-		print(item)
+		
 		# need to read the first line of the file to get the column order
 		file = open(os.path.join(data_dir, dir_name, item))
 		columns = file.readline().replace('\n', '').split(',')
@@ -60,8 +61,10 @@ def interval_definitions(data_dir):
 		# get name to be used in database
 		name = item.split('.')[0]
 
-		# add the file as an interval set using the file name
-		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO interval_sets (name) VALUES (\'%s\');' % (name)])
+		# add the file as an interval set using the file name returning the id of the set
+		db_cursor.execute('INSERT INTO interval_sets (name) VALUES (%s) RETURNING id;', [name.replace("'",'')])
+		db_connection.commit()
+		set_id = db_cursor.fetchone()[0]
 
 		# create temporary table to copy data into, copy data into temp table, copy data from temp to full table with id from the interval_sets table
 		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
@@ -323,11 +326,11 @@ def main():
 	# run database hydration for region definitions
 	# only reads in the file names at the moment
 	#region_definitions(data_path)
-	region_definitions('data')
+	region_definitions(data_path)
 
 	# run database hydration for interval definitions
 	# this does not work
-	interval_definitions(data_path)
+	interval_definitions(data_path, db_connection, db_cursor)
 
 	# run database hydration for interventions
 	# this does not work
