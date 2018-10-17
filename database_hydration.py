@@ -23,8 +23,6 @@ def add_to_value_string(value, value_string):
 	elif value is None:  # if value is NoneType
 		add_column = False
 	else:  # if value is anything else eg. a number
-		# print('processed as something else')
-		# print(type(intervention[key]))
 		value_string += "%s," % (value)
 
 	return value_string, add_column
@@ -200,7 +198,7 @@ class HydrateDatabase:
 				continue
 
 			# add the directory as a region set
-			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO region_sets (name) VALUES (\'%s\');' % (item)])
+			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c', 'INSERT INTO region_sets (name) VALUES (\'%s\');' % (item)])
 
 		return
 
@@ -242,7 +240,7 @@ class HydrateDatabase:
 			set_id = self.db_cursor.fetchone()[0]
 
 			# create temporary table to copy data into, copy data into temp table, copy data from temp to full table with id from the interval_sets table
-			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c',
 							'CREATE TEMPORARY TABLE intervals_temp ("id" varchar, "start" varchar, "end" varchar); COPY intervals_temp(%s) FROM \'%s\' DELIMITER \',\' CSV	HEADER; INSERT INTO intervals SELECT "id","start","end",(SELECT id FROM interval_sets WHERE name = \'%s\' LIMIT 1) FROM intervals_temp;' % (file_columns[:-1], os.path.join('/vagrant', data_dir, dir_name, item), name)])
 
 		return
@@ -388,7 +386,7 @@ class HydrateDatabase:
 				for line in file:
 					# split the line on the first '=' s
 					unit, description = line.split('=', 1)
-					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c',
 									'INSERT INTO %s (unit, description) VALUES (\'%s\',\'%s\');' % (
 										name, unit, description)])
 
@@ -402,7 +400,7 @@ class HydrateDatabase:
 				# read each line in file
 				for line in file:
 					# split the line on the first '=' s
-					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+					subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c',
 									'INSERT INTO %s (name) VALUES (\'%s\');' % (
 										name, line.strip())])
 
@@ -420,7 +418,7 @@ class HydrateDatabase:
 				name = item.split('.')[0]
 
 				# copy data to database table
-				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',
+				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c',
 								'COPY %s(%s) FROM \'%s\' DELIMITER \',\' CSV	HEADER;' % (
 								name, file_columns[:-1], os.path.join('/vagrant', data_dir, item))])
 
