@@ -1,13 +1,76 @@
 import os, sys, subprocess, yaml
 import psycopg2
 from psycopg2.extras import DictCursor
+from psycopg2 import sql
 
 
-class hydrate_database:
+def add_to_value_string(value, value_string):
+	"""
+
+	:param value:
+	:param vaule_string:
+	:return:
+	"""
+	# if set as true, add value to list and column name to list
+	add_column = True
+
+	# form value list
+	if isinstance(value, str):  # if value a string
+		value_string += "'%s'," % (value)
+	elif isinstance(value, list):  # if value a list
+		text = str(value).replace('[', '{').replace(']', '}')
+		value_string += "'%s'," % (text)
+	elif value is None:  # if value is NoneType
+		add_column = False
+	else:  # if value is anything else eg. a number
+		# print('processed as something else')
+		# print(type(intervention[key]))
+		value_string += "%s," % (value)
+
+	return value_string, add_column
+
+
+class HydrateDatabase:
 
 	def __init__(self, db_connection, db_cursor):
 		self.db_connection = db_connection
 		self.db_cursor = db_cursor
+
+	def get_sector_id(self, sector_name):
+		"""
+
+		:param sector_name:
+		:return:
+		"""
+
+		# get sector id from sectors relation
+		self.db_cursor.execute('SELECT id FROM sectors WHERE name=%s', [sector_name])
+		sector_id = self.db_cursor.fetchone()[0]
+
+		return sector_id
+
+	def check_sector_intervention_relation_exists(self, sector_name):
+		"""
+
+		:param sector_name:
+		:return:
+		"""
+		# get names of relations in database
+		self.db_cursor.execute('SELECT table_name FROM information_schema.tables WHERE table_schema = \'public\' AND table_type = \'BASE TABLE\';')
+		table_names = self.db_cursor.fetchall()
+
+		# check if intervention relation exists
+		for row in table_names:
+			if 'interventions_%s' % sector_name in row:
+				# return to the interventions function if the table exists
+				return
+
+		table_name = 'interventions_'+sector_name
+		# if sector interventions relation does not exist
+		self.db_cursor.execute(sql.SQL('CREATE TABLE {} (id serial, sector integer, name varchar, type integer, details varchar);').format(sql.Identifier(table_name)))
+		self.db_connection.commit()
+
+		return
 
 	def region_definitions(self, data_dir):
 		'''
@@ -33,7 +96,6 @@ class hydrate_database:
 			subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO region_sets (name) VALUES (\'%s\');' % (item)])
 
 		return
-
 
 	def interval_definitions(self, data_dir):
 		'''
@@ -78,7 +140,6 @@ class hydrate_database:
 
 		return
 
-
 	def interventions(self, data_dir):
 		"""
 		import interventions into the database
@@ -112,22 +173,29 @@ class hydrate_database:
 			if 'interventions' in sector_name:
 				sector_name = sector_name.replace('_interventions', '')
 
-			# get sector id from sectors relation
-
-			self.db_cursor.execute('SELECT id FROM sectors WHERE names=%s', [sector_name])
-			sector_id = self.db_cursor.fetchone()
+			# get the sector id
+			sector_id = self.get_sector_id(sector_name)
 
 			# loop through the interventions
 			for intervention in data:
 
-				# add intervention to the interventions relation
+				### add intervention to the interventions relation
+				# get intervention name - what happens if no such key?
+				intervention_name = intervention['name']
 
+				# get the intervention details
+				intervention_details = str(intervention)
 
-				# add to the sector specific interventions relation
+				# run insert statement to add intervention
+				self.db_cursor.execute('INSERT INTO interventions (sector, name, details) VALUES (%s,%s,%s)', [sector_id, intervention_name, intervention_details])
 
-				# need to add in checking for column names and adding them if missing
+				### add to the sector specific interventions relation
+				# check if a interventions relation for the sector exists
+				self.check_sector_intervention_relation_exists(sector_name)
 
-				#print(intervention)
+				exit()
+				# check for column name and adding them if missing
+
 				# get column list from yml
 				# get value list
 				column_list = ''
@@ -135,39 +203,22 @@ class hydrate_database:
 
 				# loop through the keys for the intervention
 				for key in intervention.keys():
-					#print(key)
+
 					# check if an attribute, or if a dictionary with sub-attributes
 					if isinstance(intervention[key], dict):
-						#print('procesed as a dict')
 						# loop through the sub-attributes
 						for subkey in intervention[key].keys():
 
-							# form column list
-							column_list += "%s," % (str(key) + '_' + str(subkey))
-
 							# form value list
-							if isinstance(intervention[key][subkey], str):
-								value_list += "'%s'," % (intervention[key][subkey])
-							else:
-								value_list += "%s," % (intervention[key][subkey])
+							value_list, add_column = add_to_value_string(intervention[key][subkey], value_list)
+
+							# form column list
+							if add_column is True:
+								column_list += "%s," % (str(key) + '_' + str(subkey))
 
 					else:
-						#print('processing here')
-						# if this is changed to false don't add column of value to insert statement
-						add_column = True
-
 						# form value list
-						if isinstance(intervention[key], str): #if value a string
-							value_list += "'%s'," % (intervention[key])
-						elif isinstance(intervention[key], list): #if value a list
-							text = str(intervention[key]).replace('[','{').replace(']','}')
-							value_list += "'%s'," % (text)
-						elif intervention[key] is None: #if value is NoneType
-							add_column = False
-						else: #if value is anything else eg. a number
-							#print('processed as something else')
-							#print(type(intervention[key]))
-							value_list += "%s," % (intervention[key])
+						value_list, add_column = add_to_value_string(intervention[key], value_list)
 
 						# form column list
 						if add_column is True:
@@ -182,15 +233,14 @@ class hydrate_database:
 
 		return
 
-
 	def initial_conditions(self, data_dir):
-		'''
+		"""
 		populated tables with the initial conditions data (initial interventions?)
 		populates the interventions table
 			- each file equates to a set
 			- the set should be added to interventions_planned
 			- should use the interventions function
-		'''
+		"""
 		# set location to search for data
 		dir_name = 'initial_conditions'
 
@@ -270,7 +320,6 @@ class hydrate_database:
 				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO interventions_existing (%s,intervention_id) VALUES (%s,(SELECT max(id) FROM interventions));' % (existing_int_col_list[:-1], existing_int_val_list[:-1])])
 
 		return
-
 
 	def base_data_hydration(self, data_dir):
 		'''
@@ -375,22 +424,21 @@ def main():
 	db_cursor = db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 	# run database hydration for base database data
-	base_data_hydration(data_path)
+	HydrateDatabase(db_connection, db_cursor).base_data_hydration(data_path)
 
 	# run database hydration for region definitions
 	# only reads in the file names at the moment
-	#region_definitions(data_path)
-	region_definitions(data_path)
+	HydrateDatabase(db_connection, db_cursor).region_definitions(data_path)
 
 	# run database hydration for interval definitions
-	interval_definitions(data_path, db_connection, db_cursor)
+	HydrateDatabase(db_connection, db_cursor).interval_definitions(data_path)
 
 	# run database hydration for interventions
-	interventions(data_path)
+	HydrateDatabase(db_connection, db_cursor).interventions(data_path)
 
 	# run database hydration for initial conditions
 	# this does not work
-	initial_conditions(data_path)
+	#HydrateDatabase(db_connection, db_cursor).initial_conditions(data_path)
 
 	# close database connection
 	db_connection.close()
