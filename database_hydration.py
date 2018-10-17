@@ -86,7 +86,7 @@ class HydrateDatabase:
 		# loop through column names
 		for column_name in column_names:
 			# check text for column in column name
-			if column_key == column_name[0]:
+			if column_key.lower() == column_name[0]:
 				# if column exists, return
 				return
 
@@ -95,7 +95,7 @@ class HydrateDatabase:
 		column_datatype = 'varchar'
 
 		# run add column sql
-		self.db_cursor.execute(sql.SQL('ALTER TABLE {0} ADD COLUMN {1} {2}').format(sql.Identifier(relation_name), sql.Identifier(column_key), sql.Identifier(column_datatype)))
+		self.db_cursor.execute(sql.SQL('ALTER TABLE {0} ADD COLUMN {1} {2}').format(sql.Identifier(relation_name), sql.Identifier(column_key.lower()), sql.Identifier(column_datatype)))
 		self.db_connection.commit()
 
 		return
@@ -114,7 +114,13 @@ class HydrateDatabase:
 
 		### add intervention to the interventions relation
 		# get intervention name - what happens if no such key?
-		intervention_name = intervention['name']
+		intervention_name = None
+		for key in intervention.keys():
+			if key == 'name':
+				intervention_name = intervention['name']
+
+		if intervention_name is None:
+			intervention_name = ''
 
 		# get the intervention details
 		intervention_details = str(intervention)
@@ -131,6 +137,7 @@ class HydrateDatabase:
 		# get value list
 		column_list = ''
 		value_list = ''
+		fields = ''
 
 		# loop through the keys for the intervention
 		for key in intervention.keys():
@@ -146,6 +153,7 @@ class HydrateDatabase:
 					# form column list
 					if add_column is True:
 						column_list += "%s," % (str(key) + '_' + str(subkey))
+						#fields += sql.Identifier(str(key) + '_' + str(subkey))
 
 						# check for column name and add them if missing
 						self.check_column_exists(relation_name, (str(key) + '_' + str(subkey)))
@@ -156,18 +164,19 @@ class HydrateDatabase:
 				# form column list
 				if add_column is True:
 					column_list += "%s," % key
+					#fields += sql.Identifier(key)
 
 					# check for column name and add them if missing
 					self.check_column_exists(relation_name, key)
 
 		# check if intervention type is in the types table - if not add
 		# this will need updating depending on what format the initial conditions will be uploaded in
-		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',	'INSERT INTO intervention_type (name) SELECT (\'%s\') WHERE NOT EXISTS (SELECT id FROM intervention_type WHERE name=\'%s\');' % (intervention['name'], intervention['name'])])
-
+		#subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',	'INSERT INTO intervention_type (name) SELECT (\'%s\') WHERE NOT EXISTS (SELECT id FROM intervention_type WHERE name=\'%s\');' % (intervention['name'], intervention['name'])])
 		# insert intervention into interventions table - get intervention type id and add to table
 		# subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO %s (%s,sector,intervention_type_id) VALUES (%s,(SELECT id FROM sectors WHERE name=\'%s\'),(SELECT id FROM intervention_type WHERE name=\'%s\'));' % ('interventions_'+sector_name,column_list[:-1], value_list[:-1], sector_name, intervention['name'])])
-		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c',	'INSERT INTO %s (%s, sector) VALUES (%s,%s);' % ('interventions_' + sector_name, column_list[:-1], value_list[:-1], sector_id)])
-
+		subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-q', '-c',	'INSERT INTO %s (%s, sector) VALUES (%s,%s);' % ('interventions_' + sector_name, column_list[:-1], value_list[:-1], sector_id)])
+		#self.db_cursor.execute(sql.SQL('INSERT INTO {0} ({1}, {2}) VALUES (%s,%s);').format(sql.Identifier(relation_name), fields.join(','), sql.Identifier('sector')), [value_list[:-1], sector_id])
+		#self.db_connection.commit()
 		return
 
 	def region_definitions(self, data_dir):
@@ -312,13 +321,38 @@ class HydrateDatabase:
 
 			# get sector name
 			sector_name = item.split('.')[0]
-
+			sector_name = sector_name.rsplit('_',1)[0]
 			# get sector id
 			sector_id = self.get_sector_id(sector_name)
+
+			# need to get the id of the interventions where they are added
+			# at the moment this doesn't happen so:
+			# - get the value of the serial before added, and then after
+			# then create set
+
+			# get value of serial in interventions relation
+			self.db_cursor.execute('SELECT id FROM interventions ORDER BY id desc LIMIT 1;')
+			first_id = self.db_cursor.fetchone()[0] + 1
 
 			# loop through the conditions
 			for intervention in data:
 				self.add_intervention(intervention, sector_id, sector_name)
+
+			# get value of serial in interventions relation
+			self.db_cursor.execute('SELECT id FROM interventions ORDER BY id desc LIMIT 1;')
+			last_id = self.db_cursor.fetchone()[0]
+
+			# generate list of id's for set
+			id_range = []
+
+			while first_id <= last_id:
+				id_range.append(first_id)
+				first_id += 1
+			id_range = str(id_range).replace('[','{').replace(']','}')
+
+			# insert set details into interventions set relation
+			self.db_cursor.execute('INSERT INTO intervention_sets (interventions, sector, name, description) VALUES (%s,%s,%s,%s);', ['%s' % id_range, sector_id, item, 'Initial conditions'])
+			self.db_connection.commit()
 
 		return
 
@@ -439,7 +473,7 @@ def main():
 
 	# run database hydration for initial conditions
 	# this does not work
-	#HydrateDatabase(db_connection, db_cursor).initial_conditions(data_path)
+	HydrateDatabase(db_connection, db_cursor).initial_conditions(data_path)
 
 	# close database connection
 	db_connection.close()
