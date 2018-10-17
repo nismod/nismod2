@@ -42,7 +42,6 @@ class HydrateDatabase:
 		:param sector_name:
 		:return:
 		"""
-
 		# get sector id from sectors relation
 		self.db_cursor.execute('SELECT id FROM sectors WHERE name=%s', [sector_name])
 		sector_id = self.db_cursor.fetchone()[0]
@@ -60,14 +59,43 @@ class HydrateDatabase:
 		table_names = self.db_cursor.fetchall()
 
 		# check if intervention relation exists
-		for row in table_names:
-			if 'interventions_%s' % sector_name in row:
+		for table in table_names:
+			if 'interventions_%s' % sector_name in table[0]:
 				# return to the interventions function if the table exists
 				return
 
 		table_name = 'interventions_'+sector_name
 		# if sector interventions relation does not exist
 		self.db_cursor.execute(sql.SQL('CREATE TABLE {} (id serial, sector integer, name varchar, type integer, details varchar);').format(sql.Identifier(table_name)))
+		self.db_connection.commit()
+
+		return
+
+	def check_column_exists(self, relation_name, column_key):
+		"""
+
+		:param relation_name:
+		:param column_key:
+		:return:
+		"""
+
+		# get column names for relation
+		self.db_cursor.execute('SELECT column_name FROM information_schema.columns WHERE 	table_schema = \'public\' AND table_name = %s;', [relation_name])
+		column_names = self.db_cursor.fetchall()
+
+		# loop through column names
+		for column_name in column_names:
+			# check text for column in column name
+			if column_key == column_name[0]:
+				# if column exists, return
+				return
+
+		# add new column to relation
+		# work out column datatype - this needs changing
+		column_datatype = 'varchar'
+
+		# run add column sql
+		self.db_cursor.execute(sql.SQL('ALTER TABLE {0} ADD COLUMN {1} {2}').format(sql.Identifier(relation_name), sql.Identifier(column_key), sql.Identifier(column_datatype)))
 		self.db_connection.commit()
 
 		return
@@ -176,6 +204,9 @@ class HydrateDatabase:
 			# get the sector id
 			sector_id = self.get_sector_id(sector_name)
 
+			# relation_name
+			relation_name = 'interventions_'+sector_name
+
 			# loop through the interventions
 			for intervention in data:
 
@@ -193,8 +224,6 @@ class HydrateDatabase:
 				# check if a interventions relation for the sector exists
 				self.check_sector_intervention_relation_exists(sector_name)
 
-				exit()
-				# check for column name and adding them if missing
 
 				# get column list from yml
 				# get value list
@@ -216,6 +245,8 @@ class HydrateDatabase:
 							if add_column is True:
 								column_list += "%s," % (str(key) + '_' + str(subkey))
 
+								# check for column name and add them if missing
+								self.check_column_exists(relation_name, (str(key) + '_' + str(subkey)))
 					else:
 						# form value list
 						value_list, add_column = add_to_value_string(intervention[key], value_list)
@@ -224,13 +255,17 @@ class HydrateDatabase:
 						if add_column is True:
 							column_list += "%s," % key
 
+							# check for column name and add them if missing
+							self.check_column_exists(relation_name, key)
+
+
 				# check if intervention type is in the types table - if not add
 				# this will need updating depending on what format the initial conditions will be uploaded in
 				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c', 'INSERT INTO intervention_type (name) SELECT (\'%s\') WHERE NOT EXISTS (SELECT id FROM intervention_type WHERE name=\'%s\');' % (intervention['name'], intervention['name'])])
 
 				# insert intervention into interventions table - get intervention type id and add to table
-				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO %s (%s,sector,intervention_type_id) VALUES (%s,(SELECT id FROM sectors WHERE name=\'%s\'),(SELECT id FROM intervention_type WHERE name=\'%s\'));' % ('interventions_'+sector_name,column_list[:-1], value_list[:-1], sector_name, intervention['name'])])
-
+				#subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c','INSERT INTO %s (%s,sector,intervention_type_id) VALUES (%s,(SELECT id FROM sectors WHERE name=\'%s\'),(SELECT id FROM intervention_type WHERE name=\'%s\'));' % ('interventions_'+sector_name,column_list[:-1], value_list[:-1], sector_name, intervention['name'])])
+				subprocess.run(['psql', '-U', 'vagrant', '-d', 'nismod_smif', '-c', 'INSERT INTO %s (%s, sector) VALUES (%s,%s);' % ('interventions_'+sector_name, column_list[:-1], value_list[:-1], sector_id)])
 		return
 
 	def initial_conditions(self, data_dir):
@@ -330,7 +365,7 @@ class HydrateDatabase:
 
 		# get list of files in directory
 		dir_contents = os.listdir(os.path.join(data_dir))
-		print(dir_contents)
+
 		# if no files, return to main function
 		if len(dir_contents) == 0: return
 
