@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS demographic_scenarios;

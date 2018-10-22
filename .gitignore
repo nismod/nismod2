@@ -38,7 +38,7 @@ smif.log
 *.xlsx
 
 # Vagrant provision install artifacts
-database
+#database
 .vagrant/
 smif/
 
