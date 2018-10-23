@@ -1,7 +1,18 @@
-import os, sys, subprocess, yaml
+import os, sys, subprocess, yaml, json
 import psycopg2
 from psycopg2.extras import DictCursor
 from psycopg2 import sql
+
+
+def get_value_from_dict(dictionary, key):
+	"""Attempt to get value from a dictionary
+	"""
+
+	if key in dictionary.keys():
+		value = dictionary[key]
+		return value
+	else:
+		return ''
 
 
 def add_to_value_string(value, value_string):
@@ -371,6 +382,69 @@ class HydrateDatabase:
 
 		return
 
+	def sos_models(self, data_dir):
+		"""Populate sos model relations
+		"""
+
+		# set location to search for data
+		dir_name = 'sos_models'
+
+		# get list of files in directory
+		dir_contents = os.listdir(os.path.join(data_dir, dir_name))
+
+		# if no files, return to main function
+		if len(dir_contents) == 0: return
+
+		# loop through the directory
+		for item in dir_contents:
+
+			# if item is not a file skip it
+			if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
+				continue
+
+			# open yml file and get data
+			with open(os.path.join(data_dir, dir_name, item), 'r') as stream:
+				data = yaml.load(stream)
+
+				# get values for each sos model
+				name = get_value_from_dict(data, 'name')
+				description = get_value_from_dict(data, 'description')
+				max_iterations = get_value_from_dict(data, 'max_iterations')
+				convergence_absolute_tolerance = get_value_from_dict(data, 'convergence_absolute_tolerance')
+				convergence_relative_tolerance = get_value_from_dict(data, 'convergence_relative_tolerance')
+
+				# varchar arrays
+				dependencies = json.dumps(get_value_from_dict(data, 'dependencies')) # as nested dict, converted to json
+				narrative_sets = get_value_from_dict(data, 'narrative_sets')
+				scenario_sets = get_value_from_dict(data, 'scenario_sets')
+
+				sector_models = data['sector_models']
+
+				# these are stored as varchar arrays - need to be set as lists if not present in file
+				if dependencies == '':
+					dependencies = []
+				if narrative_sets == '':
+					narrative_sets = []
+				if scenario_sets == '':
+					scenario_sets = []
+
+				# query to insert sos model into the database
+				self.db_cursor.execute(
+					'INSERT INTO sos_models (name, description, sector_models, dependencies, narrative_sets, scenario_sets, max_iterations, convergence_absolute_tolerance, convergence_relative_tolerance) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;',
+					[name, description, sector_models, dependencies, narrative_sets, scenario_sets, max_iterations,
+					 convergence_absolute_tolerance, convergence_relative_tolerance])
+				self.db_connection.commit()
+
+				# get result from query
+				sos_model_id = self.db_cursor.fetchone()
+
+				# if nothing returned, return an error
+				if sos_model_id is None:
+					return False
+
+				return True
+
+
 	def base_data_hydration(self, data_dir):
 		'''
 		add base data to database
@@ -468,6 +542,7 @@ def main():
 	'''
 	# get data path from passed arguments
 	data_path = sys.argv[1]
+	config_data_path = 'config'
 
 	# create database connection and cursor
 	db_connection = psycopg2.connect("host=localhost dbname=nismod_smif user=vagrant password=vagrant")
@@ -488,6 +563,9 @@ def main():
 
 	# run database hydration for initial conditions
 	HydrateDatabase(db_connection, db_cursor).initial_conditions(data_path)
+
+	# run database hydration for sos_models
+	HydrateDatabase(db_connection, db_cursor).sos_models(config_data_path)
 
 	# close database connection
 	db_connection.close()
