@@ -40,11 +40,18 @@ class HydrateDatabase:
 		:param sector_name:
 		:return:
 		"""
+
 		# get sector id from sectors relation
 		self.db_cursor.execute('SELECT id FROM sectors WHERE name=%s', [sector_name])
-		sector_id = self.db_cursor.fetchone()[0]
 
-		return sector_id
+		# get query result
+		sector_id = self.db_cursor.fetchone()
+
+		# if sector not found, return an error
+		if sector_id is None:
+			return False
+
+		return sector_id[0]
 
 	def check_sector_intervention_relation_exists(self, sector_name):
 		"""
@@ -281,6 +288,11 @@ class HydrateDatabase:
 			# get the sector id
 			sector_id = self.get_sector_id(sector_name)
 
+			# if error returned
+			if sector_id is False:
+				print('could not add data to database - file origin was: %s' % os.path.join(data_dir, dir_name, item))
+				continue
+
 			# loop through the interventions
 			for intervention in data:
 
@@ -322,6 +334,11 @@ class HydrateDatabase:
 			sector_name = sector_name.rsplit('_',1)[0]
 			# get sector id
 			sector_id = self.get_sector_id(sector_name)
+
+			# if error returned
+			if sector_id is False:
+				print('could not add data to database - file origin was: %s' % os.path.join(data_dir, dir_name, item))
+				continue
 
 			# need to get the id of the interventions where they are added
 			# at the moment this doesn't happen so:
@@ -470,7 +487,6 @@ def main():
 	HydrateDatabase(db_connection, db_cursor).interventions(data_path)
 
 	# run database hydration for initial conditions
-	# this does not work
 	HydrateDatabase(db_connection, db_cursor).initial_conditions(data_path)
 
 	# close database connection
