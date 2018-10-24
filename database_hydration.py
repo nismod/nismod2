@@ -4,13 +4,24 @@ from psycopg2.extras import DictCursor
 from psycopg2 import sql
 
 
+def clean_value(value):
+	"""Clean strings for any unwanted characters
+	"""
+	if value.startswith("'") and value.endswith("'"):
+		value = value[1:-1]
+	return value
+
+
 def get_value_from_dict(dictionary, key):
 	"""Attempt to get value from a dictionary
 	"""
 
 	if key in dictionary.keys():
 		value = dictionary[key]
-		return value
+		if isinstance(value, str):
+			return clean_value(value)
+		else:
+			return value
 	else:
 		return ''
 
@@ -444,6 +455,66 @@ class HydrateDatabase:
 
 				return True
 
+	def sector_models(self, data_dir):
+		"""Populate the sector model relation
+		"""
+
+		# set location to search for data
+		dir_name = 'sector_models'
+
+		# get list of files in directory
+		dir_contents = os.listdir(os.path.join(data_dir, dir_name))
+
+		# if no files, return to main function
+		if len(dir_contents) == 0: return
+
+		# loop through the directory
+		for item in dir_contents:
+
+			# if item is not a file skip it
+			if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
+				continue
+
+			# open yml file and get data
+			with open(os.path.join(data_dir, dir_name, item), 'r') as stream:
+				data = yaml.load(stream)
+				print(item)
+				# get values for each sos model
+				name = get_value_from_dict(data, 'name')
+				description = get_value_from_dict(data, 'description')
+				path = get_value_from_dict(data, 'path')
+
+				# varchar arrays
+				initial_conditions = get_value_from_dict(data, 'initial_conditions')
+				inputs = json.dumps(get_value_from_dict(data, 'inputs'))
+				interventions = get_value_from_dict(data, 'interventions')
+
+				outputs = json.dumps(get_value_from_dict(data, 'outputs')) # as nested dict, converted to json
+				parameters = get_value_from_dict(data, 'parameters')
+
+				# these are stored as varchar arrays - need to be set as lists if not present in file
+				if initial_conditions == '':
+					initial_conditions = []
+				if inputs == '':
+					inputs = []
+				if interventions == '':
+					interventions = []
+
+				# query to insert sos model into the database
+				self.db_cursor.execute(
+					'INSERT INTO sector_models (name, description, path, initial_conditions, inputs, interventions, '
+					'outputs, parameters) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;',
+					[name, description, path, initial_conditions, inputs, interventions, outputs, parameters])
+				self.db_connection.commit()
+
+				# get result from query
+				sos_model_id = self.db_cursor.fetchone()
+
+				# if nothing returned, return an error
+				if sos_model_id is None:
+					return False
+
+				return True
 
 	def base_data_hydration(self, data_dir):
 		'''
@@ -566,6 +637,9 @@ def main():
 
 	# run database hydration for sos_models
 	HydrateDatabase(db_connection, db_cursor).sos_models(config_data_path)
+
+	# run database hydration for sector models
+	HydrateDatabase(db_connection, db_cursor).sector_models(config_data_path)
 
 	# close database connection
 	db_connection.close()
