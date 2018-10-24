@@ -516,6 +516,74 @@ class HydrateDatabase:
 
 				return True
 
+	def sos_model_runs(self, data_dir):
+		"""Populate the sos model runs relation
+		"""
+
+		# set location to search for data
+		dir_name = 'sos_model_runs'
+
+		# get list of files in directory
+		dir_contents = os.listdir(os.path.join(data_dir, dir_name))
+
+		# if no files, return to main function
+		if len(dir_contents) == 0: return
+
+		# loop through the directory
+		for item in dir_contents:
+
+			# if item is not a file skip it
+			if os.path.isfile(os.path.join(data_dir, dir_name, item)) is False:
+				continue
+
+			# open yml file and get data
+			with open(os.path.join(data_dir, dir_name, item), 'r') as stream:
+				data = yaml.load(stream)
+
+				# get values for each sos model
+				name = get_value_from_dict(data, 'name')
+				description = get_value_from_dict(data, 'description')
+				sos_model = get_value_from_dict(data, 'sos_model')
+				decision_module = get_value_from_dict(data, 'decision_module')
+
+				stamp = get_value_from_dict(data, 'stamp')
+
+				# int arrays
+				timesteps = get_value_from_dict(data, 'timesteps')
+
+				# varchar arrays
+				strategies = get_value_from_dict(data, 'strategies')
+
+				# json
+				scenarios = json.dumps(get_value_from_dict(data, 'scenarios'))
+				narratives = json.dumps(get_value_from_dict(data, 'narratives')) # as nested dict, converted to json
+
+				# these are stored as arrays - need to be set as lists if not present in file
+				if timesteps == '':
+					timesteps = []
+				if strategies == '':
+					strategies = []
+				if scenarios == '':
+					scenarios = []
+				if narratives == '':
+					narratives = []
+
+				# query to insert sos model into the database
+				self.db_cursor.execute(
+					'INSERT INTO sos_model_runs (name, description, sos_model, timesteps, strategies, scenarios, decision_module, narratives, stamp)'
+					'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;',
+					[name, description, sos_model, timesteps, strategies, scenarios, decision_module, narratives, stamp])
+				self.db_connection.commit()
+
+				# get result from query
+				sos_model_run_id = self.db_cursor.fetchone()
+
+				# if nothing returned, return an error
+				if sos_model_run_id is None:
+					return False
+
+				return True
+
 	def base_data_hydration(self, data_dir):
 		'''
 		add base data to database
@@ -640,6 +708,9 @@ def main():
 
 	# run database hydration for sector models
 	HydrateDatabase(db_connection, db_cursor).sector_models(config_data_path)
+
+	# run database hydration for sector models
+	HydrateDatabase(db_connection, db_cursor).sos_model_runs(config_data_path)
 
 	# close database connection
 	db_connection.close()
