@@ -1,4 +1,4 @@
-name: et_module_only
+name: et_and_ed
 description: Disaggregation of energy demand from transport sector to hourly
 sector_models: # Select 1 or more of the sector models
 - et_module

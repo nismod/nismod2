@@ -5,8 +5,7 @@ sector_models:
 scenarios:
 - es_prices
 - dummy_energy_demands_minimal
-narratives:
-- technology
+narratives: []
 scenario_dependencies:
 - source: es_prices
   source_output: gas_price

@@ -10,3 +10,4 @@ scenario_dependencies:
   sink: et_module
   sink_input: electricity
 model_dependencies: []
+narratives: []
