@@ -1,4 +1,4 @@
-year,region,interval,value,location_name
+timestep,lad_uk_2016,interval,population,location_name
 2004,E06000001,1,90800,Hartlepool
 2004,E06000002,1,140000,Middlesbrough
 2004,E06000003,1,137800,Redcar and Cleveland

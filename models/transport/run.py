@@ -24,13 +24,6 @@ class TransportWrapper(SectorModel):
     def _get_path_to_config_templates(self):
         return os.path.join(os.path.dirname(__file__), 'templates')
 
-    def initialise(self, initial_conditions):
-        """Set up model state using initial conditions (any data required for
-        the base year which would otherwise be output by a previous timestep) as
-        necessary.
-        """
-        pass
-
     def simulate(self, data_handle):
         """Run the transport model
 
@@ -46,7 +39,7 @@ class TransportWrapper(SectorModel):
             self._set_outputs(data_handle)
         else:
             self.logger.warning('This model is using a workaround to produce outputs for the baseyear')
-            
+
             data_handle.set_results("energy_consumption_diesel", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_electricity", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_hybrid", np.array([[float(0)]]))
@@ -62,7 +55,7 @@ class TransportWrapper(SectorModel):
         working_dir = self._get_working_dir()
         path_to_jar = self._get_path_to_jar()
 
-        path_to_config = os.path.join(working_dir, 'config.properties')        
+        path_to_config = os.path.join(working_dir, 'config.properties')
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = [
@@ -81,11 +74,8 @@ class TransportWrapper(SectorModel):
             self.logger.exception("Transport model failed %s", ex)
             raise ex
 
-    def _input_region_names(self, input_name):
-        return self.inputs[input_name].spatial_resolution.get_entry_names()
-
-    def _input_interval_names(self, input_name):
-        return self.inputs[input_name].temporal_resolution.get_entry_names()
+    def _input_dimension_names(self, input_name, dimension_name):
+        return self.inputs[input_name].dim_coords(dimension_name).ids
 
     def _set_parameters(self, data_handle):
         """Read model parameters from data handle and set up config files
@@ -117,25 +107,25 @@ class TransportWrapper(SectorModel):
         with open(os.path.join(working_dir, 'data', 'population.csv') ,'w') as file_handle:
             w = csv.writer(file_handle)
 
-            pop_region_names = self._input_region_names("population")
+            pop_region_names = self._input_dimension_names("population", 'lad_uk_2016')
             w.writerow(('year', ) + tuple(pop_region_names))
 
-            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:,0]]
+            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:]]
             w.writerow((data_handle.base_timestep, ) + tuple(base_population))
 
-            current_population = [int(population) for population in data_handle.get_data("population")[:,0]]
+            current_population = [int(population) for population in data_handle.get_data("population")[:]]
             w.writerow((data_handle.current_timestep, ) + tuple(current_population))
 
         with open(os.path.join(working_dir, 'data', 'gva.csv') ,'w') as file_handle:
             w = csv.writer(file_handle)
 
-            gva_region_names = self._input_region_names("gva")
+            gva_region_names = self._input_dimension_names("gva", 'lad_uk_2016')
             w.writerow(('year', ) + tuple(gva_region_names))
 
-            base_gva = data_handle.get_base_timestep_data("gva")[:,0]
+            base_gva = data_handle.get_base_timestep_data("gva")[:]
             w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
 
-            current_gva = data_handle.get_data("gva")[:,0]
+            current_gva = data_handle.get_data("gva")[:]
             w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
 
     def _set_properties(self, data_handle):
@@ -145,18 +135,18 @@ class TransportWrapper(SectorModel):
         path_to_config_templates = self._get_path_to_config_templates()
 
         for root, directories, filenames in os.walk(path_to_config_templates):
-            for filename in filenames: 
+            for filename in filenames:
                 with open(os.path.join(root,filename), 'r') as template_fh:
                     config = Template(template_fh.read())
-                
+
                 config_str = config.substitute({
                     'base_timestep': data_handle.base_timestep,
                     'current_timestep': data_handle.current_timestep,
                     'relative_path': os.path.abspath(working_dir)
-                })   
-                
-                with open(os.path.join(working_dir, os.path.relpath(root, path_to_config_templates), 
-                            filename.replace('.template', '')), 'w') as template_fh:    
+                })
+
+                with open(os.path.join(working_dir, os.path.relpath(root, path_to_config_templates),
+                            filename.replace('.template', '')), 'w') as template_fh:
                     template_fh.write(config_str)
 
     def _set_outputs(self, data_handle):

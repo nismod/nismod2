@@ -1,0 +1,10 @@
+name,terminalnumber,terminalname,gasnode,terminalcapacity,intercapacity,domcapacity,lngcapacity,gasterminaloptcost
+gasterminal1,1,St Fergus,1,102,83,19,0,0.35
+gasterminal2,2,Teesside,15,24,0,13,11,0.35
+gasterminal3,3,Easington,29,105,72,33,0,0.35
+gasterminal4,4,Barrow,33,8,0,8,0,0.35
+gasterminal5,5,Burton Point,40,3,0,3,0,0.35
+gasterminal6,6,Theddlethorpe,49,10,0,10,0,0.35
+gasterminal7,7,Bacton,60,151,127,24,0,0.35
+gasterminal8,8,Isle of Grain,76,59,0,3,56,0.35
+gasterminal9,9,Milford Haven,92,86,0,7,79,0.35

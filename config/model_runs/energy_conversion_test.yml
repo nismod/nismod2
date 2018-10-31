@@ -1,0 +1,12 @@
+decision_module: ''
+description: ''
+name: energy_conversion_test
+narratives: {}
+scenarios:
+  es_residential: es_residential_dummy
+sos_model: test_conversion_only
+stamp: '2018-03-15T15:37:23.939Z'
+timesteps:
+- 2015
+- 2020
+strategies: {}

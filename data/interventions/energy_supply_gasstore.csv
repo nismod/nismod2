@@ -1,0 +1,10 @@
+name,storage_number,desc_name,gasnode,storagecap,inflowcap,outflowcap,outflowcost
+gas_store_1,1,Rough,29,3.3,28,41,3.5
+gas_store_2,2,Aldbrough,55,0.3,19.7,40,3.5
+gas_store_3,3,Holford,26,0.2,22.1,22,3.5
+gas_store_4,4,Hornsea,18,0.3,2,18,3.5
+gas_store_5,5,Holehouse Farm,16,0.02,10.8,5,3.5
+gas_store_6,6,Humbly Grove,13,0.3,8.2,7,3.5
+gas_store_7,7,Hatfield Moor,5,0.07,1.9,1.8,3.5
+gas_store_8,8,Hill Top Farm,42,0.05,5.5,12,3.5
+gas_store_9,9,Stublach,113,0.2,29.7,15,3.5

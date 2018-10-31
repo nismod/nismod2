@@ -1,0 +1,3 @@
+name: seasons
+description: The seasons covered by the model
+elements: seasons.csv

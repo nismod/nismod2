@@ -7,11 +7,9 @@ from smif.model.sector_model import SectorModel
 class {model_name_cap}Wrapper(SectorModel):
     """{model_name_cap}
     """
-    def initialise(self, initial_conditions):
-        pass
-
     def simulate(self, data):
-
+        """Simulate a single timestep
+        """
         # Get the current timestep
         now = data.current_timestep
         self.logger.info("{model_name_cap}Wrapper received inputs in %s", now)
