@@ -69,7 +69,7 @@ def _get_files_in_dir(dirpath):
 
 def _update_scenario_sets(old_project_data):
     """
-    WARNING: ['provides']['dims'] and ['provides']['units'] are best guess
+    WARNING: ['provides']['dims'] and ['provides']['unit'] are best guess
 
     From
 
@@ -89,7 +89,7 @@ def _update_scenario_sets(old_project_data):
                 filename: uk_population_by_district_codes_Low.csv
                 spatial_resolution: lad_uk_2016
                 temporal_resolution: annual
-                units: people
+                unit: people
 
     To
 
@@ -140,12 +140,20 @@ def _update_scenario_sets(old_project_data):
                     ][0],
                      # best guess
                 ],
-                'dtype': 'TODO', # no info
+                'dtype': 'float', # no info
                 'unit': [
                     scenario['facets'][0]['units'] for scenario in old_project_data['scenarios'] 
                     if scenario['scenario_set'] == scenario_set['name']
                 ][0] # best guess
             })
+
+            for output in new_scenario['provides']:
+                if 'annual' in output['dims']:
+                    index = output['dims'].index('annual')
+                    output['dims'].pop(index)
+                if 'national' in output['dims']:
+                    index = output['dims'].index('national')
+                    output['dims'].pop(index)
 
         # variants
         for scenario in old_project_data['scenarios']:
@@ -297,7 +305,7 @@ def _update_project_data(project_folder):
     - name
     - region_definitions 
     - interval_definitions 
-    - units 
+    - unit 
     - scenario_sets 
     - scenarios 
     - narrative_sets 
@@ -309,7 +317,7 @@ def _update_project_data(project_folder):
     - scenarios
     - narratives
     - dimensions
-    - units
+    - unit
     """
     project_config_path = os.path.join(project_folder, 'config', 'project.yml')
 
@@ -325,11 +333,38 @@ def _update_project_data(project_folder):
     if 'narrative_sets' in project_config_data:
         project_config_data = _update_narratives(project_config_data)
 
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'dimensions') 
+
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'scenarios')     
+
+    project_config_data = extract_data(project_config_data, 
+                                       project_folder, 
+                                       'narratives')    
+
     # project
     _write_config_file(project_config_path, project_config_data)
 
-def write(project_data):
-    raise NotImplementedError
+def extract_data(project_config_data, project_folder, field_name):
+    
+    config_list = None
+
+    try:
+        config_list = project_config_data[field_name]
+    except KeyError:
+        print("No '{}' in project.yml".format(field_name))
+
+    if config_list:
+        for config_item in config_list:
+            filepath = os.path.join(project_folder, 'config', field_name, config_item['name'] + '.yml')
+            _write_config_file(filepath, config_item)
+
+        project_config_data.pop(field_name)                
+
+    return project_config_data
 
 def _update_sector_model_config(project_folder):
     """Inputs, outputs and parameters all use Spec definition
@@ -371,17 +406,27 @@ def _update_sector_model_config(project_folder):
 
         # inputs / outputs
         for model_io in itertools.chain(config_data['inputs'], config_data['outputs']):
-            model_io['dims'] = [
-                model_io['spatial_resolution'],
-                # model_io['temporal_resolution'], // remove annual (now implicit)
-            ]
+
+            dims = []
+            if not model_io['spatial_resolution'] == 'national':
+                dims.append(model_io['spatial_resolution'])
+            
+            if not model_io['temporal_resolution'] == 'annual':
+                dims.append(model_io['temporal_resolution'])
+
+            model_io['dims'] = dims
+
+            model_io['unit'] = model_io['units']
+
+            model_io.pop('units')
             model_io.pop('spatial_resolution')
             model_io.pop('temporal_resolution')
 
-            model_io['dtype'] = 'TODO'
+            model_io['dtype'] = 'float'
 
         # parameters
         for parameter in config_data['parameters']:
+            parameter['dtype'] = 'float'
             try:
                 parameter['abs_range'] = list(literal_eval(parameter.pop('absolute_range')))
             except ValueError:
@@ -402,6 +447,29 @@ def _update_sector_model_config(project_folder):
 
         _write_config_file(config_file_path, config_data)
 
+def _update_model_run_config(project_folder):
+    """
+
+    strategies['name'] -> strategies['type']
+    """
+    config_dir = os.path.join(project_folder, 'config', 'model_runs')
+    config_files = _get_files_in_dir(config_dir)
+
+    for config_file in config_files:
+
+        config_file_path = os.path.join(config_dir, config_file)
+        config_data = _read_config_file(config_file_path)
+
+        if not 'strategies' in config_data:
+            config_data['strategies'] = {}
+        for strategy in config_data['strategies']:
+            if 'strategy' in strategy:
+                strategy['type'] = strategy['strategy']
+                strategy.pop('strategy')
+
+        _write_config_file(config_file_path, config_data)
+        LOGGER.info("Sucessfully updated model_run config: %s", config_file_path)
+
 def _update_sos_model_config(project_folder):
     """
 
@@ -421,6 +489,7 @@ def _update_sos_model_config(project_folder):
 
         max_iterations
         convergence_absolute_tolerance
+        convergence_relative_tolerance
 
     """
     config_dir = os.path.join(project_folder, 'config', 'sos_models')
@@ -479,6 +548,7 @@ def _update_sos_model_config(project_folder):
         # drop keys
         config_data.pop('max_iterations')
         config_data.pop('convergence_absolute_tolerance')
+        config_data.pop('convergence_relative_tolerance')
 
         _write_config_file(config_file_path, config_data)
         LOGGER.info("Sucessfully updated sos_model config: %s", config_file_path)
@@ -515,6 +585,7 @@ def _move_region_interval_definitions(project_folder):
 def main(project_folder):
     # _archive_old_project_folder(project_folder)
     _rename_modelrunfolder(project_folder)
+    _update_model_run_config(project_folder)
     _update_project_data(project_folder)
 
     _update_sector_model_config(project_folder)

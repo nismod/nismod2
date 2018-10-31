@@ -1,0 +1,23 @@
+name: es_residential
+description: Dummy data for energy_supply model residential inputs
+provides:
+  - name: residential_gas_boiler_gas
+    description: ''
+    dims:
+      - energy_hub_min
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: residential_electricity_boiler_electricity
+    description: ''
+    dims:
+      - energy_hub_min
+      - seasonal_week
+    dtype: float
+    unit: MW
+variants:
+  - name: es_residential_dummy
+    description: Dummy data for residential inputs to energy supply model
+    data:
+      residential_gas_boiler_gas: residential_gas_boiler_gas.csv
+      residential_electricity_boiler_electricity: residential_electricity_boiler_electricity.csv

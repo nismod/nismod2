@@ -77,14 +77,16 @@ class DigitalCommsWrapper(SectorModel):
         # -------------
         interventions_lut = {intervention[0]:intervention for intervention in interventions}
 
-        distribution_upgrades = np.empty((self.system.number_of_assets['distributions'],1))
-        for idx, distribution in enumerate(data_handle.get_region_names('broadband_distributions')):
-            distribution_upgrades[idx, 0] = interventions_lut[distribution][2] if distribution in interventions_lut else 0
+        distribution_upgrades = np.empty((self.system.number_of_assets['distributions']))
+
+        region_names = self.outputs['distribution_upgrades'].dim_coords('broadband_distributions').ids
+        for idx, distribution in enumerate(region_names):
+            distribution_upgrades[idx] = interventions_lut[distribution][2] if distribution in interventions_lut else 0
         data_handle.set_results('distribution_upgrades', distribution_upgrades)
 
-        distribution_upgrade_costs_fttp = np.empty((self.system.number_of_assets['distributions'],1))
+        distribution_upgrade_costs_fttp = np.empty((self.system.number_of_assets['distributions']))
         for idx, distribution in enumerate(self.system.assets['distributions']):
-            distribution_upgrade_costs_fttp[idx, 0] = distribution.upgrade_costs['fttp']
+            distribution_upgrade_costs_fttp[idx] = distribution.upgrade_costs['fttp']
         data_handle.set_results('distribution_upgrade_costs_fttp', distribution_upgrade_costs_fttp)
 
         # ----

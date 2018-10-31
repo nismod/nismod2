@@ -1,0 +1,3 @@
+name: hourly
+description: Every hour in a year
+elements: hourly_intervals.csv

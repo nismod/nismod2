@@ -1,0 +1,7 @@
+name: governance
+description: Describes the governance landscape
+provides: []
+variants:
+- name: TODO
+  description: TODO
+  data: {}

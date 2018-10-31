@@ -1,0 +1,71 @@
+name: dummy_energy_demands_full
+description: Dummy energy demand data for the energy supply model (full dataset)
+provides:
+  - name: elecload
+    description: 'Industrial electricity load'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+  - name: gasload
+    description: 'Industrial gas load'
+    dims:
+    - gas_nodes
+    - seasonal_week
+    dtype: float
+    unit: mcm
+  - name: residential_heatload
+    description: 'Residential heat demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+  - name: residential_gas_non_heating
+    description: 'Non heat Residential gas demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: mcm
+  - name: residential_electricity_non_heating
+    description: 'Non heat Residential electricity demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+  - name: service_heatload
+    description: 'Commerial heat demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+  - name: service_gas_non_heating
+    description: 'Non heat commercial gas demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: mcm
+  - name: service_electricity_non_heating
+    description: 'Non heat commercial electricity demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+variants:
+  - name: es_energy_demand_dummy_full
+    description: ''
+    data:
+      elecload: ../energy_supply/scenarios/energy_demand_full.csv
+      gasload: ../energy_supply/scenarios/energy_demand_full_gasload.csv
+      residential_heatload: ../energy_supply/scenarios/energy_demand_full.csv
+      residential_gas_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      residential_electricity_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      service_heatload: ../energy_supply/scenarios/energy_demand_full.csv
+      service_gas_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_full.csv

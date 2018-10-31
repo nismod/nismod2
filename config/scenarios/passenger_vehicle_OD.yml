@@ -1,0 +1,15 @@
+name: passenger_vehicle_OD
+description: Passenger OD flows for transport base year
+provides:
+  - name: flow
+    description: ''
+    dims:
+      - od_southampton
+      - annual_day
+    dtype: float
+    unit: vehicles
+variants:
+  - name: Southampton-Southampton test OD
+    description: Test data for transport base year
+    data:
+      flow: soton_passenger_vehicle_OD.csv
