@@ -104,50 +104,47 @@ class TransportWrapper(SectorModel):
         if not os.path.exists(os.path.join(working_dir, 'data')):
             os.mkdir(os.path.join(working_dir, 'data'))
 
-        population_filepath = os.path.join(working_dir, 'data', 'population.csv')
-
-        base_population = data_handle.get_base_timestep_data("population").as_df()
-        base_population = base_population.reset_index().rename(columns={
-            0: 'population'
-        })
+        # Population
+        base_population = self._series_to_df(
+            data_handle.get_base_timestep_data("population").as_df(), 'population')
         base_population['year'] = data_handle.base_timestep
 
-        current_population = data_handle.get_data("population").as_df()
-        current_population = current_population.reset_index().rename(columns={
-            0: 'population'
-        })
+        current_population = self._series_to_df(
+            data_handle.get_data("population").as_df(), 'population')
         current_population['year'] = data_handle.current_timestep
 
+        # Pivot to have "year,LADS..." as columns"
         population = pd.concat(
             [base_population, current_population]
         ).pivot(
             index='year', columns='lad_uk_2016', values='population'
         )
-
+        population_filepath = os.path.join(working_dir, 'data', 'population.csv')
         population.to_csv(population_filepath)
 
-        # set GVA
-        gva_filepath = os.path.join(working_dir, 'data', 'gva.csv')
-
-        base_gva = data_handle.get_base_timestep_data("gva").as_df()
-        base_gva = base_gva.reset_index().rename(columns={
-            0: 'gva'
-        })
+        # GVA
+        base_gva = self._series_to_df(
+            data_handle.get_base_timestep_data("gva").as_df(), 'gva')
         base_gva['year'] = data_handle.base_timestep
 
-        current_gva = data_handle.get_data("gva").as_df()
-        current_gva = current_gva.reset_index().rename(columns={
-            0: 'gva'
-        })
+        current_gva = self._series_to_df(
+            data_handle.get_data("gva").as_df(), 'gva')
         current_gva['year'] = data_handle.current_timestep
 
+        # Pivot to have "year,LADS..." as columns"
         gva = pd.concat(
             [base_gva, current_gva]
         ).pivot(
             index='year', columns='lad_uk_2016', values='gva'
         )
+        gva_filepath = os.path.join(working_dir, 'data', 'gva.csv')
         gva.to_csv(gva_filepath)
 
+    @staticmethod
+    def _series_to_df(ds, name):
+        return ds.reset_index().rename(columns={
+            0: name
+        })
 
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
