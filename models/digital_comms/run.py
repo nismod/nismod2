@@ -37,6 +37,7 @@ class DigitalCommsWrapper(SectorModel):
 
         # Get modelrun configuration
         parameters = data_handle.get_parameters()
+        parameters = {parameter: int(parameters[parameter].as_ndarray()) for parameter in parameters}
 
         # Load assets
         assets = {}
@@ -67,7 +68,12 @@ class DigitalCommsWrapper(SectorModel):
         # Run fixed network model
         # -----------------------
         self.logger.info("DigitalCommsWrapper - Decide interventions")
-        interventions, budget, spend = decide_interventions('rollout_fttp_per_distribution', data_handle.get_parameter('annual_budget'), data_handle.get_parameter('service_obligation_capacity'), self.system, now)
+        interventions, budget, spend = decide_interventions(
+            'rollout_fttp_per_distribution', 
+            int(data_handle.get_parameter('annual_budget').as_ndarray()), 
+            int(data_handle.get_parameter('service_obligation_capacity').as_ndarray()), 
+            self.system, now
+        )
 
         self.logger.info("DigitalCommsWrapper - Upgrading system")
         self.system.upgrade(interventions)
