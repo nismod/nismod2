@@ -1,0 +1,28 @@
+name: transport_southampton_only
+description: Test model for transport
+sector_models:
+  - transport_southampton
+  - extract_southampton_pop
+  - extract_southampton_gva
+scenarios:
+  - population
+  - gva
+narratives: []
+scenario_dependencies:
+  - source: population
+    source_output: population
+    sink: extract_southampton_pop
+    sink_input: population
+  - source: gva
+    source_output: gva
+    sink: extract_southampton_gva
+    sink_input: gva
+model_dependencies:
+  - source: extract_southampton_pop
+    source_output: population
+    sink: transport_southampton
+    sink_input: population
+  - source: extract_southampton_gva
+    source_output: gva
+    sink: transport_southampton
+    sink_input: gva

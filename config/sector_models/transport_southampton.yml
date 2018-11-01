@@ -1,0 +1,71 @@
+name: transport_southampton
+description: Transport model for Southampton and neighbouring LADs
+path: ./models/transport/run.py
+classname: TransportWrapper
+inputs:
+  - name: population
+    dims:
+      - lad_southampton
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_southampton
+    unit: GBP
+    dtype: float
+  - name: fuel_price
+    units: £/litre
+    dtype: float
+    dims:
+      - transport_fuel_types
+  - name: fuel_price_electricity
+    units: £/kWh
+    dtype: float
+outputs:
+  - name: energy_consumption
+    dims:
+      - annual_day
+      - transport_fuel_types
+    unit: l
+    dtype: float
+  - name: energy_consumption_electricity
+    dims:
+      - annual_day
+    unit: kWh
+    dtype: float
+parameters:
+  - name: POPULATION_ETA
+    description: Population elasticity for passenger demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: GVA_ETA
+    description: GVA elasticity for passenger demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: TIME_ETA
+    description: Time elasticity for passenger demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: COST_ETA
+    description: Cost elasticity for passenger demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: POPULATION_FREIGHT_ETA
+    description: Population elasticity for freight demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: GVA_FREIGHT_ETA
+    description: GVA elasticity for freight demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: TIME_FREIGHT_ETA
+    description: Time elasticity for freight demand
+    dtype: float
+    default: default_transport_elasticities.yml
+  - name: COST_FREIGHT_ETA
+    description: Cost elasticity for freight demand
+    dtype: float
+    default: default_transport_elasticities.yml
+interventions:
+  - transport_interventions.yml
+initial_conditions: []

@@ -1,11 +1,10 @@
-name: transport_test
-description: mini test for transport
-sos_model: transport_only
+name: transport_southampton
+description: Small baseline transport model run for testing
+sos_model: transport_southampton_only
 timesteps: [2015, 2020]
 scenarios:
   population: pop_baseline
   gva: gva_baseline
 narratives: {}
 decision_module: []
-stamp: '2018-02-13T10:00:00Z'
 strategies: {}
