@@ -275,10 +275,10 @@ parameters:
   name: LoadShed_elec
   units: GBP/MWh
   dtype: float
-  default: 100
+  default: ../energy_supply/parameters/load_shed.csv
 - description: cost of gas load shedding
   name: LoadShed_gas
   units: GBP/MWh
   dtype: float
-  default: 300
+  default: ../energy_supply/parameters/load_shed.csv
 path: models/energy_supply/energy_supply.py

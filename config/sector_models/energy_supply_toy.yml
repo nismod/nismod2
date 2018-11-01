@@ -276,13 +276,13 @@ parameters:
 - name: LoadShed_elec
   description: cost of electricity load shedding
   dims: []
-  default: load_shed.csv
+  default: ../energy_supply/parameters/load_shed.csv
   unit: £/MWh
   dtype: float
 - name: LoadShed_gas
   description: cost of gas load shedding
   dims: []
-  default: load_shed.csv
+  default: ../energy_supply/parameters/load_shed.csv
   unit: £/MWh
   dtype: float
 path: models/energy_supply/energy_supply.py
