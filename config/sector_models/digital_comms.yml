@@ -1,300 +1,250 @@
-classname: DigitalCommsWrapper
-description: The Cambridge Communications Assessment Model provides analytics for
-  decision-makers on (i) capacity-demand and (ii) risk, vulnerability and resilience.
-  The fixed, wireless and satellite sectors are currently under development.
-initial_conditions: []
-inputs: []
-interventions: []
-name: digital_comms
-outputs:
-- name: interventions
-  dims: []
-  unit: assets
-  dtype: float
-- name: distribution_upgrades
-  dims:
-  - broadband_distributions
-  unit: GBP
-  dtype: float
-- name: distribution_upgrade_costs_fttp
-  dims:
-  - broadband_distributions
-  unit: GBP
-  dtype: float
 parameters:
-- description: The cost of installing a fiber link
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: int
+  description: The cost of installing a fiber link
+  abs_range:
+  - 0
+  - 1000
   name: costs_links_fiber_meter
-  units: GBP
+  unit: GBP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
   dtype: float
-  abs_range:
-  - 0
-  - 1000
-  exp_range:
-  - 0
-  - 100
-  default: 20
-- description: The cost of installing a copper link
+  unit: GBP
+  description: The cost of installing a copper link
   name: costs_links_copper_meter
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 1000
-  exp_range:
-  - 0
-  - 100
-  default: 10
-- description: The costs to enable an exchange to service FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable an exchange to service FTTP
   name: costs_assets_exchange_fttp
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 50000
-- description: The costs to enable an exchange to service GFast
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable an exchange to service GFast
   name: costs_assets_exchange_gfast
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 40000
-- description: The costs to enable an exchange to service FTTC
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable an exchange to service FTTC
   name: costs_assets_exchange_fttc
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 30000
-- description: The costs to enable an exchange to service ADSL
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable an exchange to service ADSL
   name: costs_assets_exchange_adsl
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 20000
-- description: The costs to enable a cabinet to service FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a cabinet to service FTTP
   name: costs_assets_cabinet_fttp_32_ports
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 5000
-- description: The costs to enable a cabinet to service GFast
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a cabinet to service GFast
   name: costs_assets_cabinet_gfast
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 4000
-- description: The costs to enable a cabinet to service FTTC
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a cabinet to service FTTC
   name: costs_assets_cabinet_fttc
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 3000
-- description: The costs to enable a cabinet to service ADSL
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a cabinet to service ADSL
   name: costs_assets_cabinet_adsl
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 2000
-- description: The costs to enable a distribution to service FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a distribution to service FTTP
   name: costs_assets_distribution_fttp_32_ports
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 500
-- description: The costs to enable a distribution to service GFast
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a distribution to service GFast
   name: costs_assets_distribution_gfast_4_ports
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 400
-- description: The costs to enable a distribution to service FTTC
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a distribution to service FTTC
   name: costs_assets_distribution_fttc
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 300
-- description: The costs to enable a distribution to service ADSL
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a distribution to service ADSL
   name: costs_assets_distribution_adsl
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 200
-- description: The costs to enable a premise to receive FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a premise to receive FTTP
   name: costs_assets_premise_fttp_modem
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 50
-- description: The costs to enable a premise to receive FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a premise to receive FTTP
   name: costs_assets_premise_fttp_optical_network_terminator
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 50
-- description: The costs to enable a premise to receive GFast
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a premise to receive GFast
   name: costs_assets_premise_gfast_modem
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 40
-- description: The costs to enable a premise to receive FTTC
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a premise to receive FTTC
   name: costs_assets_premise_fttc_modem
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 30
-- description: The costs to enable a premise to receive ADSL
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The costs to enable a premise to receive ADSL
   name: costs_assets_premise_adsl_modem
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 20
-- description: The benefits to enable a premise to receive FTTP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The benefits to enable a premise to receive FTTP
   name: benefits_assets_premise_fttp
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 50
-- description: The benefits to enable a premise to receive GFast
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The benefits to enable a premise to receive GFast
   name: benefits_assets_premise_gfast
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 40
-- description: The benefits to enable a premise to receive FTTC
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The benefits to enable a premise to receive FTTC
   name: benefits_assets_premise_fttc
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 30
-- description: The benefits to enable a premise to receive ADSL
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  dtype: float
+  unit: GBP
+  description: The benefits to enable a premise to receive ADSL
   name: benefits_assets_premise_adsl
-  units: GBP
-  dtype: float
   abs_range:
   - 0
   - 100000
-  exp_range:
-  - 0
-  - 100000
-  default: 20
-- description: The yearly budget to spend on infrastructure
-  name: annual_budget
-  units: GBP
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
   dtype: float
+  unit: GBP
+  description: The yearly budget to spend on infrastructure
+  name: annual_budget
   abs_range:
   - 0
   - 100000000
-  exp_range:
-  - 0
-  - 1000000
-  default: 100000
-- description: Service obligation capacity
-  name: service_obligation_capacity
-  units: mbps
+- default: ../digital_comms/parameters/defaults.csv
+  dims: []
   dtype: float
+  unit: GBP
+  description: Service obligation capacity
+  name: service_obligation_capacity
   abs_range:
   - 0
   - 10000
-  exp_range:
-  - 0
-  - 1000
-  default: 10
+initial_conditions: []
+interventions: []
 path: models/digital_comms/run.py
+outputs:
+- dtype: float
+  dims: []
+  name: interventions
+  unit: assets
+- dtype: float
+  dims:
+  - broadband_distributions
+  name: distribution_upgrades
+  unit: GBP
+- dtype: float
+  dims:
+  - broadband_distributions
+  name: distribution_upgrade_costs_fttp
+  unit: GBP
+inputs: []
+description: The Cambridge Communications Assessment Model provides analytics for
+  decision-makers on (i) capacity-demand and (ii) risk, vulnerability and resilience.
+  The fixed, wireless and satellite sectors are currently under development.
+name: digital_comms
+classname: DigitalCommsWrapper
