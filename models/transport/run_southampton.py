@@ -18,7 +18,13 @@ class TransportWrapper(SectorModel):
     def _get_working_dir(self):
         return os.path.join(
             os.path.dirname(__file__), '..', '..',
-            'data', 'transport', 'testdata')
+            'data', 'transport', 'southampton')
+
+    def _get_input_dir(self):
+        """Directory where this wrapper writes data/parameters
+        """
+        working_dir = self._get_working_dir()
+        return os.path.join(working_dir, 'input')
 
     def _get_path_to_jar(self):
         return os.path.join(
@@ -35,6 +41,10 @@ class TransportWrapper(SectorModel):
         ---------
         data_handle: smif.data_layer.DataHandle
         """
+        input_dir = self._get_input_dir()
+        if not os.path.exists(input_dir):
+            os.mkdir(input_dir)
+
         if data_handle.current_timestep != data_handle.base_timestep:
             self._set_parameters(data_handle)
             self._set_inputs(data_handle)
@@ -45,13 +55,8 @@ class TransportWrapper(SectorModel):
             msg = 'Transport model is using a workaround to produce outputs for the baseyear'
             self.logger.warning(msg)
 
-            data_handle.set_results("energy_consumption_diesel", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption", np.zeros((5,), dtype='float'))
             data_handle.set_results("energy_consumption_electricity", np.array([[float(0)]]))
-            data_handle.set_results("energy_consumption_hybrid", np.array([[float(0)]]))
-            data_handle.set_results("energy_consumption_hydrogen", np.array([[float(0)]]))
-            data_handle.set_results("energy_consumption_lpg", np.array([[float(0)]]))
-            data_handle.set_results("energy_consumption_cng", np.array([[float(0)]]))
-            data_handle.set_results("energy_consumption_petrol", np.array([[float(0)]]))
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -94,13 +99,14 @@ class TransportWrapper(SectorModel):
     def _set_parameters(self, data_handle):
         """Read model parameters from data handle and set up config files
         """
-        working_dir = self._get_working_dir()
+        input_dir = self._get_input_dir()
+
         # Elasticities for passenger and freight demand
         variables = ['POPULATION', 'GVA', 'TIME', 'COST']
         types = {
-            'ETA': os.path.join(working_dir, 'csvfiles', 'elasticities.csv'),
+            'ETA': os.path.join(input_dir, 'elasticities.csv'),
             'FREIGHT_ETA': os.path.join(
-                working_dir, 'csvfiles', 'elasticitiesFreight.csv')
+                input_dir, 'elasticitiesFreight.csv')
         }
         for suffix, filename in types.items():
             with open(filename, 'w') as file_handle:
@@ -114,10 +120,7 @@ class TransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        working_dir = self._get_working_dir()
-
-        if not os.path.exists(os.path.join(working_dir, 'data')):
-            os.mkdir(os.path.join(working_dir, 'data'))
+        input_dir = self._get_input_dir()
 
         # Population
         base_population = self._series_to_df(
@@ -129,14 +132,13 @@ class TransportWrapper(SectorModel):
             data_handle.get_data("population").as_df(), 'population')
         current_population['year'] = data_handle.current_timestep
 
-        # Pivot to have "year,LADS..." as columns"
         population = pd.concat(
             [base_population, current_population]
         ).pivot(
             index='year', columns='lad_uk_2016', values='population'
         )
         population_filepath = os.path.join(
-            working_dir, 'data', 'population.csv')
+            input_dir, 'population.csv')
         population.to_csv(population_filepath)
 
         # GVA
@@ -148,18 +150,28 @@ class TransportWrapper(SectorModel):
             data_handle.get_data("gva").as_df(), 'gva')
         current_gva['year'] = data_handle.current_timestep
 
-        # Pivot to have "year,LADS..." as columns"
         gva = pd.concat(
             [base_gva, current_gva]
         ).pivot(
             index='year', columns='lad_uk_2016', values='gva'
         )
-        gva_filepath = os.path.join(working_dir, 'data', 'gva.csv')
+        gva_filepath = os.path.join(input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
 
+        # Fuel prices
+        fuel_price = self._series_to_df(
+            data_handle.get_data('fuel_price').as_df(), 'fuel_price')
+        fuel_price = fuel_price.pivot(
+            index='year', columns='transport_fuel_types', values='fuel_price'
+        )
+        fuel_price['ELECTRICITY'] = data_handle.get_data('fuel_price_electricity').as_df()
+
+        fuel_price_filepath = os.path.join(input_dir, 'energyUnitCosts.csv')
+        fuel_price.to_csv(fuel_price_filepath)
+
     @staticmethod
-    def _series_to_df(ds, name):
-        return ds.reset_index().rename(columns={
+    def _series_to_df(series, name):
+        return series.reset_index().rename(columns={
             0: name
         })
 
@@ -195,10 +207,10 @@ class TransportWrapper(SectorModel):
         """Read results from model and write to data handle
         """
         working_dir = self._get_working_dir()
+        output_dir = os.path.join(working_dir, 'output')
 
         energy_consumption_file = os.path.join(
-            working_dir, 'output', str(data_handle.current_timestep),
-            'energyConsumptions.csv')
+            output_dir, str(data_handle.current_timestep), 'energyConsumptions.csv')
 
         try:
             with open(energy_consumption_file) as fh:
