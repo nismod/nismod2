@@ -32,6 +32,12 @@ outputs:
   - annual_day
   unit: l
   dtype: float
+- name: energy_consumption_cng
+  dims:
+  - whole_system
+  - annual_day
+  unit: l
+  dtype: float
 - name: energy_consumption_electricity
   dims:
   - whole_system
