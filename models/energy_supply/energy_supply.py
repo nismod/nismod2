@@ -33,14 +33,14 @@ class EnergySupplyWrapper(SectorModel):
 
     def get_model_parameters(self, data):
         # Get model parameters
-        parameter_LoadShed_elec = data.get_parameter('LoadShed_elec')
+        parameter_LoadShed_elec = data.get_parameter('LoadShed_elec').as_ndarray()
         self.logger.debug('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
 
-        parameter_LoadShed_gas = data.get_parameter('LoadShed_gas')
+        parameter_LoadShed_gas = data.get_parameter('LoadShed_gas').as_ndarray()
         self.logger.debug('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
 
-        write_load_shed_costs(parameter_LoadShed_elec,
-                              parameter_LoadShed_gas)
+        write_load_shed_costs(float(parameter_LoadShed_elec),
+                              float(parameter_LoadShed_gas))
 
     def clear_input_tables(self):
         """Removes all state data from database tables
@@ -1014,7 +1014,7 @@ def write_input_timestep(input_data, parameter_name, year,
 
     Arguments
     ---------
-    input_data : numpy.ndarray
+    input_data : smif.data_layer.data_array.DataArray
         Residential heating data
     parameter_name : string
         Name of the input parameter
@@ -1040,7 +1040,7 @@ def write_input_timestep(input_data, parameter_name, year,
 
     region_mapping = get_region_mapping(parameter_name)
 
-    it = np.nditer(input_data, flags=['multi_index'])
+    it = np.nditer(input_data.as_ndarray(), flags=['multi_index'])
     while not it.finished:
         cell = it[0]
 

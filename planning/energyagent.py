@@ -1,9 +1,9 @@
 from copy import copy
 
-from smif.decision.decision import DecisionModule
+from smif.decision.decision import RuleBased
 
 
-class EnergyAgent(DecisionModule):
+class EnergyAgent(RuleBased):
     """A coupled power-producer/regulator decision algorithm for simulating
     decision making in an energy supply model
 
@@ -23,9 +23,6 @@ class EnergyAgent(DecisionModule):
     """
     def __init__(self, timesteps, register):
         super().__init__(timesteps, register)
-        self.converged = False
-        self.current_timestep_index = 0
-        self.current_iteration = 0
         self.model_name = 'energy_supply'
 
     @staticmethod
@@ -33,18 +30,6 @@ class EnergyAgent(DecisionModule):
         timesteps = config['timesteps']
         register = config['register']
         return EnergyAgent(timesteps, register)
-
-    def _get_next_decision_iteration(self):
-            if self.converged and self.current_timestep_index == len(self.timesteps) - 1:
-                return None
-            elif self.converged and self.current_timestep_index <= len(self.timesteps):
-                self.converged = False
-                self.current_timestep_index += 1
-                self.current_iteration += 1
-                return {self.current_iteration: [self.timesteps[self.current_timestep_index]]}
-            else:
-                self.current_iteration += 1
-                return {self.current_iteration: [self.timesteps[self.current_timestep_index]]}
 
     def get_decision(self, data_handle):
         budget = self.run_regulator(data_handle)
@@ -60,11 +45,12 @@ class EnergyAgent(DecisionModule):
 
         iteration = data_handle.decision_iteration
         if data_handle.current_timestep > data_handle.base_timestep:
-            output_name = 'cost'
-            cost = data_handle.get_results(output_name,
-                                           model_name='energy_supply',
-                                           decision_iteration=iteration,
-                                           timestep=data_handle.previous_timestep)
+            self.logger.debug("Current timestep %s is greater than base timestep %s",   data_handle.current_timestep, data_handle.base_timestep)
+            output_name = 'total_opt_cost'
+            cost = data_handle.get_results(model_name='energy_supply_toy',
+                                           output_name=output_name,
+                                           timestep=data_handle.previous_timestep,
+                                           decision_iteration=iteration)
             budget -= cost
 
         return budget
