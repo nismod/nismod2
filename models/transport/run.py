@@ -1,25 +1,29 @@
+"""Transport model wrapper
+"""
 # -*- coding: utf-8 -*-
 
 import csv
 import os
-
 from subprocess import check_output, CalledProcessError
 from string import Template
-from tempfile import TemporaryDirectory
 
 import pandas as pd
 import numpy as np
-
 from smif.model.sector_model import SectorModel
+
 
 class TransportWrapper(SectorModel):
     """Wrap the transport model
     """
     def _get_working_dir(self):
-        return os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'transport')
+        return os.path.join(
+            os.path.dirname(__file__), '..', '..',
+            'data', 'transport', 'testdata')
 
     def _get_path_to_jar(self):
-        return os.path.join(os.path.dirname(__file__), '..', '..', 'install', 'transport',  'transport.jar')
+        return os.path.join(
+            os.path.dirname(__file__), '..', '..',
+            'install', 'transport', 'transport.jar')
 
     def _get_path_to_config_templates(self):
         return os.path.join(os.path.dirname(__file__), 'templates')
@@ -38,13 +42,15 @@ class TransportWrapper(SectorModel):
             self._run_model_subprocess(data_handle)
             self._set_outputs(data_handle)
         else:
-            self.logger.warning('This model is using a workaround to produce outputs for the baseyear')
+            msg = 'Transport model is using a workaround to produce outputs for the baseyear'
+            self.logger.warning(msg)
 
             data_handle.set_results("energy_consumption_diesel", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_electricity", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_hybrid", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_hydrogen", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_lpg", np.array([[float(0)]]))
+            data_handle.set_results("energy_consumption_cng", np.array([[float(0)]]))
             data_handle.set_results("energy_consumption_petrol", np.array([[float(0)]]))
 
     def _run_model_subprocess(self, data_handle):
@@ -66,6 +72,14 @@ class TransportWrapper(SectorModel):
             '-c',
             path_to_config
         ]
+        if data_handle.current_timestep == data_handle.base_timestep:
+            arguments.append('-b')
+        else:
+            arguments.extend([
+                '-r',
+                str(data_handle.current_timestep),
+                str(data_handle.previous_timestep)
+            ])
 
         try:
             output = check_output(arguments)
@@ -85,15 +99,16 @@ class TransportWrapper(SectorModel):
         variables = ['POPULATION', 'GVA', 'TIME', 'COST']
         types = {
             'ETA': os.path.join(working_dir, 'csvfiles', 'elasticities.csv'),
-            'FREIGHT_ETA': os.path.join(working_dir, 'csvfiles', 'elasticitiesFreight.csv')
+            'FREIGHT_ETA': os.path.join(
+                working_dir, 'csvfiles', 'elasticitiesFreight.csv')
         }
         for suffix, filename in types.items():
             with open(filename, 'w') as file_handle:
                 writer = csv.writer(file_handle)
-                writer.writerow(('variable','elasticity'))
+                writer.writerow(('variable', 'elasticity'))
                 for variable in variables:
                     key = "{}_{}".format(variable, suffix)
-                    value = data_handle.get_parameter(key)
+                    value = float(data_handle.get_parameter(key).as_ndarray())
                     writer.writerow((variable, value))
 
     def _set_inputs(self, data_handle):
@@ -106,7 +121,8 @@ class TransportWrapper(SectorModel):
 
         # Population
         base_population = self._series_to_df(
-            data_handle.get_base_timestep_data("population").as_df(), 'population')
+            data_handle.get_base_timestep_data("population").as_df(),
+            'population')
         base_population['year'] = data_handle.base_timestep
 
         current_population = self._series_to_df(
@@ -119,7 +135,8 @@ class TransportWrapper(SectorModel):
         ).pivot(
             index='year', columns='lad_uk_2016', values='population'
         )
-        population_filepath = os.path.join(working_dir, 'data', 'population.csv')
+        population_filepath = os.path.join(
+            working_dir, 'data', 'population.csv')
         population.to_csv(population_filepath)
 
         # GVA
@@ -152,19 +169,26 @@ class TransportWrapper(SectorModel):
         working_dir = self._get_working_dir()
         path_to_config_templates = self._get_path_to_config_templates()
 
-        for root, directories, filenames in os.walk(path_to_config_templates):
+        for root, _, filenames in os.walk(path_to_config_templates):
             for filename in filenames:
-                with open(os.path.join(root,filename), 'r') as template_fh:
+                with open(os.path.join(root, filename), 'r') as template_fh:
                     config = Template(template_fh.read())
+
+                working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
 
                 config_str = config.substitute({
                     'base_timestep': data_handle.base_timestep,
+                    'previous_timestep': data_handle.previous_timestep,
                     'current_timestep': data_handle.current_timestep,
-                    'relative_path': os.path.abspath(working_dir)
+                    'relative_path': working_dir_path
                 })
 
-                with open(os.path.join(working_dir, os.path.relpath(root, path_to_config_templates),
-                            filename.replace('.template', '')), 'w') as template_fh:
+                config_path = os.path.join(
+                    working_dir,
+                    os.path.relpath(root, path_to_config_templates),
+                    filename.replace('.template', '')
+                )
+                with open(config_path, 'w') as template_fh:
                     template_fh.write(config_str)
 
     def _set_outputs(self, data_handle):
@@ -173,7 +197,8 @@ class TransportWrapper(SectorModel):
         working_dir = self._get_working_dir()
 
         energy_consumption_file = os.path.join(
-            working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
+            working_dir, 'output', str(data_handle.current_timestep),
+            'energyConsumptions.csv')
 
         try:
             with open(energy_consumption_file) as fh:
@@ -186,5 +211,6 @@ class TransportWrapper(SectorModel):
                         np.array([[float(val)]])
                     )
         except FileNotFoundError as ex:
-            raise FileNotFoundError("Cannot find the energy consumption file at %s",
-                str(energy_consumption_file)) from ex
+            msg = "Cannot find the energy consumption file {}"
+            raise FileNotFoundError(
+                msg.format(energy_consumption_file)) from ex
