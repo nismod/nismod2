@@ -5,6 +5,8 @@ timesteps: [2015, 2020]
 scenarios:
   population: pop_baseline
   gva: gva_baseline
+  fuel_price: baseline
 narratives: {}
 decision_module: []
 strategies: {}
+stamp: ''

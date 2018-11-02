@@ -2,27 +2,35 @@ name: transport_southampton_only
 description: Test model for transport
 sector_models:
   - transport_southampton
-  - extract_southampton_pop
-  - extract_southampton_gva
+  - extract_southampton_scenarios
 scenarios:
   - population
   - gva
+  - fuel_price
 narratives: []
 scenario_dependencies:
   - source: population
     source_output: population
-    sink: extract_southampton_pop
+    sink: extract_southampton_scenarios
     sink_input: population
   - source: gva
     source_output: gva
-    sink: extract_southampton_gva
+    sink: extract_southampton_scenarios
     sink_input: gva
+  - source: fuel_price
+    source_output: fuel_price
+    sink: transport_southampton
+    sink_input: fuel_price
+  - source: fuel_price
+    source_output: fuel_price_electricity
+    sink: transport_southampton
+    sink_input: fuel_price_electricity
 model_dependencies:
-  - source: extract_southampton_pop
+  - source: extract_southampton_scenarios
     source_output: population
     sink: transport_southampton
     sink_input: population
-  - source: extract_southampton_gva
+  - source: extract_southampton_scenarios
     source_output: gva
     sink: transport_southampton
     sink_input: gva
