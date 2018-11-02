@@ -104,29 +104,47 @@ class TransportWrapper(SectorModel):
         if not os.path.exists(os.path.join(working_dir, 'data')):
             os.mkdir(os.path.join(working_dir, 'data'))
 
-        with open(os.path.join(working_dir, 'data', 'population.csv') ,'w') as file_handle:
-            w = csv.writer(file_handle)
+        # Population
+        base_population = self._series_to_df(
+            data_handle.get_base_timestep_data("population").as_df(), 'population')
+        base_population['year'] = data_handle.base_timestep
 
-            pop_region_names = self._input_dimension_names("population", 'lad_uk_2016')
-            w.writerow(('year', ) + tuple(pop_region_names))
+        current_population = self._series_to_df(
+            data_handle.get_data("population").as_df(), 'population')
+        current_population['year'] = data_handle.current_timestep
 
-            base_population = [int(population) for population in data_handle.get_base_timestep_data("population")[:]]
-            w.writerow((data_handle.base_timestep, ) + tuple(base_population))
+        # Pivot to have "year,LADS..." as columns"
+        population = pd.concat(
+            [base_population, current_population]
+        ).pivot(
+            index='year', columns='lad_uk_2016', values='population'
+        )
+        population_filepath = os.path.join(working_dir, 'data', 'population.csv')
+        population.to_csv(population_filepath)
 
-            current_population = [int(population) for population in data_handle.get_data("population")[:]]
-            w.writerow((data_handle.current_timestep, ) + tuple(current_population))
+        # GVA
+        base_gva = self._series_to_df(
+            data_handle.get_base_timestep_data("gva").as_df(), 'gva')
+        base_gva['year'] = data_handle.base_timestep
 
-        with open(os.path.join(working_dir, 'data', 'gva.csv') ,'w') as file_handle:
-            w = csv.writer(file_handle)
+        current_gva = self._series_to_df(
+            data_handle.get_data("gva").as_df(), 'gva')
+        current_gva['year'] = data_handle.current_timestep
 
-            gva_region_names = self._input_dimension_names("gva", 'lad_uk_2016')
-            w.writerow(('year', ) + tuple(gva_region_names))
+        # Pivot to have "year,LADS..." as columns"
+        gva = pd.concat(
+            [base_gva, current_gva]
+        ).pivot(
+            index='year', columns='lad_uk_2016', values='gva'
+        )
+        gva_filepath = os.path.join(working_dir, 'data', 'gva.csv')
+        gva.to_csv(gva_filepath)
 
-            base_gva = data_handle.get_base_timestep_data("gva")[:]
-            w.writerow((data_handle.base_timestep, ) + tuple(base_gva))
-
-            current_gva = data_handle.get_data("gva")[:]
-            w.writerow((data_handle.current_timestep, ) + tuple(current_gva))
+    @staticmethod
+    def _series_to_df(ds, name):
+        return ds.reset_index().rename(columns={
+            0: name
+        })
 
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
@@ -154,13 +172,11 @@ class TransportWrapper(SectorModel):
         """
         working_dir = self._get_working_dir()
 
-        energy_consumption_file = os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
+        energy_consumption_file = os.path.join(
+            working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')
 
-        if not os.path.exists(energy_consumption_file):
-            raise FileNotFoundError("Cannot find the energy consumption file at %s",
-                str(energy_consumption_file))
-        else:
-            with open(os.path.join(working_dir, 'output', str(data_handle.current_timestep), 'energyConsumptions.csv')) as fh:
+        try:
+            with open(energy_consumption_file) as fh:
                 r = csv.reader(fh)
                 header = next(r)[1:]
                 values = next(r)[1:]
@@ -169,8 +185,6 @@ class TransportWrapper(SectorModel):
                         "energy_consumption_{}".format(fuel.lower()),
                         np.array([[float(val)]])
                     )
-
-    def extract_obj(self, results):
-        """Return value of objective function, to-be-defined
-        """
-        pass
+        except FileNotFoundError as ex:
+            raise FileNotFoundError("Cannot find the energy consumption file at %s",
+                str(energy_consumption_file)) from ex
