@@ -76,7 +76,7 @@ def test_energy_supply_run():
 
 
 def test_transport_run():
-    model_configuration_run('transport_test')
+    model_configuration_run('transport_southampton')
 
 
 @mark.skip
