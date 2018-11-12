@@ -11,7 +11,7 @@ apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
     postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
     libgeos-dev sshpass
 
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
 
 # Configure /vagrant folder as default on vagrant ssh
 if [ "$base_path" == "/vagrant" ]; then
