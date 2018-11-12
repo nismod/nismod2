@@ -31,4 +31,4 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $ftp_username@$ft
 !
 
 rm -r $MODEL_DIR/transport
-unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/transport_$release $MODEL_DIR/transport
+unzip $TMP/$FILENAME -d $MODEL_DIR
