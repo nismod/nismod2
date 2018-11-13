@@ -1,0 +1,7 @@
+#congestion charging intervention
+type = CongestionCharging
+startYear = 2016
+endYear = 2025
+name = "Southampton Congestion Charging Zone"
+listOfCongestionChargedEdgeIDs = 504,505,774,775,601,602,621,622,730,731,699,700,603,604,629,630,679,680,674,675,567,568,784,785,599,600,627,628,769,770,538,539,501,546,789
+congestionChargingPricing = $relative_path/csvfiles/congestionChargingPricingSouthampton.csv

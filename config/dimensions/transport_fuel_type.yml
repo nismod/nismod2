@@ -1,0 +1,3 @@
+name: transport_fuel_type
+description: Fuel types used in the transport model (except electricity)
+elements: transport_fuel_type.csv

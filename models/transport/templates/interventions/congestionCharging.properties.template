@@ -1,4 +1,5 @@
 #congestion charging intervention
+type = CongestionCharging
 startYear = 2016
 endYear = 2025
 name = "Itchen Bridge Toll"

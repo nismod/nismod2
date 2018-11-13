@@ -1,0 +1,17 @@
+name: fuel_price
+description: Fuel price scenarios for transport
+provides:
+  - name: fuel_price
+    dims:
+      - transport_fuel_type
+    dtype: float
+    unit: £/l
+  - name: fuel_price_electricity
+    dtype: float
+    unit: £/kWh
+variants:
+  - name: baseline
+    description: Baseline fuel price projections
+    data:
+      fuel_price: ../transport/southampton/smif/transport_fuel_price.csv
+      fuel_price_electricity: ../transport/southampton/smif/transport_fuel_price_electricity.csv

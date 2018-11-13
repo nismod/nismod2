@@ -11,7 +11,7 @@ apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
     postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
     libgeos-dev sshpass
 
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
 
 # Configure /vagrant folder as default on vagrant ssh
 if [ "$base_path" == "/vagrant" ]; then
@@ -39,6 +39,8 @@ hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
 pip3 install -U setuptools
 pip3 install pyscaffold
 pip3 install smif~=1.0rc2 --upgrade
+pip3 install smif[data]~=1.0rc2
+pip3 install smif[spatial]~=1.0rc2
 
 # Install Jupyter Notebook for Results Viewer
 pip3 install jupyter notebook
