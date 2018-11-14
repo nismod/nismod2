@@ -1,0 +1,553 @@
+description: The Cambridge Communications Assessment Model provides analytics for
+  decision-makers on (i) capacity-demand and (ii) risk, vulnerability and resilience.
+  The fixed, wireless and satellite sectors are currently under development.
+inputs:
+- description: Adoption
+  dtype: int
+  abs_range:
+  - 0
+  - 1000
+  dims:
+  - national
+  name: adoption
+  sug_range:
+  - 0
+  - 100
+  unit: '?'
+interventions: []
+parameters:
+- description: The cost of installing a fiber link
+  dtype: int
+  abs_range:
+  - 0
+  - 1000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_links_fiber_meter
+  unit: GBP
+- description: The cost of installing a copper link
+  dtype: int
+  abs_range:
+  - 0
+  - 1000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_links_copper_meter
+  unit: GBP
+- description: The costs to enable an exchange to service FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_exchange_fttp
+  unit: GBP
+- description: The costs to enable an exchange to service GFast
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_exchange_gfast
+  unit: GBP
+- description: The costs to enable an exchange to service FTTC
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_exchange_fttc
+  unit: GBP
+- description: The costs to enable an exchange to service ADSL
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_exchange_adsl
+  unit: GBP
+- description: The costs to enable a cabinet to service FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_cabinet_fttp_32_ports
+  unit: GBP
+- description: The costs to enable a cabinet to service GFast
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_cabinet_gfast
+  unit: GBP
+- description: The costs to enable a cabinet to service FTTC
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_cabinet_fttc
+  unit: GBP
+- description: The costs to enable a cabinet to service ADSL
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_cabinet_adsl
+  unit: GBP
+- description: The costs to enable a distribution to service FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_distribution_fttp_32_ports
+  unit: GBP
+- description: The costs to enable a distribution to service GFast
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_distribution_gfast_4_ports
+  unit: GBP
+- description: The costs to enable a distribution to service FTTC
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_distribution_fttc
+  unit: GBP
+- description: The costs to enable a distribution to service ADSL
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_distribution_adsl
+  unit: GBP
+- description: The costs to enable a premise to receive FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_fttp_modem
+  unit: GBP
+- description: The costs to enable a premise to receive FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_fttp_optical_network_terminator
+  unit: GBP
+- description: The costs to enable a premise to receive GFast
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_gfast_modem
+  unit: GBP
+- description: The costs to enable a premise to receive FTTC
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_fttc_modem
+  unit: GBP
+- description: The costs to enable a premise to receive ADSL
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_adsl_modem
+  unit: GBP
+- description: The benefits to enable a premise to receive FTTP
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: benefits_assets_premise_fttp
+  unit: GBP
+- description: The benefits to enable a premise to receive GFast
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: benefits_assets_premise_gfast
+  unit: GBP
+- description: The benefits to enable a premise to receive FTTC
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: benefits_assets_premise_fttc
+  unit: GBP
+- description: The benefits to enable a premise to receive ADSL
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: benefits_assets_premise_adsl
+  unit: GBP
+- description: ' The yearly budget to spend on infrastructure'
+  dtype: int
+  abs_range:
+  - 0
+  - 10000000000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: annual_budget
+  sug_range:
+  - 0
+  - 1000000000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 10000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: service_obligation_capacity
+  sug_range:
+  - 0
+  - 1000
+  unit: mbps
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: planning_administration_cost
+  sug_range:
+  - 0
+  - 100000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_fttdp_modem
+  sug_range:
+  - 0
+  - 100000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_premise_fttp_optical_connection_point
+  sug_range:
+  - 0
+  - 100
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_distribution_fttdp_8_ports
+  sug_range:
+  - 0
+  - 100000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_upgrade_cabinet_fttp
+  sug_range:
+  - 0
+  - 100000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 100000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: costs_assets_cabinet_fttdp
+  sug_range:
+  - 0
+  - 100000
+  unit: GBP
+- description: ' '
+  dtype: int
+  abs_range:
+  - 0
+  - 0
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: technology_strategy
+  sug_range:
+  - 0
+  - 0
+  unit: mode
+- description: ' The yearly budget for a telco to match fund on infrastructure'
+  dtype: int
+  abs_range:
+  - 0
+  - 10000000000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: telco_match_funding
+  sug_range:
+  - 0
+  - 1000000000
+  unit: GBP
+- description: The yearly government subsidy to spend on infrastructure
+  dtype: int
+  abs_range:
+  - 0
+  - 10000000000
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: subsidy
+  sug_range:
+  - 0
+  - 1000000000
+  unit: GBP
+- description: Months per year
+  dtype: int
+  abs_range:
+  - 0
+  - 12
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: months_per_year
+  sug_range:
+  - 0
+  - 12
+  unit: months
+- description: Payback period
+  dtype: int
+  abs_range:
+  - 0
+  - 30
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: payback_period
+  sug_range:
+  - 4
+  - 10
+  unit: years
+- description: Profit margin
+  dtype: int
+  abs_range:
+  - 0
+  - 100
+  default: ../digital_comms/parameters/defaults.csv
+  dims: []
+  name: profit_margin
+  sug_range:
+  - 15
+  - 30
+  unit: percent
+initial_conditions: []
+name: digital_comms_fixed_network
+classname: DigitalCommsWrapper
+path: models/digital_comms/run.py
+outputs:
+- dims: []
+  name: interventions
+  dtype: int
+  unit: assets
+- description: ' '
+  dims:
+  - broadband_distributions
+  - annual
+  name: distribution_upgrades
+  dtype: int
+  unit: GBP
+- dims:
+  - broadband_distributions
+  name: distribution_upgrade_costs_fttp
+  dtype: int
+  unit: GBP
+- description: ' '
+  dims:
+  - broadband_distributions
+  - annual
+  name: premises_by_distribution
+  dtype: int
+  unit: Number of premises
+- name: interventions
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: assets
+- name: distribution_upgrades
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: GBP
+- name: distribution_upgrade_costs_fttp
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: GBP
+- name: distribution_upgrade_costs_fttdp
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: GBP
+- name: premises_upgrade_costs_fttp
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: GBP
+- name: premises_upgrade_costs_fttdp
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: GBP
+- name: premises_by_distribution
+  dims: 
+  - broadband_distributions
+  - annual
+  dtype: int
+  unit: premises 
+- name: premises_adoption_desirability
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: premises_connection_statistics
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: premises_passed_with_fttp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: percentage_of_premises_passed_with_fttp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises 
+- name: premises_connected_with_fttp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: percentage_of_premises_connected_with_fttp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises 
+- name: premises_passed_with_fttdp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: percentage_of_premises_passed_with_fttdp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises 
+- name: premises_connected_with_fttdp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: percentage_of_premises_connected_with_fttdp
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises   
+- name: percentage_of_premises_with_fttc
+  dims: 
+  - national
+  - annual
+  dtype: int
+  unit: premises
+- name: lad_premises_with_fttp
+  dims: 
+  - lad_uk_2016
+  - annual
+  dtype: int
+  unit: premises
+- name: lad_premises_with_fttdp
+  dims: 
+  - lad_uk_2016
+  - annual
+  dtype: int
+  unit: premises
+- name: lad_premises_with_fttc
+  dims: 
+  - lad_uk_2016
+  - annual
+  dtype: int
+  unit: premises
+- name: lad_premises_with_adsl
+  dims: 
+  - lad_uk_2016
+  - annual
+  dtype: int
+  unit: premises

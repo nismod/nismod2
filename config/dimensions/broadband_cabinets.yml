@@ -1,3 +1,3 @@
 name: broadband_cabinets
 description: Broadband network cabinets (Fixed network)
-elements: ../digital_comms/assets_layer3_cabinets.shp
+elements: ../digital_comms/processed/assets_layer3_cabinets.shp
