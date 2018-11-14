@@ -37,44 +37,44 @@ def model_configuration_run(modelrun_name):
     assert os.path.isdir(os.path.join(results_folder, modelrun_name))
 
 
-def check_result_exists(modelrun_name, sector_model_name, result_file_name):
+def check_result_exists(modelrun_name, sector_model_name, decision_iteration, result_file_name):
     """ Check if a certain result file was generated a modelrun
     """
     config_dirname = os.path.join(NISMOD_DIR, 'results')
     results_folder = os.path.join(
         config_dirname,
         modelrun_name,
-        os.listdir(os.path.join(config_dirname, modelrun_name))[0],
-        sector_model_name
+        sector_model_name,
+        decision_iteration
     )
     assert os.path.exists(os.path.join(results_folder, result_file_name))
 
 
 def test_digital_comms_run():
-    model_configuration_run('digital_comms_test')
+    model_configuration_run('digital_comms_b_fttdp_r')
 
-    check_result_exists('digital_comms_test', 'digital_comms',
-                        'output_distribution_upgrade_costs_fttp_timestep_2015_regions_' +
-                        'broadband_distributions_intervals_annual.dat')
-    check_result_exists('digital_comms_test', 'digital_comms',
-                        'output_distribution_upgrade_costs_fttp_timestep_2020_regions_' +
-                        'broadband_distributions_intervals_annual.dat')
-    check_result_exists('digital_comms_test', 'digital_comms',
-                        'output_distribution_upgrades_timestep_2015_regions_' +
-                        'broadband_distributions_intervals_annual.dat')
-    check_result_exists('digital_comms_test', 'digital_comms',
-                        'output_distribution_upgrades_timestep_2020_regions_' +
-                        'broadband_distributions_intervals_annual.dat')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_distribution_upgrade_costs_fttdp_timestep_2020.csv')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_distribution_upgrades_timestep_2020.csv')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_lad_premises_with_fttdp_timestep_2020.csv')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_distribution_upgrade_costs_fttdp_timestep_2020.csv')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_lad_premises_with_fttp_timestep_2020.csv')
+    check_result_exists('digital_comms_b_fttdp_r', 'digital_comms_fixed_network', 'decision_0',
+                        'output_percentage_of_premises_connected_with_fttdp_timestep_2020.csv')
 
-
+@mark.skip
 def test_energy_demand_run():
     model_configuration_run('energy_demand_test')
 
-
+@mark.skip
 def test_energy_supply_run():
     model_configuration_run('energy_supply_test')
 
-
+@mark.skip
 def test_transport_run():
     model_configuration_run('transport_test')
 
