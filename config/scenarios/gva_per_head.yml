@@ -1,0 +1,22 @@
+name: gva_per_head
+description: Gross value added
+provides:
+  - name: gva_per_head
+    description: ''
+    dims:
+    - lad_uk_2016
+    dtype: float
+    unit: GBP
+  - name: gva_per_sector
+    dtype: float
+    unit: GBP
+    dims:
+    - lad_uk_2016
+    - sectors
+    description: GVA per industrial sector
+variants:
+  - name: gva_baseline
+    description: Baseline gva for the UK
+    data:
+      gva_per_head: gva_sven.csv
+      gva_per_sector: ed_gva_sector.csv

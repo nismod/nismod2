@@ -1,3 +1,9 @@
+name: energy_demand_constrained
+scenarios:     # Select 0 or more of the scenario sets
+- population
+- gva_per_head
+description: The future demand for energy in the UK
+model_dependencies: []
 sector_models:
 - energy_demand_constrained
 scenario_dependencies:
@@ -27,9 +33,3 @@ narratives:
     data:
       generic_enduse_change_end_yr: ed_central_assumptions.csv
       generic_enduse_change_value: ed_central_assumptions.csv
-name: energy_demand_constrained
-scenarios:
-- population
-- gva
-description: The future demand for energy in the UK
-model_dependencies: []

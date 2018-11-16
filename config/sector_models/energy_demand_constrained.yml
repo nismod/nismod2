@@ -18,7 +18,6 @@ parameters:
   - enduses
   dtype: int
 name: energy_demand_constrained
-interventions: []
 inputs:
 - name: population
   unit: people
@@ -26,7 +25,6 @@ inputs:
   - lad_uk_2016
   dtype: float
 - name: gva_per_head
-  unit: GBP
   dims:
   - lad_uk_2016
   dtype: float
@@ -416,3 +414,5 @@ outputs:
   - lad_uk_2016
   - hourly
   dtype: float
+# ---------------------------------------------------
+interventions: []
