@@ -297,9 +297,6 @@ class EnergySupplyWrapper(SectorModel):
         nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
         return os.path.join(nismod_dir, 'install', 'energy_supply', 'Energy_Supply_Master.exe')
 
-    def extract_obj(self, results):
-        return 0
-
 def establish_connection():
     """Connect to an existing database
     """

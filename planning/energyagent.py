@@ -1,6 +1,9 @@
 from copy import copy
 
 from smif.decision.decision import RuleBased
+from smif.data_layer.data_array import DataArray
+from logging import getLogger
+import pandas as pd
 
 
 class EnergyAgent(RuleBased):
@@ -24,6 +27,7 @@ class EnergyAgent(RuleBased):
     def __init__(self, timesteps, register):
         super().__init__(timesteps, register)
         self.model_name = 'energy_supply'
+        self.logger = getLogger(__name__)
 
     @staticmethod
     def from_dict(config):
@@ -32,33 +36,62 @@ class EnergyAgent(RuleBased):
         return EnergyAgent(timesteps, register)
 
     def get_decision(self, data_handle):
-        budget = self.run_regulator(data_handle)
-        decisions = self.run_power_producer(data_handle, budget)
+        budget = self.run_critic(data_handle)
+        decisions = self.run_actor(data_handle, budget)
         return decisions
 
-    def run_regulator(self, data_handle):
-        """
+    def run_critic(self, data_handle):
+        """Simulates the operation of an energy regulator
+
+        Arguments
+        ---------
         data_handle
         """
 
-        budget = 100
+        EMISSIONS_CAP = 9999
 
         iteration = data_handle.decision_iteration
+        self.logger.debug("Current iteration is %s", iteration)
         if data_handle.current_timestep > data_handle.base_timestep:
-            self.logger.debug("Current timestep %s is greater than base timestep %s",   data_handle.current_timestep, data_handle.base_timestep)
-            output_name = 'total_opt_cost'
-            cost = data_handle.get_results(model_name='energy_supply_toy',
-                                           output_name=output_name,
-                                           timestep=data_handle.previous_timestep,
-                                           decision_iteration=iteration)
-            budget -= cost
+            self.logger.debug("Current timestep %s is greater than base timestep %s",  
+                              data_handle.current_timestep, data_handle.base_timestep)
+            emissions = self.get_emissions(data_handle)
+        else:
+            emissions = 0
 
-        return budget
+        EMISSIONS_CAP -= emissions
 
-    def run_power_producer(self, data_handle, budget):
-        """
-        data_handle
-        budget : float
+        self.satisfied = True
+        
+        return EMISSIONS_CAP
+
+    def get_emissions(self, data_handle):
+        output_names = ['emissions_eh', 'emissions_bb']
+        df = pd.DataFrame()
+        for output_name in output_names:
+            da = self._get_results(data_handle, output_name)
+            df.insert(0, output_name, da.as_df())
+            self.logger.debug("Retrieved emissions for %s: %s", 
+                            data_handle.previous_timestep,
+                            output_name)
+        return df.sum()
+
+
+    def _get_results(self, data_handle, output_name) -> DataArray:
+        previous_timestep = data_handle.previous_timestep
+        iteration = self._max_iteration_by_timestep[previous_timestep]
+        return data_handle.get_results(model_name='energy_supply_toy',
+                                       output_name=output_name,
+                                       timestep=previous_timestep,
+                                       decision_iteration=iteration)
+
+    def run_actor(self, data_handle, budget):
+        """Simulates the operation of a power producer
+
+        Arguments
+        ---------
+        data_handle: smif.data_layer.data_handle.DataHandle
+        budget: float
         """
         cheapest_first = []
         for name, item in self.register.items():
@@ -71,7 +104,7 @@ class EnergyAgent(RuleBased):
             except(TypeError):
                 cheapest_first.append((name, float("inf")))
 
-        sorted(cheapest_first, key=lambda x: float(x[1]), reverse=False)
+        cheapest_first = sorted(cheapest_first, key=lambda x: float(x[1]), reverse=False)
 
         within_budget = []
         remaining_budget = copy(budget)
@@ -81,6 +114,10 @@ class EnergyAgent(RuleBased):
                                       'build_year': data_handle.current_timestep})
                 remaining_budget -= intervention[1]
 
+        self.logger.debug("Remaining budget: %s", remaining_budget)
+        
+        self.logger.debug("List of cheapest interventions: %s", cheapest_first)
+        self.logger.debug(within_budget)
         return within_budget
 
 def simple_lcoe(capital_cost, lifetime, capacity_factor, discount_rate):
