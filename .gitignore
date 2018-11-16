@@ -136,10 +136,11 @@ ENV/
 
 # Provisioning config file
 provision/ftp.ini
-provision/config.ini
+models/*/*.ini
 
 # Working directories
 install
 data
 tmp
 data_energy_demand
+
