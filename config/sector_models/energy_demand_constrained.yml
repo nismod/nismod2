@@ -25,6 +25,7 @@ inputs:
   - lad_uk_2016
   dtype: float
 - name: gva_per_head
+  unit: GBP
   dims:
   - lad_uk_2016
   dtype: float

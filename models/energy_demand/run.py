@@ -232,14 +232,14 @@ class EDWrapper(SectorModel):
 
         data['scenario_data'] = defaultdict(dict)
 
-        pop_array_by = data_handle.get_base_timestep_data('population')     # Population
-        gva_array_by = data_handle.get_base_timestep_data('gva_per_head')   # Overall GVA per head
-
+        pop_array_by = data_handle.get_base_timestep_data('population').as_ndarray()     # Population
+        gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()   # Overall GVA per head
+        gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector').as_ndarray()
 
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        gva_array_by_new = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
+        pop_array_by_new = assign_array_to_dict(pop_array_by, data['regions'])
+        gva_array_by_new = assign_array_to_dict(gva_array_by, data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
 
@@ -247,16 +247,17 @@ class EDWrapper(SectorModel):
         sectors_to_load = [2, 3, 4, 5, 6, 8, 9, 29, 11, 12, 10, 15, 14, 19, 17, 40, 41, 28, 35, 23, 27]
         sector_data = {}
         for gva_sector_nr in sectors_to_load:
-            gva_sector_data = data_handle.get_base_timestep_data('gva_per_head_sector__{}'.format(gva_sector_nr))
-            sector_data[gva_sector_nr] = assign_array_to_dict(gva_sector_data.as_ndarray(), regions)
+            single_sector_data = gva_sector_data["sector_{}".format(gva_sector_nr)]
+            sector_data[gva_sector_nr] = assign_array_to_dict(single_sector_data, regions)
+
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------
         pop_array_cy = data_handle.get_data('population')
         gva_array_cy = data_handle.get_data('gva_per_head')
 
-        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy.as_ndarray(), data['regions'])
-        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy.as_ndarray(), data['regions'])
+        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
+        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
 
         # -----------------------------------------
         # Load data

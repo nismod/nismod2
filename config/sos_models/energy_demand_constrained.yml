@@ -12,11 +12,11 @@ scenario_dependencies:
   source_output: population
   sink_input: population
 - sink: energy_demand_constrained
-  source: gva
-  source_output: gva
+  source: gva_per_head
+  source_output: gva_per_head
   sink_input: gva_per_head
 - sink: energy_demand_constrained
-  source: gva
+  source: gva_per_head
   source_output: gva_per_sector
   sink_input: gva_per_sector
 narratives:
