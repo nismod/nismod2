@@ -1,0 +1,3 @@
+name: enduses
+description: The categories by which energy is demanded
+elements: enduses.csv

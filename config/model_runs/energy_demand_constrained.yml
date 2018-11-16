@@ -1,13 +1,15 @@
-name: energy_demand_constrained
-description: Run energy demand for baseline population scenario
+narratives:
+  end_use_change:
+  - central_narrative
+scenarios:
+  gva: gva_baseline
+  population: pop_low
+strategies: {}
 stamp: '2017-11-07T14:15:00+00:00'
 timesteps:
 - 2015
 - 2050
+name: energy_demand_constrained
+description: Run energy demand for baseline population scenario
 sos_model: energy_demand_constrained
 decision_module: ''
-scenarios:
-  population: pop_low #pop_low, pop_high, pop_baseline
-  gva: gva_baseline
-narratives: {}
-strategies: {}
