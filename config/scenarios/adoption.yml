@@ -1,0 +1,40 @@
+description: Adoption curves for FTTP
+provides:
+- description: Adoption rate
+  dtype: int
+  name: adoption
+  unit: '?'
+  abs_range:
+  - 0
+  - 1000
+  dims:
+  - national
+  sug_range:
+  - 0
+  - 100
+variants:
+- description: Baseline FTTP adoption for the UK
+  data:
+    adoption: fttp_baseline_adoption.csv
+  name: fttp_baseline_adoption
+- description: High FTTP adoption for the UK
+  data:
+    adoption: fttp_high_adoption.csv
+  name: fttp_high_adoption
+- description: Low FTTP adoption for the UK
+  data:
+    adoption: fttp_low_adoption.csv
+  name: fttp_low_adoption
+- description: Baseline FTTDP adoption for the UK
+  data:
+    adoption: fttdp_baseline_adoption.csv
+  name: fttdp_baseline_adoption
+- description: High FTTDP adoption for the UK
+  data:
+    adoption: fttdp_high_adoption.csv
+  name: fttdp_high_adoption
+- description: Low FTTDP adoption for the UK
+  data:
+    adoption: fttdp_low_adoption.csv
+  name: fttdp_low_adoption
+name: adoption

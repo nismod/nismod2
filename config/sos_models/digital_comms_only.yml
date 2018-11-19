@@ -1,8 +1,0 @@
-description: Test model for digital_comms
-name: digital_comms_only
-sector_models:
-- digital_comms
-scenarios: []
-narratives: []
-scenario_dependencies: []
-model_dependencies: []
