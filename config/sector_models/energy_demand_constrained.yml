@@ -3,6 +3,23 @@ description: balbla
 classname: EDWrapper
 initial_conditions: []
 parameters:
+#- description: Spatial explicit diffusion or not
+#  default: spatial_explicit_diffusion.csv
+#  name: spatial_explicit_diffusion
+#  unit: 'integer'
+#  dims:
+#  dtype: float
+#- description: Temperatures
+#  default: test_temps.csv
+#  name: temperatures
+#  unit: 'integer'
+#  dims:
+#  - station_id
+#  - weather_inst
+#  - yearday
+#  - t_min
+#  - t_max
+#  dtype: float
 - description: Overall change in energy demand per enduse
   default: generic_enduses_default.csv
   name: generic_enduse_change_value
@@ -10,7 +27,7 @@ parameters:
   dims:
   - enduses
   dtype: float
-- description: Overall change in energy demand per enduse
+- description: Overall change in energy demand per enduse #TODO WHAT IS THIS FOR?
   default: generic_enduses_default.csv
   name: generic_enduse_change_end_yr
   unit: year

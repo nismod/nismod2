@@ -1,4 +1,6 @@
 """The sector model wrapper for smif to run the energy demand model test
+
+TODO: CHANGE 'latitude' : float(row['Latitude']),
 """
 import os
 import configparser
@@ -7,6 +9,9 @@ from collections import defaultdict
 from shapely.geometry import shape, mapping
 
 from smif.model.sector_model import SectorModel
+
+from energy_demand.assumptions import strategy_vars_def
+from energy_demand.read_write import narrative_related
 
 from energy_demand.assumptions import general_assumptions
 from energy_demand import wrapper_model
@@ -65,7 +70,7 @@ class EDWrapper(SectorModel):
     def _get_config_paths(self, config):
         """Create scenario name and get paths
         """
-        name_scenario = "TEST_NAME" #str(data_handle['config_folder_path'])
+        name_scenario = "scenario_A" #str(data_handle['config_folder_path'])
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
 
         path_new_scenario = os.path.join(temp_path, name_scenario)
@@ -118,8 +123,6 @@ class EDWrapper(SectorModel):
         ]
 
     def _get_coordinates(self, regions):
-
-
         centroids = self.centroids_as_features(regions.elements)
         coordinates = basic_functions.get_long_lat_decimal_degrees(centroids)
         return coordinates
@@ -132,15 +135,33 @@ class EDWrapper(SectorModel):
 
         config = self._get_configs()
         region_set_name = self._get_region_set_name()
-
+        logging.info("============Start before_model_run===============================================")
         data = {}
 
         curr_yr = self._get_base_yr(data_handle)
         simulation_yrs = self._get_simulation_yrs(data_handle)
-
+        logging.info("===== A")
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
+        # ---------
+        # LOAD ALL NARRATIVE PARAMS
+        # ----------NEW
+        '''logging.info("===== B")
+        default_streategy_vars = strategy_vars_def.load_param_assump(assumptions=None)
+        
+        narrative_params = {}
+        for var_name, var_entries in default_streategy_vars.items():
+            crit_single_dim = narrative_related.crit_dim_var(var_entries)
+
+            if crit_single_dim:
+                narrative_params[var_name] = data_handle.get_parameter(var_name)
+        
+
+        logging.info("===== C")
+        logging.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        logging.info(narrative_params)
+        # ----------NEW'''
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -150,25 +171,36 @@ class EDWrapper(SectorModel):
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head')   # Overall GVA per head
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
+        #TODO GET TEMPERATURES
+        #data['temp_data']  = data_handle.get_base_timestep_data('temperatures')
+        #data['weather_stations'] = data_handle.get_base_timestep_data('weather_stations')
+
+        logging.info("===== B")
         pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
         gva_array_by_new = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
+        logging.info("===== B2")
 
         pop_density = {}
         for region_nr, region in enumerate(pop_array_by.spec.dim_coords(region_set_name).elements):
             pop_density[region.name] = pop_array_by.as_ndarray()[region_nr] / region.shape.area
 
         # Load sector specific GVA data, if available
-        sectors_to_load = [2, 3, 4, 5, 6, 8, 9, 29, 11, 12, 10, 15, 14, 19, 17, 40, 41, 28, 35, 23, 27]
-        sector_data = {}
-        for gva_sector_nr in sectors_to_load:
+        sector_gva_data = {}
+        sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             gva_sector_data = data_handle.get_base_timestep_data('gva_per_head_sector__{}'.format(gva_sector_nr))
-            sector_data[gva_sector_nr] = assign_array_to_dict(gva_sector_data.as_ndarray(), regions)
+            sector_gva_data[sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray(), regions)
+        logging.info("===== C")
+
 
         # -----------------------------------------
         # Load data
         # ------------------------------------------
+
+        logging.debug("-----------AA" + str(narrative_params))
+        logging.info("============ A ===============================================")
         data = wrapper_model.load_data_before_simulation(
             data,
             simulation_yrs,
@@ -176,11 +208,12 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            gva_data)
+            sector_gva_data)
 
         # -----------------------------------------
         # Perform pre-step calculations
         # ------------------------------------------
+        logging.info("============ B ===============================================")
         regional_vars, non_regional_vars, fuel_disagg = wrapper_model.before_simulation(
             data,
             config,
@@ -190,10 +223,11 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         # Write pre_simulate to disc
         # ------------------------------------------
-        logging.info("... writing results to disc from before_model_run()")
-        wrapper_model.write_yaml(regional_vars, os.path.join(temp_path, "regional_vars.yml"))
-        wrapper_model.write_yaml(non_regional_vars, os.path.join(temp_path, "non_regional_vars.yml"))
-        wrapper_model.write_yaml(fuel_disagg, os.path.join(temp_path, "fuel_disagg.yml"))
+        logging.info("============blablan===============================================")
+        logging.info("... writing results to disc from before_model_run() " + str(temp_path))
+        write_data.write_yaml(regional_vars, os.path.join(temp_path, "regional_vars.yml"))
+        write_data.write_yaml(non_regional_vars, os.path.join(temp_path, "non_regional_vars.yml"))
+        write_data.write_yaml(fuel_disagg, os.path.join(temp_path, "fuel_disagg.yml"))
 
         # ------------------------------------------------
         # Plotting
@@ -229,32 +263,31 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read all other data
         # --------------------------------------------------
-
         data['scenario_data'] = defaultdict(dict)
 
-        pop_array_by = data_handle.get_base_timestep_data('population').as_ndarray()     # Population
+        pop_array_by = data_handle.get_base_timestep_data('population')     # Population
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()   # Overall GVA per head
-        gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector').as_ndarray()
+        gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
 
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        pop_array_by_new = assign_array_to_dict(pop_array_by, data['regions'])
+        pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
         gva_array_by_new = assign_array_to_dict(gva_array_by, data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
 
         # Load sector specific GVA data, if available
-        sectors_to_load = [2, 3, 4, 5, 6, 8, 9, 29, 11, 12, 10, 15, 14, 19, 17, 40, 41, 28, 35, 23, 27]
-        sector_data = {}
-        for gva_sector_nr in sectors_to_load:
-            single_sector_data = gva_sector_data["sector_{}".format(gva_sector_nr)]
-            sector_data[gva_sector_nr] = assign_array_to_dict(single_sector_data, regions)
+        sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        sector_gva_data = {}
+        for gva_sector_nr, sector_id in enumerate(sectors_to_load):
+            single_sector_data = gva_sector_data.as_ndarray()[:, gva_sector_nr]
+            sector_gva_data[sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
 
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------
-        pop_array_cy = data_handle.get_data('population')
-        gva_array_cy = data_handle.get_data('gva_per_head')
+        pop_array_cy = data_handle.get_data('population').as_ndarray()
+        gva_array_cy = data_handle.get_data('gva_per_head').as_ndarray()
 
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
@@ -269,7 +302,7 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            gva_data)
+            sector_gva_data)
 
         # -----------------------------------------
         # Specific region selection
@@ -289,10 +322,10 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read results from pre_simulate from disc
         # --------------------------------------------------
-        logging.info("... reading in results from before_model_run()")
-        regional_vars = wrapper_model.read_yaml(os.path.join(temp_path, "regional_vars.yml"))
-        non_regional_vars = wrapper_model.read_yaml(os.path.join(temp_path, "non_regional_vars.yml"))
-        data['fuel_disagg'] = wrapper_model.read_yaml(os.path.join(temp_path, "fuel_disagg.yml"))
+        logging.info("... reading in results from before_model_run()" + str(temp_path))
+        regional_vars = read_data.read_yaml(os.path.join(temp_path, "regional_vars.yml"))
+        non_regional_vars = read_data.read_yaml(os.path.join(temp_path, "non_regional_vars.yml"))
+        data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_path, "fuel_disagg.yml"))
         setattr(data['assumptions'], 'regional_vars', regional_vars)
         setattr(data['assumptions'], 'non_regional_vars', non_regional_vars)
 

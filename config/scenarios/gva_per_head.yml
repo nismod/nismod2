@@ -14,9 +14,17 @@ provides:
     - lad_uk_2016
     - sectors
     description: GVA per industrial sector
+#  - name: temperatures
+#    dtype: float
+#    unit: GBP
+#    dims:
+#    - t_min
+#    - t_max
+#    - station_id
+#    description: Temperatures
 variants:
   - name: gva_baseline
     description: Baseline gva for the UK
     data:
       gva_per_head: gva_sven.csv
-      gva_per_sector: ed_gva_sector.csv
+      gva_per_sector: ed_gva_sectors.csv
