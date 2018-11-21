@@ -70,7 +70,7 @@ class EDWrapper(SectorModel):
     def _get_config_paths(self, config):
         """Create scenario name and get paths
         """
-        name_scenario = "scenario_A" #str(data_handle['config_folder_path'])
+        name_scenario = "scenario_A" #str(data_handle['config_folder_path']) #TODO
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
 
         path_new_scenario = os.path.join(temp_path, name_scenario)
@@ -140,13 +140,21 @@ class EDWrapper(SectorModel):
 
         curr_yr = self._get_base_yr(data_handle)
         simulation_yrs = self._get_simulation_yrs(data_handle)
-        logging.info("===== A")
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
         # ---------
         # LOAD ALL NARRATIVE PARAMS
         # ----------NEW
+        print(data_handle.get_parameter('spatial_explicit_diffusion').as_ndarray())
+        #print(data_handle.('temperatures').as_ndarray())
+
+        # Load all standard variables of parameters
+        #print(data_handle.parameters)
+        #raise Exception
+        ##default_streategy_vars = strategy_vars_def.load_param_assump(
+        ##    assumptions=data['assumptions'])
+        
         '''logging.info("===== B")
         default_streategy_vars = strategy_vars_def.load_param_assump(assumptions=None)
         
@@ -174,32 +182,33 @@ class EDWrapper(SectorModel):
         #TODO GET TEMPERATURES
         #data['temp_data']  = data_handle.get_base_timestep_data('temperatures')
         #data['weather_stations'] = data_handle.get_base_timestep_data('weather_stations')
-
-        logging.info("===== B")
         pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
         gva_array_by_new = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
-        logging.info("===== B2")
 
         pop_density = {}
         for region_nr, region in enumerate(pop_array_by.spec.dim_coords(region_set_name).elements):
-            pop_density[region.name] = pop_array_by.as_ndarray()[region_nr] / region.shape.area
+            area_region = shape(region['feature']['geometry']).area
+            population = pop_array_by.as_ndarray()[region_nr]
+            pop_density[region['name']] = population / area_region
 
         # Load sector specific GVA data, if available
         sector_gva_data = {}
-        sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
-        for gva_sector_nr, sector_id in enumerate(sectors_to_load):
-            gva_sector_data = data_handle.get_base_timestep_data('gva_per_head_sector__{}'.format(gva_sector_nr))
-            sector_gva_data[sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray(), regions)
-        logging.info("===== C")
+        gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
+        
+        sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
+        '''sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
+        sectors_to_load = []
+        for i in sectors_to_load_str:
+            sectors_to_load.append(int(i))'''
 
+        for gva_sector_nr, sector_id in enumerate(sectors_to_load):
+            sector_gva_data[sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], data['regions'])
 
         # -----------------------------------------
         # Load data
         # ------------------------------------------
-
-        logging.debug("-----------AA" + str(narrative_params))
         logging.info("============ A ===============================================")
         data = wrapper_model.load_data_before_simulation(
             data,
@@ -232,7 +241,7 @@ class EDWrapper(SectorModel):
         # ------------------------------------------------
         # Plotting
         # ------------------------------------------------
-        wrapper_model.plots(data, curr_yr, fuel_disagg, config)
+        ##wrapper_model.plots(data, curr_yr, fuel_disagg, config)
 
     def simulate(self, data_handle):
         """Runs the Energy Demand model for one `timestep`
@@ -278,6 +287,11 @@ class EDWrapper(SectorModel):
 
         # Load sector specific GVA data, if available
         sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        '''sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        sectors_to_load = []
+        for i in sectors_to_load_str:
+            sectors_to_load.append(int(i))'''
+
         sector_gva_data = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             single_sector_data = gva_sector_data.as_ndarray()[:, gva_sector_nr]
@@ -341,10 +355,11 @@ class EDWrapper(SectorModel):
         data['assumptions'].technologies.update(updated_techs)
 
         # Write population data to file
+
         write_data.write_scenaric_population_data(
             curr_yr,
             os.path.join(data['path_new_scenario'], 'model_run_pop'),
-            pop_array_cy[:, 0])
+            pop_array_cy)
 
         # --------------------------------------------------
         # Run main model function
