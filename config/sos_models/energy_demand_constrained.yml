@@ -2,6 +2,7 @@ name: energy_demand_constrained
 scenarios:     # Select 0 or more of the scenario sets
 - population
 - gva_per_head
+#- temperature
 description: The future demand for energy in the UK
 model_dependencies: []
 sector_models:

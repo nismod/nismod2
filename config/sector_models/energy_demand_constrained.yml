@@ -2,6 +2,7 @@ path: models/energy_demand/run.py
 description: balbla
 classname: EDWrapper
 initial_conditions: []
+# Parameters-----------------------------------------------
 parameters:
 - description: Spatial explicit diffusion or not
   default: spatial_explicit_diffusion.csv
@@ -83,8 +84,18 @@ parameters:
   dims:
   - enduses
   dtype: int
+# -----------------------------------------------
 name: energy_demand_constrained
 inputs:
+#- name: temperature
+#  unit: Degree Celcius
+#  dims:
+#  - station_id
+#  - weather_inst
+#  - yearday
+#  - t_min
+#  - t_max
+#  dtype: float
 - name: population
   unit: people
   dims:
