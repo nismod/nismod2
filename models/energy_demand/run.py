@@ -140,15 +140,22 @@ class EDWrapper(SectorModel):
         return name_scenario, result_paths, temp_path, path_new_scenario
 
     def _get_standard_parameters(self, data_handle):
-
+        """Read float values
+        """
         # Load all standard variables of parameters
         all_parameter_names = list(data_handle.get_parameters().keys())
-
+        print("AL PARAMS " + str(all_parameter_names))
         params = {}
         for parameter in all_parameter_names:
             logging.info("... loading standard parameter '{}'".format(parameter))
-            params[parameter] = data_handle.get_parameter(parameter).as_ndarray()
-
+            loaded_array = data_handle.get_parameter(parameter).as_ndarray()
+            try:
+                # Single dim param
+                params[parameter] = float(loaded_array)
+            except:
+                # Multi dim param
+                params[parameter] = loaded_array
+  
         return params
 
     def _get_region_set_name(self):
@@ -209,19 +216,19 @@ class EDWrapper(SectorModel):
         #print(data_handle.get_parameter('spatial_explicit_diffusion').as_ndarray())
         #print(data_handle.get_scenario('temperatures').as_ndarray())
 
-        own_data_handler_parameters = self._get_standard_parameters(data_handle)
+        default_values = self._get_standard_parameters(data_handle)
 
-        default_values = {
-            'spatial_explicit_diffusion': int(own_data_handler_parameters['spatial_explicit_diffusion']),
-            'speed_con_max': 1,
-            'gshp_fraction': 0.1,
-            'rs_t_heating_by': 15.5,
-            'ss_t_heating_by': 15.5,
-            'ss_t_cooling_by': 5,
-            'is_t_heating_by': 15.5,
-            'smart_meter_p_by': 0.05,
-            'cooled_ss_floorarea_by': 0.35,
-            'p_cold_rolling_steel_by': 0.2}
+        '''default_values = {
+            'spatial_explicit_diffusion': own_data_handler_parameters['spatial_explicit_diffusion'],
+            'speed_con_max': own_data_handler_parameters['speed_con_max'],
+            'gshp_fraction': own_data_handler_parameters['gshp_fraction'],
+            'rs_t_heating_by': own_data_handler_parameters['rs_t_heating_by'],
+            'ss_t_heating_by': own_data_handler_parameters['ss_t_heating_by'],
+            'ss_t_cooling_by': own_data_handler_parameters['ss_t_cooling_by'],
+            'is_t_heating_by': own_data_handler_parameters['is_t_heating_by'],
+            'smart_meter_p_by': own_data_handler_parameters['smart_meter_p_by'],
+            'cooled_ss_floorarea_by': own_data_handler_parameters['cooled_ss_floorarea_by'],
+            'p_cold_rolling_steel_by': own_data_handler_parameters['p_cold_rolling_steel_by']}'''
         default_streategy_vars = strategy_vars_def.load_param_assump(
             default_values=default_values)
 
@@ -385,9 +392,9 @@ class EDWrapper(SectorModel):
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
 
-        own_data_handler_parameters = self._get_standard_parameters(data_handle)
+        default_values = self._get_standard_parameters(data_handle)
 
-        default_values = {
+        '''default_values = {
             'spatial_explicit_diffusion': int(own_data_handler_parameters['spatial_explicit_diffusion']),
             'speed_con_max': 1,
             'gshp_fraction': 0.1,
@@ -397,7 +404,7 @@ class EDWrapper(SectorModel):
             'is_t_heating_by': 15.5,
             'smart_meter_p_by': 0.05,
             'cooled_ss_floorarea_by': 0.35,
-            'p_cold_rolling_steel_by': 0.2}
+            'p_cold_rolling_steel_by': 0.2}'''
 
         default_streategy_vars = strategy_vars_def.load_param_assump(
             default_values=default_values)

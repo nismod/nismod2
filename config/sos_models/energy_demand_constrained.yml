@@ -19,10 +19,6 @@ scenario_dependencies:
   source: gva_per_head
   source_output: gva_per_sector
   sink_input: gva_per_sector
-#- sink: energy_demand_constrained
-#  source: temperatures
-#  source_output: temperatures
-#  sink_input: temperatures
 narratives:
 - name: end_use_change
   provides:
@@ -37,14 +33,3 @@ narratives:
     data:
       generic_enduse_change_end_yr: ed_central_assumptions.csv
       generic_enduse_change_value: ed_central_assumptions.csv
-#- name: temperatures
-#  provides:
-#    energy_demand_constrained:
-#      - temperatures
-#  description: ''
-#  sos_model: ''
-#  variants:
-#  - name: central_narrative
-#    description: ''
-#    data:
-#      temperatures: test_temps.csv

@@ -9,6 +9,66 @@ parameters:
   unit: 'integer'
   dims:
   dtype: float
+- description: Spatial diffusion speed
+  default: speed_con_max.csv
+  name: speed_con_max
+  unit: ''
+  dims:
+  dtype: float
+- description: Heat pump fractions
+  default: gshp_fraction.csv
+  name: gshp_fraction
+  unit: 'decimal'
+  dims:
+  dtype: float
+- description: Heat pump fractions
+  default: gshp_fraction.csv
+  name: gshp_fraction
+  unit: 'decimal'
+  dims:
+  dtype: float
+- description: Residential base temperature for by
+  default: rs_t_heating_by.csv
+  name: rs_t_heating_by
+  unit: 'Degree Celsius'
+  dims:
+  dtype: float
+- description: Service base temperature for by
+  default: ss_t_heating_by.csv
+  name: ss_t_heating_by
+  unit: 'Degree Celsius'
+  dims:
+  dtype: float
+- description: Industry base temperature for by
+  default: is_t_heating_by.csv
+  name: is_t_heating_by
+  unit: 'Degree Celsius'
+  dims:
+  dtype: float
+- description: Serivce base temperature for cooling by
+  default: ss_t_cooling_by.csv
+  name: ss_t_cooling_by
+  unit: 'Degree Celsius'
+  dims:
+  dtype: float
+- description: Smart meter penetration
+  default: smart_meter_p_by.csv
+  name: smart_meter_p_by
+  unit: 'decimal'
+  dims:
+  dtype: float
+- description: Fraction of cold rolling in steel manufacturing
+  default: p_cold_rolling_steel_by.csv
+  name: p_cold_rolling_steel_by
+  unit: 'decimal'
+  dims:
+  dtype: float
+- description: Share of cooled service floor area
+  default: cooled_ss_floorarea_by.csv
+  name: cooled_ss_floorarea_by
+  unit: 'decimal'
+  dims:
+  dtype: float
 - description: Overall change in energy demand per enduse
   default: generic_enduses_default.csv
   name: generic_enduse_change_value
