@@ -1,6 +1,14 @@
 """The sector model wrapper for smif to run the energy demand model test
 
 TODO: CHANGE 'latitude' : float(row['Latitude']),
+
+TODO LOAD SWITCHES
+    # Files to ignore in this folder
+    files_to_ignores = [
+        'switches_capacity.csv',
+        'switches_fuel.csv',
+        'switches_service.csv',
+        '_README_config_data.txt']
 """
 import os
 import configparser
@@ -143,7 +151,7 @@ class EDWrapper(SectorModel):
         coordinates = basic_functions.get_long_lat_decimal_degrees(centroids)
         return coordinates
 
-    def _calculate_pop_density(self, pop_array_by):
+    def _calculate_pop_density(self, pop_array_by, region_set_name):
         pop_density = {}
         for region_nr, region in enumerate(pop_array_by.spec.dim_coords(region_set_name).elements):
             area_region = shape(region['feature']['geometry']).area
@@ -181,23 +189,23 @@ class EDWrapper(SectorModel):
 
         # Get all scenario values #TODO TOM
         # ----------NEW
-        '''# LOAD FROM SCENARIOS
-        scenario_parameters = data_loader.loadscenario_parameters(
+        '''# LOAD FROM SCENARIOS 
+
+        narrative_variables = narrative_variables,
+        loaded_narrative_data =
+
+        narative_data = data_loader.load_smif_narrative_data(
                 default_strategy_var=default_streategy_vars,
-                path_csv=user_defined_config_path,
+                narrative_variables)narrative_variables,
+                loaded_narrative_data=loaded_narrative_data,
                 simulation_base_yr=data['assumptions'].base_yr,
                 simulation_end_yr=data['assumptions'].simulation_end_yr)
 
-        logging.info("All user_defined parameters %s", scenario_parameters.keys())
-        # --------------------------------------------------------
         # Replace standard narratives with user defined narratives from .csv files
-        # --------------------------------------------------------
         strategy_vars = data_loader.replace_variable(
-            scenario_parameters, strategy_vars)
+            narative_data, strategy_vars)
 
-        strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(
-            strategy_vars, narrative_crit=True)
-
+        strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(strategy_vars, narrative_crit=True)
         data['assumptions'].update('strategy_vars', strategy_vars_out)
 
         # Update technologies after strategy definition
@@ -215,6 +223,8 @@ class EDWrapper(SectorModel):
             end_yr=2050, # #TODO REPLACE
             base_yr=config['CONFIG']['base_yr'])
 
+
+
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -231,12 +241,11 @@ class EDWrapper(SectorModel):
         gva_array_by_new = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
-        pop_density = self._calculate_pop_density(pop_array_by)
+        pop_density = self._calculate_pop_density(pop_array_by, region_set_name)
 
 
         # Load sector specific GVA data, if available
         gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
-        
         sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
         '''sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
         sectors_to_load = []
@@ -257,9 +266,10 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            sector_gva_data,
-            strategy_vars)
+            sector_gva_data) #,
+            #strategy_vars)
 
+        data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
         # Perform pre-step calculations
         # ------------------------------------------
@@ -366,9 +376,10 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            sector_gva_data,
-            strategy_vars)
+            sector_gva_data) #,
+            #strategy_vars)
 
+        data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
         # Specific region selection
         # -----------------------------------------
