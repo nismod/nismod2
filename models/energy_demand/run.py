@@ -21,6 +21,54 @@ from energy_demand.read_write import write_data
 from energy_demand.read_write import read_data
 from energy_demand.read_write import data_loader
 
+def load_smif_parameters_NEW(
+        scenario_values,
+        default_streategy_vars=False,
+        end_yr=2050,
+        base_yr=2015):
+    strategy_vars = defaultdict(dict)
+
+    # ------------------------------------------------------------
+    # Create default narrative for every simulation parameter
+    # ------------------------------------------------------------
+    for var_name, var_entries in default_streategy_vars.items():
+        crit_single_dim = narrative_related.crit_dim_var(var_entries)
+
+        if crit_single_dim:
+            try:
+                scenario_value = scenario_values[var_name]
+            except:
+                logging.info("IMPORTANT WARNING: Pparamter could not be loaded from smif: `%s`", var_name)
+                scenario_value = var_entries['default_value']
+
+            # Create default narrative with only one timestep from simulation base year to simulation end year
+            strategy_vars[var_name] = narrative_related.default_narrative(
+                end_yr=end_yr,
+                value_by=var_entries['default_value'],                # Base year value,
+                value_ey=scenario_value,
+                diffusion_choice=var_entries['diffusion_type'],       # Sigmoid or linear,
+                base_yr=base_yr,
+                regional_specific=var_entries['regional_specific'])   # Criteria whether the same for all regions or not
+
+        else:
+            # Standard narrative for multidimensional narrative
+            for sub_var_name, sub_var_entries in var_entries.items():
+                try:
+                    scenario_value = scenario_values[var_name]
+                except:
+                    logging.warning("IMPORTANT WARNING: The paramter `%s` could not be loaded from smif ", var_name)
+                    scenario_value = sub_var_entries['scenario_value']
+
+                strategy_vars[var_name][sub_var_name] = narrative_related.default_narrative(
+                    end_yr=end_yr,
+                    value_by=sub_var_entries['default_value'],
+                    value_ey=scenario_value,
+                    diffusion_choice=sub_var_entries['diffusion_type'],
+                    base_yr=base_yr,
+                    regional_specific=sub_var_entries['regional_specific'])
+
+    return strategy_vars
+
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
     """
@@ -91,6 +139,18 @@ class EDWrapper(SectorModel):
 
         return name_scenario, result_paths, temp_path, path_new_scenario
 
+    def _get_standard_parameters(self, data_handle):
+
+        # Load all standard variables of parameters
+        all_parameter_names = list(data_handle.get_parameters().keys())
+
+        params = {}
+        for parameter in all_parameter_names:
+            logging.info("... loading standard parameter '{}'".format(parameter))
+            params[parameter] = data_handle.get_parameter(parameter).as_ndarray()
+
+        return params
+
     def _get_region_set_name(self):
         return 'lad_uk_2016'
 
@@ -146,30 +206,48 @@ class EDWrapper(SectorModel):
         # ---------
         # LOAD ALL NARRATIVE PARAMS
         # ----------NEW
-        print(data_handle.get_parameter('spatial_explicit_diffusion').as_ndarray())
-        #print(data_handle.('temperatures').as_ndarray())
+        #print(data_handle.get_parameter('spatial_explicit_diffusion').as_ndarray())
+        #print(data_handle.get_scenario('temperatures').as_ndarray())
 
-        # Load all standard variables of parameters
-        #print(data_handle.parameters)
-        #raise Exception
-        ##default_streategy_vars = strategy_vars_def.load_param_assump(
-        ##    assumptions=data['assumptions'])
-        
-        '''logging.info("===== B")
-        default_streategy_vars = strategy_vars_def.load_param_assump(assumptions=None)
-        
-        narrative_params = {}
-        for var_name, var_entries in default_streategy_vars.items():
-            crit_single_dim = narrative_related.crit_dim_var(var_entries)
+        own_data_handler_parameters = self._get_standard_parameters(data_handle)
 
-            if crit_single_dim:
-                narrative_params[var_name] = data_handle.get_parameter(var_name)
-        
+        default_values = {
+            'spatial_explicit_diffusion': int(own_data_handler_parameters['spatial_explicit_diffusion']),
+            'speed_con_max': 1,
+            'gshp_fraction': 0.1,
+            'rs_t_heating_by': 15.5,
+            'ss_t_heating_by': 15.5,
+            'ss_t_cooling_by': 5,
+            'is_t_heating_by': 15.5,
+            'smart_meter_p_by': 0.05,
+            'cooled_ss_floorarea_by': 0.35,
+            'p_cold_rolling_steel_by': 0.2}
+        default_streategy_vars = strategy_vars_def.load_param_assump(
+            default_values=default_values)
 
-        logging.info("===== C")
-        logging.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        logging.info(narrative_params)
-        # ----------NEW'''
+
+
+        # ----------NEW
+        '''# LOAD FROM SCENARIOS
+        _user_defined_vars = data_loader.load_user_defined_vars(
+                default_strategy_var=default_streategy_vars,
+                path_csv=user_defined_config_path,
+                simulation_base_yr=data['assumptions'].base_yr,
+                simulation_end_yr=data['assumptions'].simulation_end_yr)
+
+        logging.info("All user_defined parameters %s", _user_defined_vars.keys())
+        # --------------------------------------------------------
+        # Replace standard narratives with user defined narratives from .csv files
+        # --------------------------------------------------------
+        strategy_vars = data_loader.replace_variable(
+            _user_defined_vars, strategy_vars)'''
+        scenario_values = {}
+        strategy_vars = load_smif_parameters_NEW(
+            scenario_values=scenario_values,
+            default_streategy_vars=default_streategy_vars,
+            end_yr=2050,
+            base_yr=2015) #TODO REPLACE
+
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -217,7 +295,8 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            sector_gva_data)
+            sector_gva_data,
+            strategy_vars)
 
         # -----------------------------------------
         # Perform pre-step calculations
@@ -274,8 +353,8 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         data['scenario_data'] = defaultdict(dict)
 
-        pop_array_by = data_handle.get_base_timestep_data('population')     # Population
-        gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()   # Overall GVA per head
+        pop_array_by = data_handle.get_base_timestep_data('population')
+        gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()
         gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
 
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
@@ -306,6 +385,30 @@ class EDWrapper(SectorModel):
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
 
+        own_data_handler_parameters = self._get_standard_parameters(data_handle)
+
+        default_values = {
+            'spatial_explicit_diffusion': int(own_data_handler_parameters['spatial_explicit_diffusion']),
+            'speed_con_max': 1,
+            'gshp_fraction': 0.1,
+            'rs_t_heating_by': 15.5,
+            'ss_t_heating_by': 15.5,
+            'ss_t_cooling_by': 5,
+            'is_t_heating_by': 15.5,
+            'smart_meter_p_by': 0.05,
+            'cooled_ss_floorarea_by': 0.35,
+            'p_cold_rolling_steel_by': 0.2}
+
+        default_streategy_vars = strategy_vars_def.load_param_assump(
+            default_values=default_values)
+
+        scenario_values = {}
+        strategy_vars = load_smif_parameters_NEW(
+            scenario_values=scenario_values,
+            default_streategy_vars=default_streategy_vars,
+            end_yr=2050,
+            base_yr=2015) #TODO REPLACE
+
         # -----------------------------------------
         # Load data
         # -----------------------------------------
@@ -316,7 +419,8 @@ class EDWrapper(SectorModel):
             curr_yr,
             pop_array_by_new,
             gva_array_by_new,
-            sector_gva_data)
+            sector_gva_data,
+            strategy_vars)
 
         # -----------------------------------------
         # Specific region selection
