@@ -1,6 +1,6 @@
-narratives:
-  end_use_change:
-  - central_narrative
+narratives: {}
+#  energy_test:
+#    - central
 scenarios:
   gva_per_head: gva_baseline
   population: pop_low

@@ -180,14 +180,16 @@ class EDWrapper(SectorModel):
         print(data_handle.get_data('t_min', 2015).as_df())
         print(data_handle.get_data('t_max', 2015).as_df())
         #print(data_handle.get_data('population').as_ndarray())
-        raise Exception("___________________-- ddf __________________--")
+
+        #print(data_handle.get_parameter('switches_service').as_df())
+        #raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
          #TODO These are the standard parameters and not the narratives'
         default_values = self._get_standard_parameters(data_handle)
-        #print("========asdf")
-        #print(default_values['rs_t_heating_by'])
-        #raise Exception
+        print("========asdf")
+        print(default_values['rs_t_heating_by'])
+        raise Exception
 
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(

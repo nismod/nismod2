@@ -1,0 +1,12 @@
+name: energy_test
+description: Describes the energy_test landscape
+provides: 
+- name: rs_t_heating_by
+  description: High penetration of SMART technology on the demand side
+  dtype: float
+  unit: TODO
+variants:
+- name: central
+  description: TODO
+  data: 
+    rs_t_heating_by: high_tech_dsm.yml

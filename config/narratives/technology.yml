@@ -1,13 +1,12 @@
 name: technology
 description: Describes the evolution of technology
 provides:
-- name: High Tech Demand Side Management
-  description: High penetration of SMART technology on the demand side
+- name: rs_t_heating_by
+  description: 
   dtype: float
   unit: TODO
 variants:
 - name: test_narrative
   description: TODO
   data:
-    High Tech Demand Side Management: high_tech_dsm.yml
-    test_narrative: high_tech_dsm.yml
+    rs_t_heating_by: high_tech_dsm.yml
