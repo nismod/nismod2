@@ -32,7 +32,7 @@ printf "plot_crit = False\n" >> $base_path/models/energy_demand/wrapperconfig.in
 printf "crit_plot_enduse_lp = False\n" >> $base_path/models/energy_demand/wrapperconfig.ini
 printf "writeYAML_keynames = True\n" >> $base_path/models/energy_demand/wrapperconfig.ini
 printf "writeYAML = False\n" >> $base_path/models/energy_demand/wrapperconfig.ini
-
+printf "crit_temp_min_max = False\n" >> $base_path/models/energy_demand/wrapperconfig.ini
 
 # pip3 install -e /vagrant/models/energy_demand
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))

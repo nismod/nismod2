@@ -230,7 +230,9 @@ class EDWrapper(SectorModel):
 
         # Load switches
         raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
-    
+        raw_file_content_fuel_switches = []
+        raw_file_content_capacity_switches = []
+
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -250,7 +252,6 @@ class EDWrapper(SectorModel):
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
         pop_density = self._calculate_pop_density(pop_array_by, region_set_name)
 
-
         # Load sector specific GVA data, if available
         gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
         sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
@@ -269,8 +270,7 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr,
-            raw_file_content_service_switches)
+            curr_yr)
         
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
@@ -280,7 +280,10 @@ class EDWrapper(SectorModel):
             data,
             config,
             simulation_yrs,
-            pop_density)
+            pop_density,
+            raw_file_content_service_switches,
+            raw_file_content_fuel_switches,
+            raw_file_content_capacity_switches)
 
         # -----------------------------------------
         # Write pre_simulate to disc
@@ -383,8 +386,7 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr,
-            raw_file_content_service_switches)
+            curr_yr)
 
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
