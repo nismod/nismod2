@@ -182,15 +182,14 @@ class EDWrapper(SectorModel):
         #raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
-        default_values = self._get_standard_parameters(data_handle)
-    
+        default_values = self._get_standard_parameters(data_handle) #TODO HARDCODE PROBABLY
+
         default_streategy_vars = strategy_vars_def.load_param_assump(
-            default_values=default_values)
+            default_values=default_values,
+            hard_coded_default_val=False)
 
         # Get all scenario values #TODO TOM
-        # ----------NEW
         '''# LOAD FROM SCENARIOS 
-
         narrative_variables = narrative_variables,
         loaded_narrative_data =
 
@@ -214,21 +213,19 @@ class EDWrapper(SectorModel):
             data['assumptions'].strategy_vars['f_eff_achieved'],
             data['assumptions'].strategy_vars['gshp_fraction_ey'])
         data['assumptions'].technologies.update(technologies)
-                
-            '''
+        '''
         scenario_values = {}
         strategy_vars = strategy_vars_def.load_smif_parameters(
             scenario_values=scenario_values,
             default_streategy_vars=default_streategy_vars,
-            end_yr=2050, # #TODO REPLACE
+            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])
-
-
 
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
         data['scenario_data'] = defaultdict(dict)
+        data['scenario_data']['gva_industry'] = defaultdict(dict)
 
         pop_array_by = data_handle.get_base_timestep_data('population')     # Population
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head')   # Overall GVA per head
@@ -237,8 +234,8 @@ class EDWrapper(SectorModel):
         #TODO GET TEMPERATURES
         #data['temp_data']  = data_handle.get_base_timestep_data('temperatures')
         #data['weather_stations'] = data_handle.get_base_timestep_data('weather_stations')
-        pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        gva_array_by_new = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
         pop_density = self._calculate_pop_density(pop_array_by, region_set_name)
@@ -247,14 +244,14 @@ class EDWrapper(SectorModel):
         # Load sector specific GVA data, if available
         gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
         sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
-        '''sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
+        sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file #TODO STR NOT INT
         sectors_to_load = []
         for i in sectors_to_load_str:
-            sectors_to_load.append(int(i))'''
+            sectors_to_load.append(int(i))
 
-        sector_gva_data = {}
+        #sector_gva_by_new = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
-            sector_gva_data[sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], data['regions'])
+            data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], data['regions'])
 
         # -----------------------------------------
         # Load data
@@ -263,11 +260,11 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr,
-            pop_array_by_new,
-            gva_array_by_new,
-            sector_gva_data) #,
-            #strategy_vars)
+            curr_yr)#,
+            #pop_array_by_new,
+            #gva_array_by_new,
+            #sector_gva_by_new)
+
 
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
@@ -312,6 +309,7 @@ class EDWrapper(SectorModel):
         config = self._get_configs()
 
         curr_yr = self._get_simulation_yr(data_handle)
+        base_yr = config['CONFIG']['base_yr']
         simulation_yrs = self._get_simulation_yrs(data_handle)
 
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
@@ -321,35 +319,43 @@ class EDWrapper(SectorModel):
         # Read all other data
         # --------------------------------------------------
         data['scenario_data'] = defaultdict(dict)
+        data['scenario_data']['gva_industry'] = defaultdict(dict)
 
         pop_array_by = data_handle.get_base_timestep_data('population')
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()
-        gva_sector_data = data_handle.get_base_timestep_data('gva_per_sector')
+        gva_sector_by = data_handle.get_base_timestep_data('gva_per_sector')
 
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        pop_array_by_new = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        gva_array_by_new = assign_array_to_dict(gva_array_by, data['regions'])
+        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_by, data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
 
         # Load sector specific GVA data, if available
-        sectors_to_load = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
-        '''sectors_to_load_str = gva_sector_data.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        sectors_to_load = gva_sector_by.spec.dim_coords('sectors').ids #sectors to load from dimension file
+        sectors_to_load_str = gva_sector_by.spec.dim_coords('sectors').ids #sectors to load from dimension file
         sectors_to_load = []
         for i in sectors_to_load_str:
-            sectors_to_load.append(int(i))'''
+            sectors_to_load.append(int(i))
 
-        sector_gva_data = {}
+        #sector_gva_by_new = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
-            single_sector_data = gva_sector_data.as_ndarray()[:, gva_sector_nr]
-            sector_gva_data[sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
+            single_sector_data = gva_sector_by.as_ndarray()[:, gva_sector_nr]
+            #sector_gva_by_new[sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
+            data['scenario_data']['gva_industry'][base_yr][sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
 
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------
         pop_array_cy = data_handle.get_data('population').as_ndarray()
         gva_array_cy = data_handle.get_data('gva_per_head').as_ndarray()
+        '''gva_sector_cy = data_handle.get_data('gva_per_sector')
+
+        #sector_gva_cy_new = {}
+        for gva_sector_nr, sector_id in enumerate(sectors_to_load):
+            single_sector_data = gva_sector_cy.as_ndarray()[:, gva_sector_nr]
+            data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(single_sector_data, data['regions'])'''
 
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
@@ -363,7 +369,7 @@ class EDWrapper(SectorModel):
         strategy_vars = strategy_vars_def.load_smif_parameters(
             scenario_values=scenario_values,
             default_streategy_vars=default_streategy_vars,
-            end_yr=2050,
+            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr']) #TODO REPLACE
 
         # -----------------------------------------
@@ -373,11 +379,10 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr,
-            pop_array_by_new,
-            gva_array_by_new,
-            sector_gva_data) #,
-            #strategy_vars)
+            curr_yr)#,
+            #pop_array_by_new,
+            #gva_array_by_new,
+            #sector_gva_by_new)
 
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
@@ -417,7 +422,6 @@ class EDWrapper(SectorModel):
         data['assumptions'].technologies.update(updated_techs)
 
         # Write population data to file
-
         write_data.write_scenaric_population_data(
             curr_yr,
             os.path.join(data['path_new_scenario'], 'model_run_pop'),
@@ -447,7 +451,7 @@ class EDWrapper(SectorModel):
             region_selection)
 
         # --------------------------------------------------
-        # Pass results to smif
+        # Pass results to supply model and smif
         # --------------------------------------------------
         for key_name, result_to_txt in sim_obj.supply_results.items():
             if key_name in self.outputs.names:

@@ -4,6 +4,17 @@ classname: EDWrapper
 initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
+#- description: Service switches
+#  default: switches_service.csv
+#  name: switches_service
+#  unit: ''
+#  dims:
+#  - enduses
+#  - tech
+#  - service_share_ey
+#  - switch_yr
+#  - sector
+#  dtype: float
 - description: Spatial explicit diffusion or not
   default: spatial_explicit_diffusion.csv
   name: spatial_explicit_diffusion
@@ -32,7 +43,7 @@ parameters:
   default: rs_t_heating_by.csv
   name: rs_t_heating_by
   unit: 'Degree Celsius'
-  dims:
+  dims: #TODO ADD DIMENSIONS
   dtype: float
 - description: Service base temperature for by
   default: ss_t_heating_by.csv
@@ -77,7 +88,7 @@ parameters:
   dims:
   - enduses
   dtype: float
-- description: Overall change in energy demand per enduse #TODO WHAT IS THIS FOR?
+- description: Overall change in energy demand per enduse
   default: generic_enduses_default.csv
   name: generic_enduse_change_end_yr
   unit: year
