@@ -163,14 +163,14 @@ class EDWrapper(SectorModel):
     def before_model_run(self, data_handle):
         """Implement this method to conduct pre-model run tasks
         """
+        logging.info("============Start before_model_run===============================================")
         if self._get_base_yr(data_handle) != 2015:
             raise Exception("The first defined year in model config does not correspond to the hardcoded base year")
 
         config = self._get_configs()
         region_set_name = self._get_region_set_name()
-        logging.info("============Start before_model_run===============================================")
+        
         data = {}
-
         curr_yr = self._get_base_yr(data_handle)
         simulation_yrs = self._get_simulation_yrs(data_handle)
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
@@ -182,23 +182,28 @@ class EDWrapper(SectorModel):
         #raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
-        default_values = self._get_standard_parameters(data_handle) #TODO HARDCODE PROBABLY
+         #TODO These are the standard parameters and not the narratives'
+        default_values = self._get_standard_parameters(data_handle)
+        #print("========asdf")
+        #print(default_values['rs_t_heating_by'])
+        #raise Exception
 
+        # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
             default_values=default_values,
             hard_coded_default_val=False)
 
         # Get all scenario values #TODO TOM
         '''# LOAD FROM SCENARIOS 
-        narrative_variables = narrative_variables,
-        loaded_narrative_data =
-
+        narrative_variables = narrative_variables,  # All narrative variables
+        loaded_narrative_data =                     # All narrative data
+        # IDential to reading in raw files from folder (multidimensional narratives)
         narative_data = data_loader.load_smif_narrative_data(
-                default_strategy_var=default_streategy_vars,
-                narrative_variables)narrative_variables,
-                loaded_narrative_data=loaded_narrative_data,
-                simulation_base_yr=data['assumptions'].base_yr,
-                simulation_end_yr=data['assumptions'].simulation_end_yr)
+            default_strategy_var=default_streategy_vars,
+            narrative_variables=narrative_variables,
+            loaded_narrative_data=loaded_narrative_data,
+            simulation_base_yr=data['assumptions'].base_yr,
+            simulation_end_yr=data['assumptions'].simulation_end_yr)
 
         # Replace standard narratives with user defined narratives from .csv files
         strategy_vars = data_loader.replace_variable(
@@ -214,13 +219,18 @@ class EDWrapper(SectorModel):
             data['assumptions'].strategy_vars['gshp_fraction_ey'])
         data['assumptions'].technologies.update(technologies)
         '''
-        scenario_values = {}
+        narrative_values = {}
+        # Create single standard narrative
         strategy_vars = strategy_vars_def.load_smif_parameters(
-            scenario_values=scenario_values,
+            narrative_values=narrative_values,
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            base_yr=config['CONFIG']['base_yr'])
+            base_yr=config['CONFIG']['base_yr'],
+            mode='smif')
 
+        # Load switches
+        raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
+    
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -249,7 +259,6 @@ class EDWrapper(SectorModel):
         for i in sectors_to_load_str:
             sectors_to_load.append(int(i))
 
-        #sector_gva_by_new = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], data['regions'])
 
@@ -260,12 +269,9 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr)#,
-            #pop_array_by_new,
-            #gva_array_by_new,
-            #sector_gva_by_new)
-
-
+            curr_yr,
+            raw_file_content_service_switches)
+        
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
         # Perform pre-step calculations
@@ -327,8 +333,8 @@ class EDWrapper(SectorModel):
 
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_by, data['regions'])
+        data['scenario_data']['population'][base_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['gva_per_head'][base_yr] = assign_array_to_dict(gva_array_by, data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
 
@@ -339,10 +345,8 @@ class EDWrapper(SectorModel):
         for i in sectors_to_load_str:
             sectors_to_load.append(int(i))
 
-        #sector_gva_by_new = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             single_sector_data = gva_sector_by.as_ndarray()[:, gva_sector_nr]
-            #sector_gva_by_new[sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
             data['scenario_data']['gva_industry'][base_yr][sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
 
         # --------------------------------------------
@@ -350,12 +354,11 @@ class EDWrapper(SectorModel):
         # --------------------------------------------
         pop_array_cy = data_handle.get_data('population').as_ndarray()
         gva_array_cy = data_handle.get_data('gva_per_head').as_ndarray()
-        '''gva_sector_cy = data_handle.get_data('gva_per_sector')
+        gva_sector_cy = data_handle.get_data('gva_per_sector')
 
-        #sector_gva_cy_new = {}
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             single_sector_data = gva_sector_cy.as_ndarray()[:, gva_sector_nr]
-            data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(single_sector_data, data['regions'])'''
+            data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(single_sector_data, data['regions'])
 
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
@@ -365,13 +368,14 @@ class EDWrapper(SectorModel):
         default_streategy_vars = strategy_vars_def.load_param_assump(
             default_values=default_values)
 
-        scenario_values = {}
+        narrative_values = {}
         strategy_vars = strategy_vars_def.load_smif_parameters(
-            scenario_values=scenario_values,
+            narrative_values=narrative_values,
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            base_yr=config['CONFIG']['base_yr']) #TODO REPLACE
+            base_yr=config['CONFIG']['base_yr'])
 
+        raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
         # -----------------------------------------
         # Load data
         # -----------------------------------------
@@ -379,10 +383,8 @@ class EDWrapper(SectorModel):
             data,
             simulation_yrs,
             config,
-            curr_yr)#,
-            #pop_array_by_new,
-            #gva_array_by_new,
-            #sector_gva_by_new)
+            curr_yr,
+            raw_file_content_service_switches)
 
         data['assumptions'].update('strategy_vars', strategy_vars)
         # -----------------------------------------
