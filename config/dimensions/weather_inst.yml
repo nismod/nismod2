@@ -1,0 +1,3 @@
+name: weather_inst
+description: Climate realisation
+elements: weather_inst.csv

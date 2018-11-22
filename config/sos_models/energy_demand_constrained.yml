@@ -2,7 +2,7 @@ name: energy_demand_constrained
 scenarios:     # Select 0 or more of the scenario sets
 - population
 - gva_per_head
-#- temperature
+- temperature
 description: The future demand for energy in the UK
 model_dependencies: []
 sector_models:
@@ -20,6 +20,14 @@ scenario_dependencies:
   source: gva_per_head
   source_output: gva_per_sector
   sink_input: gva_per_sector
+- sink: energy_demand_constrained
+  source: temperature
+  source_output: t_min
+  sink_input: t_min
+- sink: energy_demand_constrained
+  source: temperature
+  source_output: t_max
+  sink_input: t_max
 narratives:
 - name: end_use_change
   provides:

@@ -4,6 +4,7 @@ narratives:
 scenarios:
   gva_per_head: gva_baseline
   population: pop_low
+  temperature: default_temperature
 strategies: {}
 stamp: '2017-11-07T14:15:00+00:00'
 timesteps:

@@ -1,10 +1,10 @@
-name: temperatures
+name: temperature
 description: Temperatuer description
 provides:
   - name: t_min
     description: 'Minimum daily temperature'
     dims:
-      - station_id
+      - station_ids
       - weather_inst
       - yearday
     dtype: float
@@ -12,13 +12,14 @@ provides:
   - name: t_max
     description: 'Minimum daily temperature'
     dims:
-      - station_id
+      - station_ids
       - weather_inst
       - yearday
     dtype: float
     unit: Degree Celcius
 variants:
-  - name: temperatures
+  - name: default_temperature
     description: Temperature description
     data:
-      population:test_temps.csv
+      t_min: test_temps.csv
+      t_max: test_temps.csv

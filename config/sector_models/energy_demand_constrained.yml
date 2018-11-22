@@ -98,15 +98,20 @@ parameters:
 # -----------------------------------------------
 name: energy_demand_constrained
 inputs:
-#- name: temperature
-#  unit: Degree Celcius
-#  dims:
-#  - station_id
-#  - weather_inst
-#  - yearday
-#  - t_min
-#  - t_max
-#  dtype: float
+- name: t_min
+  unit: Degree Celcius
+  dims:
+  - station_ids
+  - weather_inst
+  - yearday
+  dtype: float
+- name: t_max
+  unit: Degree Celcius
+  dims:
+  - station_ids
+  - weather_inst
+  - yearday
+  dtype: float
 - name: population
   unit: people
   dims:

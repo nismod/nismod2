@@ -177,9 +177,10 @@ class EDWrapper(SectorModel):
             config)
 
         # Load temperatures TODO TOM
-        #print(data_handle.get_data('test_temps').as_ndarray())
+        print(data_handle.get_data('t_min', 2015).as_df())
+        print(data_handle.get_data('t_max', 2015).as_df())
         #print(data_handle.get_data('population').as_ndarray())
-        #raise Exception("___________________-- ddf __________________--")
+        raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
          #TODO These are the standard parameters and not the narratives'
