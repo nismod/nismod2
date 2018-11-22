@@ -102,9 +102,14 @@ class EDWrapper(SectorModel):
     def _get_standard_parameters(self, data_handle):
         """Load all standard variables of parameters
         """
+        params = {}
+
+        # Load all scenario parameters
+        #params['is_t_heating_by'] = 
+
+
         all_parameter_names = list(data_handle.get_parameters().keys())
 
-        params = {}
         for parameter in all_parameter_names:
             logging.info("... loading standard parameter '{}'".format(parameter))
             loaded_array = data_handle.get_parameter(parameter).as_ndarray()
@@ -180,11 +185,13 @@ class EDWrapper(SectorModel):
         # 
         # -----------------------------
         #Load temperatures TODO TOM
-        print(data_handle.get_data('t_min', 2015).as_df())
-        print(data_handle.get_data('t_max', 2015).as_df())
+        # WORKS
+        ##print(data_handle.get_data('t_min', 2015).as_df())
+        ##print(data_handle.get_data('t_max', 2015).as_df())
         #print(data_handle.get_data('population').as_ndarray())
-
-        #print(data_handle.get_parameter('switches_service').as_df())
+        #print("--------------d")
+        #print(data_handle.get_parameter('is_t_heating_by'))
+        #data_handle.get_parameter()
         #raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
@@ -234,11 +241,6 @@ class EDWrapper(SectorModel):
             base_yr=config['CONFIG']['base_yr'],
             mode='smif')
 
-        # Load switches
-        raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
-        raw_file_content_fuel_switches = []
-        raw_file_content_capacity_switches = []
-
         # ------------------------------------------------
         # Load base year scenario data
         # ------------------------------------------------
@@ -277,12 +279,12 @@ class EDWrapper(SectorModel):
             simulation_yrs,
             config,
             curr_yr)
-        
         data['assumptions'].update('strategy_vars', strategy_vars)
 
         # -----------------------------------------
         # Perform pre-step calculations
         # ------------------------------------------
+        #TODO REPLACE WITH INTERVENTION??
         service_switches = read_data.service_switch(data['local_paths']['path_service_switch'], data['assumptions'].technologies)
         fuel_switches = read_data.read_fuel_switches(data['local_paths']['path_fuel_switches'], data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(data['local_paths']['path_capacity_installation'])

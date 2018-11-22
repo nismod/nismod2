@@ -2,7 +2,7 @@ name: energy_test
 description: Describes the energy_test landscape
 provides: 
 - name: rs_t_heating_by
-  description: High penetration of SMART technology on the demand side
+  description: ""
   dtype: float
   unit: TODO
 variants:
