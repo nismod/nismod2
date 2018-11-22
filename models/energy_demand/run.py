@@ -182,13 +182,12 @@ class EDWrapper(SectorModel):
             config)
 
         # -----------------------------
-        # 
+        # Load temperatures
         # -----------------------------
-        #Load temperatures TODO TOM
         # WORKS
         ##print(data_handle.get_data('t_min', 2015).as_df())
         ##print(data_handle.get_data('t_max', 2015).as_df())
-        #print(data_handle.get_data('population').as_ndarray())
+
         #print("--------------d")
         #print(data_handle.get_parameter('is_t_heating_by'))
         #data_handle.get_parameter()
@@ -224,16 +223,10 @@ class EDWrapper(SectorModel):
 
         strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(strategy_vars, narrative_crit=True)
         data['assumptions'].update('strategy_vars', strategy_vars_out)
-
-        # Update technologies after strategy definition
-        technologies = general_assumptions.update_technology_assumption(
-            data['assumptions'].technologies,
-            data['assumptions'].strategy_vars['f_eff_achieved'],
-            data['assumptions'].strategy_vars['gshp_fraction_ey'])
-        data['assumptions'].technologies.update(technologies)
         '''
         narrative_values = {}
-        # Create single standard narrative
+
+        # Create single standard narrative (DEFAULT)
         strategy_vars = strategy_vars_def.load_smif_parameters(
             narrative_values=narrative_values,
             default_streategy_vars=default_streategy_vars,
@@ -247,13 +240,10 @@ class EDWrapper(SectorModel):
         data['scenario_data'] = defaultdict(dict)
         data['scenario_data']['gva_industry'] = defaultdict(dict)
 
-        pop_array_by = data_handle.get_base_timestep_data('population')     # Population
-        gva_array_by = data_handle.get_base_timestep_data('gva_per_head')   # Overall GVA per head
+        pop_array_by = data_handle.get_base_timestep_data('population')
+        gva_array_by = data_handle.get_base_timestep_data('gva_per_head')
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        #TODO GET TEMPERATURES
-        #data['temp_data']  = data_handle.get_base_timestep_data('temperatures')
-        #data['weather_stations'] = data_handle.get_base_timestep_data('weather_stations')
         data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
@@ -281,14 +271,22 @@ class EDWrapper(SectorModel):
             curr_yr)
         data['assumptions'].update('strategy_vars', strategy_vars)
 
+        technologies = general_assumptions.update_technology_assumption(
+            data['assumptions'].technologies,
+            data['assumptions'].strategy_vars['f_eff_achieved'],
+            data['assumptions'].strategy_vars['gshp_fraction_ey'])
+        data['assumptions'].technologies.update(technologies)
+
         # -----------------------------------------
-        # Perform pre-step calculations
-        # ------------------------------------------
-        #TODO REPLACE WITH INTERVENTION??
+        # Load switches from intervention?? #TODO REPLACE WITH INTERVENTION??
+        # -----------------------------------------
         service_switches = read_data.service_switch(data['local_paths']['path_service_switch'], data['assumptions'].technologies)
         fuel_switches = read_data.read_fuel_switches(data['local_paths']['path_fuel_switches'], data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(data['local_paths']['path_capacity_installation'])
 
+        # -----------------------------------------
+        # Perform pre-step calculations
+        # ------------------------------------------
         regional_vars, non_regional_vars, fuel_disagg, crit_switch_happening = wrapper_model.before_simulation(
             data,
             config,
