@@ -176,7 +176,10 @@ class EDWrapper(SectorModel):
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
-        # Load temperatures TODO TOM
+        # -----------------------------
+        # 
+        # -----------------------------
+        #Load temperatures TODO TOM
         print(data_handle.get_data('t_min', 2015).as_df())
         print(data_handle.get_data('t_max', 2015).as_df())
         #print(data_handle.get_data('population').as_ndarray())
@@ -188,8 +191,8 @@ class EDWrapper(SectorModel):
          #TODO These are the standard parameters and not the narratives'
         default_values = self._get_standard_parameters(data_handle)
         print("========asdf")
-        print(default_values['rs_t_heating_by'])
-        raise Exception
+        #print(default_values['rs_t_heating_by'])
+        #raise Exception
 
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
@@ -276,17 +279,22 @@ class EDWrapper(SectorModel):
             curr_yr)
         
         data['assumptions'].update('strategy_vars', strategy_vars)
+
         # -----------------------------------------
         # Perform pre-step calculations
         # ------------------------------------------
-        regional_vars, non_regional_vars, fuel_disagg = wrapper_model.before_simulation(
+        service_switches = read_data.service_switch(data['local_paths']['path_service_switch'], data['assumptions'].technologies)
+        fuel_switches = read_data.read_fuel_switches(data['local_paths']['path_fuel_switches'], data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
+        capacity_switches = read_data.read_capacity_switch(data['local_paths']['path_capacity_installation'])
+
+        regional_vars, non_regional_vars, fuel_disagg, crit_switch_happening = wrapper_model.before_simulation(
             data,
             config,
             simulation_yrs,
             pop_density,
-            raw_file_content_service_switches,
-            raw_file_content_fuel_switches,
-            raw_file_content_capacity_switches)
+            service_switches,
+            fuel_switches,
+            capacity_switches)
 
         # -----------------------------------------
         # Write pre_simulate to disc
@@ -294,6 +302,7 @@ class EDWrapper(SectorModel):
         write_data.write_yaml(regional_vars, os.path.join(temp_path, "regional_vars.yml"))
         write_data.write_yaml(non_regional_vars, os.path.join(temp_path, "non_regional_vars.yml"))
         write_data.write_yaml(fuel_disagg, os.path.join(temp_path, "fuel_disagg.yml"))
+        write_data.write_yaml(fuel_disagg, os.path.join(temp_path, "crit_switch_happening.yml"))
 
         # ------------------------------------------------
         # Plotting
@@ -414,6 +423,8 @@ class EDWrapper(SectorModel):
         regional_vars = read_data.read_yaml(os.path.join(temp_path, "regional_vars.yml"))
         non_regional_vars = read_data.read_yaml(os.path.join(temp_path, "non_regional_vars.yml"))
         data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_path, "fuel_disagg.yml"))
+        crit_switch_happening = read_data.read_yaml(os.path.join(temp_path, "crit_switch_happening.yml"))
+        setattr(data['assumptions'], 'crit_switch_happening', crit_switch_happening)
         setattr(data['assumptions'], 'regional_vars', regional_vars)
         setattr(data['assumptions'], 'non_regional_vars', non_regional_vars)
 
