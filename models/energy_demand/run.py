@@ -1,14 +1,5 @@
 """The sector model wrapper for smif to run the energy demand model test
 
-TODO: CHANGE 'latitude' : float(row['Latitude']),
-
-TODO LOAD SWITCHES
-    # Files to ignore in this folder
-    files_to_ignores = [
-        'switches_capacity.csv',
-        'switches_fuel.csv',
-        'switches_service.csv',
-        '_README_config_data.txt']
 """
 import os
 import configparser
@@ -18,16 +9,11 @@ from shapely.geometry import shape, mapping
 
 from smif.model.sector_model import SectorModel
 
-from energy_demand.assumptions import strategy_vars_def
-from energy_demand.read_write import narrative_related
-
-from energy_demand.assumptions import general_assumptions
 from energy_demand import wrapper_model
+from energy_demand.assumptions import strategy_vars_def, general_assumptions
 from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
-from energy_demand.read_write import write_data
-from energy_demand.read_write import read_data
-from energy_demand.read_write import data_loader
+from energy_demand.read_write import write_data, read_data, data_loader, narrative_related
 
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
@@ -177,21 +163,33 @@ class EDWrapper(SectorModel):
         
         data = {}
         curr_yr = self._get_base_yr(data_handle)
-        simulation_yrs = self._get_simulation_yrs(data_handle)
+        sim_yrs = self._get_simulation_yrs(data_handle)
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
-        # -----------------------------
-        # Load temperatures
-        # -----------------------------
-        # WORKS
-        ##print(data_handle.get_data('t_min', 2015).as_df())
-        ##print(data_handle.get_data('t_max', 2015).as_df())
+        # TODO SCENARIO PATH
+        '''user_defined_config_path = os.path.join(
+            config['PATHS']['path_local_data'],
+            '00_user_defined_variables_SCENARIO',
+            '03_paperI_scenarios',
+            name_scenario)'''
+
+        # LODAD DM PARAMETER
+        #print(data_handle.get_parameter('dm_improvement'))
+        #raise Exception("FINISH")
 
         #print("--------------d")
         #print(data_handle.get_parameter('is_t_heating_by'))
         #data_handle.get_parameter()
-        #raise Exception("___________________-- ddf __________________--")
+
+        # WORKS NISMODI WAY
+        print("TEMPERAT")
+        print(data_handle.get_data('t_min', 2015).as_df())
+        print(data_handle.get_data('t_max', 2015).as_df())
+
+        # LOAD STATIONS
+        
+        raise Exception("___________________-- ddf __________________--")
 
         # Load all standard parameters defined in 'data/parameters'
          #TODO These are the standard parameters and not the narratives'
@@ -209,7 +207,11 @@ class EDWrapper(SectorModel):
         '''# LOAD FROM SCENARIOS 
         narrative_variables = narrative_variables,  # All narrative variables
         loaded_narrative_data =                     # All narrative data
-        # IDential to reading in raw files from folder (multidimensional narratives)
+        # =================
+        # Idential to reading in raw files from folder (multidimensional narratives)
+        # =================
+        load_user_defined_vars()
+
         narative_data = data_loader.load_smif_narrative_data(
             default_strategy_var=default_streategy_vars,
             narrative_variables=narrative_variables,
@@ -266,10 +268,27 @@ class EDWrapper(SectorModel):
         # ------------------------------------------
         data = wrapper_model.load_data_before_simulation(
             data,
-            simulation_yrs,
+            sim_yrs,
             config,
             curr_yr)
         data['assumptions'].update('strategy_vars', strategy_vars)
+
+        # -----------------------------
+        # Load temperatures
+        # -----------------------------
+        # WORKS NISMODI WAY
+        #print(data_handle.get_data('t_min', 2015).as_df())
+        #print(data_handle.get_data('t_max', 2015).as_df())
+        weather_yr_scenario = 2015
+        weather_realisation = 'NF1'
+        path_weather_data = "X:/nismod/data/energy_demand/J-MARIUS_data/_weather_realisation"
+
+        data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
+            data['local_paths'],
+            sim_yrs=sim_yrs,
+            weather_realisation=weather_realisation,
+            weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
+            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])
 
         technologies = general_assumptions.update_technology_assumption(
             data['assumptions'].technologies,
@@ -280,9 +299,9 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         # Load switches from intervention?? #TODO REPLACE WITH INTERVENTION??
         # -----------------------------------------
-        service_switches = read_data.service_switch(data['local_paths']['path_service_switch'], data['assumptions'].technologies)
-        fuel_switches = read_data.read_fuel_switches(data['local_paths']['path_fuel_switches'], data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
-        capacity_switches = read_data.read_capacity_switch(data['local_paths']['path_capacity_installation'])
+        service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
+        fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
+        capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
         # -----------------------------------------
         # Perform pre-step calculations
@@ -290,7 +309,7 @@ class EDWrapper(SectorModel):
         regional_vars, non_regional_vars, fuel_disagg, crit_switch_happening = wrapper_model.before_simulation(
             data,
             config,
-            simulation_yrs,
+            sim_yrs,
             pop_density,
             service_switches,
             fuel_switches,
@@ -331,10 +350,12 @@ class EDWrapper(SectorModel):
 
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
-        simulation_yrs = self._get_simulation_yrs(data_handle)
+        sim_yrs = self._get_simulation_yrs(data_handle)
 
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
+
+        weather_yr = config['CONFIG']['weather_yr_scenario']
 
         # --------------------------------------------------
         # Read all other data
@@ -396,11 +417,29 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         data = wrapper_model.load_data_before_simulation(
             data,
-            simulation_yrs,
+            sim_yrs,
             config,
             curr_yr)
 
         data['assumptions'].update('strategy_vars', strategy_vars)
+
+        # -----------------------------
+        # Load temperatures
+        # -----------------------------
+        # WORKS NISMODI WAY
+        ##print(data_handle.get_data('t_min', 2015).as_df())
+        ##print(data_handle.get_data('t_max', 2015).as_df())
+        weather_yr_scenario = 2015
+        weather_realisation = 'NF1'
+        path_weather_data = "X:/nismod/data/energy_demand/J-MARIUS_data/_weather_realisation"
+
+        data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
+            data['local_paths'],
+            sim_yrs=sim_yrs,
+            weather_realisation=weather_realisation,
+            weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
+            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])
+
         # -----------------------------------------
         # Specific region selection
         # -----------------------------------------
@@ -454,8 +493,8 @@ class EDWrapper(SectorModel):
             config['CRITERIA'],
             data['assumptions'],
             data['weather_stations'],
-            config['CONFIG']['weather_yr_scenario'],
-            data['assumptions'].weather_by)
+            weather_yr=weather_yr,
+            weather_by=data['assumptions'].weather_by)
 
         # --------------------------------------------------
         # Write other results to txt files

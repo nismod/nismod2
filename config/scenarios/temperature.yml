@@ -4,16 +4,14 @@ provides:
   - name: t_min
     description: 'Minimum daily temperature'
     dims:
-      - station_ids
-      - weather_inst
+      - station_id
       - yearday
     dtype: float
     unit: Degree Celcius
   - name: t_max
     description: 'Minimum daily temperature'
     dims:
-      - station_ids
-      - weather_inst
+      - station_id
       - yearday
     dtype: float
     unit: Degree Celcius
@@ -21,5 +19,5 @@ variants:
   - name: default_temperature
     description: Temperature description
     data:
-      t_min: test_temps.csv
-      t_max: test_temps.csv
+      t_min: weather_data_NF1.csv #weather_data_NF1.parquet #test_temps.csv
+      t_max: weather_data_NF1.csv #weather_data_NF1.parquet #test_temps.csv

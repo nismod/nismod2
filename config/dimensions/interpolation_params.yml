@@ -1,0 +1,3 @@
+name: interpolation_params
+description: Transposed subparameter names
+elements: interpolation_params.csv

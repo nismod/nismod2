@@ -15,6 +15,15 @@ parameters:
 #  - switch_yr
 #  - sector
 #  dtype: float
+- description: TESTFILE
+  default: dm_improvements_NISMOD2.csv
+  name: dm_improvement
+  unit: 
+  dims:
+  - enduses
+  - interpolation_params
+  - end_yr
+  dtype: str
 - description: Spatial explicit diffusion or not
   default: spatial_explicit_diffusion.csv
   name: spatial_explicit_diffusion
@@ -102,15 +111,13 @@ inputs:
 - name: t_min
   unit: Degree Celcius
   dims:
-  - station_ids
-  - weather_inst
+  - station_id
   - yearday
   dtype: float
 - name: t_max
   unit: Degree Celcius
   dims:
-  - station_ids
-  - weather_inst
+  - station_id
   - yearday
   dtype: float
 - name: population
