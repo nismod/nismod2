@@ -231,8 +231,8 @@ class EDWrapper(SectorModel):
 
         #print("--------------d")
         #print(data_handle.get_parameter('is_t_heating_by'))
-        #data_handle.get_parameter()
-
+        #raise Exception
+                
         # Load all standard parameters defined in 'data/parameters'
         #TODO These are the standard parameters and not the narratives'
         default_values = self._get_standard_parameters(data_handle)
