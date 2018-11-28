@@ -1,5 +1,5 @@
 """The sector model wrapper for smif to run the energy demand model test
-
+as_df())
 """
 import os
 import configparser
@@ -212,21 +212,15 @@ class EDWrapper(SectorModel):
 
         # LODAD DM PARAMETER
         #print(data_handle.get_parameter('dm_improvement'))
-        #raise Exception("FINISH")
 
         #print("--------------d")
         #print(data_handle.get_parameter('is_t_heating_by'))
         #data_handle.get_parameter()
 
-        # WORKS NISMODI WAY
-        #print("TEMPERAT")
-        #print(data_handle.get_data('t_min', 2015).as_df())
-        #print(data_handle.get_data('t_max', 2015).as_df())
-
         # Load all standard parameters defined in 'data/parameters'
-         #TODO These are the standard parameters and not the narratives'
+        #TODO These are the standard parameters and not the narratives'
         default_values = self._get_standard_parameters(data_handle)
-        print("========asdf")
+
         #print(default_values['rs_t_heating_by'])
         #raise Exception
 
@@ -295,6 +289,12 @@ class EDWrapper(SectorModel):
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
             data['scenario_data']['gva_industry'][curr_yr][sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], data['regions'])
 
+        # -----------------------------
+        # Load temperatures and weather stations
+        # -----------------------------
+        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
+
         # -----------------------------------------
         # Load data
         # ------------------------------------------
@@ -304,19 +304,6 @@ class EDWrapper(SectorModel):
             config,
             curr_yr)
         data['assumptions'].update('strategy_vars', strategy_vars)
-
-        # -----------------------------
-        # Load temperatures
-        # -----------------------------
-        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
-        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
-    
-        '''data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
-            data['local_paths'],
-            sim_yrs=sim_yrs,
-            weather_realisation=weather_realisation,
-            weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
-            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])'''
 
         technologies = general_assumptions.update_technology_assumption(
             data['assumptions'].technologies,
@@ -440,6 +427,13 @@ class EDWrapper(SectorModel):
             base_yr=config['CONFIG']['base_yr'])
 
         raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
+        
+        # -----------------------------
+        # Load temperatures
+        # -----------------------------
+        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
+
         # -----------------------------------------
         # Load data
         # -----------------------------------------
@@ -450,19 +444,6 @@ class EDWrapper(SectorModel):
             curr_yr)
 
         data['assumptions'].update('strategy_vars', strategy_vars)
-
-        # -----------------------------
-        # Load temperatures
-        # -----------------------------
-        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
-        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
-
-        '''data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
-            data['local_paths'],
-            sim_yrs=sim_yrs,
-            weather_realisation=weather_realisation,
-            weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
-            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])'''
 
         # -----------------------------------------
         # Specific region selection
