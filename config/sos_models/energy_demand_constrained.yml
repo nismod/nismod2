@@ -21,6 +21,14 @@ scenario_dependencies:
   source_output: gva_per_sector
   sink_input: gva_per_sector
 - sink: energy_demand_constrained
+  source: weather_station_coordinates
+  source_output: latitude
+  sink_input: latitude
+- sink: energy_demand_constrained
+  source: weather_station_coordinates
+  source_output: longitude
+  sink_input: longitude
+- sink: energy_demand_constrained
   source: temperature
   source_output: t_min
   sink_input: t_min

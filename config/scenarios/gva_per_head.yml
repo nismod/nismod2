@@ -14,14 +14,6 @@ provides:
     - lad_uk_2016
     - sectors
     description: GVA per industrial sector
-#  - name: temperatures
-#    dtype: float
-#    unit: GBP
-#    dims:
-#    - t_min
-#    - t_max
-#    - station_id
-#    description: Temperatures
 variants:
   - name: gva_baseline
     description: Baseline gva for the UK

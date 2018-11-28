@@ -108,6 +108,16 @@ parameters:
 # -----------------------------------------------
 name: energy_demand_constrained
 inputs:
+- name: latitude
+  unit:
+  dims:
+  - station_id
+  dtype: float
+- name: longitude
+  unit:
+  dims:
+  - station_id
+  dtype: float
 - name: t_min
   unit: Degree Celcius
   dims:

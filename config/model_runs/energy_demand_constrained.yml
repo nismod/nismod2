@@ -1,10 +1,9 @@
 narratives: {}
-#  energy_test:
-#    - central
 scenarios:
   gva_per_head: gva_baseline
   population: pop_low
   temperature: default_temperature
+  weather_station_coordinates: weather_station_coordinates__NF1
 strategies: {}
 stamp: '2017-11-07T14:15:00+00:00'
 timesteps:

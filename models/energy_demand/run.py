@@ -151,6 +151,42 @@ class EDWrapper(SectorModel):
 
         return pop_density
 
+    def _get_weather_station_coordinates(self, data_handle):
+        """Load coordinates of weather stations
+        """
+        out_stations = {}
+
+        stations_latitude = data_handle.get_data('latitude', 2015).as_ndarray()
+        stations_longitude = data_handle.get_data('longitude', 2015).as_ndarray()
+
+        temperature_input_spec = self.inputs['latitude']
+        station_ids = temperature_input_spec.dim_coords('station_id').elements
+
+        for station_array_nr, station_dict in enumerate(station_ids):
+            station_id = station_dict['name']
+            out_stations[station_id] = {
+                'latitude' : stations_latitude[station_array_nr],
+                'longitude': stations_longitude[station_array_nr]}
+
+        return out_stations
+
+    def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids):
+        """Load minimum and maximum temperatures
+        """
+        temp_data = defaultdict(dict)
+
+        for simulation_yr in sim_yrs:
+            print("... load temperatuer of year {}".format(simulation_yr))
+            t_min = data_handle.get_data('t_min', 2015).as_ndarray()
+            t_max = data_handle.get_data('t_max', 2015).as_ndarray()
+
+            for array_nr, station_id in enumerate(weather_station_ids):
+                temp_data[simulation_yr][station_id] = {
+                    't_min': t_min[array_nr],
+                    't_max': t_max[array_nr]}
+
+        return dict(temp_data)
+
     def before_model_run(self, data_handle):
         """Implement this method to conduct pre-model run tasks
         """
@@ -183,13 +219,9 @@ class EDWrapper(SectorModel):
         #data_handle.get_parameter()
 
         # WORKS NISMODI WAY
-        print("TEMPERAT")
-        print(data_handle.get_data('t_min', 2015).as_df())
-        print(data_handle.get_data('t_max', 2015).as_df())
-
-        # LOAD STATIONS
-        
-        raise Exception("___________________-- ddf __________________--")
+        #print("TEMPERAT")
+        #print(data_handle.get_data('t_min', 2015).as_df())
+        #print(data_handle.get_data('t_max', 2015).as_df())
 
         # Load all standard parameters defined in 'data/parameters'
          #TODO These are the standard parameters and not the narratives'
@@ -276,19 +308,15 @@ class EDWrapper(SectorModel):
         # -----------------------------
         # Load temperatures
         # -----------------------------
-        # WORKS NISMODI WAY
-        #print(data_handle.get_data('t_min', 2015).as_df())
-        #print(data_handle.get_data('t_max', 2015).as_df())
-        weather_yr_scenario = 2015
-        weather_realisation = 'NF1'
-        path_weather_data = "X:/nismod/data/energy_demand/J-MARIUS_data/_weather_realisation"
-
-        data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
+        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
+    
+        '''data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
             data['local_paths'],
             sim_yrs=sim_yrs,
             weather_realisation=weather_realisation,
             weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
-            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])
+            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])'''
 
         technologies = general_assumptions.update_technology_assumption(
             data['assumptions'].technologies,
@@ -426,19 +454,15 @@ class EDWrapper(SectorModel):
         # -----------------------------
         # Load temperatures
         # -----------------------------
-        # WORKS NISMODI WAY
-        ##print(data_handle.get_data('t_min', 2015).as_df())
-        ##print(data_handle.get_data('t_max', 2015).as_df())
-        weather_yr_scenario = 2015
-        weather_realisation = 'NF1'
-        path_weather_data = "X:/nismod/data/energy_demand/J-MARIUS_data/_weather_realisation"
+        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
 
-        data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
+        '''data['weather_stations'], data['temp_data'] = data_loader.load_temp_data(
             data['local_paths'],
             sim_yrs=sim_yrs,
             weather_realisation=weather_realisation,
             weather_yrs_scenario=[config['CONFIG']['base_yr'], weather_yr_scenario],
-            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])
+            crit_temp_min_max=config['CRITERIA']['crit_temp_min_max'])'''
 
         # -----------------------------------------
         # Specific region selection

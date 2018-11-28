@@ -1,0 +1,21 @@
+name: weather_station_coordinates
+description: Longitude and Latitude of weather station
+provides:
+  - name: longitude
+    description: Longitude
+    dims:
+      - station_id
+    dtype: float
+    unit:
+  - name: latitude
+    description: Latitude
+    dims:
+      - station_id
+    dtype: float
+    unit:
+variants:
+  - name: weather_station_coordinates__NF1
+    description: Weather station coordinates
+    data:
+      longitude: stations_NF1.csv
+      latitude: stations_NF1.csv
