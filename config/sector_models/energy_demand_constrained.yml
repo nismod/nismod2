@@ -15,6 +15,14 @@ parameters:
 #  - switch_yr
 #  - sector
 #  dtype: float
+- description: Industrial base temperature
+  default: is_t_base_heating.csv
+  name: is_t_base_heating
+  unit: 
+  dims:
+  - interpolation_params
+  - end_yr
+  dtype: str
 - description: TESTFILE
   default: dm_improvements_NISMOD2.csv
   name: dm_improvement
@@ -48,43 +56,43 @@ parameters:
   unit: 'decimal'
   dims:
   dtype: float
-- description: Residential base temperature for by
-  default: rs_t_heating_by.csv
-  name: rs_t_heating_by
-  unit: 'Degree Celsius'
-  dims: #TODO ADD DIMENSIONS
-  dtype: float
-- description: Service base temperature for by
-  default: ss_t_heating_by.csv
-  name: ss_t_heating_by
-  unit: 'Degree Celsius'
-  dims:
-  dtype: float
-- description: Industry base temperature for by
-  default: is_t_heating_by.csv
-  name: is_t_heating_by
-  unit: 'Degree Celsius'
-  dims:
+#- description: Residential base temperature for by
+#  default: rs_t_heating_by.csv
+#  name: rs_t_heating_by
+#  unit: 'Degree Celsius'
+#  dims: #TODO ADD DIMENSIONS
+#  dtype: float
+#- description: Service base temperature for by
+#  default: ss_t_heating_by.csv
+#  name: ss_t_heating_by
+#  unit: 'Degree Celsius'
+#  dims:
+#  dtype: float
+#- description: Industry base temperature for by
+#  default: is_t_heating_by.csv
+#  name: is_t_heating_by
+#  unit: 'Degree Celsius'
+#  dims:
 #   - timestep
-  dtype: float
-- description: Serivce base temperature for cooling by
-  default: ss_t_cooling_by.csv
-  name: ss_t_cooling_by
-  unit: 'Degree Celsius'
-  dims:
-  dtype: float
-- description: Smart meter penetration
-  default: smart_meter_p_by.csv
-  name: smart_meter_p_by
-  unit: 'decimal'
-  dims:
-  dtype: float
-- description: Fraction of cold rolling in steel manufacturing
-  default: p_cold_rolling_steel_by.csv
-  name: p_cold_rolling_steel_by
-  unit: 'decimal'
-  dims:
-  dtype: float
+#  dtype: float
+#- description: Serivce base temperature for cooling by
+#  default: ss_t_cooling_by.csv
+#  name: ss_t_cooling_by
+#  unit: 'Degree Celsius'
+#  dims:
+#  dtype: float
+#- description: Smart meter penetration
+#  default: smart_meter_p_by.csv
+#  name: smart_meter_p_by
+#  unit: 'decimal'
+#  dims:
+#  dtype: float
+#- description: Fraction of cold rolling in steel manufacturing
+#  default: p_cold_rolling_steel_by.csv
+#  name: p_cold_rolling_steel_by
+#  unit: 'decimal'
+#  dims:
+#  dtype: float
 - description: Share of cooled service floor area
   default: cooled_ss_floorarea_by.csv
   name: cooled_ss_floorarea_by

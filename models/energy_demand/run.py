@@ -91,8 +91,6 @@ class EDWrapper(SectorModel):
         params = {}
 
         # Load all scenario parameters
-        #params['is_t_heating_by'] = 
-
         all_parameter_names = list(data_handle.get_parameters().keys())
 
         for parameter in all_parameter_names:
@@ -116,6 +114,11 @@ class EDWrapper(SectorModel):
 
     def _get_simulation_yrs(self, data_handle):
         return data_handle.timesteps
+
+    def _series_to_df(self, series, name):
+            return series.reset_index().rename(columns={
+                0: name
+    })
 
     def centroids_as_features(self, regions):
         """Get the region centroids as a list of feature dictionaries
@@ -203,6 +206,62 @@ class EDWrapper(SectorModel):
 
         return out_dict
 
+    '''def _replace_key_and_restructure(self, df_input):
+        """Load parameters and bring in needed format
+        """
+        df_input = df_input.set_index('enduses')
+
+        dict_input = df_input.to_dict('index')
+
+        dict_output = {}
+        for key, values in dict_input.items():
+            values_replaced = values
+            name_param = values_replaced['interpolation_params']
+            values_replaced[name_param] = float(values_replaced['value'])
+            del values_replaced['interpolation_params']
+            del values_replaced['value']
+            dict_output[key] = values_replaced
+
+        return dict_output'''
+
+    def _load_narrative_parameters(
+            self,
+            data_handle,
+            simulation_end_yr,
+            simulation_base_yr,
+            default_streategy_vars
+        ):
+
+        narrative_params = {}
+
+        variable_names = list(data_handle.get_parameters().keys())
+
+        #print("variable_names: " + str(variable_names))
+        variable_names = [
+            'dm_improvement',
+            'is_t_base_heating']
+
+        #var_name = 'is_t_base_heating'
+        ##print(data_handle.get_parameter(var_name).shape)
+        ##print(data_handle.get_parameter(var_name).dims)
+        #raise Exception("WHAT IS THIS??")
+        for var_name in variable_names:
+            print("... transposing {}".format(var_name))
+            param_raw_series = data_handle.get_parameter(var_name).as_df()
+
+            df_raw = self._series_to_df(param_raw_series, var_name)
+
+            var_name_transpsed = narrative_related.transpose_input(
+                df_raw,
+                simulation_end_yr=simulation_end_yr,
+                simulation_base_yr=simulation_base_yr,
+                default_streategy_var=default_streategy_vars[var_name],
+                var_name=var_name)
+
+            narrative_params[var_name] = var_name_transpsed
+
+        return narrative_params
+
     def before_model_run(self, data_handle):
         """Implement this method to conduct pre-model run tasks
         """
@@ -226,13 +285,6 @@ class EDWrapper(SectorModel):
             '03_paperI_scenarios',
             name_scenario)'''
 
-        # LODAD DM PARAMETER
-        #print(data_handle.get_parameter('dm_improvement'))
-
-        #print("--------------d")
-        #print(data_handle.get_parameter('is_t_heating_by'))
-        #raise Exception
-                
         # Load all standard parameters defined in 'data/parameters'
         #TODO These are the standard parameters and not the narratives'
         default_values = self._get_standard_parameters(data_handle)
@@ -242,8 +294,32 @@ class EDWrapper(SectorModel):
 
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
-            default_values=default_values,
-            hard_coded_default_val=False)
+            #default_values=default_values,
+            hard_coded_default_val=True) #FALSE
+
+        # Create marratovs from all default parameters #NEW
+        strategy_vars = strategy_vars_def.load_smif_parameters(
+            default_streategy_vars=default_streategy_vars,
+            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+            base_yr=config['CONFIG']['base_yr'],
+            mode='local')
+            
+        # LODAD DM PARAMETER
+        user_defined_vars = self._load_narrative_parameters(
+            data_handle,
+            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+            simulation_base_yr=config['CONFIG']['base_yr'],
+            default_streategy_vars=default_streategy_vars)
+
+        strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
+
+        # Replace strategy variables not defined in csv files)
+        strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(
+            strategy_vars,
+            narrative_crit=True)
+
+        #data['assumptions'].update('strategy_vars', strategy_vars_out)
+
 
         '''# LOAD FROM SCENARIOS 
         narrative_variables = narrative_variables,  # All narrative variables
@@ -267,15 +343,15 @@ class EDWrapper(SectorModel):
         strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(strategy_vars, narrative_crit=True)
         data['assumptions'].update('strategy_vars', strategy_vars_out)
         '''
-        narrative_values = {}
-
-        # Create single standard narrative (DEFAULT)
-        strategy_vars = strategy_vars_def.load_smif_parameters(
-            narrative_values=narrative_values,
-            default_streategy_vars=default_streategy_vars,
-            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            base_yr=config['CONFIG']['base_yr'],
-            mode='smif')
+        #narrative_values = {}
+        #
+        ## Create single standard narrative (DEFAULT)
+        #strategy_vars = strategy_vars_def.load_smif_parameters(
+        #    narrative_values=narrative_values,
+        #    default_streategy_vars=default_streategy_vars,
+        #    end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+        #    base_yr=config['CONFIG']['base_yr'],
+        #    mode='smif')
 
         # ------------------------------------------------
         # Load base year scenario data
@@ -405,10 +481,10 @@ class EDWrapper(SectorModel):
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
 
-        default_values = self._get_standard_parameters(data_handle)
-
+        #default_values = self._get_standard_parameters(data_handle)
         default_streategy_vars = strategy_vars_def.load_param_assump(
-            default_values=default_values)
+            #default_values=default_values,
+            hard_coded_default_val=True)
 
         narrative_values = {}
         strategy_vars = strategy_vars_def.load_smif_parameters(
