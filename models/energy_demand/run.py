@@ -1,5 +1,6 @@
 """The sector model wrapper for smif to run the energy demand model test
 as_df())
+Remove default_by and add from variabls??
 """
 import os
 import configparser
@@ -85,24 +86,6 @@ class EDWrapper(SectorModel):
 
         return name_scenario, result_paths, temp_path, path_new_scenario
 
-    def _get_standard_parameters(self, data_handle):
-        """Load all standard variables of parameters
-        """
-        params = {}
-
-        # Load all scenario parameters
-        all_parameter_names = list(data_handle.get_parameters().keys())
-
-        for parameter in all_parameter_names:
-            logging.info("... loading standard parameter '{}'".format(parameter))
-            loaded_array = data_handle.get_parameter(parameter).as_ndarray()
-
-            try: # Single dim param
-                params[parameter] = float(loaded_array)
-            except: # Multi dim param
-                params[parameter] = loaded_array
-        return params
-
     def _get_region_set_name(self):
         return 'lad_uk_2016'
 
@@ -116,9 +99,7 @@ class EDWrapper(SectorModel):
         return data_handle.timesteps
 
     def _series_to_df(self, series, name):
-            return series.reset_index().rename(columns={
-                0: name
-    })
+        return series.reset_index().rename(columns={0: name})
 
     def centroids_as_features(self, regions):
         """Get the region centroids as a list of feature dictionaries
@@ -239,7 +220,11 @@ class EDWrapper(SectorModel):
         #print("variable_names: " + str(variable_names))
         variable_names = [
             'dm_improvement',
-            'is_t_base_heating']
+            'is_t_base_heating',
+            'ss_t_base_heating',
+            'rs_t_base_heating',
+            'smart_meter_p',
+            ]
 
         #var_name = 'is_t_base_heating'
         ##print(data_handle.get_parameter(var_name).shape)
@@ -271,40 +256,27 @@ class EDWrapper(SectorModel):
 
         config = self._get_configs()
         region_set_name = self._get_region_set_name()
-        
+
         data = {}
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
         data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
-        # TODO SCENARIO PATH
-        '''user_defined_config_path = os.path.join(
-            config['PATHS']['path_local_data'],
-            '00_user_defined_variables_SCENARIO',
-            '03_paperI_scenarios',
-            name_scenario)'''
-
-        # Load all standard parameters defined in 'data/parameters'
-        #TODO These are the standard parameters and not the narratives'
-        default_values = self._get_standard_parameters(data_handle)
-
-        #print(default_values['rs_t_heating_by'])
-        #raise Exception
-
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
-            #default_values=default_values,
-            hard_coded_default_val=True) #FALSE
+            hard_coded_default_val=True)
 
-        # Create marratovs from all default parameters #NEW
+        # =================
+        # Idential to reading in raw files from folder (multidimensional narratives)
+        # =================
+        # Create marratovs from all default parameters #NEW BOTH LOCAL AND SMIF
         strategy_vars = strategy_vars_def.load_smif_parameters(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'],
             mode='local')
-            
-        # LODAD DM PARAMETER
+
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
@@ -314,44 +286,9 @@ class EDWrapper(SectorModel):
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
         # Replace strategy variables not defined in csv files)
-        strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(
+        strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
             strategy_vars,
             narrative_crit=True)
-
-        #data['assumptions'].update('strategy_vars', strategy_vars_out)
-
-
-        '''# LOAD FROM SCENARIOS 
-        narrative_variables = narrative_variables,  # All narrative variables
-        loaded_narrative_data =                     # All narrative data
-        # =================
-        # Idential to reading in raw files from folder (multidimensional narratives)
-        # =================
-        load_user_defined_vars()
-
-        narative_data = data_loader.load_smif_narrative_data(
-            default_strategy_var=default_streategy_vars,
-            narrative_variables=narrative_variables,
-            loaded_narrative_data=loaded_narrative_data,
-            simulation_base_yr=data['assumptions'].base_yr,
-            simulation_end_yr=data['assumptions'].simulation_end_yr)
-
-        # Replace standard narratives with user defined narratives from .csv files
-        strategy_vars = data_loader.replace_variable(
-            narative_data, strategy_vars)
-
-        strategy_vars_out = strategy_vars_def.autocomplete_strategy_vars(strategy_vars, narrative_crit=True)
-        data['assumptions'].update('strategy_vars', strategy_vars_out)
-        '''
-        #narrative_values = {}
-        #
-        ## Create single standard narrative (DEFAULT)
-        #strategy_vars = strategy_vars_def.load_smif_parameters(
-        #    narrative_values=narrative_values,
-        #    default_streategy_vars=default_streategy_vars,
-        #    end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-        #    base_yr=config['CONFIG']['base_yr'],
-        #    mode='smif')
 
         # ------------------------------------------------
         # Load base year scenario data
@@ -480,8 +417,6 @@ class EDWrapper(SectorModel):
         data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
-
-        #default_values = self._get_standard_parameters(data_handle)
         default_streategy_vars = strategy_vars_def.load_param_assump(
             #default_values=default_values,
             hard_coded_default_val=True)

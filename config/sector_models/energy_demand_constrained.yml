@@ -15,6 +15,30 @@ parameters:
 #  - switch_yr
 #  - sector
 #  dtype: float
+- description: Smart meter penetration
+  default: smart_meter_p.csv
+  name: smart_meter_p
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+  dtype: float
+- description: Industrial base temperature
+  default: rs_t_base_heating.csv
+  name: rs_t_base_heating
+  unit: 
+  dims:
+  - interpolation_params
+  - end_yr
+  dtype: str
+- description: Industrial base temperature
+  default: ss_t_base_heating.csv
+  name: ss_t_base_heating
+  unit: 
+  dims:
+  - interpolation_params
+  - end_yr
+  dtype: str
 - description: Industrial base temperature
   default: is_t_base_heating.csv
   name: is_t_base_heating
@@ -24,7 +48,7 @@ parameters:
   - end_yr
   dtype: str
 - description: TESTFILE
-  default: dm_improvements_NISMOD2.csv
+  default: dm_improvements.csv
   name: dm_improvement
   unit: 
   dims:
@@ -79,12 +103,6 @@ parameters:
 #  default: ss_t_cooling_by.csv
 #  name: ss_t_cooling_by
 #  unit: 'Degree Celsius'
-#  dims:
-#  dtype: float
-#- description: Smart meter penetration
-#  default: smart_meter_p_by.csv
-#  name: smart_meter_p_by
-#  unit: 'decimal'
 #  dims:
 #  dtype: float
 #- description: Fraction of cold rolling in steel manufacturing
