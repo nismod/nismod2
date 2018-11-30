@@ -313,7 +313,7 @@ class EDWrapper(SectorModel):
         technologies = general_assumptions.update_technology_assumption(
             data['assumptions'].technologies,
             data['assumptions'].strategy_vars['f_eff_achieved'],
-            data['assumptions'].strategy_vars['gshp_fraction_ey'])
+            data['assumptions'].strategy_vars['gshp_fraction'])
         data['assumptions'].technologies.update(technologies)
 
         # -----------------------------------------
@@ -476,7 +476,7 @@ class EDWrapper(SectorModel):
         updated_techs = general_assumptions.update_technology_assumption(
             technologies=data['assumptions'].technologies,
             narrative_f_eff_achieved=data['assumptions'].non_regional_vars['f_eff_achieved'][curr_yr],
-            narrative_gshp_fraction_ey=data['assumptions'].non_regional_vars['gshp_fraction_ey'][curr_yr],
+            narrative_gshp_fraction=data['assumptions'].non_regional_vars['gshp_fraction'][curr_yr],
             crit_narrative_input=False)
         data['assumptions'].technologies.update(updated_techs)
 
