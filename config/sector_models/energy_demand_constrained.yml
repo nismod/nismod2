@@ -1,5 +1,5 @@
 path: models/energy_demand/run.py
-description: balbla
+description: Constrained model configuration
 classname: EDWrapper
 initial_conditions: []
 # Parameters-----------------------------------------------
@@ -15,6 +15,66 @@ parameters:
 #  - switch_yr
 #  - sector
 #  dtype: float
+- description: Generic fuel switch
+  default: generic_fuel_switch.csv
+  name: generic_fuel_switch
+  unit: ''
+  dims:
+  - enduses
+  - end_yr
+  - param_generic_fuel_switch
+  dtype: float
+- description: Share in cold rolling in steel manufacturing
+  default: p_cold_rolling_steel.csv
+  name: p_cold_rolling_steel
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+  dtype: float
+- description: Recovered heat
+  default: heat_recovered.csv
+  name: heat_recovered
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+    - enduses
+  dtype: float
+- description: Share of cooled service floor area
+  default: cooled_floorarea.csv
+  name: cooled_floorarea
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+    - enduses
+  dtype: float
+- description: Change in floor area per person
+  default: assump_diff_floorarea_pp.csv
+  name: assump_diff_floorarea_pp
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+  dtype: float
+- description: Air leakage caused reducing in demand
+  default: air_leakage.csv
+  name: air_leakage
+  unit: 'decimal'
+  dims:
+    - enduses
+    - end_yr
+    - interpolation_params
+  dtype: float
+- description: Efficiency achievement level
+  default: f_eff_achieved.csv
+  name: f_eff_achieved
+  unit: 'decimal'
+  dims:
+    - end_yr
+    - interpolation_params
+  dtype: float
 - description: Smart meter penetration
   default: smart_meter_p.csv
   name: smart_meter_p
@@ -105,32 +165,15 @@ parameters:
 #  unit: 'Degree Celsius'
 #  dims:
 #  dtype: float
-#- description: Fraction of cold rolling in steel manufacturing
-#  default: p_cold_rolling_steel_by.csv
-#  name: p_cold_rolling_steel_by
-#  unit: 'decimal'
-#  dims:
-#  dtype: float
-- description: Share of cooled service floor area
-  default: cooled_ss_floorarea_by.csv
-  name: cooled_ss_floorarea_by
-  unit: 'decimal'
-  dims:
-  dtype: float
 - description: Overall change in energy demand per enduse
-  default: generic_enduses_default.csv
-  name: generic_enduse_change_value
+  default: generic_enduse_change.csv
+  name: generic_enduse_change
   unit: '%'
   dims:
   - enduses
+  - interpolation_params
+  - end_yr
   dtype: float
-- description: Overall change in energy demand per enduse
-  default: generic_enduses_default.csv
-  name: generic_enduse_change_end_yr
-  unit: year
-  dims:
-  - enduses
-  dtype: int
 # -----------------------------------------------
 name: energy_demand_constrained
 inputs:

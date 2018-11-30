@@ -1,6 +1,8 @@
 """The sector model wrapper for smif to run the energy demand model test
 as_df())
 Remove default_by and add from variabls??
+TODO: Add sector in air_leakage and add sector in generic fuel switch
+TODO: How to load standard default empty parameters
 """
 import os
 import configparser
@@ -65,7 +67,7 @@ class EDWrapper(SectorModel):
     def _get_config_paths(self, config):
         """Create scenario name and get paths
         """
-        name_scenario = "scenario_A" #str(data_handle['config_folder_path']) #TODO
+        name_scenario = "scenario_A" #TODO
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
 
         path_new_scenario = os.path.join(temp_path, name_scenario)
@@ -84,7 +86,7 @@ class EDWrapper(SectorModel):
         for folder in folders_to_create:
             basic_functions.create_folder(folder)
 
-        return name_scenario, result_paths, temp_path, path_new_scenario
+        return result_paths, temp_path, path_new_scenario
 
     def _get_region_set_name(self):
         return 'lad_uk_2016'
@@ -153,12 +155,18 @@ class EDWrapper(SectorModel):
 
         return out_stations
 
-    def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids):
+    def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids, constant_weather=False):
         """Load minimum and maximum temperatures
         """
         temp_data = defaultdict(dict)
 
         for simulation_yr in sim_yrs:
+
+            if constant_weather:
+                simulation_yr = sim_yrs[0]
+            else:
+                pass
+
             print("... load temperatuer of year {}".format(simulation_yr))
             t_min = data_handle.get_data('t_min', 2015).as_ndarray()
             t_max = data_handle.get_data('t_max', 2015).as_ndarray()
@@ -187,24 +195,6 @@ class EDWrapper(SectorModel):
 
         return out_dict
 
-    '''def _replace_key_and_restructure(self, df_input):
-        """Load parameters and bring in needed format
-        """
-        df_input = df_input.set_index('enduses')
-
-        dict_input = df_input.to_dict('index')
-
-        dict_output = {}
-        for key, values in dict_input.items():
-            values_replaced = values
-            name_param = values_replaced['interpolation_params']
-            values_replaced[name_param] = float(values_replaced['value'])
-            del values_replaced['interpolation_params']
-            del values_replaced['value']
-            dict_output[key] = values_replaced
-
-        return dict_output'''
-
     def _load_narrative_parameters(
             self,
             data_handle,
@@ -212,38 +202,37 @@ class EDWrapper(SectorModel):
             simulation_base_yr,
             default_streategy_vars
         ):
-
+        """
+        """
         narrative_params = {}
 
-        variable_names = list(data_handle.get_parameters().keys())
-
-        #print("variable_names: " + str(variable_names))
+        #variable_names = list(data_handle.get_parameters().keys())
         variable_names = [
+            'air_leakage',
+            'assump_diff_floorarea_pp',
+            'cooled_floorarea',
             'dm_improvement',
+            'f_eff_achieved',
+            'generic_enduse_change',
+            'heat_recovered',
             'is_t_base_heating',
-            'ss_t_base_heating',
+            'p_cold_rolling_steel',
             'rs_t_base_heating',
+            'ss_t_base_heating',
             'smart_meter_p',
-            ]
+            'generic_fuel_switch']
 
-        #var_name = 'is_t_base_heating'
-        ##print(data_handle.get_parameter(var_name).shape)
-        ##print(data_handle.get_parameter(var_name).dims)
-        #raise Exception("WHAT IS THIS??")
         for var_name in variable_names:
-            print("... transposing {}".format(var_name))
+            print("... reading in scenaric values for parameter: '{}'".format(var_name))
             param_raw_series = data_handle.get_parameter(var_name).as_df()
 
             df_raw = self._series_to_df(param_raw_series, var_name)
 
-            var_name_transpsed = narrative_related.transpose_input(
+            narrative_params[var_name] = narrative_related.read_user_defined_param(
                 df_raw,
-                simulation_end_yr=simulation_end_yr,
                 simulation_base_yr=simulation_base_yr,
                 default_streategy_var=default_streategy_vars[var_name],
                 var_name=var_name)
-
-            narrative_params[var_name] = var_name_transpsed
 
         return narrative_params
 
@@ -260,7 +249,7 @@ class EDWrapper(SectorModel):
         data = {}
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
-        data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
+        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config)
 
         # Load hard-coded standard default assumptions
@@ -270,12 +259,10 @@ class EDWrapper(SectorModel):
         # =================
         # Idential to reading in raw files from folder (multidimensional narratives)
         # =================
-        # Create marratovs from all default parameters #NEW BOTH LOCAL AND SMIF
-        strategy_vars = strategy_vars_def.load_smif_parameters(
+        strategy_vars = strategy_vars_def.load_default_params(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            base_yr=config['CONFIG']['base_yr'],
-            mode='local')
+            base_yr=config['CONFIG']['base_yr'])
 
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
@@ -285,7 +272,6 @@ class EDWrapper(SectorModel):
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
-        # Replace strategy variables not defined in csv files)
         strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
             strategy_vars,
             narrative_crit=True)
@@ -313,16 +299,15 @@ class EDWrapper(SectorModel):
         # Load temperatures and weather stations
         # -----------------------------
         data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
-        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'], constant_weather=False)
 
         # -----------------------------------------
         # Load data
         # ------------------------------------------
         data = wrapper_model.load_data_before_simulation(
-            data,
-            sim_yrs,
-            config,
-            curr_yr)
+            data, sim_yrs, config, curr_yr)
+
+        # Update variables
         data['assumptions'].update('strategy_vars', strategy_vars)
 
         technologies = general_assumptions.update_technology_assumption(
@@ -333,7 +318,7 @@ class EDWrapper(SectorModel):
 
         # -----------------------------------------
         # Load switches from intervention
-        # TODO REPLACE WITH INTERVENTION??
+        # TODO READ IN AS SCENARIC VALUE / INTERVENTION??
         # -----------------------------------------
         service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
@@ -386,10 +371,11 @@ class EDWrapper(SectorModel):
 
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
-        weather_yr = config['CONFIG']['weather_yr_scenario']
+        weather_yr = curr_yr
+
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['name_scenario_run'], data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(config)
+        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(config)
 
         # --------------------------------------------------
         # Read all other data
@@ -418,23 +404,32 @@ class EDWrapper(SectorModel):
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
         default_streategy_vars = strategy_vars_def.load_param_assump(
-            #default_values=default_values,
             hard_coded_default_val=True)
 
-        narrative_values = {}
-        strategy_vars = strategy_vars_def.load_smif_parameters(
-            narrative_values=narrative_values,
+        strategy_vars = strategy_vars_def.load_default_params(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])
 
-        raw_file_content_service_switches = [] # data_handle.get_parameter('switches_service')
-        
+        user_defined_vars = self._load_narrative_parameters(
+            data_handle,
+            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+            simulation_base_yr=config['CONFIG']['base_yr'],
+            default_streategy_vars=default_streategy_vars)
+
+        strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
+
+        # Replace strategy variables not defined in csv files)
+        strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
+            strategy_vars,
+            narrative_crit=True)
+
         # -----------------------------
         # Load temperatures
         # -----------------------------
         data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
-        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'])
+        data['temp_data'] = self._get_temperatures(
+            data_handle, sim_yrs, data['weather_stations'], constant_weather=False)
 
         # -----------------------------------------
         # Load data
@@ -465,7 +460,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read results from pre_simulate from disc
         # --------------------------------------------------
-        logging.info("... reading in results from before_model_run()" + str(temp_path))
+        logging.info("... reading in results from before_model_run()")
         regional_vars = read_data.read_yaml(os.path.join(temp_path, "regional_vars.yml"))
         non_regional_vars = read_data.read_yaml(os.path.join(temp_path, "non_regional_vars.yml"))
         data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_path, "fuel_disagg.yml"))

@@ -2,11 +2,13 @@ name: energy_test
 description: Describes the energy_test landscape
 provides: 
 - name: rs_t_heating_by
+#- name: generic_enduse_change
   description: ""
   dtype: float
-  unit: TODO
+  unit:
 variants:
 - name: central
-  description: TODO
+  description:
   data: 
     rs_t_heating_by: high_tech_dsm.yml
+    #generic_enduse_change: 
