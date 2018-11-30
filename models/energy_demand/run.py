@@ -198,8 +198,8 @@ class EDWrapper(SectorModel):
     def _load_narrative_parameters(
             self,
             data_handle,
-            simulation_end_yr,
             simulation_base_yr,
+            simulation_end_yr,
             default_streategy_vars
         ):
         """
@@ -231,6 +231,7 @@ class EDWrapper(SectorModel):
             narrative_params[var_name] = narrative_related.read_user_defined_param(
                 df_raw,
                 simulation_base_yr=simulation_base_yr,
+                simulation_end_yr=simulation_end_yr,
                 default_streategy_var=default_streategy_vars[var_name],
                 var_name=var_name)
 
@@ -266,8 +267,8 @@ class EDWrapper(SectorModel):
 
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
-            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             simulation_base_yr=config['CONFIG']['base_yr'],
+            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
@@ -413,8 +414,8 @@ class EDWrapper(SectorModel):
 
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
-            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             simulation_base_yr=config['CONFIG']['base_yr'],
+            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)

@@ -133,6 +133,8 @@ parameters:
   name: gshp_fraction
   unit: 'decimal'
   dims:
+    - interpolation_params
+    - end_yr
   dtype: float
 - description: Heat pump fractions
   default: gshp_fraction.csv
@@ -140,31 +142,6 @@ parameters:
   unit: 'decimal'
   dims:
   dtype: float
-#- description: Residential base temperature for by
-#  default: rs_t_heating_by.csv
-#  name: rs_t_heating_by
-#  unit: 'Degree Celsius'
-#  dims: #TODO ADD DIMENSIONS
-#  dtype: float
-#- description: Service base temperature for by
-#  default: ss_t_heating_by.csv
-#  name: ss_t_heating_by
-#  unit: 'Degree Celsius'
-#  dims:
-#  dtype: float
-#- description: Industry base temperature for by
-#  default: is_t_heating_by.csv
-#  name: is_t_heating_by
-#  unit: 'Degree Celsius'
-#  dims:
-#   - timestep
-#  dtype: float
-#- description: Serivce base temperature for cooling by
-#  default: ss_t_cooling_by.csv
-#  name: ss_t_cooling_by
-#  unit: 'Degree Celsius'
-#  dims:
-#  dtype: float
 - description: Overall change in energy demand per enduse
   default: generic_enduse_change.csv
   name: generic_enduse_change

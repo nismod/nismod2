@@ -1,12 +1,7 @@
 name: technology
 description: Describes the evolution of technology
 provides:
-- name: rs_t_heating_by
-  description: 
-  dtype: float
-  unit: TODO
 variants:
 - name: test_narrative
   description: TODO
   data:
-    rs_t_heating_by: high_tech_dsm.yml
