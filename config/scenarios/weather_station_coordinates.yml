@@ -14,8 +14,503 @@ provides:
     dtype: float
     unit:
 variants:
-  - name: weather_station_coordinates__NF1
-    description: Weather station coordinates
-    data:
-      longitude: stations_NF1.csv
-      latitude: stations_NF1.csv
+- data:
+    latitude: stations_NF1.csv
+    longitude: stations_NF1.csv
+  description: Weather station coordinates for weather data NF1
+  name: weather_station_coordinates__NF1
+- data:
+    latitude: stations_NF2.csv
+    longitude: stations_NF2.csv
+  description: Weather station coordinates for weather data NF2
+  name: weather_station_coordinates__NF2
+- data:
+    latitude: stations_NF3.csv
+    longitude: stations_NF3.csv
+  description: Weather station coordinates for weather data NF3
+  name: weather_station_coordinates__NF3
+- data:
+    latitude: stations_NF4.csv
+    longitude: stations_NF4.csv
+  description: Weather station coordinates for weather data NF4
+  name: weather_station_coordinates__NF4
+- data:
+    latitude: stations_NF5.csv
+    longitude: stations_NF5.csv
+  description: Weather station coordinates for weather data NF5
+  name: weather_station_coordinates__NF5
+- data:
+    latitude: stations_NF6.csv
+    longitude: stations_NF6.csv
+  description: Weather station coordinates for weather data NF6
+  name: weather_station_coordinates__NF6
+- data:
+    latitude: stations_NF7.csv
+    longitude: stations_NF7.csv
+  description: Weather station coordinates for weather data NF7
+  name: weather_station_coordinates__NF7
+- data:
+    latitude: stations_NF8.csv
+    longitude: stations_NF8.csv
+  description: Weather station coordinates for weather data NF8
+  name: weather_station_coordinates__NF8
+- data:
+    latitude: stations_NF9.csv
+    longitude: stations_NF9.csv
+  description: Weather station coordinates for weather data NF9
+  name: weather_station_coordinates__NF9
+- data:
+    latitude: stations_NF10.csv
+    longitude: stations_NF10.csv
+  description: Weather station coordinates for weather data NF10
+  name: weather_station_coordinates__NF10
+- data:
+    latitude: stations_NF11.csv
+    longitude: stations_NF11.csv
+  description: Weather station coordinates for weather data NF11
+  name: weather_station_coordinates__NF11
+- data:
+    latitude: stations_NF12.csv
+    longitude: stations_NF12.csv
+  description: Weather station coordinates for weather data NF12
+  name: weather_station_coordinates__NF12
+- data:
+    latitude: stations_NF13.csv
+    longitude: stations_NF13.csv
+  description: Weather station coordinates for weather data NF13
+  name: weather_station_coordinates__NF13
+- data:
+    latitude: stations_NF14.csv
+    longitude: stations_NF14.csv
+  description: Weather station coordinates for weather data NF14
+  name: weather_station_coordinates__NF14
+- data:
+    latitude: stations_NF15.csv
+    longitude: stations_NF15.csv
+  description: Weather station coordinates for weather data NF15
+  name: weather_station_coordinates__NF15
+- data:
+    latitude: stations_NF16.csv
+    longitude: stations_NF16.csv
+  description: Weather station coordinates for weather data NF16
+  name: weather_station_coordinates__NF16
+- data:
+    latitude: stations_NF17.csv
+    longitude: stations_NF17.csv
+  description: Weather station coordinates for weather data NF17
+  name: weather_station_coordinates__NF17
+- data:
+    latitude: stations_NF18.csv
+    longitude: stations_NF18.csv
+  description: Weather station coordinates for weather data NF18
+  name: weather_station_coordinates__NF18
+- data:
+    latitude: stations_NF19.csv
+    longitude: stations_NF19.csv
+  description: Weather station coordinates for weather data NF19
+  name: weather_station_coordinates__NF19
+- data:
+    latitude: stations_NF20.csv
+    longitude: stations_NF20.csv
+  description: Weather station coordinates for weather data NF20
+  name: weather_station_coordinates__NF20
+- data:
+    latitude: stations_NF21.csv
+    longitude: stations_NF21.csv
+  description: Weather station coordinates for weather data NF21
+  name: weather_station_coordinates__NF21
+- data:
+    latitude: stations_NF22.csv
+    longitude: stations_NF22.csv
+  description: Weather station coordinates for weather data NF22
+  name: weather_station_coordinates__NF22
+- data:
+    latitude: stations_NF23.csv
+    longitude: stations_NF23.csv
+  description: Weather station coordinates for weather data NF23
+  name: weather_station_coordinates__NF23
+- data:
+    latitude: stations_NF24.csv
+    longitude: stations_NF24.csv
+  description: Weather station coordinates for weather data NF24
+  name: weather_station_coordinates__NF24
+- data:
+    latitude: stations_NF25.csv
+    longitude: stations_NF25.csv
+  description: Weather station coordinates for weather data NF25
+  name: weather_station_coordinates__NF25
+- data:
+    latitude: stations_NF26.csv
+    longitude: stations_NF26.csv
+  description: Weather station coordinates for weather data NF26
+  name: weather_station_coordinates__NF26
+- data:
+    latitude: stations_NF27.csv
+    longitude: stations_NF27.csv
+  description: Weather station coordinates for weather data NF27
+  name: weather_station_coordinates__NF27
+- data:
+    latitude: stations_NF28.csv
+    longitude: stations_NF28.csv
+  description: Weather station coordinates for weather data NF28
+  name: weather_station_coordinates__NF28
+- data:
+    latitude: stations_NF29.csv
+    longitude: stations_NF29.csv
+  description: Weather station coordinates for weather data NF29
+  name: weather_station_coordinates__NF29
+- data:
+    latitude: stations_NF30.csv
+    longitude: stations_NF30.csv
+  description: Weather station coordinates for weather data NF30
+  name: weather_station_coordinates__NF30
+- data:
+    latitude: stations_NF31.csv
+    longitude: stations_NF31.csv
+  description: Weather station coordinates for weather data NF31
+  name: weather_station_coordinates__NF31
+- data:
+    latitude: stations_NF32.csv
+    longitude: stations_NF32.csv
+  description: Weather station coordinates for weather data NF32
+  name: weather_station_coordinates__NF32
+- data:
+    latitude: stations_NF33.csv
+    longitude: stations_NF33.csv
+  description: Weather station coordinates for weather data NF33
+  name: weather_station_coordinates__NF33
+- data:
+    latitude: stations_NF34.csv
+    longitude: stations_NF34.csv
+  description: Weather station coordinates for weather data NF34
+  name: weather_station_coordinates__NF34
+- data:
+    latitude: stations_NF35.csv
+    longitude: stations_NF35.csv
+  description: Weather station coordinates for weather data NF35
+  name: weather_station_coordinates__NF35
+- data:
+    latitude: stations_NF36.csv
+    longitude: stations_NF36.csv
+  description: Weather station coordinates for weather data NF36
+  name: weather_station_coordinates__NF36
+- data:
+    latitude: stations_NF37.csv
+    longitude: stations_NF37.csv
+  description: Weather station coordinates for weather data NF37
+  name: weather_station_coordinates__NF37
+- data:
+    latitude: stations_NF38.csv
+    longitude: stations_NF38.csv
+  description: Weather station coordinates for weather data NF38
+  name: weather_station_coordinates__NF38
+- data:
+    latitude: stations_NF39.csv
+    longitude: stations_NF39.csv
+  description: Weather station coordinates for weather data NF39
+  name: weather_station_coordinates__NF39
+- data:
+    latitude: stations_NF40.csv
+    longitude: stations_NF40.csv
+  description: Weather station coordinates for weather data NF40
+  name: weather_station_coordinates__NF40
+- data:
+    latitude: stations_NF41.csv
+    longitude: stations_NF41.csv
+  description: Weather station coordinates for weather data NF41
+  name: weather_station_coordinates__NF41
+- data:
+    latitude: stations_NF42.csv
+    longitude: stations_NF42.csv
+  description: Weather station coordinates for weather data NF42
+  name: weather_station_coordinates__NF42
+- data:
+    latitude: stations_NF43.csv
+    longitude: stations_NF43.csv
+  description: Weather station coordinates for weather data NF43
+  name: weather_station_coordinates__NF43
+- data:
+    latitude: stations_NF44.csv
+    longitude: stations_NF44.csv
+  description: Weather station coordinates for weather data NF44
+  name: weather_station_coordinates__NF44
+- data:
+    latitude: stations_NF45.csv
+    longitude: stations_NF45.csv
+  description: Weather station coordinates for weather data NF45
+  name: weather_station_coordinates__NF45
+- data:
+    latitude: stations_NF46.csv
+    longitude: stations_NF46.csv
+  description: Weather station coordinates for weather data NF46
+  name: weather_station_coordinates__NF46
+- data:
+    latitude: stations_NF47.csv
+    longitude: stations_NF47.csv
+  description: Weather station coordinates for weather data NF47
+  name: weather_station_coordinates__NF47
+- data:
+    latitude: stations_NF48.csv
+    longitude: stations_NF48.csv
+  description: Weather station coordinates for weather data NF48
+  name: weather_station_coordinates__NF48
+- data:
+    latitude: stations_NF49.csv
+    longitude: stations_NF49.csv
+  description: Weather station coordinates for weather data NF49
+  name: weather_station_coordinates__NF49
+- data:
+    latitude: stations_NF50.csv
+    longitude: stations_NF50.csv
+  description: Weather station coordinates for weather data NF50
+  name: weather_station_coordinates__NF50
+- data:
+    latitude: stations_NF51.csv
+    longitude: stations_NF51.csv
+  description: Weather station coordinates for weather data NF51
+  name: weather_station_coordinates__NF51
+- data:
+    latitude: stations_NF52.csv
+    longitude: stations_NF52.csv
+  description: Weather station coordinates for weather data NF52
+  name: weather_station_coordinates__NF52
+- data:
+    latitude: stations_NF53.csv
+    longitude: stations_NF53.csv
+  description: Weather station coordinates for weather data NF53
+  name: weather_station_coordinates__NF53
+- data:
+    latitude: stations_NF54.csv
+    longitude: stations_NF54.csv
+  description: Weather station coordinates for weather data NF54
+  name: weather_station_coordinates__NF54
+- data:
+    latitude: stations_NF55.csv
+    longitude: stations_NF55.csv
+  description: Weather station coordinates for weather data NF55
+  name: weather_station_coordinates__NF55
+- data:
+    latitude: stations_NF56.csv
+    longitude: stations_NF56.csv
+  description: Weather station coordinates for weather data NF56
+  name: weather_station_coordinates__NF56
+- data:
+    latitude: stations_NF57.csv
+    longitude: stations_NF57.csv
+  description: Weather station coordinates for weather data NF57
+  name: weather_station_coordinates__NF57
+- data:
+    latitude: stations_NF58.csv
+    longitude: stations_NF58.csv
+  description: Weather station coordinates for weather data NF58
+  name: weather_station_coordinates__NF58
+- data:
+    latitude: stations_NF59.csv
+    longitude: stations_NF59.csv
+  description: Weather station coordinates for weather data NF59
+  name: weather_station_coordinates__NF59
+- data:
+    latitude: stations_NF60.csv
+    longitude: stations_NF60.csv
+  description: Weather station coordinates for weather data NF60
+  name: weather_station_coordinates__NF60
+- data:
+    latitude: stations_NF61.csv
+    longitude: stations_NF61.csv
+  description: Weather station coordinates for weather data NF61
+  name: weather_station_coordinates__NF61
+- data:
+    latitude: stations_NF62.csv
+    longitude: stations_NF62.csv
+  description: Weather station coordinates for weather data NF62
+  name: weather_station_coordinates__NF62
+- data:
+    latitude: stations_NF63.csv
+    longitude: stations_NF63.csv
+  description: Weather station coordinates for weather data NF63
+  name: weather_station_coordinates__NF63
+- data:
+    latitude: stations_NF64.csv
+    longitude: stations_NF64.csv
+  description: Weather station coordinates for weather data NF64
+  name: weather_station_coordinates__NF64
+- data:
+    latitude: stations_NF65.csv
+    longitude: stations_NF65.csv
+  description: Weather station coordinates for weather data NF65
+  name: weather_station_coordinates__NF65
+- data:
+    latitude: stations_NF66.csv
+    longitude: stations_NF66.csv
+  description: Weather station coordinates for weather data NF66
+  name: weather_station_coordinates__NF66
+- data:
+    latitude: stations_NF67.csv
+    longitude: stations_NF67.csv
+  description: Weather station coordinates for weather data NF67
+  name: weather_station_coordinates__NF67
+- data:
+    latitude: stations_NF68.csv
+    longitude: stations_NF68.csv
+  description: Weather station coordinates for weather data NF68
+  name: weather_station_coordinates__NF68
+- data:
+    latitude: stations_NF69.csv
+    longitude: stations_NF69.csv
+  description: Weather station coordinates for weather data NF69
+  name: weather_station_coordinates__NF69
+- data:
+    latitude: stations_NF70.csv
+    longitude: stations_NF70.csv
+  description: Weather station coordinates for weather data NF70
+  name: weather_station_coordinates__NF70
+- data:
+    latitude: stations_NF71.csv
+    longitude: stations_NF71.csv
+  description: Weather station coordinates for weather data NF71
+  name: weather_station_coordinates__NF71
+- data:
+    latitude: stations_NF72.csv
+    longitude: stations_NF72.csv
+  description: Weather station coordinates for weather data NF72
+  name: weather_station_coordinates__NF72
+- data:
+    latitude: stations_NF73.csv
+    longitude: stations_NF73.csv
+  description: Weather station coordinates for weather data NF73
+  name: weather_station_coordinates__NF73
+- data:
+    latitude: stations_NF74.csv
+    longitude: stations_NF74.csv
+  description: Weather station coordinates for weather data NF74
+  name: weather_station_coordinates__NF74
+- data:
+    latitude: stations_NF75.csv
+    longitude: stations_NF75.csv
+  description: Weather station coordinates for weather data NF75
+  name: weather_station_coordinates__NF75
+- data:
+    latitude: stations_NF76.csv
+    longitude: stations_NF76.csv
+  description: Weather station coordinates for weather data NF76
+  name: weather_station_coordinates__NF76
+- data:
+    latitude: stations_NF77.csv
+    longitude: stations_NF77.csv
+  description: Weather station coordinates for weather data NF77
+  name: weather_station_coordinates__NF77
+- data:
+    latitude: stations_NF78.csv
+    longitude: stations_NF78.csv
+  description: Weather station coordinates for weather data NF78
+  name: weather_station_coordinates__NF78
+- data:
+    latitude: stations_NF79.csv
+    longitude: stations_NF79.csv
+  description: Weather station coordinates for weather data NF79
+  name: weather_station_coordinates__NF79
+- data:
+    latitude: stations_NF80.csv
+    longitude: stations_NF80.csv
+  description: Weather station coordinates for weather data NF80
+  name: weather_station_coordinates__NF80
+- data:
+    latitude: stations_NF81.csv
+    longitude: stations_NF81.csv
+  description: Weather station coordinates for weather data NF81
+  name: weather_station_coordinates__NF81
+- data:
+    latitude: stations_NF82.csv
+    longitude: stations_NF82.csv
+  description: Weather station coordinates for weather data NF82
+  name: weather_station_coordinates__NF82
+- data:
+    latitude: stations_NF83.csv
+    longitude: stations_NF83.csv
+  description: Weather station coordinates for weather data NF83
+  name: weather_station_coordinates__NF83
+- data:
+    latitude: stations_NF84.csv
+    longitude: stations_NF84.csv
+  description: Weather station coordinates for weather data NF84
+  name: weather_station_coordinates__NF84
+- data:
+    latitude: stations_NF85.csv
+    longitude: stations_NF85.csv
+  description: Weather station coordinates for weather data NF85
+  name: weather_station_coordinates__NF85
+- data:
+    latitude: stations_NF86.csv
+    longitude: stations_NF86.csv
+  description: Weather station coordinates for weather data NF86
+  name: weather_station_coordinates__NF86
+- data:
+    latitude: stations_NF87.csv
+    longitude: stations_NF87.csv
+  description: Weather station coordinates for weather data NF87
+  name: weather_station_coordinates__NF87
+- data:
+    latitude: stations_NF88.csv
+    longitude: stations_NF88.csv
+  description: Weather station coordinates for weather data NF88
+  name: weather_station_coordinates__NF88
+- data:
+    latitude: stations_NF89.csv
+    longitude: stations_NF89.csv
+  description: Weather station coordinates for weather data NF89
+  name: weather_station_coordinates__NF89
+- data:
+    latitude: stations_NF90.csv
+    longitude: stations_NF90.csv
+  description: Weather station coordinates for weather data NF90
+  name: weather_station_coordinates__NF90
+- data:
+    latitude: stations_NF91.csv
+    longitude: stations_NF91.csv
+  description: Weather station coordinates for weather data NF91
+  name: weather_station_coordinates__NF91
+- data:
+    latitude: stations_NF92.csv
+    longitude: stations_NF92.csv
+  description: Weather station coordinates for weather data NF92
+  name: weather_station_coordinates__NF92
+- data:
+    latitude: stations_NF93.csv
+    longitude: stations_NF93.csv
+  description: Weather station coordinates for weather data NF93
+  name: weather_station_coordinates__NF93
+- data:
+    latitude: stations_NF94.csv
+    longitude: stations_NF94.csv
+  description: Weather station coordinates for weather data NF94
+  name: weather_station_coordinates__NF94
+- data:
+    latitude: stations_NF95.csv
+    longitude: stations_NF95.csv
+  description: Weather station coordinates for weather data NF95
+  name: weather_station_coordinates__NF95
+- data:
+    latitude: stations_NF96.csv
+    longitude: stations_NF96.csv
+  description: Weather station coordinates for weather data NF96
+  name: weather_station_coordinates__NF96
+- data:
+    latitude: stations_NF97.csv
+    longitude: stations_NF97.csv
+  description: Weather station coordinates for weather data NF97
+  name: weather_station_coordinates__NF97
+- data:
+    latitude: stations_NF98.csv
+    longitude: stations_NF98.csv
+  description: Weather station coordinates for weather data NF98
+  name: weather_station_coordinates__NF98
+- data:
+    latitude: stations_NF99.csv
+    longitude: stations_NF99.csv
+  description: Weather station coordinates for weather data NF99
+  name: weather_station_coordinates__NF99
+- data:
+    latitude: stations_NF100.csv
+    longitude: stations_NF100.csv
+  description: Weather station coordinates for weather data NF100
+  name: weather_station_coordinates__NF100
