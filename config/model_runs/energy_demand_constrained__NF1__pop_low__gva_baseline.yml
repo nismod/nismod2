@@ -1,0 +1,19 @@
+decision_module: ''
+description: ''
+name: energy_demand_constrained__NF1__pop_low__gva_baseline
+narratives:
+  generic_enduse_change:
+  - central_narrative
+  t_base_heating:
+  - central_narrative
+scenarios:
+  gva_per_head: gva_baseline
+  population: pop_low
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
+sos_model: energy_demand_constrained
+stamp: ''
+strategies: {}
+timesteps:
+- 2015
+- 2050

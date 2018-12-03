@@ -1,8 +1,8 @@
 narratives: 
   t_base_heating: 
-    - central_narrative
+  - central_narrative
   generic_enduse_change:
-    - central_narrative
+  - central_narrative
 scenarios:
   gva_per_head: gva_baseline
   population: pop_low

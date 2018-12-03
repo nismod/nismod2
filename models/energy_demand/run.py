@@ -69,12 +69,16 @@ class EDWrapper(SectorModel):
 
         return config
 
-    def _get_config_paths(self, config, NAME_SCENARIO_RUN='dummy_name'):
+    def _get_config_paths(self, config, data_handle):
         """Create scenario name and get paths
         """
+
+        # Model run name
+        modelrun_name = data_handle._modelrun_name
+
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
 
-        path_new_scenario = os.path.join(temp_path, NAME_SCENARIO_RUN)
+        path_new_scenario = os.path.join(temp_path, modelrun_name)
         result_paths = data_loader.get_result_paths(path_new_scenario)
 
         # ------------------------------
@@ -254,7 +258,7 @@ class EDWrapper(SectorModel):
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
         data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
-            config, NAME_SCENARIO_RUN)
+            config, data_handle)
 
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
@@ -276,12 +280,6 @@ class EDWrapper(SectorModel):
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
-
-        generic_enduse_change = data_handle.get_parameter('generic_enduse_change').as_df()
-        print("- central_narrative")
-        print(generic_enduse_change)
-
-        raise Exception("GT")
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
@@ -336,7 +334,7 @@ class EDWrapper(SectorModel):
         # Read service switches
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
         switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
-        service_switches = read_data.service_switch_NEW(switches_service_raw)
+        service_switches = read_data.service_switch(switches_service_raw)
 
         #service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
@@ -394,7 +392,7 @@ class EDWrapper(SectorModel):
         sim_yrs = self._get_simulation_yrs(data_handle)
 
         data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
-            config, NAME_SCENARIO_RUN)
+            config, data_handle)
 
         # --------------------------------------------------
         # Read all other data
