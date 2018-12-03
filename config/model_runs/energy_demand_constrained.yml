@@ -1,8 +1,12 @@
-narratives: {}
+narratives: 
+  t_base_heating: 
+    - central_narrative
+  generic_enduse_change:
+    - central_narrative
 scenarios:
   gva_per_head: gva_baseline
   population: pop_low
-  temperature: default_temperature
+  temperature: NF1
   weather_station_coordinates: weather_station_coordinates__NF1
 strategies: {}
 stamp: '2017-11-07T14:15:00+00:00'

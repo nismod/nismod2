@@ -1,7 +1,0 @@
-name: energy_test
-description: Describes the energy_test landscape
-provides: 
-variants:
-- name: central
-  description:
-  data: 

@@ -21,6 +21,7 @@ from energy_demand.read_write import write_data, read_data, data_loader, narrati
 
 NAME_SCENARIO_RUN = "{}_result_local_{}".format(
     "SCENARIO_NAME", str(time.ctime()).replace(":", "_").replace(" ", "_"))
+# use data_handle._modelrun_name
 
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
@@ -68,7 +69,7 @@ class EDWrapper(SectorModel):
 
         return config
 
-    def _get_config_paths(self, config, NAME_SCENARIO_RUN):
+    def _get_config_paths(self, config, NAME_SCENARIO_RUN='dummy_name'):
         """Create scenario name and get paths
         """
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
@@ -209,6 +210,7 @@ class EDWrapper(SectorModel):
         """
         narrative_params = {}
 
+        # All narrative parameters
         variable_names = [
             'air_leakage',
             'assump_diff_floorarea_pp',
@@ -227,7 +229,6 @@ class EDWrapper(SectorModel):
         for var_name in variable_names:
             print("... reading in scenaric values for parameter: '{}'".format(var_name))
             param_raw_series = data_handle.get_parameter(var_name).as_df()
-
             df_raw = self._series_to_df(param_raw_series, var_name)
 
             narrative_params[var_name] = narrative_related.read_user_defined_param(
@@ -276,10 +277,10 @@ class EDWrapper(SectorModel):
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
 
-        rs_t_base_heating = data_handle.get_parameter('rs_t_base_heating').as_df()
-        print("rs_t_base_heating")
-        print(rs_t_base_heating)
-        print(user_defined_vars['rs_t_base_heating'])
+        generic_enduse_change = data_handle.get_parameter('generic_enduse_change').as_df()
+        print("- central_narrative")
+        print(generic_enduse_change)
+
         raise Exception("GT")
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
@@ -499,10 +500,10 @@ class EDWrapper(SectorModel):
         data['assumptions'].technologies.update(updated_techs)
 
         # Write population data to file
-        write_data.write_scenaric_population_data(
+        '''write_data.write_scenaric_population_data(
             curr_yr,
             os.path.join(data['path_new_scenario'], 'model_run_pop'),
-            pop_array_cy)
+            pop_array_cy)'''
 
         # --------------------------------------------------
         # Run main model function

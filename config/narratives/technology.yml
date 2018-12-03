@@ -1,7 +1,0 @@
-name: technology
-description: Describes the evolution of technology
-provides:
-variants:
-- name: test_narrative
-  description: TODO
-  data:
