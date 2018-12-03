@@ -5,6 +5,7 @@ TODO: Add sector in air_leakage and add sector in generic fuel switch
 TODO: How to load standard default empty parameters
 """
 import os
+import time
 import configparser
 import logging
 from collections import defaultdict
@@ -18,6 +19,9 @@ from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
 from energy_demand.read_write import write_data, read_data, data_loader, narrative_related
 
+NAME_SCENARIO_RUN = "{}_result_local_{}".format(
+    "SCENARIO_NAME", str(time.ctime()).replace(":", "_").replace(" ", "_"))
+
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
     """
@@ -25,15 +29,15 @@ class EDWrapper(SectorModel):
         super().__init__(name)
         self.user_data = {}
 
-    def _assign_array_to_dict(array_in, regions):
+    def _assign_array_to_dict(self, array_in, regions):
         """Convert array to dict with same order as region list
 
         Input
         -----
-        regions : list
-            List with specific order of regions
         array_in : array
             Data array with data like the order of the region list
+        regions : list
+            List with specific order of regions
 
         Returns
         -------
@@ -64,13 +68,12 @@ class EDWrapper(SectorModel):
 
         return config
 
-    def _get_config_paths(self, config):
+    def _get_config_paths(self, config, NAME_SCENARIO_RUN):
         """Create scenario name and get paths
         """
-        name_scenario = "scenario_A" #TODO
         temp_path = os.path.normpath(config['PATHS']['path_result_data'])
 
-        path_new_scenario = os.path.join(temp_path, name_scenario)
+        path_new_scenario = os.path.join(temp_path, NAME_SCENARIO_RUN)
         result_paths = data_loader.get_result_paths(path_new_scenario)
 
         # ------------------------------
@@ -191,7 +194,7 @@ class EDWrapper(SectorModel):
             sectors_to_load.append(int(i))
 
         for gva_sector_nr, sector_id in enumerate(sectors_to_load):
-            out_dict[sector_id] = assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], regions)
+            out_dict[sector_id] = self._assign_array_to_dict(gva_sector_data.as_ndarray()[:, gva_sector_nr], regions)
 
         return out_dict
 
@@ -206,7 +209,6 @@ class EDWrapper(SectorModel):
         """
         narrative_params = {}
 
-        #variable_names = list(data_handle.get_parameters().keys())
         variable_names = [
             'air_leakage',
             'assump_diff_floorarea_pp',
@@ -251,7 +253,7 @@ class EDWrapper(SectorModel):
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
         data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
-            config)
+            config, NAME_SCENARIO_RUN)
 
         # Load hard-coded standard default assumptions
         default_streategy_vars = strategy_vars_def.load_param_assump(
@@ -265,11 +267,20 @@ class EDWrapper(SectorModel):
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])
 
+        # -----------
+        # TESTING
+        # -----------
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
+
+        rs_t_base_heating = data_handle.get_parameter('rs_t_base_heating').as_df()
+        print("rs_t_base_heating")
+        print(rs_t_base_heating)
+        print(user_defined_vars['rs_t_base_heating'])
+        raise Exception("GT")
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
@@ -287,8 +298,8 @@ class EDWrapper(SectorModel):
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head')
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
 
-        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['population'][curr_yr] = self._assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['gva_per_head'][curr_yr] = self._assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
 
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
         pop_density = self._calculate_pop_density(pop_array_by, region_set_name)
@@ -321,7 +332,12 @@ class EDWrapper(SectorModel):
         # Load switches from intervention
         # TODO READ IN AS SCENARIC VALUE / INTERVENTION??
         # -----------------------------------------
-        service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
+        # Read service switches
+        switches_service_raw = data_handle.get_parameter('switches_service').as_df()
+        switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
+        service_switches = read_data.service_switch_NEW(switches_service_raw)
+
+        #service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
@@ -376,7 +392,8 @@ class EDWrapper(SectorModel):
 
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(config)
+        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
+            config, NAME_SCENARIO_RUN)
 
         # --------------------------------------------------
         # Read all other data
@@ -390,8 +407,8 @@ class EDWrapper(SectorModel):
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
 
-        data['scenario_data']['population'][base_yr] = assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
-        data['scenario_data']['gva_per_head'][base_yr] = assign_array_to_dict(gva_array_by, data['regions'])
+        data['scenario_data']['population'][base_yr] = self._assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
+        data['scenario_data']['gva_per_head'][base_yr] = self._assign_array_to_dict(gva_array_by, data['regions'])
         data['scenario_data']['gva_industry'][base_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
         # --------------------------------------------
@@ -400,8 +417,8 @@ class EDWrapper(SectorModel):
         pop_array_cy = data_handle.get_data('population').as_ndarray()
         gva_array_cy = data_handle.get_data('gva_per_head').as_ndarray()
 
-        data['scenario_data']['population'][curr_yr] = assign_array_to_dict(pop_array_cy, data['regions'])
-        data['scenario_data']['gva_per_head'][curr_yr] = assign_array_to_dict(gva_array_cy, data['regions'])
+        data['scenario_data']['population'][curr_yr] = self._assign_array_to_dict(pop_array_cy, data['regions'])
+        data['scenario_data']['gva_per_head'][curr_yr] = self._assign_array_to_dict(gva_array_cy, data['regions'])
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
         default_streategy_vars = strategy_vars_def.load_param_assump(
@@ -519,24 +536,3 @@ class EDWrapper(SectorModel):
 
         print("---- FIHISHED WRAPPER -----")
         return sim_obj.supply_results
-
-def assign_array_to_dict(array_in, regions):
-    """Convert array to dict with same order as region list
-
-    Input
-    -----
-    regions : list
-        List with specific order of regions
-    array_in : array
-        Data array with data like the order of the region list
-
-    Returns
-    -------
-    dict_out : dict
-        Dictionary of array_in
-    """
-    dict_out = {}
-    for r_idx, region in enumerate(regions):
-        dict_out[region] = array_in[r_idx]
-
-    return dict_out

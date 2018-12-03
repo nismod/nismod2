@@ -4,17 +4,16 @@ classname: EDWrapper
 initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
-#- description: Service switches
-#  default: switches_service.csv
-#  name: switches_service
-#  unit: ''
-#  dims:
-#  - enduses
-#  - tech
-#  - service_share_ey
-#  - switch_yr
-#  - sector
-#  dtype: float
+- description: Service switches
+  default: switches_service.csv
+  name: switches_service
+  unit: ''
+  dims:
+  - enduses_service_switch
+  - tech
+  - end_yr
+  - sector
+  dtype: float
 - description: Generic fuel switch
   default: generic_fuel_switch.csv
   name: generic_fuel_switch
@@ -107,7 +106,7 @@ parameters:
   - interpolation_params
   - end_yr
   dtype: str
-- description: TESTFILE
+- description: Demand side management improvemnt
   default: dm_improvement.csv
   name: dm_improvement
   unit: 
