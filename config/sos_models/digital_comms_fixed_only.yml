@@ -1,0 +1,13 @@
+description: Model for digital_comms fixed network
+name: digital_comms_fixed_only
+sector_models:
+- digital_comms_fixed_network
+scenarios:
+- adoption
+narratives: []
+scenario_dependencies:
+- source: adoption
+  source_output: adoption
+  sink: digital_comms_fixed_network
+  sink_input: adoption
+model_dependencies: []

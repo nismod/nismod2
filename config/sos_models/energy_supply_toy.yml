@@ -10,7 +10,7 @@ narratives:
       LoadShed_gas: high_load_shed.csv
     description: very high cost load shedding
     name: high_cost
-  sos_model: ''
+  sos_model: energy_supply_toy
   description: Costs of shedding load
   name: load_shedding
   provides:

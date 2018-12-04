@@ -1,86 +1,22 @@
-classname: EnergySupplyWrapper
+path: models/energy_supply/energy_supply.py
 description: Toy version of the CGEN++ energy supply model which uses minimal data
+classname: EnergySupplyWrapper
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
-inputs:
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: elecload
-  unit: MW
-- dims:
-  - gas_nodes_minimal
-  - seasonal_week
-  dtype: float
-  name: gasload
-  unit: mcm
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: residential_heatload
-  unit: MW
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: residential_gas_non_heating
-  unit: mcm
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: residential_electricity_non_heating
-  unit: MW
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: service_heatload
-  unit: MW
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: service_gas_non_heating
-  unit: mcm
-- dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-  name: service_electricity_non_heating
-  unit: MW
-- dims:
-  - seasons
-  dtype: float
-  name: cost_of_carbon
-  unit: GBP/Mt
-- dims:
-  - seasons
-  dtype: float
-  name: electricity_price
+parameters:
+- description: cost of electricity load shedding
+  default: ../energy_supply/parameters/load_shed.csv
+  name: LoadShed_elec
   unit: GBP/MWh
-- dims:
-  - seasons
+  dims: []
   dtype: float
-  name: gas_price
+- description: cost of gas load shedding
+  default: ../energy_supply/parameters/load_shed.csv
+  name: LoadShed_gas
   unit: GBP/MWh
-- dims:
-  - seasons
+  dims: []
   dtype: float
-  name: nuclearFuel_price
-  unit: GBP/MWh
-- dims:
-  - seasons
-  dtype: float
-  name: oil_price
-  unit: GBP/MWh
-- dims:
-  - seasons
-  dtype: float
-  name: coal_price
-  unit: GBP/MWh
+name: energy_supply_toy
 interventions:
 - ../energy_supply/interventions/minimal/es_elec_network_minimal.csv
 - ../energy_supply/interventions/minimal/es_gaspipes_minimal.csv
@@ -88,201 +24,265 @@ interventions:
 - ../energy_supply/interventions/minimal/es_gasterminals_minimal.csv
 - ../energy_supply/interventions/minimal/es_generators_minimal.csv
 - ../energy_supply/interventions/minimal/es_heattech_minimal.csv
-# - ../energy_supply/interventions/strategies/high_renewables_interventions.yml
+- ../energy_supply/interventions/strategies/high_renewables_interventions.yml
 # - high_distributed_interventions.yml
-name: energy_supply_toy
+inputs:
+- name: elecload
+  unit: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: gasload
+  unit: mcm
+  dims:
+  - gas_nodes_minimal
+  - seasonal_week
+  dtype: float
+- name: residential_heatload
+  unit: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: residential_gas_non_heating
+  unit: mcm
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: residential_electricity_non_heating
+  unit: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: service_heatload
+  unit: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: service_gas_non_heating
+  unit: mcm
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: service_electricity_non_heating
+  unit: MW
+  dims:
+  - energy_hub_min
+  - seasonal_week
+  dtype: float
+- name: cost_of_carbon
+  unit: GBP/Mt
+  dims:
+  - seasons
+  dtype: float
+- name: electricity_price
+  unit: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
+- name: gas_price
+  unit: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
+- name: nuclearFuel_price
+  unit: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
+- name: oil_price
+  unit: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
+- name: coal_price
+  unit: GBP/MWh
+  dims:
+  - seasons
+  dtype: float
 outputs:
-- dims:
+- name: gasfired_gen_tran
+  unit: MW
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: gasfired_gen_tran
+- name: coal_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: coal_gen_tran
+- name: hydro_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: hydro_gen_tran
+- name: pumpedHydro_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: pumpedHydro_gen_tran
+- name: nuclear_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: nuclear_gen_tran
+- name: interconnector_elec_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: interconnector_elec_tran
+- name: renewable_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: renewable_gen_tran
+- name: wind_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: wind_gen_tran
+- name: pv_gen_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: pv_gen_tran
+- name: wind_curtail_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: wind_curtail_tran
+- name: pv_curtail_tran
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: pv_curtail_tran
+- name: gasfired_gen_eh
   unit: MW
-- dims:
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: gasfired_gen_eh
+- name: wind_gen_eh
   unit: MW
-- dims:
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: wind_gen_eh
+- name: pv_gen_eh
   unit: MW
-- dims:
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: pv_gen_eh
+- name: lng_supply
+  unit: mcm
+  dims:
+  - national
+  - seasonal_week
+  dtype: float
+- name: domestic_gas
+  unit: mcm
+  dims:
+  - national
+  - seasonal_week
+  dtype: float
+- name: interconnector_gas
+  unit: mcm
+  dims:
+  - national
+  - seasonal_week
+  dtype: float
+- name: storage_gas
+  unit: mcm
+  dims:
+  - national
+  - seasonal_week
+  dtype: float
+- name: load_shed_gas
+  unit: mcm
+  dims:
+  - national
+  - seasonal_week
+  dtype: float
+- name: load_shed_elec
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: lng_supply
+- name: load_shed_gas_eh
   unit: mcm
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: domestic_gas
-  unit: mcm
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: interconnector_gas
-  unit: mcm
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: storage_gas
-  unit: mcm
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: load_shed_gas
-  unit: mcm
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: load_shed_elec
-  unit: MW
-- dims:
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: load_shed_gas_eh
-  unit: mcm
-- dims:
+- name: load_shed_elec_eh
+  unit: MW
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: load_shed_elec_eh
-  unit: MW
-- dims:
-  - national
-  - seasonal_week
-  dtype: float
-  name: elec_cost
+- name: elec_cost
   unit: GBP/kWh
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: heat_gasboiler
+- name: heat_gasboiler
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: heat_heatpump
+- name: heat_heatpump
   unit: MW
-- dims:
+  dims:
   - national
   - seasonal_week
   dtype: float
-  name: elec_reserve_tran
+- name: elec_reserve_tran
   unit: MW
-- dims: []
+  dims:
+  - national
+  - seasonal_week
   dtype: float
-  name: problem_objective
+- name: problem_objective
   unit: GBP
-- dims: []
+  dims: []
   dtype: float
-  name: problem_status
+- name: problem_status
   unit: None
-- dims: []
+  dims: []
   dtype: float
-  name: total_opt_cost
+- name: total_opt_cost
   unit: GBP
-- dims:
+  dims: []
+  dtype: float
+- name: emissions_eh
+  unit: t
+  dims:
   - energy_hub_min
   - seasonal_week
   dtype: float
-  name: emissions_eh
+- name: emissions_bb
   unit: t
-- dims:
+  dims:
   - bus_bars
   - seasonal_week
   dtype: float
-  name: emissions_bb
-  unit: t
-parameters:
-- name: LoadShed_elec
-  description: cost of electricity load shedding
-  dims: []
-  default: ../energy_supply/parameters/load_shed.csv
-  unit: £/MWh
-  dtype: float
-- name: LoadShed_gas
-  description: cost of gas load shedding
-  dims: []
-  default: ../energy_supply/parameters/load_shed.csv
-  unit: £/MWh
-  dtype: float
-path: models/energy_supply/energy_supply.py
