@@ -1,3 +1,3 @@
 name: switch_yr
 description: Year to switch
-elements: switch_yr.csv
+elements: ../energy_demand/dimensions/switch_yr.csv

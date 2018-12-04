@@ -1,3 +1,3 @@
 name: interpolation_params
 description: Transposed subparameter names
-elements: interpolation_params.csv
+elements: ../energy_demand/dimensions/interpolation_params.csv

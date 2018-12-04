@@ -1,3 +1,3 @@
 name: sectors_generic_fuel_switch
 description: Paramters of generic fuel switch
-elements: sectors_generic_fuel_switch.csv
+elements: ../energy_demand/dimensions/sectors_generic_fuel_switch.csv

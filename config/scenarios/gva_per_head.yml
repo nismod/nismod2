@@ -18,5 +18,5 @@ variants:
   - name: gva_baseline
     description: Baseline gva for the UK
     data:
-      gva_per_head: dummy_gva_constant.csv
-      gva_per_sector: ed_gva_sectors.csv
+      gva_per_head: ../energy_demand/scenarios/dummy_gva_constant.csv
+      gva_per_sector: ../energy_demand/scenarios/ed_gva_sectors.csv

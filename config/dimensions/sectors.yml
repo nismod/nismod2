@@ -1,3 +1,3 @@
 name: sectors
 description: Industrial sectors
-elements: sectors.csv
+elements: ../energy_demand/dimensions/sectors.csv

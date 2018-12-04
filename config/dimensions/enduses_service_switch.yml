@@ -1,3 +1,3 @@
 name: enduses_service_switch
 description: End uses for service switch
-elements: enduses_service_switch.csv
+elements: ../energy_demand/dimensions/enduses_service_switch.csv
