@@ -61,9 +61,9 @@ NISMOD folder:
 
 ```
 [ftp-config]
-ftp_server=ceg-itrc.ncl.ac.uk
-username=<username>
-password=<password>
+ftp_server=sage-itrc.ncl.ac.uk
+ftp_username=<username>
+ftp_password=<password>
 ```
 
 Create and configure the guest machine:
