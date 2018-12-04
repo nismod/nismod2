@@ -5,7 +5,6 @@ TODO: Add sector in air_leakage and add sector in generic fuel switch
 TODO: How to load standard default empty parameters
 """
 import os
-import time
 import configparser
 import logging
 from collections import defaultdict
@@ -18,10 +17,6 @@ from energy_demand.assumptions import strategy_vars_def, general_assumptions
 from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
 from energy_demand.read_write import write_data, read_data, data_loader, narrative_related
-
-NAME_SCENARIO_RUN = "{}_result_local_{}".format(
-    "SCENARIO_NAME", str(time.ctime()).replace(":", "_").replace(" ", "_"))
-# use data_handle._modelrun_name
 
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
@@ -267,7 +262,7 @@ class EDWrapper(SectorModel):
         # =================
         # Idential to reading in raw files from folder (multidimensional narratives)
         # =================
-        strategy_vars = strategy_vars_def.load_default_params(
+        strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])
@@ -328,8 +323,7 @@ class EDWrapper(SectorModel):
         data['assumptions'].technologies.update(technologies)
 
         # -----------------------------------------
-        # Load switches from intervention
-        # TODO READ IN AS SCENARIC VALUE / INTERVENTION??
+        # Load switches
         # -----------------------------------------
         # Read service switches
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
@@ -423,7 +417,7 @@ class EDWrapper(SectorModel):
         default_streategy_vars = strategy_vars_def.load_param_assump(
             hard_coded_default_val=True)
 
-        strategy_vars = strategy_vars_def.load_default_params(
+        strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])

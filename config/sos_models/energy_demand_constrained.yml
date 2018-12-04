@@ -1,5 +1,5 @@
 name: energy_demand_constrained
-scenarios:     # Select 0 or more of the scenario sets
+scenarios:
 - population
 - gva_per_head
 - temperature
@@ -36,7 +36,87 @@ scenario_dependencies:
   source: temperature
   source_output: t_max
   sink_input: t_max
-narratives: 
+narratives:
+- name: air_leakage
+  provides:
+   energy_demand_constrained:
+     - air_leakage
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       air_leakage: air_leakage__central.csv
+- name: assump_diff_floorarea_pp
+  provides:
+   energy_demand_constrained:
+     - assump_diff_floorarea_pp
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       assump_diff_floorarea_pp: assump_diff_floorarea_pp__central.csv
+- name: cooled_floorarea
+  provides:
+   energy_demand_constrained:
+     - cooled_floorarea
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       cooled_floorarea: cooled_floorarea__central.csv
+- name: dm_improvement
+  provides:
+   energy_demand_constrained:
+     - dm_improvement
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       dm_improvement: dm_improvement__central.csv
+- name: f_eff_achieved
+  provides:
+   energy_demand_constrained:
+     - f_eff_achieved
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       f_eff_achieved: f_eff_achieved__central.csv
+- name: generic_enduse_change
+  provides:
+   energy_demand_constrained:
+     - generic_enduse_change
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       generic_enduse_change: generic_enduse_change__central.csv
+- name: generic_enduse_change
+  provides:
+   energy_demand_constrained:
+     - generic_enduse_change
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       generic_enduse_change: generic_enduse_change__central.csv
+- name: heat_recovered
+  provides:
+   energy_demand_constrained:
+     - heat_recovered
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       heat_recovered: heat_recovered__central.csv
 - name: t_base_heating
   provides:
    energy_demand_constrained:
@@ -51,14 +131,34 @@ narratives:
        rs_t_base_heating: rs_t_base_heating__central.csv
        ss_t_base_heating: ss_t_base_heating__central.csv
        is_t_base_heating: is_t_base_heating__central.csv
-- name: generic_enduse_change
+- name: p_cold_rolling_steel
   provides:
    energy_demand_constrained:
-     - generic_enduse_change
-  description: 'C'
+     - p_cold_rolling_steel
+  description: ''
   variants:
    - name: central_narrative
      description: Central assumptions
      data:
-       generic_enduse_change: generic_enduse_change__central.csv
+       p_cold_rolling_steel: p_cold_rolling_steel__central.csv
+- name: smart_meter_p
+  provides:
+   energy_demand_constrained:
+     - smart_meter_p
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       smart_meter_p: smart_meter_p__central.csv
+- name: generic_fuel_switch
+  provides:
+   energy_demand_constrained:
+     - generic_fuel_switch
+  description: ''
+  variants:
+   - name: central_narrative
+     description: Central assumptions
+     data:
+       generic_fuel_switch: generic_fuel_switch__central.csv
   
