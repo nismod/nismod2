@@ -1,5 +1,5 @@
 name: temperature
-description: Temperatuer description
+description: Minimum and maximum daily temperature projections from the Weather@Home project
 provides:
   - name: t_min
     description: 'Minimum daily temperature'
@@ -9,7 +9,7 @@ provides:
     dtype: float
     unit: Degree Celcius
   - name: t_max
-    description: 'Minimum daily temperature'
+    description: 'Maximum daily temperature'
     dims:
       - station_id
       - yearday
@@ -17,8 +17,8 @@ provides:
     unit: Degree Celcius
 variants:
   - data:
-      t_max: weather_data_NF1.csv
-      t_min: weather_data_NF1.csv
+      t_max: ../energy_demand/scenarios/weather_data_NF1.csv
+      t_min: ../energy_demand/scenarios/weather_data_NF1.csv
     description: Weather realisation NF1
     name: NF1
   - data:

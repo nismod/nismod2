@@ -1,5 +1,5 @@
 name: weather_station_coordinates
-description: Longitude and Latitude of weather station
+description: Longitude and Latitude of weather stations
 provides:
   - name: longitude
     description: Longitude
@@ -15,8 +15,8 @@ provides:
     unit:
 variants:
 - data:
-    latitude: stations_NF1.csv
-    longitude: stations_NF1.csv
+    latitude: ../energy_demand/scenarios/stations_NF1.csv
+    longitude: ../energy_demand/scenarios/stations_NF1.csv
   description: Weather station coordinates for weather data NF1
   name: weather_station_coordinates__NF1
 - data:
