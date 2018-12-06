@@ -144,20 +144,6 @@ class EDWrapper(SectorModel):
         """
         out_stations = {}
 
-        stations_latitude = data_handle.get_data('latitude', 2015).as_ndarray()
-        stations_longitude = data_handle.get_data('longitude', 2015).as_ndarray()
-
-        temperature_input_spec = self.inputs['latitude']
-        station_ids = temperature_input_spec.dim_coords('station_id').elements
-
-        for station_array_nr, station_dict in enumerate(station_ids):
-            station_id = station_dict['name']
-            out_stations[station_id] = {
-                'latitude' : stations_latitude[station_array_nr],
-                'longitude': stations_longitude[station_array_nr]}
-
-        return out_stations
-
     def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids, constant_weather=False):
         """Load minimum and maximum temperatures
         """
@@ -243,15 +229,16 @@ class EDWrapper(SectorModel):
         """Implement this method to conduct pre-model run tasks
         """
         logging.info("... Start function before_model_run")
+        data = {}
+
         if self._get_base_yr(data_handle) != 2015:
             raise Exception("The first defined year in model config does not correspond to the hardcoded base year")
 
         config = self._get_configs()
         region_set_name = self._get_region_set_name()
-
-        data = {}
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
+
         data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
             config, data_handle)
 
@@ -259,17 +246,14 @@ class EDWrapper(SectorModel):
         default_streategy_vars = strategy_vars_def.load_param_assump(
             hard_coded_default_val=True)
 
-        # =================
-        # Idential to reading in raw files from folder (multidimensional narratives)
-        # =================
+        # -----------------------------
+        # Reading in narrative variables
+        # -----------------------------
         strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
             default_streategy_vars=default_streategy_vars,
             end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             base_yr=config['CONFIG']['base_yr'])
 
-        # -----------
-        # TESTING
-        # -----------
         user_defined_vars = self._load_narrative_parameters(
             data_handle,
             simulation_base_yr=config['CONFIG']['base_yr'],
@@ -298,7 +282,6 @@ class EDWrapper(SectorModel):
         data['reg_coord'] = self._get_coordinates(pop_array_by.spec.dim_coords(region_set_name))
         pop_density = self._calculate_pop_density(pop_array_by, region_set_name)
 
-        # Load sector specific GVA data, if available
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
         # -----------------------------
@@ -329,8 +312,8 @@ class EDWrapper(SectorModel):
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
         switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
         service_switches = read_data.service_switch(switches_service_raw)
-
         #service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
+
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
@@ -456,14 +439,7 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         # Specific region selection
         # -----------------------------------------
-        if config['CRITERIA']['reg_selection']:
-            region_selection = read_data.get_region_selection(
-                os.path.join(data['local_paths']['local_path_datafolder'],
-                "region_definitions",
-                config['CRITERIA']['reg_selection_csv_name']))
-            #region_selection = ['E02003237', 'E02003238']
-        else:
-            region_selection = data['regions']
+        region_selection = data['regions']
 
         # Update regions
         setattr(data['assumptions'], 'reg_nrs', len(region_selection))
@@ -519,13 +495,15 @@ class EDWrapper(SectorModel):
             data,
             curr_yr,
             region_selection)
-
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
         for key_name, result_to_txt in sim_obj.supply_results.items():
             if key_name in self.outputs:
+                logging.info("...writing `{}` to smif".format(key_name))
                 data_handle.set_results(key_name, result_to_txt)
+            else:
+                logging.info(" '{}' is not in ouptuts".format(key_name))
+                raise Exception("Output '{}' is not defined".format(key_name))
 
-        print("---- FIHISHED WRAPPER -----")
-        return sim_obj.supply_results
+        print("----FINISHED WRAPPER-----")
