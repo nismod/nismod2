@@ -67,14 +67,14 @@ class EnergyAgent(RuleBased):
 
     def get_emissions(self, data_handle):
         output_names = ['emissions_eh', 'emissions_bb']
-        df = pd.DataFrame()
+        emissions = 0
         for output_name in output_names:
             da = self._get_results(data_handle, output_name)
-            df.insert(0, output_name, da.as_df())
+            emissions += da.as_ndarray().sum()
             self.logger.debug("Retrieved emissions for %s: %s", 
                             data_handle.previous_timestep,
                             output_name)
-        return df.sum()
+        return emissions
 
 
     def _get_results(self, data_handle, output_name) -> DataArray:
@@ -94,7 +94,7 @@ class EnergyAgent(RuleBased):
         budget: float
         """
         cheapest_first = []
-        for name, item in self.register.items():
+        for name, item in self.interventions.items():
             try:
                 cap_cost = item['capital_cost']['value']
             except(KeyError):
@@ -109,6 +109,7 @@ class EnergyAgent(RuleBased):
         within_budget = []
         remaining_budget = copy(budget)
         for intervention in cheapest_first:
+            self.logger.debug("Intervention is %s", intervention[1])
             if intervention[1] <= remaining_budget:
                 within_budget.append({'name': intervention[0],
                                       'build_year': data_handle.current_timestep})
