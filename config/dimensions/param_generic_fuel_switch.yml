@@ -1,0 +1,3 @@
+name: param_generic_fuel_switch
+description: Paramters of generic fuel switch
+elements: ../energy_demand/dimensions/param_generic_fuel_switch.csv

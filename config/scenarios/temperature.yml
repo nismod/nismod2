@@ -1,0 +1,518 @@
+name: temperature
+description: Minimum and maximum daily temperature projections from the Weather@Home project
+provides:
+  - name: t_min
+    description: 'Minimum daily temperature'
+    dims:
+      - station_id
+      - yearday
+    dtype: float
+    unit: Degree Celcius
+  - name: t_max
+    description: 'Maximum daily temperature'
+    dims:
+      - station_id
+      - yearday
+    dtype: float
+    unit: Degree Celcius
+variants:
+  - data:
+      t_max: ../energy_demand/scenarios/weather_data_NF1.csv
+      t_min: ../energy_demand/scenarios/weather_data_NF1.csv
+    description: Weather realisation NF1
+    name: NF1
+  - data:
+      t_max: weather_data_NF2.csv
+      t_min: weather_data_NF2.csv
+    description: Weather realisation NF2
+    name: NF2
+  - data:
+      t_max: weather_data_NF3.csv
+      t_min: weather_data_NF3.csv
+    description: Weather realisation NF3
+    name: NF3
+  - data:
+      t_max: weather_data_NF4.csv
+      t_min: weather_data_NF4.csv
+    description: Weather realisation NF4
+    name: NF4
+  - data:
+      t_max: weather_data_NF5.csv
+      t_min: weather_data_NF5.csv
+    description: Weather realisation NF5
+    name: NF5
+  - data:
+      t_max: weather_data_NF6.csv
+      t_min: weather_data_NF6.csv
+    description: Weather realisation NF6
+    name: NF6
+  - data:
+      t_max: weather_data_NF7.csv
+      t_min: weather_data_NF7.csv
+    description: Weather realisation NF7
+    name: NF7
+  - data:
+      t_max: weather_data_NF8.csv
+      t_min: weather_data_NF8.csv
+    description: Weather realisation NF8
+    name: NF8
+  - data:
+      t_max: weather_data_NF9.csv
+      t_min: weather_data_NF9.csv
+    description: Weather realisation NF9
+    name: NF9
+  - data:
+      t_max: weather_data_NF10.csv
+      t_min: weather_data_NF10.csv
+    description: Weather realisation NF10
+    name: NF10
+  - data:
+      t_max: weather_data_NF11.csv
+      t_min: weather_data_NF11.csv
+    description: Weather realisation NF11
+    name: NF11
+  - data:
+      t_max: weather_data_NF12.csv
+      t_min: weather_data_NF12.csv
+    description: Weather realisation NF12
+    name: NF12
+  - data:
+      t_max: weather_data_NF13.csv
+      t_min: weather_data_NF13.csv
+    description: Weather realisation NF13
+    name: NF13
+  - data:
+      t_max: weather_data_NF14.csv
+      t_min: weather_data_NF14.csv
+    description: Weather realisation NF14
+    name: NF14
+  - data:
+      t_max: weather_data_NF15.csv
+      t_min: weather_data_NF15.csv
+    description: Weather realisation NF15
+    name: NF15
+  - data:
+      t_max: weather_data_NF16.csv
+      t_min: weather_data_NF16.csv
+    description: Weather realisation NF16
+    name: NF16
+  - data:
+      t_max: weather_data_NF17.csv
+      t_min: weather_data_NF17.csv
+    description: Weather realisation NF17
+    name: NF17
+  - data:
+      t_max: weather_data_NF18.csv
+      t_min: weather_data_NF18.csv
+    description: Weather realisation NF18
+    name: NF18
+  - data:
+      t_max: weather_data_NF19.csv
+      t_min: weather_data_NF19.csv
+    description: Weather realisation NF19
+    name: NF19
+  - data:
+      t_max: weather_data_NF20.csv
+      t_min: weather_data_NF20.csv
+    description: Weather realisation NF20
+    name: NF20
+  - data:
+      t_max: weather_data_NF21.csv
+      t_min: weather_data_NF21.csv
+    description: Weather realisation NF21
+    name: NF21
+  - data:
+      t_max: weather_data_NF22.csv
+      t_min: weather_data_NF22.csv
+    description: Weather realisation NF22
+    name: NF22
+  - data:
+      t_max: weather_data_NF23.csv
+      t_min: weather_data_NF23.csv
+    description: Weather realisation NF23
+    name: NF23
+  - data:
+      t_max: weather_data_NF24.csv
+      t_min: weather_data_NF24.csv
+    description: Weather realisation NF24
+    name: NF24
+  - data:
+      t_max: weather_data_NF25.csv
+      t_min: weather_data_NF25.csv
+    description: Weather realisation NF25
+    name: NF25
+  - data:
+      t_max: weather_data_NF26.csv
+      t_min: weather_data_NF26.csv
+    description: Weather realisation NF26
+    name: NF26
+  - data:
+      t_max: weather_data_NF27.csv
+      t_min: weather_data_NF27.csv
+    description: Weather realisation NF27
+    name: NF27
+  - data:
+      t_max: weather_data_NF28.csv
+      t_min: weather_data_NF28.csv
+    description: Weather realisation NF28
+    name: NF28
+  - data:
+      t_max: weather_data_NF29.csv
+      t_min: weather_data_NF29.csv
+    description: Weather realisation NF29
+    name: NF29
+  - data:
+      t_max: weather_data_NF30.csv
+      t_min: weather_data_NF30.csv
+    description: Weather realisation NF30
+    name: NF30
+  - data:
+      t_max: weather_data_NF31.csv
+      t_min: weather_data_NF31.csv
+    description: Weather realisation NF31
+    name: NF31
+  - data:
+      t_max: weather_data_NF32.csv
+      t_min: weather_data_NF32.csv
+    description: Weather realisation NF32
+    name: NF32
+  - data:
+      t_max: weather_data_NF33.csv
+      t_min: weather_data_NF33.csv
+    description: Weather realisation NF33
+    name: NF33
+  - data:
+      t_max: weather_data_NF34.csv
+      t_min: weather_data_NF34.csv
+    description: Weather realisation NF34
+    name: NF34
+  - data:
+      t_max: weather_data_NF35.csv
+      t_min: weather_data_NF35.csv
+    description: Weather realisation NF35
+    name: NF35
+  - data:
+      t_max: weather_data_NF36.csv
+      t_min: weather_data_NF36.csv
+    description: Weather realisation NF36
+    name: NF36
+  - data:
+      t_max: weather_data_NF37.csv
+      t_min: weather_data_NF37.csv
+    description: Weather realisation NF37
+    name: NF37
+  - data:
+      t_max: weather_data_NF38.csv
+      t_min: weather_data_NF38.csv
+    description: Weather realisation NF38
+    name: NF38
+  - data:
+      t_max: weather_data_NF39.csv
+      t_min: weather_data_NF39.csv
+    description: Weather realisation NF39
+    name: NF39
+  - data:
+      t_max: weather_data_NF40.csv
+      t_min: weather_data_NF40.csv
+    description: Weather realisation NF40
+    name: NF40
+  - data:
+      t_max: weather_data_NF41.csv
+      t_min: weather_data_NF41.csv
+    description: Weather realisation NF41
+    name: NF41
+  - data:
+      t_max: weather_data_NF42.csv
+      t_min: weather_data_NF42.csv
+    description: Weather realisation NF42
+    name: NF42
+  - data:
+      t_max: weather_data_NF43.csv
+      t_min: weather_data_NF43.csv
+    description: Weather realisation NF43
+    name: NF43
+  - data:
+      t_max: weather_data_NF44.csv
+      t_min: weather_data_NF44.csv
+    description: Weather realisation NF44
+    name: NF44
+  - data:
+      t_max: weather_data_NF45.csv
+      t_min: weather_data_NF45.csv
+    description: Weather realisation NF45
+    name: NF45
+  - data:
+      t_max: weather_data_NF46.csv
+      t_min: weather_data_NF46.csv
+    description: Weather realisation NF46
+    name: NF46
+  - data:
+      t_max: weather_data_NF47.csv
+      t_min: weather_data_NF47.csv
+    description: Weather realisation NF47
+    name: NF47
+  - data:
+      t_max: weather_data_NF48.csv
+      t_min: weather_data_NF48.csv
+    description: Weather realisation NF48
+    name: NF48
+  - data:
+      t_max: weather_data_NF49.csv
+      t_min: weather_data_NF49.csv
+    description: Weather realisation NF49
+    name: NF49
+  - data:
+      t_max: weather_data_NF50.csv
+      t_min: weather_data_NF50.csv
+    description: Weather realisation NF50
+    name: NF50
+  - data:
+      t_max: weather_data_NF51.csv
+      t_min: weather_data_NF51.csv
+    description: Weather realisation NF51
+    name: NF51
+  - data:
+      t_max: weather_data_NF52.csv
+      t_min: weather_data_NF52.csv
+    description: Weather realisation NF52
+    name: NF52
+  - data:
+      t_max: weather_data_NF53.csv
+      t_min: weather_data_NF53.csv
+    description: Weather realisation NF53
+    name: NF53
+  - data:
+      t_max: weather_data_NF54.csv
+      t_min: weather_data_NF54.csv
+    description: Weather realisation NF54
+    name: NF54
+  - data:
+      t_max: weather_data_NF55.csv
+      t_min: weather_data_NF55.csv
+    description: Weather realisation NF55
+    name: NF55
+  - data:
+      t_max: weather_data_NF56.csv
+      t_min: weather_data_NF56.csv
+    description: Weather realisation NF56
+    name: NF56
+  - data:
+      t_max: weather_data_NF57.csv
+      t_min: weather_data_NF57.csv
+    description: Weather realisation NF57
+    name: NF57
+  - data:
+      t_max: weather_data_NF58.csv
+      t_min: weather_data_NF58.csv
+    description: Weather realisation NF58
+    name: NF58
+  - data:
+      t_max: weather_data_NF59.csv
+      t_min: weather_data_NF59.csv
+    description: Weather realisation NF59
+    name: NF59
+  - data:
+      t_max: weather_data_NF60.csv
+      t_min: weather_data_NF60.csv
+    description: Weather realisation NF60
+    name: NF60
+  - data:
+      t_max: weather_data_NF61.csv
+      t_min: weather_data_NF61.csv
+    description: Weather realisation NF61
+    name: NF61
+  - data:
+      t_max: weather_data_NF62.csv
+      t_min: weather_data_NF62.csv
+    description: Weather realisation NF62
+    name: NF62
+  - data:
+      t_max: weather_data_NF63.csv
+      t_min: weather_data_NF63.csv
+    description: Weather realisation NF63
+    name: NF63
+  - data:
+      t_max: weather_data_NF64.csv
+      t_min: weather_data_NF64.csv
+    description: Weather realisation NF64
+    name: NF64
+  - data:
+      t_max: weather_data_NF65.csv
+      t_min: weather_data_NF65.csv
+    description: Weather realisation NF65
+    name: NF65
+  - data:
+      t_max: weather_data_NF66.csv
+      t_min: weather_data_NF66.csv
+    description: Weather realisation NF66
+    name: NF66
+  - data:
+      t_max: weather_data_NF67.csv
+      t_min: weather_data_NF67.csv
+    description: Weather realisation NF67
+    name: NF67
+  - data:
+      t_max: weather_data_NF68.csv
+      t_min: weather_data_NF68.csv
+    description: Weather realisation NF68
+    name: NF68
+  - data:
+      t_max: weather_data_NF69.csv
+      t_min: weather_data_NF69.csv
+    description: Weather realisation NF69
+    name: NF69
+  - data:
+      t_max: weather_data_NF70.csv
+      t_min: weather_data_NF70.csv
+    description: Weather realisation NF70
+    name: NF70
+  - data:
+      t_max: weather_data_NF71.csv
+      t_min: weather_data_NF71.csv
+    description: Weather realisation NF71
+    name: NF71
+  - data:
+      t_max: weather_data_NF72.csv
+      t_min: weather_data_NF72.csv
+    description: Weather realisation NF72
+    name: NF72
+  - data:
+      t_max: weather_data_NF73.csv
+      t_min: weather_data_NF73.csv
+    description: Weather realisation NF73
+    name: NF73
+  - data:
+      t_max: weather_data_NF74.csv
+      t_min: weather_data_NF74.csv
+    description: Weather realisation NF74
+    name: NF74
+  - data:
+      t_max: weather_data_NF75.csv
+      t_min: weather_data_NF75.csv
+    description: Weather realisation NF75
+    name: NF75
+  - data:
+      t_max: weather_data_NF76.csv
+      t_min: weather_data_NF76.csv
+    description: Weather realisation NF76
+    name: NF76
+  - data:
+      t_max: weather_data_NF77.csv
+      t_min: weather_data_NF77.csv
+    description: Weather realisation NF77
+    name: NF77
+  - data:
+      t_max: weather_data_NF78.csv
+      t_min: weather_data_NF78.csv
+    description: Weather realisation NF78
+    name: NF78
+  - data:
+      t_max: weather_data_NF79.csv
+      t_min: weather_data_NF79.csv
+    description: Weather realisation NF79
+    name: NF79
+  - data:
+      t_max: weather_data_NF80.csv
+      t_min: weather_data_NF80.csv
+    description: Weather realisation NF80
+    name: NF80
+  - data:
+      t_max: weather_data_NF81.csv
+      t_min: weather_data_NF81.csv
+    description: Weather realisation NF81
+    name: NF81
+  - data:
+      t_max: weather_data_NF82.csv
+      t_min: weather_data_NF82.csv
+    description: Weather realisation NF82
+    name: NF82
+  - data:
+      t_max: weather_data_NF83.csv
+      t_min: weather_data_NF83.csv
+    description: Weather realisation NF83
+    name: NF83
+  - data:
+      t_max: weather_data_NF84.csv
+      t_min: weather_data_NF84.csv
+    description: Weather realisation NF84
+    name: NF84
+  - data:
+      t_max: weather_data_NF85.csv
+      t_min: weather_data_NF85.csv
+    description: Weather realisation NF85
+    name: NF85
+  - data:
+      t_max: weather_data_NF86.csv
+      t_min: weather_data_NF86.csv
+    description: Weather realisation NF86
+    name: NF86
+  - data:
+      t_max: weather_data_NF87.csv
+      t_min: weather_data_NF87.csv
+    description: Weather realisation NF87
+    name: NF87
+  - data:
+      t_max: weather_data_NF88.csv
+      t_min: weather_data_NF88.csv
+    description: Weather realisation NF88
+    name: NF88
+  - data:
+      t_max: weather_data_NF89.csv
+      t_min: weather_data_NF89.csv
+    description: Weather realisation NF89
+    name: NF89
+  - data:
+      t_max: weather_data_NF90.csv
+      t_min: weather_data_NF90.csv
+    description: Weather realisation NF90
+    name: NF90
+  - data:
+      t_max: weather_data_NF91.csv
+      t_min: weather_data_NF91.csv
+    description: Weather realisation NF91
+    name: NF91
+  - data:
+      t_max: weather_data_NF92.csv
+      t_min: weather_data_NF92.csv
+    description: Weather realisation NF92
+    name: NF92
+  - data:
+      t_max: weather_data_NF93.csv
+      t_min: weather_data_NF93.csv
+    description: Weather realisation NF93
+    name: NF93
+  - data:
+      t_max: weather_data_NF94.csv
+      t_min: weather_data_NF94.csv
+    description: Weather realisation NF94
+    name: NF94
+  - data:
+      t_max: weather_data_NF95.csv
+      t_min: weather_data_NF95.csv
+    description: Weather realisation NF95
+    name: NF95
+  - data:
+      t_max: weather_data_NF96.csv
+      t_min: weather_data_NF96.csv
+    description: Weather realisation NF96
+    name: NF96
+  - data:
+      t_max: weather_data_NF97.csv
+      t_min: weather_data_NF97.csv
+    description: Weather realisation NF97
+    name: NF97
+  - data:
+      t_max: weather_data_NF98.csv
+      t_min: weather_data_NF98.csv
+    description: Weather realisation NF98
+    name: NF98
+  - data:
+      t_max: weather_data_NF99.csv
+      t_min: weather_data_NF99.csv
+    description: Weather realisation NF99
+    name: NF99
+  - data:
+      t_max: weather_data_NF100.csv
+      t_min: weather_data_NF100.csv
+    description: Weather realisation NF100
+    name: NF100
