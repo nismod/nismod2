@@ -50,7 +50,7 @@ echo "use_server server=\"$SERVERNAME\"" > $LICPATH
 XPRESS_VAR=$XPRESSDIR/bin
 
 # Hack to insert local license
-cp -R $SOURCE/xpauth.xpr $XPRESSDIR/bin/xpauth.xpr
+# cp -R $SOURCE/xpauth.xpr $XPRESSDIR/bin/xpauth.xpr
 
 CORRECT_LICENSE=1
 
