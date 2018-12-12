@@ -255,29 +255,29 @@ class EDWrapper(SectorModel):
         temp_path = config['PATHS']['path_result_data']
         self.create_folders_rename_folders(config)
 
-        # # Load hard-coded standard default assumptions
-        # default_streategy_vars = strategy_vars_def.load_param_assump(
-        #     hard_coded_default_val=True)
+        # Load hard-coded standard default assumptions
+        default_streategy_vars = strategy_vars_def.load_param_assump(
+            hard_coded_default_val=True)
 
-        # # -----------------------------
-        # # Reading in narrative variables
-        # # -----------------------------
-        # strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
-        #     default_streategy_vars=default_streategy_vars,
-        #     end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-        #     base_yr=config['CONFIG']['base_yr'])
+        # -----------------------------
+        # Reading in narrative variables
+        # -----------------------------
+        strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
+            default_streategy_vars=default_streategy_vars,
+            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+            base_yr=config['CONFIG']['base_yr'])
 
-        # user_defined_vars = self._load_narrative_parameters(
-        #     data_handle,
-        #     simulation_base_yr=config['CONFIG']['base_yr'],
-        #     simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-        #     default_streategy_vars=default_streategy_vars)
+        user_defined_vars = self._load_narrative_parameters(
+            data_handle,
+            simulation_base_yr=config['CONFIG']['base_yr'],
+            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+            default_streategy_vars=default_streategy_vars)
 
-        # strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
+        strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
-        # strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
-        #     strategy_vars,
-        #     narrative_crit=True)
+        strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
+            strategy_vars,
+            narrative_crit=True)
 
         # ------------------------------------------------
         # Load base year scenario data
