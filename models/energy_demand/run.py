@@ -5,7 +5,6 @@ TODO: Add sector in air_leakage and add sector in generic fuel switch
 TODO: How to load standard default empty parameters
 """
 import os
-import configparser
 import logging
 from collections import defaultdict
 from shapely.geometry import shape, mapping
@@ -16,7 +15,9 @@ from energy_demand import wrapper_model
 from energy_demand.assumptions import strategy_vars_def, general_assumptions
 from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
-from energy_demand.read_write import write_data, read_data, data_loader, narrative_related
+from energy_demand.read_write import (write_data, read_data, data_loader, 
+                                      narrative_related)
+
 
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
@@ -50,36 +51,23 @@ class EDWrapper(SectorModel):
         """
         return os.path.dirname(os.path.abspath(__file__))
 
-    def _get_configs(self):
-        """Get all configurations from .ini file
-
-        If 0: False, if 1: True
-        """
-        path_main = self._get_working_dir()
-        config = configparser.ConfigParser()
-        config.read(os.path.join(path_main, 'wrapperconfig.ini'))
-
-        # Save config in dict and get correct type
-        config = basic_functions.convert_config_to_correct_type(config)
-
-        return config
-
-    def _get_config_paths(self, config, data_handle):
+    @staticmethod
+    def create_folders_rename_folders(config):
         """Create scenario name and get paths
+
+        Arguments
+        ---------
+        config : dict
+            Configuration dictionary containing all the file paths
         """
-
-        # Model run name
-        modelrun_name = data_handle._modelrun_name
-
-        temp_path = os.path.normpath(config['PATHS']['path_result_data'])
-
-        path_new_scenario = os.path.join(temp_path, modelrun_name)
-        result_paths = data_loader.get_result_paths(path_new_scenario)
+        path_new_scenario = config['PATHS']['path_new_scenario']
 
         # ------------------------------
         # Delete previous model results and create result folders
         # ------------------------------
+        result_paths = config['RESULT_DATA']
         basic_functions.del_previous_setup(result_paths['data_results'])
+
         basic_functions.create_folder(path_new_scenario)
 
         folders_to_create = [
@@ -89,24 +77,28 @@ class EDWrapper(SectorModel):
         for folder in folders_to_create:
             basic_functions.create_folder(folder)
 
-        return result_paths, temp_path, path_new_scenario
-
-    def _get_region_set_name(self):
+    @staticmethod
+    def _get_region_set_name():
         return 'lad_uk_2016'
 
-    def _get_base_yr(self, data_handle):
+    @staticmethod
+    def _get_base_yr(data_handle):
         return data_handle.timesteps[0]
 
-    def _get_simulation_yr(self, data_handle):
+    @staticmethod
+    def _get_simulation_yr(data_handle):
         return data_handle.current_timestep
 
-    def _get_simulation_yrs(self, data_handle):
+    @staticmethod
+    def _get_simulation_yrs(data_handle):
         return data_handle.timesteps
 
-    def _series_to_df(self, series, name):
+    @staticmethod
+    def _series_to_df(series, name):
         return series.reset_index().rename(columns={0: name})
 
-    def centroids_as_features(self, regions):
+    @staticmethod
+    def centroids_as_features(regions):
         """Get the region centroids as a list of feature dictionaries
         Returns
         -------
@@ -125,8 +117,9 @@ class EDWrapper(SectorModel):
             for region in regions
         ]
 
-    def _get_coordinates(self, regions):
-        centroids = self.centroids_as_features(regions.elements)
+    @staticmethod
+    def _get_coordinates(regions):
+        centroids = EDWrapper.centroids_as_features(regions.elements)
         coordinates = basic_functions.get_long_lat_decimal_degrees(centroids)
         return coordinates
 
@@ -143,6 +136,20 @@ class EDWrapper(SectorModel):
         """Load coordinates of weather stations
         """
         out_stations = {}
+
+        stations_latitude = data_handle.get_data('latitude', 2015).as_ndarray()
+        stations_longitude = data_handle.get_data('longitude', 2015).as_ndarray()
+
+        temperature_input_spec = self.inputs['latitude']
+        station_ids = temperature_input_spec.dim_coords('station_id').elements
+
+        for station_array_nr, station_dict in enumerate(station_ids):
+            station_id = station_dict['name']
+            out_stations[station_id] = {
+                'latitude' : stations_latitude[station_array_nr],
+                'longitude': stations_longitude[station_array_nr]}
+
+        return out_stations
 
     def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids, constant_weather=False):
         """Load minimum and maximum temperatures
@@ -232,39 +239,45 @@ class EDWrapper(SectorModel):
         data = {}
 
         if self._get_base_yr(data_handle) != 2015:
-            raise Exception("The first defined year in model config does not correspond to the hardcoded base year")
+            msg = "The first defined year in model config does not correspond to \
+                   the hardcoded base year"
+            raise ValueError(msg)
 
-        config = self._get_configs()
+        path_main = self._get_working_dir()
+        config_file_path = os.path.join(path_main, 'wrapperconfig.ini') 
+        config = data_loader.read_config_file(config_file_path)
+        
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
-            config, data_handle)
+        data['result_paths'] = config['RESULT_DATA']
+        temp_path = config['PATHS']['path_result_data']
+        self.create_folders_rename_folders(config)
 
-        # Load hard-coded standard default assumptions
-        default_streategy_vars = strategy_vars_def.load_param_assump(
-            hard_coded_default_val=True)
+        # # Load hard-coded standard default assumptions
+        # default_streategy_vars = strategy_vars_def.load_param_assump(
+        #     hard_coded_default_val=True)
 
-        # -----------------------------
-        # Reading in narrative variables
-        # -----------------------------
-        strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
-            default_streategy_vars=default_streategy_vars,
-            end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            base_yr=config['CONFIG']['base_yr'])
+        # # -----------------------------
+        # # Reading in narrative variables
+        # # -----------------------------
+        # strategy_vars = strategy_vars_def.generate_default_parameter_narratives(
+        #     default_streategy_vars=default_streategy_vars,
+        #     end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+        #     base_yr=config['CONFIG']['base_yr'])
 
-        user_defined_vars = self._load_narrative_parameters(
-            data_handle,
-            simulation_base_yr=config['CONFIG']['base_yr'],
-            simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
-            default_streategy_vars=default_streategy_vars)
+        # user_defined_vars = self._load_narrative_parameters(
+        #     data_handle,
+        #     simulation_base_yr=config['CONFIG']['base_yr'],
+        #     simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
+        #     default_streategy_vars=default_streategy_vars)
 
-        strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
+        # strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
-        strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
-            strategy_vars,
-            narrative_crit=True)
+        # strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
+        #     strategy_vars,
+        #     narrative_crit=True)
 
         # ------------------------------------------------
         # Load base year scenario data
@@ -360,7 +373,9 @@ class EDWrapper(SectorModel):
         data = {}
 
         region_set_name = self._get_region_set_name()
-        config = self._get_configs()
+        path_main = self._get_working_dir()
+        config_file_path = os.path.join(path_main, 'wrapperconfig.ini') 
+        config = data_loader.read_config_file(config_file_path)
 
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
@@ -368,8 +383,9 @@ class EDWrapper(SectorModel):
 
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['result_paths'], temp_path, data['path_new_scenario'] = self._get_config_paths(
-            config, data_handle)
+        data['result_paths'] = config['RESULT_DATA']
+        temp_path = config['PATHS']['path_result_data']
+        self.create_folders_rename_folders(config)
 
         # --------------------------------------------------
         # Read all other data
