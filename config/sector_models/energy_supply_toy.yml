@@ -24,8 +24,6 @@ interventions:
 - ../energy_supply/interventions/minimal/es_gasterminals_minimal.csv
 - ../energy_supply/interventions/minimal/es_generators_minimal.csv
 - ../energy_supply/interventions/minimal/es_heattech_minimal.csv
-- ../energy_supply/interventions/strategies/high_renewables_interventions.yml
-# - high_distributed_interventions.yml
 inputs:
 - name: elecload
   unit: MW

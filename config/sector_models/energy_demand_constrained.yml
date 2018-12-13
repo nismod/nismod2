@@ -28,59 +28,59 @@ parameters:
   name: p_cold_rolling_steel
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
+  - end_yr
+  - interpolation_params
   dtype: float
 - description: Recovered heat
   default: ../energy_demand/parameters/heat_recovered.csv
   name: heat_recovered
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
-    - enduses
+  - end_yr
+  - interpolation_params
+  - enduses
   dtype: float
 - description: Share of cooled service floor area
   default: ../energy_demand/parameters/cooled_floorarea.csv
   name: cooled_floorarea
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
-    - enduses
+  - end_yr
+  - interpolation_params
+  - enduses
   dtype: float
 - description: Change in floor area per person
   default: ../energy_demand/parameters/assump_diff_floorarea_pp.csv
   name: assump_diff_floorarea_pp
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
+  - end_yr
+  - interpolation_params
   dtype: float
 - description: Air leakage caused reducing in demand
   default: ../energy_demand/parameters/air_leakage.csv
   name: air_leakage
   unit: 'decimal'
   dims:
-    - enduses
-    - end_yr
-    - interpolation_params
+  - enduses
+  - end_yr
+  - interpolation_params
   dtype: float
 - description: Efficiency achievement level
   default: ../energy_demand/parameters/f_eff_achieved.csv
   name: f_eff_achieved
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
+  - end_yr
+  - interpolation_params
   dtype: float
 - description: Smart meter penetration
   default: ../energy_demand/parameters/smart_meter_p.csv
   name: smart_meter_p
   unit: 'decimal'
   dims:
-    - end_yr
-    - interpolation_params
+  - end_yr
+  - interpolation_params
   dtype: float
 - description: Industrial base temperature
   default: ../energy_demand/parameters/rs_t_base_heating.csv
@@ -132,8 +132,8 @@ parameters:
   name: gshp_fraction
   unit: 'decimal'
   dims:
-    - interpolation_params
-    - end_yr
+  - interpolation_params
+  - end_yr
   dtype: float
 - description: Heat pump fractions
   default: ../energy_demand/parameters/gshp_fraction.csv

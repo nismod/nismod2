@@ -385,7 +385,6 @@ class EDWrapper(SectorModel):
 
         data['result_paths'] = config['RESULT_DATA']
         temp_path = config['PATHS']['path_result_data']
-        self.create_folders_rename_folders(config)
 
         # --------------------------------------------------
         # Read all other data
