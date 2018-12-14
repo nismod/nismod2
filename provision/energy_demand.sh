@@ -5,6 +5,8 @@ base_path=$1
 # Install tkinter as requirement for matplotlib
 apt-get install -y python3-tk
 
+rm -f $base_path/models/energy_demand/wrapperconfig.ini
+
 # Setup wrapper
 printf "[PATHS]\n" >> $base_path/models/energy_demand/wrapperconfig.ini
 printf "path_local_data = /vagrant/data/energy_demand\n" >> $base_path/models/energy_demand/wrapperconfig.ini
@@ -102,9 +104,9 @@ printf "data_results_shapefiles = /vagrant/data/energy_demand/results/spatial_re
 printf "individual_enduse_lp = /vagrant/data/energy_demand/results/individual_enduse_lp\n" >> $base_path/models/energy_demand/wrapperconfig.ini
 
 
-pip3 install -e /vagrant/models/energy_demand
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
-pip3 install energy_demand==$release
+# pip3 install energy_demand==$release
+pip3 install -e /vagrant/energy_demand
 
 # Prepare directory for data
 mkdir -p "$target"
@@ -112,4 +114,4 @@ mkdir -p "$target"
 . $base_path/provision/get_data.sh energy-demand $base_path
 
 # Post install
-energy_demand minimal_setup -d $base_path/data/energy_demand
+energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini

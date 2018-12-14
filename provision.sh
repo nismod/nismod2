@@ -38,9 +38,9 @@ hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
 # Install smif
 pip3 install -U setuptools
 pip3 install pyscaffold
-pip3 install smif~=1.0rc2 --upgrade
-pip3 install smif[data]~=1.0rc2
-pip3 install smif[spatial]~=1.0rc2
+pip3 install smif~=1.0 --upgrade
+pip3 install smif[data]~=1.0
+pip3 install smif[spatial]~=1.0
 
 # Install Jupyter Notebook for Results Viewer
 pip3 install jupyter notebook

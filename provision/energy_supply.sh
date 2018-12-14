@@ -35,7 +35,6 @@ XPRESSDIR=/opt/xpressmp
 
 LICPATH=$XPRESSDIR/bin/xpauth.xpr
 
-
 mkdir $XPRESSDIR/lib/backup 2>/dev/null
 mv $XPRESSDIR/lib/libxprl* $XPRESSDIR/lib/backup 2>/dev/null
 
@@ -180,4 +179,4 @@ rm -r $MODEL_DIR/energy_supply/energy_supply_$release
 cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
 # Run migrations
-python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_full $MIGRATIONS
+python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS
