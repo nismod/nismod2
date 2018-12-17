@@ -1,3 +1,3 @@
 name: energy_hub
 description: Boundaries of all 39 Energy Hubs
-elements: ../energy_supply/region_definitions/EH_Region_Boundaries.shp
+elements: ../energy_supply/dimensions/EH_Region_Boundaries.shp

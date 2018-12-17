@@ -173,10 +173,10 @@ sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $ftp_username@$ft
 
 rm -r $MODEL_DIR/energy_supply
 unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
-rm -r $MODEL_DIR/energy_supply/energy_supply_$release
+rm -r $TMP/$FILENAME
 
 # This is a bit of a hack which places the compiled BIM files into the XPRESS package directory
 cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
 # Run migrations
-python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS
+su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS"
