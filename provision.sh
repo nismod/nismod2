@@ -66,11 +66,11 @@ if [ "$base_path" == "/vagrant" ]; then
     chown vagrant:vagrant /home/vagrant/.bashrc
 fi
 
-# # Provision digital_comms model
-# bash $base_path/provision/digital_comms.sh $base_path
+# Provision digital_comms model
+bash $base_path/provision/digital_comms.sh $base_path
 
-# # Provision energy_demand model
-# bash $base_path/provision/energy_demand.sh $base_path
+# Provision energy_demand model
+bash $base_path/provision/energy_demand.sh $base_path
 
 # Provision energy_supply model
 bash $base_path/provision/energy_supply.sh $base_path
@@ -78,5 +78,5 @@ bash $base_path/provision/energy_supply.sh $base_path
 # # Provision solid_waste model
 # bash $base_path/provision/solid_waste.sh
 
-# # Provision transport model
-# bash $base_path/provision/transport.sh $base_path
+# Provision transport model
+bash $base_path/provision/transport.sh $base_path
