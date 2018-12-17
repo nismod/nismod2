@@ -51,8 +51,6 @@ XPRESS_VAR=$XPRESSDIR/bin
 # Hack to insert local license
 # cp -R $SOURCE/xpauth.xpr $XPRESSDIR/bin/xpauth.xpr
 
-CORRECT_LICENSE=1
-
 echo "" > $XPRESSDIR/bin/xpvars.sh
 cat > $XPRESSDIR/bin/xpvars.sh <<EOF
 XPRESSDIR=$XPRESSDIR
@@ -82,44 +80,6 @@ export XPRESSDIR
 export XPRESS
 EOF
 
-  cat > $XPRESSDIR/bin/xpvars.csh <<EOF
-setenv XPRESSDIR $XPRESSDIR
-setenv XPRESS $XPRESS_VAR
-
-if ( \$?LD_LIBRARY_PATH ) then
-  setenv LD_LIBRARY_PATH \${XPRESSDIR}/lib:\${LD_LIBRARY_PATH}
-else
-  setenv LD_LIBRARY_PATH \${XPRESSDIR}/lib
-endif
-
-if ( \$?DYLD_LIBRARY_PATH ) then
-  setenv DYLD_LIBRARY_PATH \${XPRESSDIR}/lib:\${DYLD_LIBRARY_PATH}
-else
-  setenv DYLD_LIBRARY_PATH \${XPRESSDIR}/lib
-endif
-
-if ( \$?SHLIB_PATH ) then
-  setenv SHLIB_PATH \${XPRESSDIR}/lib:\${SHLIB_PATH}
-else
-  setenv SHLIB_PATH \${XPRESSDIR}/lib
-endif
-
-if ( \$?LIBPATH ) then
-  setenv LIBPATH \${XPRESSDIR}/lib:\${LIBPATH}
-else
-  setenv LIBPATH \${XPRESSDIR}/lib
-endif
-
-if ( \$?CLASSPATH ) then
-  setenv CLASSPATH \${XPRESSDIR}/lib/xprs.jar:\${XPRESSDIR}/lib/xprm.jar:\${XPRESSDIR}/lib/xprb.jar:\${CLASSPATH}
-else
-  setenv CLASSPATH \${XPRESSDIR}/lib/xprs.jar:\${XPRESSDIR}/lib/xprm.jar:\${XPRESSDIR}/lib/xprb.jar
-endif
-
-set path=( \${XPRESSDIR}/bin \${path} )
-EOF
-
-
 # Makes a template file containing the connection information to
 cat > $base_path/template.ini <<EOF
 [energy_supply]
@@ -142,9 +102,6 @@ ConnSettings=
 EOF
 
 odbcinst -i -l -s -f $base_path/template.ini
-
-# Setup environment
-. $XPRESSDIR/bin/xpvars.sh
 
 # Get the data from the ftp
 . $base_path/provision/get_data.sh energy-supply $base_path
@@ -180,3 +137,6 @@ cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
 # Run migrations
 su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS"
+
+# Setup environment variables on login
+echo "source $XPRESSDIR/bin/xpvars.sh" >> $base_path/.bashrc
