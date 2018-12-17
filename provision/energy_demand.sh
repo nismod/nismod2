@@ -113,5 +113,7 @@ mkdir -p "$target"
 
 . $base_path/provision/get_data.sh energy-demand $base_path
 
+. $base_path/provision/get_data.sh energy-demand-config-data $base_path
+
 # Post install
 energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini

@@ -156,7 +156,7 @@ fi
 source <(grep = <(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini))
 
 MODEL_DIR=$base_path/install
-DATA_DIR=$target
+DATA_DIR=$base_path/$target
 FILENAME=energy_supply_$release.zip
 MIGRATIONS=$MODEL_DIR/energy_supply/migrations
 TMP=$base_path/tmp
