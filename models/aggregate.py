@@ -2,11 +2,13 @@
 values to each output
 """
 import numpy as np
-from smif.model.sector_model import SectorModel
+from smif.model import SectorModel
+
 
 class AggregateInputs(SectorModel):
-    """An implementation of SectorModel which acts as a data adapter, aggregating all inputs
-    and outputting the same aggregate to each output.
+    """An Adapter to aggregate all inputs
+
+    Outputs the same aggregate to each output.
     """
     def simulate(self, data_handle):
         """Aggregates inputs to output
@@ -14,13 +16,10 @@ class AggregateInputs(SectorModel):
         inputs = []
         for input_name in self.inputs.keys():
             self.logger.debug("Model input: %s", input_name)
-            inputs.append(data_handle.get_data(input_name))
+            inputs.append(data_handle.get_data(input_name).as_ndarray())
 
         data_array = np.array(inputs)
         aggregate_data = np.add.reduce(data_array, axis=0)
 
         for output_name in self.outputs.keys():
             data_handle.set_results(output_name, aggregate_data)
-
-    def extract_obj(self, arg):
-        pass
