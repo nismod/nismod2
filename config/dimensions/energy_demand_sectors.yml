@@ -1,0 +1,3 @@
+name: energy_demand_sectors
+description: The three aggregate economic sectors over which energy demand is defined
+elements: energy_demand_sectors.csv
