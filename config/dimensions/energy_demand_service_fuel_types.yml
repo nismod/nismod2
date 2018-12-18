@@ -1,0 +1,3 @@
+name: energy_demand_service_fuel_types
+description: The fuel_types and categories by which energy is demanded in the service sector
+elements: service_fuel_types.csv

@@ -1,0 +1,3 @@
+name: energy_demand_fuel_types
+description: The fuel_types and categories by which energy is demanded in the supply model
+elements: fuel_types.csv
