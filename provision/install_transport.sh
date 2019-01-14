@@ -2,12 +2,6 @@
 
 base_path=$1
 
-# install packages
-apt-get install -y default-jre
-
-# Get the data from the ftp
-. $base_path/provision/get_data.sh transport $base_path
-
 # Download the model jar
 if [ -z "$ftp_username" ] && [ -z "$ftp_password" ]; then
     source <(grep = <(grep -A3 '\[ftp-config\]' $base_path/provision/ftp.ini))

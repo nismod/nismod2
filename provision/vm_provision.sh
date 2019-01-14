@@ -6,11 +6,26 @@ fi
 
 # Update package lists
 apt-get update
-# Install OS packages
-apt-get install -y build-essential git vim-nox python3 python3-pip python3-dev \
-    postgresql postgresql-contrib libpq-dev gdal-bin libspatialindex-dev \
-    libgeos-dev sshpass
 
+# Install OS packages
+apt-get install -y \
+    build-essential git vim-nox \  # basics
+    python3 python3-pip python3-dev python3-tk \  # python, with tk for matplotlib
+    postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \  # postgres
+    gdal-bin libspatialindex-dev libgeos-dev \  # spatial shared libs
+    sshpass  \  # manage FTP password
+    default-jre  # Java for transport
+
+
+# Install dotnet-core for solid waste
+# # Add package repository for dotnet core
+# echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list
+# apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+# apt-get update
+# # Install dotnet core (version latest as of 2017-03-24)
+# apt-get install -y dotnet-dev-1.0.1
+
+# Add GitHub to known-hosts
 ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
 
 # Configure /vagrant folder as default on vagrant ssh
@@ -67,16 +82,22 @@ if [ "$base_path" == "/vagrant" ]; then
 fi
 
 # Provision digital_comms model
-bash $base_path/provision/digital_comms.sh $base_path
+bash $base_path/provision/get_data_digital_comms.sh $base_path
+bash $base_path/provision/install_digital_comms.sh $base_path
 
 # Provision energy_demand model
-bash $base_path/provision/energy_demand.sh $base_path
+bash $base_path/provision/get_data_energy_demand.sh $base_path
+bash $base_path/provision/install_energy_demand.sh $base_path
+energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 
 # Provision energy_supply model
-bash $base_path/provision/energy_supply.sh $base_path
+bash $base_path/provision/get_data_energy_supply.sh $base_path
+bash $base_path/provision/install_energy_supply.sh $base_path
 
 # # Provision solid_waste model
-# bash $base_path/provision/solid_waste.sh
+# bash $base_path/provision/get_data_solid_waste.sh $base_path
+# bash $base_path/provision/install_solid_waste.sh $base_path
 
 # Provision transport model
-bash $base_path/provision/transport.sh $base_path
+bash $base_path/provision/get_data_transport.sh $base_path
+bash $base_path/provision/install_transport.sh $base_path

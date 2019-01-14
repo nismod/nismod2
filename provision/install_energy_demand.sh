@@ -2,13 +2,8 @@
 
 base_path=$1
 
-# Install tkinter as requirement for matplotlib
-apt-get install -y python3-tk
-
-wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini
-rm -f $wrapperconfig_path
-
 # Setup wrapper
+wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini
 cat > $wrapperconfig_path << EOF
 [PATHS]
 path_local_data = $base_path/data/energy_demand
@@ -98,13 +93,3 @@ EOF
 
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
 pip3 install energy_demand==$release
-
-# Prepare directory for data
-mkdir -p "$target"
-
-. $base_path/provision/get_data.sh energy-demand $base_path
-
-. $base_path/provision/get_data.sh energy-demand-config-data $base_path
-
-# Post install
-energy_demand minimal_setup -d $wrapperconfig_path
