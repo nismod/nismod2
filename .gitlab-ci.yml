@@ -1,5 +1,5 @@
 before_script:
-  - bash provision.sh
+  - bash provision/vm_provision.sh
 
 test:
   script:
