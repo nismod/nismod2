@@ -51,8 +51,7 @@ XPRESS_VAR=$XPRESSDIR/bin
 # Hack to insert local license
 # cp -R $SOURCE/xpauth.xpr $XPRESSDIR/bin/xpauth.xpr
 
-echo "" > $XPRESSDIR/bin/xpvars.sh
-cat > $XPRESSDIR/bin/xpvars.sh <<EOF
+cat > $XPRESSDIR/bin/xpvars.sh << EOF
 XPRESSDIR=$XPRESSDIR
 XPRESS=$XPRESS_VAR
 LD_LIBRARY_PATH=\${XPRESSDIR}/lib:\${LD_LIBRARY_PATH}
@@ -81,7 +80,7 @@ export XPRESS
 EOF
 
 # Makes a template file containing the connection information to
-cat > $base_path/template.ini <<EOF
+cat > $base_path/template.ini << EOF
 [energy_supply]
 Description=Energy Supply Data
 Driver=PostgreSQL Unicode

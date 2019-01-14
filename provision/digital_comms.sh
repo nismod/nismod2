@@ -6,7 +6,10 @@ source <(grep = <(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini))
 pip3 install git+https://github.com/nismod/digital_comms.git@$release#egg=digital_comms
 
 # Setup wrapper
-printf "[PATHS]\npath_local_data = $base_path/data/digital_comms/processed\n" > $base_path/models/digital_comms/wrapperconfig.ini
+cat > $base_path/models/digital_comms/wrapperconfig.ini << EOF
+[PATHS]
+path_local_data = $base_path/data/digital_comms/processed
+EOF
 
 # Prepare directory for data
 mkdir -p "$target"

@@ -15,7 +15,7 @@ apt-get update
 apt-get install -y dotnet-dev-1.0.1
 
 # Restore dependencies for the solid waste model
-su vagrant <<EOF
+su vagrant << EOF
 cd $base_path/models/solid_waste/src/SolidWasteModel
 dotnet restore
 cd $base_path/models/solid_waste/test/SolidWasteModel.Tests

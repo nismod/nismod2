@@ -97,8 +97,7 @@ val_nat_elec_data = $base_path/data/energy_demand/config_data/01-validation_data
 EOF
 
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
-# pip3 install energy_demand==$release
-pip3 install -e /vagrant/energy_demand
+pip3 install energy_demand==$release
 
 # Prepare directory for data
 mkdir -p "$target"
