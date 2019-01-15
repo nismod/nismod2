@@ -70,7 +70,7 @@ NISMOD folder:
 
 ```
 [ftp-config]
-ftp_server=sage-itrc.ncl.ac.uk
+ftp_host=sage-itrc.ncl.ac.uk
 ftp_username=<username>
 ftp_password=<password>
 ```

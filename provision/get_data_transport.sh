@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
-# Get the data from the ftp
+# Expect NISMOD dir as first argument
 base_path=$1
-. $base_path/provision/get_data.sh transport $base_path
+
+# Read model_version, remote_data, local_dir from config.ini
+source <(grep = <(grep -A3 "\[transport\]" $base_path/provision/config.ini))
+
+# Download data
+python get_data.py $remote_data $base_path/$local_dir

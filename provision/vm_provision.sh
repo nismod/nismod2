@@ -13,7 +13,6 @@ apt-get install -y \
     python3 python3-pip python3-dev python3-tk \  # python, with tk for matplotlib
     postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \  # postgres
     gdal-bin libspatialindex-dev libgeos-dev \  # spatial shared libs
-    sshpass  \  # manage FTP password
     default-jre  # Java for transport
 
 
