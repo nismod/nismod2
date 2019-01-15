@@ -36,18 +36,6 @@ apt-get install -y \
 
 
 #
-# Install dotnet-core for solid waste
-#
-
-# # Add package repository for dotnet core
-# echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list
-# apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
-# apt-get update
-# # Install dotnet core (version latest as of 2017-03-24)
-# apt-get install -y dotnet-dev-1.0.1
-
-
-#
 # Install FICO XPRESS for energy supply
 #
 
@@ -170,10 +158,6 @@ energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 # Energy supply
 bash $base_path/provision/get_data_energy_supply.sh $base_path
 bash $base_path/provision/install_energy_supply.sh $base_path
-
-# # Solid waste
-# bash $base_path/provision/get_data_solid_waste.sh $base_path
-# bash $base_path/provision/install_solid_waste.sh $base_path
 
 # Transport
 bash $base_path/provision/get_data_transport.sh $base_path
