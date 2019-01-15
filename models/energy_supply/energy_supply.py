@@ -224,21 +224,33 @@ class EnergySupplyWrapper(SectorModel):
             'lng_supply': 'gas_lng',
             'interconnector_gas': 'gas_interconnector',
             'storage_gas': 'gas_storage',
+            'storage_level': 'storage_level',
             'wind_gen_tran': 'tran_wind_power',
             'pv_gen_tran': 'tran_pv_power',
             'wind_curtail_tran': 'tran_wind_curtailed',
             'pv_curtail_tran': 'tran_pv_curtailed',
-            'gasfired_gen_eh': 'eh_gas_fired',
-            'wind_gen_eh': 'eh_wind_power',
-            'pv_gen_eh': 'eh_pv_power',
-            'heat_gasboiler': 'eh_gas_boiler',
-            'heat_heatpump': 'eh_heat_pump',
-            'load_shed_gas': 'gas_load_shed',
-            'load_shed_elec': 'elec_load_shed',
-            'load_shed_gas_eh': 'gas_load_shed_eh',
-            'load_shed_elec_eh': 'elec_load_shed_eh',
-            'emissions_eh': 'e_emissions_eh',
-            'emissions_bb': 'e_emissions'}
+            'total_opt_cost': 'total_opt_cost',
+            'eh_gas_fired': 'eh_gas_fired',
+            'eh_wind_power': 'eh_wind_power',
+            'eh_pv_power': 'eh_pv_power',
+            'eh_gas_boiler': 'eh_gas_boiler',
+            'eh_heat_pump': 'eh_heat_pump',
+            'gas_load_shed': 'gas_load_shed',
+            'elec_load_shed': 'elec_load_shed',
+            'e_emissions': 'e_emissions',
+            'e_emissions_eh': 'e_emissions_eh',
+            'gas_load_shed_eh': 'gas_load_shed_eh',
+            'elec_load_shed_eh': 'elec_load_shed_eh',
+            'fresh_water_demand': 'fresh_water_demand',
+            'eh_chp': 'eh_chp',
+            'gasdemand_heat': 'gasdemand_heat',
+            'elecdemand_heat': 'elecdemand_heat',
+            'eh_gasboiler_b': 'eh_gasboiler_b',
+            'eh_heatpump_b': 'eh_heatpump_b',
+            'eh_gasboiler_dh': 'eh_gasboiler_dh',
+            'eh_chp_dh': 'eh_chp_dh',
+            'gas_injection': 'gas_injection',
+            'gas_withdraw': 'gas_withdraw'}
 
         annual_results = {
             # 'total_opt_cost': 'total_opt_cost',
@@ -742,14 +754,15 @@ def build_gas_stores(gas_stores, current_timestep):
     Notes
     -----
     GasStorage" (
-        storagenum double precision,
-        gasnode double precision,
-        name character varying(255),
-        year double precision,
-        inflowcap double precision,
-        outflowcap double precision,
-        storagecap double precision,
-        outflowcost double precision
+        StorageNum integer,
+        region integer,
+        Name character varying(255),
+        Year double precision,
+        InFlowCap double precision,
+        OutFlowCap double precision,
+        StorageCap double precision,
+        OutFlowCost double precision
+        Syslayer integer
     """
     conn = establish_connection()
     cur = conn.cursor()
@@ -758,7 +771,7 @@ def build_gas_stores(gas_stores, current_timestep):
 
     for store_num, store in enumerate(gas_stores):
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
         data = (store_num + 1,
                 store['location'],
