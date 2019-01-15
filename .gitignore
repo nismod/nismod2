@@ -10,7 +10,7 @@
 *.xml
 
 # Energy supply
-*.xpr
+xpauth.xpr
 *.tar.gz
 xpress.tar
 template.ini
@@ -131,6 +131,7 @@ ENV/
 
 # Provisioning config file
 provision/ftp.ini
+provision/dbconfig.ini
 models/*/*.ini
 
 # Working directories

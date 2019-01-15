@@ -1,13 +1,32 @@
+#!/usr/bin/env bash
+
+#
+# Provision virtual machine
+#
+# This script is expected to run a part of the vagrant virtual machine provisioning process. It
+# is run by the root user and should do all required installation and setup:
+#   1. Install OS packages
+#   2. Install any other programs required by models (e.g. custom install/setup)
+#   3. Provision services required by models (including smif and Postgres databases)
+#   4. Download data required for model setup
+#   5. Install models
+#   6. Light-touch set up of virtual machine environment for user convenience (other programs
+#      or dependencies, .bashrc or other dotfiles)
+#
+
+# Expect base path as the only argument (default to current working directory)
 if [ -z "$1" ]; then
     base_path=.
 else
     base_path=$1
 fi
 
-# Update package lists
-apt-get update
 
+#
 # Install OS packages
+#
+
+apt-get update
 apt-get install -y \
     build-essential git vim-nox \  # basics
     python3 python3-pip python3-dev python3-tk \  # python, with tk for matplotlib
@@ -16,7 +35,10 @@ apt-get install -y \
     default-jre  # Java for transport
 
 
+#
 # Install dotnet-core for solid waste
+#
+
 # # Add package repository for dotnet core
 # echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list
 # apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
@@ -24,13 +46,60 @@ apt-get install -y \
 # # Install dotnet core (version latest as of 2017-03-24)
 # apt-get install -y dotnet-dev-1.0.1
 
-# Add GitHub to known-hosts
-ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
 
-# Configure /vagrant folder as default on vagrant ssh
-if [ "$base_path" == "/vagrant" ]; then
-    echo "cd /vagrant" >> /home/vagrant/.bashrc
+#
+# Install FICO XPRESS for energy supply
+#
+
+XPRESS_VERSION="8.4.4"
+XPRESS_URL="https://clientarea.xpress.fico.com/downloads/${XPRESS_VERSION}/xp${XPRESS_VERSION}_linux_x86_64_setup.tar"
+XPRESS_PKG="xp${XPRESS_VERSION}_linux_x86_64.tar.gz"
+XPRESS_DIR=$base_path/install/xpress
+XPRESS_LICENSE=$XPRESS_DIR/bin/xpauth.xpr
+XPRESS_BIN=$XPRESS_DIR/bin
+TMP=$base_path/tmp
+
+# Download FICO XPRESS
+wget -nc -q -O - $XPRESS_URL --no-check-certificate | tar -C $TMP xf
+mkdir -p $XPRESS_DIR
+tar -C $XPRESS_DIR -xf $TMP/$XPRESS_PKG
+
+# Copy FICO XPRESS license
+cp $base_path/provision/xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
+
+# Setup FICO XPRESS environment variables
+cat > $XPRESS_DIR/bin/xpvars.sh << EOF
+XPRESS_DIR=$XPRESS_DIR
+XPRESS=$XPRESS_BIN
+LD_LIBRARY_PATH=\${XPRESS_DIR}/lib:\${LD_LIBRARY_PATH}
+DYLD_LIBRARY_PATH=\${XPRESS_DIR}/lib:\${DYLD_LIBRARY_PATH}
+SHLIB_PATH=\${XPRESS_DIR}/lib:\${SHLIB_PATH}
+LIBPATH=\${XPRESS_DIR}/lib:\${LIBPATH}
+PYTHONPATH=\${XPRESS_DIR}/lib:\${PYTHONPATH}
+
+CLASSPATH=\${XPRESS_DIR}/lib/xprs.jar:\${CLASSPATH}
+CLASSPATH=\${XPRESS_DIR}/lib/xprb.jar:\${CLASSPATH}
+CLASSPATH=\${XPRESS_DIR}/lib/xprm.jar:\${CLASSPATH}
+PATH=\${XPRESS_DIR}/bin:\${PATH}
+
+if [ -f "${XPRESS_DIR}/bin/xpvars.local.sh" ]; then
+  . ${XPRESS_DIR}/bin/xpvars.local.sh
 fi
+
+export LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+export SHLIB_PATH
+export LIBPATH
+export PYTHONPATH
+export CLASSPATH
+export XPRESS_DIR
+export XPRESS
+EOF
+
+
+#
+# Setup PostgreSQL database(s) (used by energy supply)
+#
 
 # Create vagrant role if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
@@ -44,6 +113,11 @@ sed -i "s/#\?listen_address.*/listen_addresses '*'/" /etc/postgresql/9.5/main/po
 echo "host    all             all             all                     md5" >> /etc/postgresql/9.5/main/pg_hba.conf
 # Restart postgres to pick up config changes
 service postgresql restart
+
+
+#
+# Install python packages
+#
 
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
@@ -63,7 +137,12 @@ pip3 install networkx matplotlib numpy ipywidgets
 # Install pyscopg2 (required by some run.py wrappers)
 pip3 install psycopg2-binary pytest
 
-# We MUST clean ALL the windows newlines
+
+#
+# Download data and install models
+#
+
+# We MUST clean ALL the windows newlines, otherwise the scripts below fail noisily
 shopt -s nullglob
 to_clean=($base_path/provision/*)
 shopt -u nullglob
@@ -74,29 +153,37 @@ for filename in ${to_clean[@]}; do
     mv /tmp/$bname $filename
 done;
 
-# copy bash config to vagrant home
-if [ "$base_path" == "/vagrant" ]; then
-    cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
-    chown vagrant:vagrant /home/vagrant/.bashrc
-fi
+# Add GitHub to known-hosts (avoid warnings on clone/download)
+ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
 
-# Provision digital_comms model
+# Digital comms
 bash $base_path/provision/get_data_digital_comms.sh $base_path
 bash $base_path/provision/install_digital_comms.sh $base_path
 
-# Provision energy_demand model
+# Energy demand
 bash $base_path/provision/get_data_energy_demand.sh $base_path
 bash $base_path/provision/install_energy_demand.sh $base_path
 energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 
-# Provision energy_supply model
+# Energy supply
 bash $base_path/provision/get_data_energy_supply.sh $base_path
 bash $base_path/provision/install_energy_supply.sh $base_path
 
-# # Provision solid_waste model
+# # Solid waste
 # bash $base_path/provision/get_data_solid_waste.sh $base_path
 # bash $base_path/provision/install_solid_waste.sh $base_path
 
-# Provision transport model
+# Transport
 bash $base_path/provision/get_data_transport.sh $base_path
 bash $base_path/provision/install_transport.sh $base_path
+
+
+#
+# User config
+#
+
+# Copy bash config to vagrant home
+if [ "$base_path" == "/vagrant" ]; then
+    cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
+    chown vagrant:vagrant /home/vagrant/.bashrc
+fi
