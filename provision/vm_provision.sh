@@ -137,6 +137,8 @@ pip3 install networkx matplotlib numpy ipywidgets
 # Install pyscopg2 (required by some run.py wrappers)
 pip3 install psycopg2-binary pytest
 
+# Install SFTP library to access NISMOD FTP
+pip3 install pysftp
 
 #
 # Download data and install models
