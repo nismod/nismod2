@@ -742,14 +742,15 @@ def build_gas_stores(gas_stores, current_timestep):
     Notes
     -----
     GasStorage" (
-        storagenum double precision,
-        gasnode double precision,
-        name character varying(255),
-        year double precision,
-        inflowcap double precision,
-        outflowcap double precision,
-        storagecap double precision,
-        outflowcost double precision
+        StorageNum integer,
+        region integer,
+        Name character varying(255),
+        Year double precision,
+        InFlowCap double precision,
+        OutFlowCap double precision,
+        StorageCap double precision,
+        OutFlowCost double precision
+        Syslayer integer
     """
     conn = establish_connection()
     cur = conn.cursor()
@@ -758,7 +759,7 @@ def build_gas_stores(gas_stores, current_timestep):
 
     for store_num, store in enumerate(gas_stores):
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "GasNode", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
 
         data = (store_num + 1,
                 store['location'],
