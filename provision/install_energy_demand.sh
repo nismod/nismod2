@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
+# Expect NISMOD dir as first argument
 base_path=$1
 
-# Setup wrapper
+# Read model_version, remote_data, local_dir from config.ini
+source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
+
+# Install energy_demand
+pip install energy_demand==$release
+
+# Setup wrapper config
 wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini
 cat > $wrapperconfig_path << EOF
 [PATHS]
@@ -90,6 +97,3 @@ val_subnational_gas_residential = $base_path/data/energy_demand/config_data/01-v
 val_subnational_gas_non_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_non_domestic.csv
 val_nat_elec_data = $base_path/data/energy_demand/config_data/01-validation_datasets/01_national_elec_2015/elec_demand_2015.csv
 EOF
-
-source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
-pip3 install energy_demand==$release

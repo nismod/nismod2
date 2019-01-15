@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+
+# Expect NISMOD dir as first argument
 base_path=$1
 
 # Install xpress
 PKGFILE=xp8.4.4_linux_x86_64.tar.gz
-
 SOURCE=$base_path
 
 wget -nc https://clientarea.xpress.fico.com/downloads/8.4.4/xp8.4.4_linux_x86_64_setup.tar -O $SOURCE/xpress.tar --no-check-certificate
@@ -81,30 +82,23 @@ EOF
 
 odbcinst -i -l -s -f $base_path/template.ini
 
-# Get the data from the ftp
-. $base_path/provision/get_data.sh energy-supply $base_path
-
+#
 # Now compile and install the energy_supply model
-if [ -z "$ftp_username" ] && [ -z "$ftp_password" ]; then
-  source <(grep = <(grep -A3 '\[ftp-config\]' $base_path/provision/ftp.ini))
-fi
+#
+
+# Read model_version, remote_data, local_dir from config.ini
 source <(grep = <(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini))
 
 MODEL_DIR=$base_path/install
-DATA_DIR=$base_path/$target
-FILENAME=energy_supply_$release.zip
+DATA_DIR=$base_path/$local_dir
+FILENAME=energy_supply_$model_version.zip
 MIGRATIONS=$MODEL_DIR/energy_supply/migrations
 TMP=$base_path/tmp
 
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-export SSHPASS=$ftp_password
-sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - $ftp_username@$ftp_server << !
-   lcd $TMP
-   get /releases/energy_supply/$FILENAME
-   bye
-!
+python get_data.py /releases/energy_supply/$FILENAME $TMP
 
 rm -r $MODEL_DIR/energy_supply
 unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
@@ -114,7 +108,7 @@ rm -r $TMP/$FILENAME
 cp $MODEL_DIR/energy_supply/*.bim $XPRESSDIR/dso
 
 # Run migrations
-su vagrant -c "python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS"
+python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS
 
 # Setup environment variables on login
-echo "source $XPRESSDIR/bin/xpvars.sh" >> $base_path/.bashrc
+echo "source $XPRESSDIR/bin/xpvars.sh" >> $base_path/provision/.bashrc
