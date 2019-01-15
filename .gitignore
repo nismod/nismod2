@@ -31,9 +31,6 @@ __pycache__
 # smif creates log files and results files
 smif.log
 
-# Ignore results folder
-results/
-
 # Ignore any Excel files
 *.xlsx
 
@@ -41,8 +38,6 @@ results/
 database
 .vagrant/
 smif/
-
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -139,8 +134,7 @@ provision/ftp.ini
 models/*/*.ini
 
 # Working directories
-install
-data
-tmp
-data_energy_demand
-
+install/*
+data/*
+tmp/*
+results/*
