@@ -11,6 +11,7 @@ NISMOD v2 has several components:
 - (for some models) internal model data, used by the model but not exposed to smif as part of
   the system-of-systems configuration
 
+
 ## Setup
 
 To set up NISMOD, first clone this repository, or download a
@@ -26,21 +27,32 @@ or will contain everything required for a model run:
   - `test`: integration tests
   - `utilities`: helpful scripts to create or migrate configuration
 
-Then either install everything directly:
+Then in outline (more details further below) either install everything directly to run nismod
+on a desktop, server or cluster:
 
 1. Install smif (recommend using [`conda`](https://conda.io/miniconda.html))
-1. Configure connection details for the NISMOD FTP
+1. Install model dependencies:
+   - FICO XPRESS (for energy supply)
+   - Java (for transport)
+   - PostgreSQL and ODBC (for energy supply)
+1. Configure:
+   - connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - connection details for a Postgres database (copy `template.dbconfig.ini` to
+     `dbconfig.ini` and edit for your database)
 1. Install models (run `provision/install_*` scripts)
 1. Get data (run `provision/get_data_*` scripts)
 
-Or test NISMOD in a virtual machine:
+Or set up a virtual machine for testing:
 
 1. Check that you have VirtualBox and Vagrant installed
-1. Configure connection details for the NISMOD FTP
+1. Configure:
+   - connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - connection details for a Postgres database (copy `template.dbconfig.ini` to
+     `dbconfig.ini`)
+   - FICO XPRESS license (copy `template.xpauth.xpr` or your own license to `xpauth.xpr`)
 1. Setup a virtual machine (run `vagrant up` then connect with `vagrant ssh`)
 
-
-## Download NISMOD
+### Download NISMOD
 
 Download the [latest release](https://github.com/nismod/nismod2/releases/latest) of NISMOD v2.0
 from GitHub as a .zip archive and unzip it into a directory.
@@ -57,23 +69,133 @@ cd nismod2
 To update NISMOD to the latest development version:
 
 ```bash
-cd path/to/nismod2    # wherever you cloned the nismod folder
+cd path/to/nismod2   # wherever you cloned the nismod folder
 git checkout master  # to make sure you’re on the master branch
 git pull             # pull changes from Github to your local machine
 ```
 
+### Configure connection details for the NISMOD FTP
 
-## Configure connection details for the NISMOD FTP
-
-Add your credentials for the NISMOD FTP server to `provision/ftp.ini` within the
-NISMOD folder:
+Within the NISMOD folder, copy `provision/template.ftp.ini` to `provision/ftp.ini` and add your
+credentials to connect to the NISMOD FTP server:
 
 ```
 [ftp-config]
 ftp_host=sage-itrc.ncl.ac.uk
-ftp_username=<username>
-ftp_password=<password>
+ftp_username=username
+ftp_password=password
 ```
+
+### Configure connection details for a Postgres database
+
+Within the NISMOD folder, copy `provision/template.dbconfig.ini` to `provision/dbconfig.ini`
+and edit to connect to your database.
+
+If you intend to use the vagrant virtual machine with the database as provisioned by default,
+leave the details unchanged.
+
+```
+[energy-supply]
+dbname=vagrant
+host=localhost
+user=vagrant
+password=vagrant
+port=5432
+```
+
+### Configure FICO XPRESS license
+
+If you will install FICO XPRESS manually, skip this step.
+
+Within the NISMOD folder, copy `provision/template.xpauth.xpr` to `provision/xpauth.xpr`.
+
+If you are running within the University of Oxford OUCE network, the license server should be
+available and no changes are necessary. Otherwise, set the value to connect to your local
+license server or replace this file with a license file provided by FICO support (contact via
+https://www.fico.com)
+
+```
+use_server server="ouce-license.ouce.ox.ac.uk"
+```
+
+
+## Running NISMOD on desktop/server/cluster
+
+To run NISMOD directly, you will need to install smif, model dependencies and models.
+
+The `provision/vm_provision.sh` script may be a useful point of reference, as it is run by the
+root user within the virtual machine (on Ubuntu 16.04) to automate the same process.
+
+### Install smif
+
+See [installation instructions](https://smif.readthedocs.io/en/latest/installation.html) for
+full details.
+
+The recommended method uses [`conda`](https://conda.io/miniconda.html)):
+
+```bash
+conda config --add channels conda-forge  # enable the conda-forge channel, required for smif
+conda create --name nismod python=3.6 smif  # create a conda environment for nismod
+conda activate nismod  # activate the nismod conda environment
+```
+
+### Install model dependencies
+
+#### FICO XPRESS (for energy supply)
+
+See [energy supply documentation](https://github.com/nismod/energy_supply#downloading-and-installation-of-the-package)
+for full details.
+
+On Linux (x64) it should be possible download and install FICO by running:
+
+```bash
+mkdir xpress_setup
+wget -nc -qO- \
+  "https://clientarea.xpress.fico.com/downloads/8.4.4/xp8.4.4_linux_x86_64_setup.tar" \
+  --no-check-certificate | tar -C xpress_setup -xv
+./xpress_setup/install.sh
+```
+
+#### Java (for transport)
+
+See [transport model documentation](https://github.com/nismod/transport) for full details.
+
+To run the transport model, it should be sufficient to have the [Java Runtime Environment (JRE)
+version 8](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
+installed.
+
+On Ubuntu, run:
+
+```bash
+sudo apt update && sudo apt install default-jre
+```
+
+#### PostgreSQL and ODBC (for energy supply)
+
+See [energy supply documentation](https://github.com/nismod/energy_supply#downloading-and-installation-of-the-package)
+for full details.
+
+The energy supply model connects to a [Postgres](https://www.postgresql.org/) database via
+ODBC, so requires access to a Postgres server, an ODBC installation and the Postgres ODBC
+drivers.
+
+On Ubuntu, run:
+
+```bash
+sudo apt update && sudo apt install \
+  postgresql postgresql-contrib \  # postgres
+  libpq-dev \  # shared library for postgres clients (e.g. python psycopg2)
+  unixodbc-dev odbc-postgresql  # ODBC and postgres connector
+```
+
+### Get data
+
+Run each of the `provision/get_data_*` scripts.
+
+### Install models
+
+Run each of the `provision/install_*` scripts.
+
 
 ## Running NISMOD on a virtual machine
 
@@ -101,7 +223,7 @@ catalog.* Make sure that you have the latest version of Vagrant (>v2) installed.
 This version is currently not in the standard package archive (PPA) but can be
 downloaded from the vagrant website.
 
-Create and configure the guest machine:
+Create and configure the guest machine, running this command from the NISMOD directory:
 
 ```bash
 vagrant up
@@ -132,7 +254,12 @@ To reload and re-provision the virtual machine after updating NISMOD:
 vagrant reload --provision
 ```
 
-### Viewing Results
+### Accessing services from outside the virtual machine
+
+It is possible to connect to some services running in the guest virtual machine directly from
+the host. Vagrant is set to automatically forward some ports.
+
+#### Viewing Results
 
 NISMOD includes some experimental jupyter notebooks to help access and view results.
 
@@ -145,8 +272,7 @@ First, start the notebook server in the background with the command:
 Then navigate in a browser to
 [`localhost:8910`](http://localhost:8910/notebooks/Results%20Viewer%20-%20Split%20Out.ipynb)
 
-
-### Database Connection
+#### Database Connection
 
 Some sector models use a database which runs within the virtual machine and is set up when the
 virtual machine is provisioned.
@@ -167,8 +293,7 @@ on the host machine, you should be able to connect with:
 
     psql -d vagrant -h localhost -U vagrant -p 6543
 
-
-#### Security note
+##### Security note
 
 This database setup is intended for testing and development only and assumes that high-numbered
 ports are only accessible to the local user. Strong passwords and secure login methods should
@@ -186,14 +311,12 @@ be used if the host machine is expected to be accessed by multiple users.
 
 For further detail, see this [article](http://nvie.com/posts/a-successful-git-branching-model/)
 
-
 ### Developing a new feature
 
 1. Create a new feature branch from the develop branch `git checkout -b feature/<feature_name> develop`
 1. Develop your feature
 1. Submit a pull request against the develop branch
 1. Merge the changes into the develop branch
-
 
 ### Release Process
 
@@ -206,7 +329,6 @@ For further detail, see this [article](http://nvie.com/posts/a-successful-git-br
    release candidate tags e.g. `git tag -a vx.y-rc2`
 1. Once the release candidate is stable, submit a pull request to the `v2` branch
 1. Merge the pull request and tag `git tag -a vx.y.0`
-
 
 ### Fixing a Bug in a release
 
@@ -232,7 +354,6 @@ framework. In outline, tests here should:
     1. with the expected type contract of results
     1. (optionally) with regression tests against known-good modelled outputs
 
-
 ### Gitlab
 
 This git repository is hosted at a second ‘remote’ within the School of Geography. the
@@ -242,7 +363,6 @@ of tests.
 
 These tests should give feedback on the installation process and perform high level integration
 tests that validate dependencies between sector models.
-
 
 ### Gitlab-runner
 
