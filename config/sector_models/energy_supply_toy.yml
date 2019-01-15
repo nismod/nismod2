@@ -105,182 +105,242 @@ inputs:
   dtype: float
 outputs:
 - name: gasfired_gen_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
+  unit: MW
   dtype: float
 - name: coal_gen_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
-  dtype: float
-- name: hydro_gen_tran
   unit: MW
-  dims:
-  - national
-  - seasonal_week
   dtype: float
 - name: pumpedHydro_gen_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
+  unit: MW
+  dtype: float
+- name: hydro_gen_tran
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
   dtype: float
 - name: nuclear_gen_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
+  unit: MW
   dtype: float
 - name: interconnector_elec_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
+  unit: MW
   dtype: float
 - name: renewable_gen_tran
+  dims:
+  - national
+  - seasonal_week
   unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: wind_gen_tran
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: pv_gen_tran
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: wind_curtail_tran
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: pv_curtail_tran
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: gasfired_gen_eh
-  unit: MW
-  dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-- name: wind_gen_eh
-  unit: MW
-  dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-- name: pv_gen_eh
-  unit: MW
-  dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-- name: lng_supply
-  unit: mcm
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: domestic_gas
-  unit: mcm
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: interconnector_gas
-  unit: mcm
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: storage_gas
-  unit: mcm
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: load_shed_gas
-  unit: mcm
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: load_shed_elec
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: load_shed_gas_eh
-  unit: mcm
-  dims:
-  - energy_hub_min
-  - seasonal_week
-  dtype: float
-- name: load_shed_elec_eh
-  unit: MW
-  dims:
-  - energy_hub_min
-  - seasonal_week
   dtype: float
 - name: elec_cost
+  dims:
+  - national
+  - seasonal_week
   unit: GBP/kWh
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: heat_gasboiler
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
-  dtype: float
-- name: heat_heatpump
-  unit: MW
-  dims:
-  - national
-  - seasonal_week
   dtype: float
 - name: elec_reserve_tran
-  unit: MW
   dims:
   - national
   - seasonal_week
+  unit: MW
   dtype: float
-- name: problem_objective
-  unit: GBP
-  dims: []
+- name: domestic_gas
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
   dtype: float
-- name: problem_status
-  unit: None
-  dims: []
+- name: lng_supply
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: interconnector_gas
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: storage_gas
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: storage_level
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: wind_gen_tran
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: pv_gen_tran
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: wind_curtail_tran
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: pv_curtail_tran
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
   dtype: float
 - name: total_opt_cost
-  unit: GBP
-  dims: []
-  dtype: float
-- name: emissions_eh
-  unit: t
   dims:
-  - energy_hub_min
+  - national
   - seasonal_week
+  unit: GBP
   dtype: float
-- name: emissions_bb
-  unit: t
+- name: eh_gas_fired
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_wind_power
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_pv_power
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gas_boiler
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_heat_pump
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gas_load_shed
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elec_load_shed
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: e_emissions
   dims:
   - bus_bars
   - seasonal_week
+  unit: t
+  dtype: float
+- name: e_emissions_eh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: t
+  dtype: float
+- name: gas_load_shed_eh
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elec_load_shed_eh
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: fresh_water_demand
+  dims:
+  - bus_bars
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_chp
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gasdemand_heat
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: elecdemand_heat
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gasboiler_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_heatpump_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gasboiler_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_chp_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gas_injection
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gas_withdraw
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
   dtype: float
