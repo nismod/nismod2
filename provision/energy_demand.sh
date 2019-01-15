@@ -9,12 +9,12 @@ wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini
 rm -f $wrapperconfig_path
 
 # Setup wrapper
-cat << EOF > wrapperconfig_path
+cat > $wrapperconfig_path << EOF
 [PATHS]
-path_local_data = /vagrant/data/energy_demand
-path_processed_data = /vagrant/data/energy_demand/_processed_data
-path_result_data = /vagrant/data/energy_demand/results
-path_new_scenario = /vagrant/data/energy_demand/results/tmp_model_run_results
+path_local_data = $base_path/data/energy_demand
+path_processed_data = $base_path/data/energy_demand/_processed_data
+path_result_data = $base_path/data/energy_demand/results
+path_new_scenario = $base_path/data/energy_demand/results/tmp_model_run_results
 
 [CONFIG]
 base_yr = 2015
@@ -41,59 +41,59 @@ crit_temp_min_max = True
 constant_weather = False
 
 [DATA_PATHS]
-local_path_datafolder = /vagrant/data/energy_demand/energy_demand_minimal
-path_strategy_vars = /vagrant/data/energy_demand/energy_demand_minimal/00_user_defined_variables
+local_path_datafolder = $base_path/data/energy_demand/energy_demand_minimal
+path_strategy_vars = $base_path/data/energy_demand/energy_demand_minimal/00_user_defined_variables
 #ONS principal projection
-path_population_data_for_disaggregation_LAD = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050.csv  
+path_population_data_for_disaggregation_LAD = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050.csv
 #ONS principal projection
-folder_raw_carbon_trust = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/G_Carbon_Trust_advanced_metering_trial/
-path_population_data_for_disaggregation_MSOA = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050_MSOA_lad.csv
-folder_path_weater_stations = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/A-temperature_data/cleaned_weather_stations.csv
-path_floor_area_virtual_stock_by = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/K-floor_area/floor_area_LAD_latest.csv
-path_assumptions_db = /vagrant/data/energy_demand/_processed_data/assumptions_from_db
-data_processed = /vagrant/data/energy_demand/_processed_data
-lad_shapefile = /vagrant/data/energy_demand/energy_demand_minimal/_raw_data/C_LAD_geography/same_as_pop_scenario/lad_2016_uk_simplified.shp
-path_post_installation_data = /vagrant/data/energy_demand/_processed_data
+folder_raw_carbon_trust = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/G_Carbon_Trust_advanced_metering_trial/
+path_population_data_for_disaggregation_MSOA = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050_MSOA_lad.csv
+folder_path_weater_stations = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/A-temperature_data/cleaned_weather_stations.csv
+path_floor_area_virtual_stock_by = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/K-floor_area/floor_area_LAD_latest.csv
+path_assumptions_db = $base_path/data/energy_demand/_processed_data/assumptions_from_db
+data_processed = $base_path/data/energy_demand/_processed_data
+lad_shapefile = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/C_LAD_geography/same_as_pop_scenario/lad_2016_uk_simplified.shp
+path_post_installation_data = $base_path/data/energy_demand/_processed_data
 weather_data = /raw_data/A-temperature_data/cleaned_weather_stations_data
-load_profiles = /vagrant/data/energy_demand/_processed_data/load_profiles
-rs_load_profile_txt = /vagrant/data/energy_demand/_processed_data/load_profiles/rs_submodel
-ss_load_profile_txt = /vagrant/data/energy_demand/_processed_data/load_profiles/ss_submodel
-yaml_parameters = /vagrant/data/energy_demand/config/yaml_parameters.yml
-yaml_parameters_constrained = /vagrant/data/energy_demand/config/yaml_parameters_constrained.yml
-yaml_parameters_keynames_constrained = /vagrant/data/energy_demand/config/yaml_parameters_keynames_constrained.yml
-yaml_parameters_keynames_unconstrained = /vagrant/data/energy_demand/config/yaml_parameters_keynames_unconstrained.yml
-yaml_parameters_scenario = /vagrant/data/energy_demand/config/yaml_parameters_scenario.yml
+load_profiles = $base_path/data/energy_demand/_processed_data/load_profiles
+rs_load_profile_txt = $base_path/data/energy_demand/_processed_data/load_profiles/rs_submodel
+ss_load_profile_txt = $base_path/data/energy_demand/_processed_data/load_profiles/ss_submodel
+yaml_parameters = $base_path/data/energy_demand/config/yaml_parameters.yml
+yaml_parameters_constrained = $base_path/data/energy_demand/config/yaml_parameters_constrained.yml
+yaml_parameters_keynames_constrained = $base_path/data/energy_demand/config/yaml_parameters_keynames_constrained.yml
+yaml_parameters_keynames_unconstrained = $base_path/data/energy_demand/config/yaml_parameters_keynames_unconstrained.yml
+yaml_parameters_scenario = $base_path/data/energy_demand/config/yaml_parameters_scenario.yml
 
 [CONFIG_DATA]
-path_main = /vagrant/data/energy_demand/config_data
+path_main = $base_path/data/energy_demand/config_data
 # Path to all technologies
-path_technologies = /vagrant/data/energy_demand/config_data/05-technologies/technology_definition.csv
+path_technologies = $base_path/data/energy_demand/config_data/05-technologies/technology_definition.csv
 # Paths to fuel raw data
-rs_fuel_raw = /vagrant/data/energy_demand/config_data/02-fuel_base_year/rs_fuel.csv
-ss_fuel_raw = /vagrant/data/energy_demand/config_data/02-fuel_base_year/ss_fuel.csv
-is_fuel_raw = /vagrant/data/energy_demand/config_data/02-fuel_base_year/is_fuel.csv
+rs_fuel_raw = $base_path/data/energy_demand/config_data/02-fuel_base_year/rs_fuel.csv
+ss_fuel_raw = $base_path/data/energy_demand/config_data/02-fuel_base_year/ss_fuel.csv
+is_fuel_raw = $base_path/data/energy_demand/config_data/02-fuel_base_year/is_fuel.csv
 # Load profiles
-lp_rs = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/HES_lp.csv
+lp_rs = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/HES_lp.csv
 # Technologies load shapes
-path_hourly_gas_shape_resid = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_gas_boiler_dh_SANSOM.csv
-lp_elec_hp_dh = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_hp_dh_LOVE.csv
-lp_all_microCHP_dh = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_all_microCHP_dh_SANSOM.csv
-path_shape_rs_cooling = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/shape_residential_cooling.csv
-path_shape_ss_cooling = /vagrant/data/energy_demand/config_data/03-load_profiles/ss_submodel/shape_service_cooling.csv
-lp_elec_storage_heating = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_storage_heating_HESReport.csv
-lp_elec_secondary_heating = /vagrant/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_secondary_heating_HES.csv
+path_hourly_gas_shape_resid = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_gas_boiler_dh_SANSOM.csv
+lp_elec_hp_dh = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_hp_dh_LOVE.csv
+lp_all_microCHP_dh = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_all_microCHP_dh_SANSOM.csv
+path_shape_rs_cooling = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/shape_residential_cooling.csv
+path_shape_ss_cooling = $base_path/data/energy_demand/config_data/03-load_profiles/ss_submodel/shape_service_cooling.csv
+lp_elec_storage_heating = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_storage_heating_HESReport.csv
+lp_elec_secondary_heating = $base_path/data/energy_demand/config_data/03-load_profiles/rs_submodel/lp_elec_secondary_heating_HES.csv
 # Census data
-path_employment_statistics = /vagrant/data/energy_demand/config_data/04-census_data/LAD_census_data.csv
+path_employment_statistics = $base_path/data/energy_demand/config_data/04-census_data/LAD_census_data.csv
 # Validation datasets
-val_subnational_elec = /vagrant/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec.csv
-val_subnational_elec_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec_domestic.csv
-val_subnational_elec_non_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec_non_domestic.csv
-val_subnational_elec_msoa_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/MSOA_domestic_electricity_2015_cleaned.csv
-val_subnational_elec_msoa_non_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/MSOA_non_dom_electricity_2015_cleaned.csv
-val_subnational_gas = /vagrant/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas.csv
-val_subnational_gas_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_domestic.csv
-val_subnational_gas_non_residential = /vagrant/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_non_domestic.csv
-val_nat_elec_data = /vagrant/data/energy_demand/config_data/01-validation_datasets/01_national_elec_2015/elec_demand_2015.csv
+val_subnational_elec = $base_path/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec.csv
+val_subnational_elec_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec_domestic.csv
+val_subnational_elec_non_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/data_2015_elec_non_domestic.csv
+val_subnational_elec_msoa_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/MSOA_domestic_electricity_2015_cleaned.csv
+val_subnational_elec_msoa_non_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/02_subnational_elec/MSOA_non_dom_electricity_2015_cleaned.csv
+val_subnational_gas = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas.csv
+val_subnational_gas_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_domestic.csv
+val_subnational_gas_non_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_non_domestic.csv
+val_nat_elec_data = $base_path/data/energy_demand/config_data/01-validation_datasets/01_national_elec_2015/elec_demand_2015.csv
 EOF
 
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
