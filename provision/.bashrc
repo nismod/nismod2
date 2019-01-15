@@ -122,3 +122,6 @@ alias pip=pip3
 
 # start in vagrant dir on login
 cd /vagrant
+
+# FICO XPRESS variables (for energy supply)
+source /opt/xpressmp/bin/xpvars.sh
