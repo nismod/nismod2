@@ -179,13 +179,14 @@ The energy supply model connects to a [Postgres](https://www.postgresql.org/) da
 ODBC, so requires access to a Postgres server, an ODBC installation and the Postgres ODBC
 drivers.
 
-On Ubuntu, run:
+On Ubuntu, install Postgres, libpq (shared library for postgres clients), ODBC
+and postgres connector:
 
 ```bash
 sudo apt update && sudo apt install \
-  postgresql postgresql-contrib \  # postgres
-  libpq-dev \  # shared library for postgres clients (e.g. python psycopg2)
-  unixodbc-dev odbc-postgresql  # ODBC and postgres connector
+  postgresql postgresql-contrib \
+  libpq-dev \
+  unixodbc-dev odbc-postgresql
 ```
 
 ### Get data
