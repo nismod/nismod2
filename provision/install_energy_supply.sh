@@ -51,17 +51,14 @@ TMP=$base_path/tmp
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-python get_data.py /releases/energy_supply/$FILENAME $TMP
+python3 $base_path/provision/get_data.py /releases/energy_supply/$FILENAME $TMP
 
-rm -r $MODEL_DIR/energy_supply
-unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$release $MODEL_DIR/energy_supply
-rm -r $TMP/$FILENAME
+rm -rf $MODEL_DIR/energy_supply
+rm -rf $MODEL_DIR/energy_supply_$model_version
+unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$model_version $MODEL_DIR/energy_supply
 
 # This is a bit of a hack which places the compiled BIM files into the XPRESS package directory
 cp $MODEL_DIR/energy_supply/*.bim $XPRESS_DIR/dso
 
 # Run migrations
-python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
-
-# Setup environment variables on login
-echo "source $XPRESS_DIR/bin/xpvars.sh" >> ~/.bashrc
+python3 $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
