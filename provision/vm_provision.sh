@@ -21,18 +21,26 @@ else
     base_path=$1
 fi
 
+# Echo commands as they are executed
+set -x
 
 #
 # Install OS packages
 #
 
 apt-get update
+# Install:
+# - basics:  build-essential git vim-nox
+# - python, with tk for matplotlib:  python3 python3-pip python3-dev python3-tk
+# - postgres:  postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev
+# - spatial shared libs:  gdal-bin libspatialindex-dev libgeos-dev
+# - Java for transport: default-jre
 apt-get install -y \
-    build-essential git vim-nox \  # basics
-    python3 python3-pip python3-dev python3-tk \  # python, with tk for matplotlib
-    postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \  # postgres
-    gdal-bin libspatialindex-dev libgeos-dev \  # spatial shared libs
-    default-jre  # Java for transport
+    build-essential git vim-nox \
+    python3 python3-pip python3-dev python3-tk \
+    postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \
+    gdal-bin libspatialindex-dev libgeos-dev \
+    default-jre
 
 
 #
@@ -42,15 +50,26 @@ apt-get install -y \
 XPRESS_VERSION="8.4.4"
 XPRESS_URL="https://clientarea.xpress.fico.com/downloads/${XPRESS_VERSION}/xp${XPRESS_VERSION}_linux_x86_64_setup.tar"
 XPRESS_PKG="xp${XPRESS_VERSION}_linux_x86_64.tar.gz"
-XPRESS_DIR=$base_path/install/xpress
+XPRESS_DIR=/home/vagrant/xpress
 XPRESS_LICENSE=$XPRESS_DIR/bin/xpauth.xpr
 XPRESS_BIN=$XPRESS_DIR/bin
 TMP=$base_path/tmp
 
-# Download FICO XPRESS
-wget -nc -q -O - $XPRESS_URL --no-check-certificate | tar -C $TMP xf
+
+
+if [[ -e "$TMP/$XPRESS_PKG" ]]; then
+    echo "Got $TMP/$XPRESS_PKG"
+else
+    # Download FICO XPRESS
+    wget -nc -qO- $XPRESS_URL --no-check-certificate | tar -C $TMP -xv
+fi
+
+# Unpack FICO XPRESS
 mkdir -p $XPRESS_DIR
+mkdir -p $XPRESSDIR/lib/backup
+mv $XPRESSDIR/lib/lib* $XPRESSDIR/lib/backup 2>/dev/null # Avoid unpacking errors
 tar -C $XPRESS_DIR -xf $TMP/$XPRESS_PKG
+
 
 # Copy FICO XPRESS license
 cp $base_path/provision/xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
@@ -128,6 +147,7 @@ pip3 install psycopg2-binary pytest
 # Install SFTP library to access NISMOD FTP
 pip3 install pysftp
 
+
 #
 # Download data and install models
 #
@@ -143,25 +163,32 @@ for filename in ${to_clean[@]}; do
     mv /tmp/$bname $filename
 done;
 
-# Add GitHub to known-hosts (avoid warnings on clone/download)
-ssh-keyscan -H github.com >> /home/vagrant/.ssh/known_hosts
+# Add to known hosts
+declare -a hosts=("github.com" "sage-itrc.ncl.ac.uk" "128.240.212.101")
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+for host in "${hosts[@]}"
+do
+    ssh-keyscan $host >> ~/.ssh/known_hosts
+    su vagrant -c "ssh-keyscan github.com >> ~/.ssh/known_hosts"
+done
 
 # Digital comms
-bash $base_path/provision/get_data_digital_comms.sh $base_path
-bash $base_path/provision/install_digital_comms.sh $base_path
+bash -x $base_path/provision/get_data_digital_comms.sh $base_path
+su vagrant -c "bash -x $base_path/provision/install_digital_comms.sh $base_path"
 
 # Energy demand
-bash $base_path/provision/get_data_energy_demand.sh $base_path
-bash $base_path/provision/install_energy_demand.sh $base_path
+bash -x $base_path/provision/get_data_energy_demand.sh $base_path
+su vagrant -c "bash -x $base_path/provision/install_energy_demand.sh $base_path"
 energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 
 # Energy supply
-bash $base_path/provision/get_data_energy_supply.sh $base_path
-bash $base_path/provision/install_energy_supply.sh $base_path
+bash -x $base_path/provision/get_data_energy_supply.sh $base_path
+su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
 
 # Transport
-bash $base_path/provision/get_data_transport.sh $base_path
-bash $base_path/provision/install_transport.sh $base_path
+bash -x $base_path/provision/get_data_transport.sh $base_path
+su vagrant -c "bash -x $base_path/provision/install_transport.sh $base_path"
 
 
 #
@@ -170,6 +197,6 @@ bash $base_path/provision/install_transport.sh $base_path
 
 # Copy bash config to vagrant home
 if [ "$base_path" == "/vagrant" ]; then
-    cp /vagrant/provision/.bashrc /home/vagrant/.bashrc
+    tr -d '\r' < $base_path/provision/.bashrc > /home/vagrant/.bashrc
     chown vagrant:vagrant /home/vagrant/.bashrc
 fi
