@@ -20,6 +20,19 @@ def main(remote_file, local_dir):
         ftp_password=<password>
 
     """
+    local_file = os.path.join(local_dir, os.path.basename(remote_file))
+    if os.path.exists(local_file):
+        print("Skipping download of {}, {} already exists".format(remote_file, local_file))
+    else:
+        print("Downloading {} to {}".format(remote_file, local_dir))
+        download(remote_file, local_dir)
+
+    unpack(local_dir)
+
+
+def download(remote_file, local_dir):
+    """Download a remote file to a local directory
+    """
     # Read connection details
     if 'FTP_USERNAME' in os.environ and 'FTP_PASSWORD' in os.environ and \
             'FTP_HOST' in os.environ:
@@ -33,7 +46,12 @@ def main(remote_file, local_dir):
         ftp_password = parser['ftp-config']['ftp_password']
         ftp_host = parser['ftp-config']['ftp_host']
 
-    print("Downloading {} to {}".format(remote_file, local_dir))
+
+    try:
+        os.mkdir(local_dir)
+        print("Creating directory", local_dir)
+    except FileExistsError:
+        pass
 
     # Download data from server
     try:
@@ -58,14 +76,19 @@ def main(remote_file, local_dir):
         print(msg)
         raise ex
 
-    # Unpack downloaded ZIP files
+
+def unpack(local_dir):
+    """Unpack downloaded ZIP files
+    """
     subprocess.run(['unzip', '-o', '{}/*.zip'.format(local_dir), '-d', '{}'.format(local_dir)])
     subprocess.run(['rm', '-f', '{}/*.zip'.format(local_dir)])
 
+
 if __name__ == '__main__':
     try:
+        print("Called with", sys.argv)
         REMOTE = sys.argv[1]
         LOCAL = sys.argv[2]
-    except KeyError:
+    except IndexError:
         exit("Usage: python {} <remote_file> <local_dir>".format(__file__))
     main(REMOTE, LOCAL)
