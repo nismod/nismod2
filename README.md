@@ -354,15 +354,18 @@ framework. In outline, tests here should:
     1. with the expected type contract of results
     1. (optionally) with regression tests against known-good modelled outputs
 
-### Gitlab
+Continuous integration testing is currently available through a GitLab server based in the
+School of Geography in Oxford. You can access the [project on OUCE
+GitLab](https://gitlab.ouce.ox.ac.uk/NISMOD/nismod2) and [monitor
+jobs](https://gitlab.ouce.ox.ac.uk/NISMOD/nismod2/-/jobs) through the web interface.
 
-This git repository is hosted at a second ‘remote’ within the School of Geography. the
-ouce-gitlab server (https://gitlab.ouce.ox.ac.uk/NISMOD/nismod2). Changes pushed to the gitlab
-remote will trigger a testing pipeline, this will install the nismod2 system and run a series
-of tests.
+To add the remote and push a branch for automated testing, run:
 
-These tests should give feedback on the installation process and perform high level integration
-tests that validate dependencies between sector models.
+```bash
+git remote add ouce https://gitlab.ouce.ox.ac.uk/NISMOD/nismod2.git
+git checkout feature/branch
+git push -u ouce
+```
 
 ### Gitlab-runner
 
@@ -386,7 +389,7 @@ check_interval = 0
     volumes = ["/cache"]
     shm_size = 0
   [runners.cache]
-  ```
+```
 
 
 ## Acknowledgements
