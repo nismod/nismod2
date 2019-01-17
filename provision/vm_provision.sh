@@ -40,7 +40,7 @@ apt-get update
 # - spatial shared libs:  gdal-bin libspatialindex-dev libgeos-dev
 # - Java for transport: default-jre
 apt-get install -y \
-    build-essential git vim-nox \
+    build-essential git vim-nox wget curl \
     python3 python3-pip python3-dev python3-tk python3-venv \
     postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \
     gdal-bin libspatialindex-dev libgeos-dev \
@@ -171,8 +171,13 @@ done;
 
 # Add to known hosts
 declare -a hosts=("github.com" "sage-itrc.ncl.ac.uk" "128.240.212.101")
+# Ensure own .ssh
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
+# Ensure vagrant .ssh
+mkdir -p /home/vagrant/.ssh
+chown -R vagrant:vagrant /home/vagrant/.ssh
+chmod 700 /home/vagrant/.ssh
 for host in "${hosts[@]}"
 do
     ssh-keyscan $host >> ~/.ssh/known_hosts
