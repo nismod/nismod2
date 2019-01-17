@@ -51,7 +51,7 @@ TMP=$base_path/tmp
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-python3 $base_path/provision/get_data.py /releases/energy_supply/$FILENAME $TMP
+python $base_path/provision/get_data.py /releases/energy_supply/$FILENAME $TMP
 
 rm -rf $MODEL_DIR/energy_supply
 rm -rf $MODEL_DIR/energy_supply_$model_version
@@ -61,4 +61,4 @@ unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$model_vers
 cp $MODEL_DIR/energy_supply/*.bim $XPRESS_DIR/dso
 
 # Run migrations
-python3 $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
+python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS_DIR

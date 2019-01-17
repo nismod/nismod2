@@ -131,22 +131,24 @@ service postgresql restart
 
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
-hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
+# set up aliases
+alias pip=pip3
+alias python=python3
 
 # Install smif
-pip3 install smif~=1.0 --upgrade
-pip3 install smif[data]~=1.0
-pip3 install smif[spatial]~=1.0
+pip install smif~=1.0 --upgrade
+pip install smif[data]~=1.0
+pip install smif[spatial]~=1.0
 
 # Install Jupyter Notebook for Results Viewer
-pip3 install jupyter notebook
-pip3 install networkx matplotlib numpy ipywidgets
+pip install jupyter notebook
+pip install networkx matplotlib numpy ipywidgets
 
 # Install pyscopg2 (required by some run.py wrappers)
-pip3 install psycopg2-binary pytest
+pip install psycopg2-binary pytest
 
 # Install SFTP library to access NISMOD FTP
-pip3 install pysftp
+pip install pysftp
 
 
 #

@@ -7,7 +7,8 @@ base_path=$1
 source <(grep = <(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini))
 
 # Install digital_comms
-pip3 install git+https://github.com/nismod/digital_comms.git@$model_version#egg=digital_comms
+pip install -U setuptools  # upgrade setuptools
+pip install git+https://github.com/nismod/digital_comms.git@$model_version#egg=digital_comms
 
 # Setup wrapper config
 cat > $base_path/models/digital_comms/wrapperconfig.ini << EOF

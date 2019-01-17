@@ -8,9 +8,9 @@ source <(grep = <(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini))
 local_path=$base_path/$local_dir
 
 # Download data
-python3 $base_path/provision/get_data.py $remote_data $local_path
+python $base_path/provision/get_data.py $remote_data $local_path
 
 # Copy region definitions to smif region_definition
 mkdir -p $base_path/data/region_definitions/assets_broadband_network
-cp $base_path/data/digital_comms/assets_layer3_cabinets.* $base_path/data/region_definitions/assets_broadband_network/
-cp $base_path/data/digital_comms/assets_layer4_distributions.* $base_path/data/region_definitions/assets_broadband_network/
+cp $base_path/data/digital_comms/processed/assets_layer3_cabinets.* $base_path/data/region_definitions/assets_broadband_network/
+cp $base_path/data/digital_comms/processed/assets_layer4_distributions.* $base_path/data/region_definitions/assets_broadband_network/
