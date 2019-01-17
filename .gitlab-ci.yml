@@ -3,6 +3,9 @@ before_script:
 
 test:
   script:
+    - source nismod/bin/activate
     - smif -V
     - smif list
     - smif run digital_comms_test
+    # - smif run energy_demand_constrained
+    - smif run energy_supply_toy

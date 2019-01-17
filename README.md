@@ -209,7 +209,7 @@ Run each of the `provision/get_data_*` scripts:
 ```bash
 bash ./provision/get_data_digital_comms.sh .
 bash ./provision/get_data_energy_demand.sh .
-bash ./provision/get_data_energy_suppy.sh .
+bash ./provision/get_data_energy_supply.sh .
 bash ./provision/get_data_transport.sh .
 ```
 
@@ -220,8 +220,14 @@ Run each of the `provision/install_*` scripts:
 ```bash
 bash ./provision/install_digital_comms.sh .
 bash ./provision/install_energy_demand.sh .
-bash ./provision/install_energy_suppy.sh .
+bash ./provision/install_energy_supply.sh .
 bash ./provision/install_transport.sh .
+```
+
+Run post-install scripts:
+
+```bash
+energy_demand minimal_setup -d ./models/energy_demand/wrapperconfig.ini
 ```
 
 

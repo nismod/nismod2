@@ -111,6 +111,8 @@ EOF
 # Setup PostgreSQL database(s) (used by energy supply)
 #
 
+# Ensure postgres is running
+service postgresql start
 # Create vagrant role if not exists
 su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
     | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant';\" "
