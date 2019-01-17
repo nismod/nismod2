@@ -17,7 +17,7 @@ from digital_comms.fixed_network.adoption import update_adoption_desirability
 from smif.model.sector_model import SectorModel
 
 # numpy options
-np.set_printoptions(threshold=np.nan)
+np.set_printoptions(threshold=10)
 
 # configure profiling with environment variable
 PROFILE = False
@@ -144,7 +144,7 @@ class DigitalCommsWrapper(SectorModel):
         self.logger.info("DigitalCommsWrapper - Update adoption status on premises")
         self.system.update_adoption_desirability = update_adoption_desirability(self.system, percentage_annual_increase)
         premises_adoption_desirability_ids = self.system.update_adoption_desirability
-        
+
         MAXIMUM_ADOPTION = len(premises_adoption_desirability_ids) + sum(getattr(premise, TECH) for premise in self.system._premises)
         # print("// length of premises_adoption_desirability_ids is {}".format(len(premises_adoption_desirability_ids)+1))
         # print("// sum of premises by tech {}".format(sum(getattr(premise, TECH) for premise in self.system._premises)))
@@ -152,8 +152,8 @@ class DigitalCommsWrapper(SectorModel):
 
         self.logger.info("DigitalCommsWrapper - Decide interventions")
         interventions, budget, spend, match_funding_spend, subsidised_spend = decide_interventions(
-            STRATEGY, int(data_handle.get_parameter('annual_budget').data), int(data_handle.get_parameter('service_obligation_capacity').data), 
-            self.system, now, MAXIMUM_ADOPTION, int(data_handle.get_parameter('telco_match_funding').data), 
+            STRATEGY, int(data_handle.get_parameter('annual_budget').data), int(data_handle.get_parameter('service_obligation_capacity').data),
+            self.system, now, MAXIMUM_ADOPTION, int(data_handle.get_parameter('telco_match_funding').data),
             int(data_handle.get_parameter('subsidy').data))
 
         self.logger.info("DigitalCommsWrapper - Upgrading system")
@@ -195,7 +195,7 @@ class DigitalCommsWrapper(SectorModel):
             data_handle.set_results('premises_upgrade_costs_fttp', upgrade_cost_per_premises_fttp)
 
             premises_passed_with_fttp = np.empty((1,1))
-            premises_passed_with_fttp[0, 0] = sum(premise.fttp for premise in self.system._premises) 
+            premises_passed_with_fttp[0, 0] = sum(premise.fttp for premise in self.system._premises)
             print("* fttp premises passed {}".format(premises_passed_with_fttp))
             data_handle.set_results('premises_passed_with_fttp', premises_passed_with_fttp)
 
@@ -205,7 +205,7 @@ class DigitalCommsWrapper(SectorModel):
             data_handle.set_results('percentage_of_premises_passed_with_fttp', percentage_of_premises_passed_with_fttp)
 
             premises_connected_with_fttp = np.empty((1,1))
-            premises_connected_with_fttp[0, 0] = sum(premise.fttp for premise in self.system._premises if premise.adoption_desirability == True) 
+            premises_connected_with_fttp[0, 0] = sum(premise.fttp for premise in self.system._premises if premise.adoption_desirability == True)
             print("* fttp premises connected {}".format(premises_connected_with_fttp))
             data_handle.set_results('premises_connected_with_fttp', premises_connected_with_fttp)
 
@@ -235,10 +235,10 @@ class DigitalCommsWrapper(SectorModel):
             # data_handle.set_results('premises_with_fttdp', premises_with_fttdp)
 
             premises_passed_with_fttdp = np.empty((1,1))
-            premises_passed_with_fttdp[0, 0] = sum(premise.fttdp for premise in self.system._premises) 
+            premises_passed_with_fttdp[0, 0] = sum(premise.fttdp for premise in self.system._premises)
             print("* fttdp premises passed {}".format(premises_passed_with_fttdp))
             data_handle.set_results('premises_passed_with_fttdp', premises_passed_with_fttdp)
-            
+
             # percentage_of_premises_with_fttdp = np.empty((1,1))
             # percentage_of_premises_with_fttdp[0, 0] = round((sum(premise.fttdp for premise in self.system._premises) / len(self.system._premises)*100),2)
             # print("* fttdp % premises passed {}".format(percentage_of_premises_with_fttdp))
@@ -250,7 +250,7 @@ class DigitalCommsWrapper(SectorModel):
             data_handle.set_results('percentage_of_premises_passed_with_fttdp', percentage_of_premises_passed_with_fttdp)
 
             premises_connected_with_fttdp = np.empty((1,1))
-            premises_connected_with_fttdp[0, 0] = sum(premise.fttdp for premise in self.system._premises if premise.adoption_desirability == True) 
+            premises_connected_with_fttdp[0, 0] = sum(premise.fttdp for premise in self.system._premises if premise.adoption_desirability == True)
             print("* fttdp premises connected {}".format(premises_connected_with_fttdp))
             data_handle.set_results('premises_connected_with_fttdp', premises_connected_with_fttdp)
 
