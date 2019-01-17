@@ -25,7 +25,7 @@ fi
 set -x
 
 # Create vagrant user if not exists
-id -u vagrant >/dev/null 2>&1 || useradd vagrant
+id -u vagrant >/dev/null 2>&1 || useradd --create-home vagrant
 
 #
 # Install OS packages
@@ -168,8 +168,10 @@ done;
 
 # Add to known hosts
 declare -a hosts=("github.com" "sage-itrc.ncl.ac.uk" "128.240.212.101")
-mkdir ~/.ssh
+mkdir -p ~/.ssh
 chmod 700 ~/.ssh
+su vagrant -c "mkdir -p ~/.ssh"
+su vagrant -c "chmod 700 ~/.ssh"
 for host in "${hosts[@]}"
 do
     ssh-keyscan $host >> ~/.ssh/known_hosts
