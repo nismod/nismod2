@@ -7,7 +7,7 @@ base_path=$1
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
 
 # Install energy_demand
-pip3 install energy_demand==$model_version
+pip install energy_demand==$model_version
 
 # Setup wrapper config
 wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini

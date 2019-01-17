@@ -6,4 +6,4 @@ test:
     - smif -V
     - smif list
     - smif run digital_comms_test
-    - smif run energy_demand_test
+    - smif run energy_demand_constrained
