@@ -116,12 +116,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# use python3 as default interpreter
-alias python=python3
-alias pip=pip3
+# use nismod virtual env
+ source ~/nismod/bin/activate
 
 # start in vagrant dir on login
 cd /vagrant
 
 # FICO XPRESS variables (for energy supply)
-source /opt/xpressmp/bin/xpvars.sh
+source /home/vagrant/xpress/bin/xpvars.sh

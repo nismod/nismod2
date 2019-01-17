@@ -35,13 +35,13 @@ id -u vagrant >/dev/null 2>&1 || useradd --create-home vagrant
 apt-get update
 # Install:
 # - basics:  build-essential git vim-nox
-# - python, with tk for matplotlib:  python3 python3-pip python3-dev python3-tk
+# - python with pip and venv, tk for matplotlib:  python3 python3-pip python3-dev python3-tk python3-venv
 # - postgres:  postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev
 # - spatial shared libs:  gdal-bin libspatialindex-dev libgeos-dev
 # - Java for transport: default-jre
 apt-get install -y \
     build-essential git vim-nox \
-    python3 python3-pip python3-dev python3-tk \
+    python3 python3-pip python3-dev python3-tk python3-venv \
     postgresql postgresql-contrib libpq-dev odbc-postgresql unixodbc-dev \
     gdal-bin libspatialindex-dev libgeos-dev \
     default-jre
@@ -131,9 +131,9 @@ service postgresql restart
 
 # use ubuntu package to install latest pip
 pip3 install --upgrade pip
-# set up aliases
-alias pip=pip3
-alias python=python3
+# set up env
+pyvenv nismod
+source nismod/bin/activate
 
 # Install smif
 pip install -U setuptools
