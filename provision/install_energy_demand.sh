@@ -96,4 +96,14 @@ val_subnational_gas = $base_path/data/energy_demand/config_data/01-validation_da
 val_subnational_gas_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_domestic.csv
 val_subnational_gas_non_residential = $base_path/data/energy_demand/config_data/01-validation_datasets/03_subnational_gas/data_2015_gas_non_domestic.csv
 val_nat_elec_data = $base_path/data/energy_demand/config_data/01-validation_datasets/01_national_elec_2015/elec_demand_2015.csv
+
+[RESULT_DATA]
+data_results = $base_path/data/energy_demand/results/
+data_results_model_run_pop = $base_path/data/energy_demand/results/model_run_pop
+data_results_model_runs = $base_path/data/energy_demand/results/model_run_results_txt
+data_results_PDF = $base_path/data/energy_demand/results/PDF_results
+data_results_validation = $base_path/data/energy_demand/results/PDF_validation
+model_run_pop = $base_path/data/energy_demand/results/model_run_pop
+data_results_shapefiles = $base_path/data/energy_demand/results/spatial_results
+individual_enduse_lp = $base_path/data/energy_demand/results/individual_enduse_lp
 EOF
