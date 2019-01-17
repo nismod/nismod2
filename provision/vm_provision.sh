@@ -129,14 +129,13 @@ service postgresql restart
 # Install python packages
 #
 
-# use ubuntu package to install latest pip
-pip3 install --upgrade pip
 # set up env
 pyvenv nismod
 source nismod/bin/activate
 
 # Install smif
-pip install -U setuptools
+pip install --upgrade pip
+pip install --upgrade setuptools wheel
 pip install pyscaffold
 pip install smif~=1.0 --upgrade
 pip install smif[data]~=1.0
@@ -201,6 +200,9 @@ bash -x $base_path/provision/install_transport.sh $base_path
 #
 # User config
 #
+
+# Make virtualenv user-editable
+chown -R vagrant:vagrant /home/vagrant/nismod
 
 # Copy bash config to vagrant home
 if [ "$base_path" == "/vagrant" ]; then
