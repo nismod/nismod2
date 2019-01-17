@@ -1,9 +1,10 @@
 before_script:
   - bash provision/vm_provision.sh
+  - source nismod/bin/activate
+  - source /home/vagrant/xpress/bin/xpvars.sh
 
 test:
   script:
-    - source nismod/bin/activate
     - smif -V
     - smif list
     - smif run digital_comms_test
