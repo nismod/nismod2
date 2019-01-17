@@ -1,11 +1,12 @@
 """Energy supply wrapper
 """
-import numpy as np
-from smif.model.sector_model import SectorModel
-from subprocess import check_output
 import os
+from configparser import ConfigParser
+from subprocess import check_output
+
+import numpy as np
 import psycopg2
-from collections import namedtuple
+from smif.model.sector_model import SectorModel
 
 
 class EnergySupplyWrapper(SectorModel):
@@ -96,7 +97,7 @@ class EnergySupplyWrapper(SectorModel):
                 heattech.append(intervention)
             else:
                 print("Not sure what to do with {}".format(name))
-                
+
         self.logger.debug("Writing %s pipes to database", len(pipes))
         build_pipes(pipes, current_timestep)
         self.logger.debug("Writing %s lines to database", len(lines))
@@ -107,7 +108,7 @@ class EnergySupplyWrapper(SectorModel):
         build_gas_terminals(gasterminal, current_timestep)
         self.logger.debug('Building %s generators', len(generators))
         build_generator(generators, current_timestep)
-        self.logger.debug('Building %s heattech interventions', len(heattech))    
+        self.logger.debug('Building %s heattech interventions', len(heattech))
         build_heattech(heattech, current_timestep)
         self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
         # build_distributed(dist_eh, current_timestep)
@@ -312,7 +313,10 @@ class EnergySupplyWrapper(SectorModel):
 def establish_connection():
     """Connect to an existing database
     """
-    conn = psycopg2.connect("dbname=vagrant user=vagrant")
+    config = ConfigParser()
+    config.read(os.path.join(os.path.dirname(__file__), '..', '..', 'provision', 'dbconfig.ini'))
+    dbconfig = config['energy-supply']
+    conn = psycopg2.connect(**dbconfig)
     return conn
 
 def clear_results(year):
@@ -548,7 +552,7 @@ def build_generator(plants, current_timestep):
     conn = establish_connection()
     cur = conn.cursor()
 
-    expected_keys = ['type', 'name', 'location', 'min_power', 'capacity', 
+    expected_keys = ['type', 'name', 'location', 'min_power', 'capacity',
                      'build_year', 'technical_lifetime', 'sys_layer']
 
     for plant in plants:
@@ -564,7 +568,7 @@ def build_generator(plants, current_timestep):
             raise ValueError("Keys {} missing for {}".format(
                              missing,
                              plant['name'])
-            )   
+            )
 
         if isinstance(plant['type'], str):
             plant_type = {'ccgt': 1,
@@ -683,7 +687,7 @@ def build_distributed(plants, current_timestep):
                        'offshore': 0,
                        'onshore': 0,
                        'pv': 0,
-                       'table_name': ''} 
+                       'table_name': ''}
                    for x in range(1, 3)}
 
     for plant in plants:
@@ -805,15 +809,15 @@ def build_gas_terminals(gas_terminals, current_timestep):
     -----
           Column       |          Type          |
     -------------------+------------------------+
-    TerminalNum        | integer                | 
-    Year               | integer                | 
-    Name               | character varying(255) | 
-    GasNode            | integer                | 
-    GasTerminalOptCost | double precision       | 
-    TerminalCapacity   | double precision       | 
-    LNGCapacity        | double precision       | 
-    InterCapacity      | double precision       | 
-    DomCapacity        | double precision       | 
+    TerminalNum        | integer                |
+    Year               | integer                |
+    Name               | character varying(255) |
+    GasNode            | integer                |
+    GasTerminalOptCost | double precision       |
+    TerminalCapacity   | double precision       |
+    LNGCapacity        | double precision       |
+    InterCapacity      | double precision       |
+    DomCapacity        | double precision       |
 
     """
     conn = establish_connection()
@@ -857,7 +861,7 @@ def build_pipes(pipes, current_timestep):
 
     Notes
     -----
-    Column  |       Type       | 
+    Column  |       Type       |
     --------+------------------+
     PipeNum | integer          |
     FromNode| integer          |
@@ -911,13 +915,13 @@ def build_heattech(heat_techs, current_timestep):
     -----
        Column    |         Type          |
     -------------+-----------------------+
-    HeatNum      | integer               | 
-    Type         | integer               | 
-    HeatTechName | character varying(50) | 
-    EH_Conn_Num  | integer               | 
-    MinPower     | double precision      | 
-    MaxPower     | double precision      | 
-    Year         | integer               | 
+    HeatNum      | integer               |
+    Type         | integer               |
+    HeatTechName | character varying(50) |
+    EH_Conn_Num  | integer               |
+    MinPower     | double precision      |
+    MaxPower     | double precision      |
+    Year         | integer               |
     """
     conn = establish_connection()
     cur = conn.cursor()
@@ -959,11 +963,11 @@ def build_lines(lines, current_timestep):
 
     Column     |       Type       |
     -----------+------------------+
-    LineNum    | integer          | 
-    FromBus    | integer          | 
-    ToBus      | integer          | 
-    Year       | integer          | 
-    MaxCapacity| double precision | 
+    LineNum    | integer          |
+    FromBus    | integer          |
+    ToBus      | integer          |
+    Year       | integer          |
+    MaxCapacity| double precision |
 
 
     """
@@ -1075,4 +1079,3 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
-    
