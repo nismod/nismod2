@@ -24,6 +24,9 @@ fi
 # Echo commands as they are executed
 set -x
 
+# Create vagrant user if not exists
+id -u vagrant >/dev/null 2>&1 || useradd vagrant
+
 #
 # Install OS packages
 #
