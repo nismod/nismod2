@@ -5,7 +5,7 @@ base_path=$1
 
 # Read remote_data, local_dir from config.ini
 source <(grep = <(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini))
-$local_path=$base_path/$local_dir
+local_path=$base_path/$local_dir
 
 # Download data
 python3 $base_path/provision/get_data.py $remote_data $local_path
