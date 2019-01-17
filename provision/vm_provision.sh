@@ -136,6 +136,8 @@ alias pip=pip3
 alias python=python3
 
 # Install smif
+pip install -U setuptools
+pip install pyscaffold
 pip install smif~=1.0 --upgrade
 pip install smif[data]~=1.0
 pip install smif[spatial]~=1.0
