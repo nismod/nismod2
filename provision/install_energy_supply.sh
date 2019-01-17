@@ -61,4 +61,10 @@ unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$model_vers
 cp $MODEL_DIR/energy_supply/*.bim $XPRESS_DIR/dso
 
 # Run migrations
-python $MODEL_DIR/energy_supply/run_migrations.py -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
+PGPASSWORD=$dbname \
+PGHOST=$host \
+PGUSER=$user \
+PGPORT=$port \
+PGDATABASE=$dbname \
+    python $MODEL_DIR/energy_supply/run_migrations.py \
+    -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
