@@ -775,7 +775,7 @@ def build_gas_stores(gas_stores, current_timestep):
 
     for store_num, store in enumerate(gas_stores):
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost", "Syslayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
         data = (store_num + 1,
                 store['location'],
@@ -784,7 +784,8 @@ def build_gas_stores(gas_stores, current_timestep):
                 store['inflowcap'],
                 store['outflowcap'],
                 store['capacity']['value'],
-                store['outflowcost']
+                store['outflowcost'],
+                store['syslayer']
                 )
 
         cur.execute(sql, data)
