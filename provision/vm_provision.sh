@@ -174,7 +174,7 @@ chmod 700 ~/.ssh
 for host in "${hosts[@]}"
 do
     ssh-keyscan $host >> ~/.ssh/known_hosts
-    su vagrant -c "ssh-keyscan github.com >> /home/vagrant/.ssh/known_hosts"
+    su vagrant -c "ssh-keyscan $host >> /home/vagrant/.ssh/known_hosts"
 done
 
 # Digital comms
