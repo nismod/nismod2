@@ -7,4 +7,3 @@ test:
     - smif list
     - smif run digital_comms_test
     - smif run energy_demand_test
-    - smif run transport_test
