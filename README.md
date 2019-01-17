@@ -220,7 +220,7 @@ Run each of the `provision/install_*` scripts:
 ```bash
 bash ./provision/install_digital_comms.sh .
 bash ./provision/install_energy_demand.sh .
-bash ./provision/install_energy_supply.sh .
+bash ./provision/install_energy_supply.sh . ./path/to/xpress_install_dir
 bash ./provision/install_transport.sh .
 ```
 

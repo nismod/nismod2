@@ -194,7 +194,7 @@ bash -x $base_path/provision/install_energy_demand.sh $base_path
 energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 
 # Energy supply
-bash -x $base_path/provision/get_data_energy_supply.sh $base_path
+bash -x $base_path/provision/get_data_energy_supply.sh $base_path $XPRESS_DIR
 # use default dbconfig if no other provided
 cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/dbconfig.ini
 bash -x $base_path/provision/install_energy_supply.sh $base_path

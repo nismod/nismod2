@@ -2,6 +2,7 @@
 
 # Expect NISMOD dir as first argument
 base_path=$1
+XPRESS_DIR=$2
 
 #
 # Set up ODBC database connection
@@ -33,7 +34,7 @@ ConnSettings=
 EOF
 
 # Install ODBC connection
-odbcinst -i -l -s -f $odbc_config_path
+odbcinst -i -s -f $odbc_config_path
 
 #
 # Download and install the energy_supply model
@@ -61,7 +62,7 @@ unzip $TMP/$FILENAME -d $MODEL_DIR && mv -f $MODEL_DIR/energy_supply_$model_vers
 cp $MODEL_DIR/energy_supply/*.bim $XPRESS_DIR/dso
 
 # Run migrations
-PGPASSWORD=$dbname \
+PGPASSWORD=$password \
 PGHOST=$host \
 PGUSER=$user \
 PGPORT=$port \
