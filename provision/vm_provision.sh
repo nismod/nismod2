@@ -27,6 +27,7 @@ set -x
 # Create vagrant user if not exists
 id -u vagrant >/dev/null 2>&1 || useradd --create-home vagrant
 
+
 #
 # Install OS packages
 #
@@ -58,8 +59,6 @@ XPRESS_LICENSE=$XPRESS_DIR/bin/xpauth.xpr
 XPRESS_BIN=$XPRESS_DIR/bin
 TMP=$base_path/tmp
 
-
-
 if [[ -e "$TMP/$XPRESS_PKG" ]]; then
     echo "Got $TMP/$XPRESS_PKG"
 else
@@ -73,8 +72,9 @@ mkdir -p $XPRESSDIR/lib/backup
 mv $XPRESSDIR/lib/lib* $XPRESSDIR/lib/backup 2>/dev/null # Avoid unpacking errors
 tar -C $XPRESS_DIR -xf $TMP/$XPRESS_PKG
 
-
 # Copy FICO XPRESS license
+# use default if no other provided
+cp --no-clobber $base_path/provision/template.xpauth.xpr $base_path/provision/xpauth.xpr
 cp $base_path/provision/xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
 
 # Setup FICO XPRESS environment variables
@@ -134,8 +134,6 @@ pip3 install --upgrade pip
 hash -r pip # workaround pipv10 breaks Debian/Ubuntu pip3 command
 
 # Install smif
-pip3 install -U setuptools
-pip3 install pyscaffold
 pip3 install smif~=1.0 --upgrade
 pip3 install smif[data]~=1.0
 pip3 install smif[spatial]~=1.0
@@ -170,30 +168,30 @@ done;
 declare -a hosts=("github.com" "sage-itrc.ncl.ac.uk" "128.240.212.101")
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
-su vagrant -c "mkdir -p ~/.ssh"
-su vagrant -c "chmod 700 ~/.ssh"
 for host in "${hosts[@]}"
 do
     ssh-keyscan $host >> ~/.ssh/known_hosts
-    su vagrant -c "ssh-keyscan github.com >> ~/.ssh/known_hosts"
+    su vagrant -c "ssh-keyscan github.com >> /home/vagrant/.ssh/known_hosts"
 done
 
 # Digital comms
 bash -x $base_path/provision/get_data_digital_comms.sh $base_path
-su vagrant -c "bash -x $base_path/provision/install_digital_comms.sh $base_path"
+bash -x $base_path/provision/install_digital_comms.sh $base_path
 
 # Energy demand
 bash -x $base_path/provision/get_data_energy_demand.sh $base_path
-su vagrant -c "bash -x $base_path/provision/install_energy_demand.sh $base_path"
+bash -x $base_path/provision/install_energy_demand.sh $base_path
 energy_demand minimal_setup -d $base_path/models/energy_demand/wrapperconfig.ini
 
 # Energy supply
 bash -x $base_path/provision/get_data_energy_supply.sh $base_path
-su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
+# use default dbconfig if no other provided
+cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/dbconfig.ini
+bash -x $base_path/provision/install_energy_supply.sh $base_path
 
 # Transport
 bash -x $base_path/provision/get_data_transport.sh $base_path
-su vagrant -c "bash -x $base_path/provision/install_transport.sh $base_path"
+bash -x $base_path/provision/install_transport.sh $base_path
 
 
 #
