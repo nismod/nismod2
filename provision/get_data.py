@@ -27,7 +27,7 @@ def main(remote_file, local_dir):
         print("Downloading {} to {}".format(remote_file, local_dir))
         download(remote_file, local_dir)
 
-    unpack(local_dir)
+    unpack(local_dir, local_file)
 
 
 def download(remote_file, local_dir):
@@ -77,11 +77,10 @@ def download(remote_file, local_dir):
         raise ex
 
 
-def unpack(local_dir):
+def unpack(local_dir, local_file):
     """Unpack downloaded ZIP files
     """
-    subprocess.run(['unzip', '-o', '{}/*.zip'.format(local_dir), '-d', '{}'.format(local_dir)])
-    subprocess.run(['rm', '-f', '{}/*.zip'.format(local_dir)])
+    subprocess.run(['unzip', '-o', local_file, '-d', local_dir])
 
 
 if __name__ == '__main__':
