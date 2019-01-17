@@ -113,18 +113,21 @@ EOF
 
 # Ensure postgres is running
 service postgresql start
-# Create vagrant role if not exists
-su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
-    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant';\" "
-# Create vagrant database if not exists
-su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\" " \
-    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
+# Ensure en_US locale exists
+locale-gen en_US.UTF-8
 # Database config to listen on network connection
 sed -i "s/#\?listen_address.*/listen_addresses '*'/" /etc/postgresql/9.5/main/postgresql.conf
 # Allow password connections from any IP (so includes host)
 echo "host    all             all             all                     md5" >> /etc/postgresql/9.5/main/pg_hba.conf
 # Restart postgres to pick up config changes
 service postgresql restart
+
+# Create vagrant role if not exists
+su postgres -c "psql -c \"SELECT 1 FROM pg_user WHERE usename = 'vagrant';\" " \
+    | grep -q 1 || su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant';\" "
+# Create vagrant database if not exists
+su postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'vagrant';\" " \
+    | grep -q 1 || su postgres -c "createdb -E UTF8 -T template0 --locale=en_US.utf8 -O vagrant vagrant"
 
 
 #
