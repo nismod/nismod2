@@ -2,7 +2,6 @@ scenarios:
 - population
 - es_prices
 - gva
-- gva_per_head
 model_dependencies:
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
@@ -477,7 +476,7 @@ scenario_dependencies:
   sink_input: population
   source_output: population
 - sink: energy_demand_constrained
-  source: gva_per_head
+  source: gva
   sink_input: gva_per_head
   source_output: gva_per_head
 - sink: energy_supply
@@ -505,6 +504,6 @@ scenario_dependencies:
   sink_input: cost_of_carbon
   source_output: cost_of_carbon
 - sink: energy_demand_constrained
-  source: gva_per_head
+  source: gva
   sink_input: gva_per_sector
   source_output: gva_per_sector

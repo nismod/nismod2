@@ -135,11 +135,11 @@ scenario_dependencies:
   source_output: population
 - sink: energy_demand_constrained
   sink_input: gva_per_head
-  source: gva_per_head
+  source: gva
   source_output: gva_per_head
 - sink: energy_demand_constrained
   sink_input: gva_per_sector
-  source: gva_per_head
+  source: gva
   source_output: gva_per_sector
 - sink: energy_demand_constrained
   sink_input: latitude
@@ -158,7 +158,7 @@ scenario_dependencies:
   source: temperature
   source_output: t_max
 scenarios:
-- gva_per_head
+- gva
 - temperature
 - population
 - weather_station_coordinates

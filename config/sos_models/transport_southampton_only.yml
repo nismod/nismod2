@@ -14,7 +14,7 @@ scenario_dependencies:
     sink: extract_southampton_scenarios
     sink_input: population
   - source: gva
-    source_output: gva
+    source_output: gva_per_head
     sink: extract_southampton_scenarios
     sink_input: gva
   - source: fuel_price

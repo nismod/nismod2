@@ -1,4 +1,4 @@
-name: gva_per_head
+name: gva
 description: Gross value added
 provides:
   - name: gva_per_head

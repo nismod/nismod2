@@ -4,7 +4,7 @@ name: energy_supply_demand
 narratives: {}
 scenarios:
   es_prices: es_prices_dummy
-  gva_per_head: gva_baseline
+  gva: gva_baseline
   population: pop_low
   temperature: NF1
   weather_station_coordinates: weather_station_coordinates__NF1
