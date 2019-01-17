@@ -191,11 +191,38 @@ sudo apt update && sudo apt install \
 
 ### Get data
 
-Run each of the `provision/get_data_*` scripts.
+Add the NISMOD FTP server to your known hosts:
+
+```bash
+# Check NISMOD FTP host
+ssh-keyscan sage-itrc.ncl.ac.uk
+# output should match:
+# sage-itrc.ncl.ac.uk ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/TVt0ajA0VAM97SA1+ZM6j6W43Mnysnl1SOwUB7e8YYBwAKvOdO4GJx5EBytYK1gcwcG8VK2uo81OomkkLX+M67GiaDJi9ziF0YclroVaYfrMqgBvjK7NM5Ae1ahLThNzFsIVNHnHeuCe4l2/d7Z2jJHo7ruD3cPpersJD3CiW4pI992VKtifnc4We9ZM/Ol263TP6PktMQBdNRpsec/3qh80//+Ftz4g0zbc/Zyo/R5SxzMLSMaBmZZ2WTDRPRVMGRQbqllRRkJCrLt9ngs3A6TGga95dbvGnjZWQZalnxbRUVsZNQQ9jYljLRXpS/f3I5+PuO+yiMD/FOBPLvtJ
+# add to known hosts
+ssh-keyscan sage-itrc.ncl.ac.uk >> ~/.ssh/known_hosts
+```
+
+Install `pysftp`: `pip install pysftp`.
+
+Run each of the `provision/get_data_*` scripts:
+
+```bash
+bash ./provision/get_data_digital_comms.sh .
+bash ./provision/get_data_energy_demand.sh .
+bash ./provision/get_data_energy_suppy.sh .
+bash ./provision/get_data_transport.sh .
+```
 
 ### Install models
 
-Run each of the `provision/install_*` scripts.
+Run each of the `provision/install_*` scripts:
+
+```bash
+bash ./provision/install_digital_comms.sh .
+bash ./provision/install_energy_demand.sh .
+bash ./provision/install_energy_suppy.sh .
+bash ./provision/install_transport.sh .
+```
 
 
 ## Running NISMOD on a virtual machine
