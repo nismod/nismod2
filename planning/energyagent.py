@@ -48,25 +48,25 @@ class EnergyAgent(RuleBased):
         data_handle
         """
 
-        EMISSIONS_CAP = 9999
+        BUDGET = 9999
 
         iteration = data_handle.decision_iteration
         self.logger.debug("Current iteration is %s", iteration)
         if data_handle.current_timestep > data_handle.base_timestep:
             self.logger.debug("Current timestep %s is greater than base timestep %s",  
                               data_handle.current_timestep, data_handle.base_timestep)
-            emissions = self.get_emissions(data_handle)
+            cost = self.get_operating_cost(data_handle)
         else:
-            emissions = 0
+            cost = 0
 
-        EMISSIONS_CAP -= emissions
+        BUDGET -= cost
 
         self.satisfied = True
         
-        return EMISSIONS_CAP
+        return BUDGET
 
     def get_emissions(self, data_handle):
-        output_names = ['emissions_eh', 'emissions_bb']
+        output_names = ['e_emissions_eh', 'e_emissions']
         emissions = 0
         for output_name in output_names:
             da = self._get_results(data_handle, output_name)
@@ -75,6 +75,17 @@ class EnergyAgent(RuleBased):
                             data_handle.previous_timestep,
                             output_name)
         return emissions
+
+    def get_operating_cost(self, data_handle):
+        output_names = ['total_opt_cost']
+        total_opt_cost = 0
+        for output_name in output_names:
+            da = self._get_results(data_handle, output_name)
+            total_opt_cost += da.as_ndarray().sum()
+            self.logger.debug("Retrieved total operating cost for %s: %s", 
+                            data_handle.previous_timestep,
+                            output_name)
+        return total_opt_cost        
 
 
     def _get_results(self, data_handle, output_name) -> DataArray:
@@ -95,6 +106,7 @@ class EnergyAgent(RuleBased):
         """
         cheapest_first = []
         for name, item in self.interventions.items():
+            cap_cost = 0.0
             try:
                 cap_cost = item['capital_cost']['value']
             except(KeyError):
