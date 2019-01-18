@@ -1,17 +1,9 @@
+"""Create interventions files for smif
 
-# coding: utf-8
-
-# # Create interventions files for smif
-# 
-# Read the energy supply data and write it into files in the `initial_conditions` and `interventions/minimal|full` folders
-
-# In[9]:
-
+Read the energy supply data and write it into files in the `initial_conditions` and `interventions/minimal|full` folders
+"""
 
 from csv import DictWriter, DictReader
-
-
-# In[108]:
 
 
 def write_elecnetwork(init_file):
@@ -109,7 +101,7 @@ def write_heattech(init_file):
             for row in reader:
                 data = {
                     'type': row["Type"],
-                    'name': row["HeatTechName"],
+                    'name': "{}_{}".format(row["HeatNum"], row["HeatTechName"]),
                     'location': row["EH_Conn_Num"],
                     'minpower': row["MinPower"],
                     'capacity_value': row["MaxPower"],
@@ -214,7 +206,7 @@ def write_generators(init_file):
             reader = DictReader(source_file)
             for row in reader:
                 data = {
-                    "name": row["GeneratorName"],
+                    "name": "{}_{}".format(row["GenNum"], row["GeneratorName"]),
                     "technical_lifetime_value": int(row["Retire"]) - int(row["Year"]),
                     "capacity_value": row["MaxPower"],
                     "capacity_unit": "MW",
@@ -239,7 +231,7 @@ def write_generators(init_file):
             for row in reader:
                 data = [
                     {
-                    "name": "Onshorewind_{}".format(row["EH_Conn_Num"]),
+                    "name": "Onshorewind_{}_EH".format(row["EH_Conn_Num"]),
                     "capacity_value": row["OnshoreWindCap"],
                     "location": row["EH_Conn_Num"],
                     "sys_layer": 2,
@@ -248,7 +240,7 @@ def write_generators(init_file):
                         
                     },
                     {
-                    "name": "Offshorewind_{}".format(row["EH_Conn_Num"]),
+                    "name": "Offshorewind_{}_EH".format(row["EH_Conn_Num"]),
                     "capacity_value": row["OffshoreWindCap"],
                     "location": row["EH_Conn_Num"],
                     "sys_layer": 2,
@@ -256,7 +248,7 @@ def write_generators(init_file):
                     "table_name": "WindPVData_EH"
                     },
                     {
-                    "name": "PV_{}".format(row["EH_Conn_Num"]),
+                    "name": "PV_{}_EH".format(row["EH_Conn_Num"]),
                     "capacity_value": row["PVCapacity"],
                     "location": row["EH_Conn_Num"],
                     "sys_layer": 2,
@@ -265,9 +257,9 @@ def write_generators(init_file):
                     }]
                 gen_file.writerows(data)
                 inter_data = [
-                    {"name": "Onshorewind_{}".format(row["EH_Conn_Num"]), "build_year": row["Year"]},
-                    {"name": "Offshorewind_{}".format(row["EH_Conn_Num"]), "build_year": row["Year"]},
-                    {"name": "PV_{}".format(row["EH_Conn_Num"]), "build_year": row["Year"]}]
+                    {"name": "Onshorewind_{}_EH".format(row["EH_Conn_Num"]), "build_year": row["Year"]},
+                    {"name": "Offshorewind_{}_EH".format(row["EH_Conn_Num"]), "build_year": row["Year"]},
+                    {"name": "PV_{}_EH".format(row["EH_Conn_Num"]), "build_year": row["Year"]}]
                 init_file.writerows(inter_data)
   
         with open("data/energy_supply/database_minimal/WindPVData_Tran.csv", "r") as wind_file:
@@ -275,7 +267,7 @@ def write_generators(init_file):
             for row in reader:
                 data = [
                     {
-                    "name": "Onshorewind_{}".format(row["BusNum"]),
+                    "name": "Onshorewind_{}_Tran".format(row["BusNum"]),
                     "capacity_value": row["OnshoreWindCap"],
                     "location": row["BusNum"],
                     "sys_layer": 1,
@@ -284,7 +276,7 @@ def write_generators(init_file):
                         
                     },
                     {
-                    "name": "Offshorewind_{}".format(row["BusNum"]),
+                    "name": "Offshorewind_{}_Tran".format(row["BusNum"]),
                     "capacity_value": row["OffshoreWindCap"],
                     "location": row["BusNum"],
                     "sys_layer": 1,
@@ -292,7 +284,7 @@ def write_generators(init_file):
                     "table_name": "WindPVData_EH"
                     },
                     {
-                    "name": "PV_{}".format(row["BusNum"]),
+                    "name": "PV_{}_Tran".format(row["BusNum"]),
                     "capacity_value": row["PVCapacity"],
                     "location": row["BusNum"],
                     "sys_layer": 1,
@@ -301,9 +293,9 @@ def write_generators(init_file):
                     }]
                 gen_file.writerows(data)
                 inter_data = [
-                    {"name": "Onshorewind_{}".format(row["BusNum"]), "build_year": row["Year"]},
-                    {"name": "Offshorewind_{}".format(row["BusNum"]), "build_year": row["Year"]},
-                    {"name": "PV_{}".format(row["BusNum"]), "build_year": row["Year"]}]
+                    {"name": "Onshorewind_{}_Tran".format(row["BusNum"]), "build_year": row["Year"]},
+                    {"name": "Offshorewind_{}_Tran".format(row["BusNum"]), "build_year": row["Year"]},
+                    {"name": "PV_{}_Tran".format(row["BusNum"]), "build_year": row["Year"]}]
                 init_file.writerows(inter_data)
 
 with open("data/energy_supply/initial_conditions/historical_interventions_minimal2.csv", "w") as init_cond_file:
