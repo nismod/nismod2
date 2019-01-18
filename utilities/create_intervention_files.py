@@ -99,9 +99,10 @@ def write_heattech(init_file):
         with open ("data/energy_supply/database_minimal/HeatTechData.csv", "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
+                name = "{}_{}".format(row["HeatNum"], row["HeatTechName"])
                 data = {
                     'type': row["Type"],
-                    'name': "{}_{}".format(row["HeatNum"], row["HeatTechName"]),
+                    'name': name,
                     'location': row["EH_Conn_Num"],
                     'minpower': row["MinPower"],
                     'capacity_value': row["MaxPower"],
@@ -113,7 +114,7 @@ def write_heattech(init_file):
                 }
                     
                 gen_file.writerow(data)
-                init_file.writerow({"name": row["HeatTechName"], "build_year": row["Year"]})  
+                init_file.writerow({"name": name, "build_year": row["Year"]})  
 
 def write_gaspipes(init_file):
     with open("data/energy_supply/interventions/minimal/es_gaspipes.csv", "w") as destination_file:
@@ -205,8 +206,9 @@ def write_generators(init_file):
         with open ("data/energy_supply/database_minimal/GeneratorData.csv", "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
+                name = "{}_{}".format(row["GenNum"], row["GeneratorName"])
                 data = {
-                    "name": "{}_{}".format(row["GenNum"], row["GeneratorName"]),
+                    "name": name,
                     "technical_lifetime_value": int(row["Retire"]) - int(row["Year"]),
                     "capacity_value": row["MaxPower"],
                     "capacity_unit": "MW",
@@ -224,7 +226,7 @@ def write_generators(init_file):
                     "capital_cost_unit": "GBP/MW"
                 }
                 gen_file.writerow(data)
-                init_file.writerow({"name": row["GeneratorName"], "build_year": row["Year"]})
+                init_file.writerow({"name": name, "build_year": row["Year"]})
                 
         with open("data/energy_supply/database_minimal/WindPVData_EH.csv", "r") as wind_file:
             reader = DictReader(wind_file)
