@@ -207,12 +207,20 @@ def write_generators(init_file):
             reader = DictReader(source_file)
             for row in reader:
                 name = "{}_{}".format(row["GenNum"], row["GeneratorName"])
+
+                if int(row["SysLayer"]) == 1:
+                    location = row["BusNum"]
+                elif int(row["SysLayer"]) == 2:
+                    location = row["EH_Conn_Num"]
+                else:
+                    location = ""
+
                 data = {
                     "name": name,
                     "technical_lifetime_value": int(row["Retire"]) - int(row["Year"]),
                     "capacity_value": row["MaxPower"],
                     "capacity_unit": "MW",
-                    "location": row["BusNum"],
+                    "location": location,
                     "sys_layer": row["SysLayer"],
                     "type": row["Type"],
                     "min_power_value": row["MinPower"],
