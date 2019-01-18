@@ -10,7 +10,7 @@
 *.xml
 
 # Energy supply
-*.xpr
+xpauth.xpr
 *.tar.gz
 xpress.tar
 template.ini
@@ -31,9 +31,6 @@ __pycache__
 # smif creates log files and results files
 smif.log
 
-# Ignore results folder
-results/
-
 # Ignore any Excel files
 *.xlsx
 
@@ -41,8 +38,6 @@ results/
 database
 .vagrant/
 smif/
-
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -136,11 +131,11 @@ ENV/
 
 # Provisioning config file
 provision/ftp.ini
+provision/dbconfig.ini
 models/*/*.ini
 
 # Working directories
-install
-data
-tmp
-data_energy_demand
-
+install/*
+data/*
+tmp/*
+results/*

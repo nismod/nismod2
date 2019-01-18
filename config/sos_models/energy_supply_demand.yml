@@ -232,7 +232,7 @@ scenario_dependencies:
   sink_input: population
   source_output: population
   sink: energy_demand_constrained
-- source: gva_per_head
+- source: gva
   sink_input: gva_per_head
   source_output: gva_per_head
   sink: energy_demand_constrained
@@ -260,7 +260,7 @@ scenario_dependencies:
   sink_input: cost_of_carbon
   source_output: cost_of_carbon
   sink: energy_supply
-- source: gva_per_head
+- source: gva
   sink_input: gva_per_sector
   source_output: gva_per_sector
   sink: energy_demand_constrained
@@ -268,7 +268,6 @@ scenarios:
 - population
 - es_prices
 - gva
-- gva_per_head
 description: A full version of the energy demand - energy supply system-of-systems
   model
 sector_models:

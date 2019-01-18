@@ -116,10 +116,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# use python3 as default interpreter
-alias python=python3
-alias srm="smif run model.yaml"
-alias svm="smif validate model.yaml"
+# use nismod virtual env
+ source ~/nismod/bin/activate
 
 # start in vagrant dir on login
 cd /vagrant
+
+# FICO XPRESS variables (for energy supply)
+source /home/vagrant/xpress/bin/xpvars.sh

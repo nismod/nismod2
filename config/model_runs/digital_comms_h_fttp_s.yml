@@ -1,7 +1,7 @@
 decision_module: ''
 description: ''
 name: digital_comms_h_fttp_s
-narratives: []
+narratives: {}
 scenarios:
   adoption: fttp_high_adoption
 sos_model: digital_comms_fixed_only

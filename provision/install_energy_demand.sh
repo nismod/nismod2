@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
+# Expect NISMOD dir as first argument
 base_path=$1
 
-# Install tkinter as requirement for matplotlib
-apt-get install -y python3-tk
+# Read model_version, remote_data, local_dir from config.ini
+source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
 
+# Install energy_demand
+pip install git+https://github.com/nismod/energy_demand.git@$model_version#egg=energy_demand
+
+# Setup wrapper config
 wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini
-rm -f $wrapperconfig_path
-
-# Setup wrapper
 cat > $wrapperconfig_path << EOF
 [PATHS]
 path_local_data = $base_path/data/energy_demand
@@ -105,17 +107,3 @@ model_run_pop = $base_path/data/energy_demand/results/model_run_pop
 data_results_shapefiles = $base_path/data/energy_demand/results/spatial_results
 individual_enduse_lp = $base_path/data/energy_demand/results/individual_enduse_lp
 EOF
-
-source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
-# pip3 install energy_demand==$release
-pip3 install -e $base_path/energy_demand
-
-# Prepare directory for data
-mkdir -p "$target"
-
-. $base_path/provision/get_data.sh energy-demand $base_path
-
-. $base_path/provision/get_data.sh energy-demand-config-data $base_path
-
-# Post install
-energy_demand minimal_setup -d $wrapperconfig_path

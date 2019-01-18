@@ -1,0 +1,2 @@
+name,start_year,end_year,policy_name,list_of_edges,congestion_charge_file
+congestion_charging,2016,2016,Itchen Bridge Toll,"[718, 719]",./src/main/resources/testdata/csvfiles/congestionCharging.csv

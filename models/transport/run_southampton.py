@@ -64,7 +64,7 @@ class TransportWrapper(SectorModel):
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
-        into the smif logger
+        into the smif loggerlogger
         """
 
         working_dir = self._get_working_dir()
@@ -127,14 +127,11 @@ class TransportWrapper(SectorModel):
         input_dir = self._get_input_dir()
 
         # Population
-        base_population = self._series_to_df(
-            data_handle.get_base_timestep_data("population").as_df(),
-            'population')
+        base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
         base_population['year'] = data_handle.base_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            current_population = self._series_to_df(
-                data_handle.get_data("population").as_df(), 'population')
+            current_population = data_handle.get_data("population").as_df().reset_index()
             current_population['year'] = data_handle.current_timestep
 
             population = pd.concat(
@@ -152,12 +149,10 @@ class TransportWrapper(SectorModel):
         population.to_csv(population_filepath)
 
         # GVA
-        base_gva = self._series_to_df(
-            data_handle.get_base_timestep_data("gva").as_df(), 'gva')
+        base_gva = data_handle.get_base_timestep_data("gva").as_df().reset_index()
         base_gva['year'] = data_handle.base_timestep
 
-        current_gva = self._series_to_df(
-            data_handle.get_data("gva").as_df(), 'gva')
+        current_gva = data_handle.get_data("gva").as_df().reset_index()
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
@@ -174,8 +169,7 @@ class TransportWrapper(SectorModel):
         gva.to_csv(gva_filepath)
 
         # Fuel prices
-        fuel_price = self._series_to_df(
-            data_handle.get_data('fuel_price').as_df(), 'fuel_price')
+        fuel_price = data_handle.get_data('fuel_price').as_df().reset_index()
         fuel_price['year'] = data_handle.current_timestep
         fuel_price = fuel_price.pivot(
             index='year', columns='transport_fuel_type', values='fuel_price'
@@ -186,12 +180,6 @@ class TransportWrapper(SectorModel):
 
         fuel_price_filepath = os.path.join(input_dir, 'energyUnitCosts.csv')
         fuel_price.to_csv(fuel_price_filepath)
-
-    @staticmethod
-    def _series_to_df(series, name):
-        return series.reset_index().rename(columns={
-            0: name
-        })
 
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions

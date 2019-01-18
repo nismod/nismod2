@@ -25,7 +25,7 @@ narratives:
   generic_fuel_switch:
   - central_narrative
 scenarios:
-  gva_per_head: gva_baseline
+  gva: gva_baseline
   population: pop_low
   temperature: NF1
   weather_station_coordinates: weather_station_coordinates__NF1
