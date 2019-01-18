@@ -67,5 +67,7 @@ parameters:
     dtype: float
     default: default_transport_elasticities.csv
 interventions:
-  - transport_interventions.yml
+  - transport_lane_expansions.csv
+  - transport_new_links.csv
+  - transport_congestion_zones.csv
 initial_conditions: []
