@@ -6,8 +6,8 @@ Read the energy supply data and write it into files in the `initial_conditions` 
 from csv import DictWriter, DictReader
 
 
-def write_elecnetwork(init_file):
-    with open("data/energy_supply/interventions/minimal/es_elec_network.csv", "w") as destination_file:
+def write_elecnetwork(init_file, destination, linedata):
+    with open(destination, "w") as destination_file:
         fieldnames = ['name',
                      'technical_lifetime_value',
                      'capacity_value',
@@ -20,7 +20,7 @@ def write_elecnetwork(init_file):
                      'capital_cost_unit']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/LineData.csv", "r") as source_file:
+        with open (linedata, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 name = "Line{}".format(row['LineNum'])
@@ -40,8 +40,8 @@ def write_elecnetwork(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": name, "build_year": row["Year"]})  
 
-def write_gasterminals(init_file):
-    with open("data/energy_supply/interventions/minimal/es_gasterminals.csv", "w") as destination_file:
+def write_gasterminals(init_file, destination, gasterminal):
+    with open(destination, "w") as destination_file:
         fieldnames = ['name',
                      'technical_lifetime_value',
                      'capacity_value',
@@ -58,7 +58,7 @@ def write_gasterminals(init_file):
                      'capital_cost_unit']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/GasTerminal.csv", "r") as source_file:
+        with open (gasterminal, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 data = {
@@ -81,8 +81,8 @@ def write_gasterminals(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": row["Name"], "build_year": row["Year"]})  
 
-def write_heattech(init_file):
-    with open("data/energy_supply/interventions/minimal/es_heattech.csv", "w") as destination_file:
+def write_heattech(init_file, destination, heattech):
+    with open(destination, "w") as destination_file:
         fieldnames = [
                       'type',
                       'name',
@@ -96,7 +96,7 @@ def write_heattech(init_file):
                       'capital_cost_unit']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/HeatTechData.csv", "r") as source_file:
+        with open (heattech, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 name = "{}_{}".format(row["HeatNum"], row["HeatTechName"])
@@ -116,8 +116,8 @@ def write_heattech(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": name, "build_year": row["Year"]})  
 
-def write_gaspipes(init_file):
-    with open("data/energy_supply/interventions/minimal/es_gaspipes.csv", "w") as destination_file:
+def write_gaspipes(init_file, destination, pipedata):
+    with open(destination, "w") as destination_file:
         fieldnames = ['name',
                       'technical_lifetime_value',
                       'location',
@@ -133,7 +133,7 @@ def write_gaspipes(init_file):
                       'capital_cost_unit']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/PipeData.csv", "r") as source_file:
+        with open (pipedata, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 name = "pipe" + str(row["PipeNum"])
@@ -156,8 +156,8 @@ def write_gaspipes(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": name, "build_year": row["Year"]})      
 
-def write_gasstorage(init_file):
-    with open("data/energy_supply/interventions/minimal/es_gasstorage.csv", "w") as destination_file:
+def write_gasstorage(init_file, destination, gasstorage):
+    with open(destination, "w") as destination_file:
         fieldnames = ['name',
                       'technical_lifetime_value',
                       'capacity_value',
@@ -173,7 +173,7 @@ def write_gasstorage(init_file):
                       'syslayer']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/GasStorage.csv", "r") as source_file:
+        with open (gasstorage, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 data = {
@@ -195,15 +195,15 @@ def write_gasstorage(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": row["Name"], "build_year": row["Year"]})    
 
-def write_generators(init_file):
-    with open("data/energy_supply/interventions/minimal/es_generators.csv", "w") as destination_file:
+def write_generators(init_file, destination, generatordata, renewable_eh, renewable_tran):
+    with open(destination, "w") as destination_file:
         fieldnames = ['name', 'technical_lifetime_value', 'capacity_value', 'capacity_unit',
            'location', 'sys_layer', 'type', 'min_power_value', 'min_power_unit',
            'table_name', 'description', 'to_location', 'pumpstore_capacity_value',
            'pumpstore_capacity_unit', 'capital_cost_value', 'capital_cost_unit']
         gen_file = DictWriter(destination_file, fieldnames)
         gen_file.writeheader()
-        with open ("data/energy_supply/database_minimal/GeneratorData.csv", "r") as source_file:
+        with open(generatordata, "r") as source_file:
             reader = DictReader(source_file)
             for row in reader:
                 name = "{}_{}".format(row["GenNum"], row["GeneratorName"])
@@ -236,7 +236,7 @@ def write_generators(init_file):
                 gen_file.writerow(data)
                 init_file.writerow({"name": name, "build_year": row["Year"]})
                 
-        with open("data/energy_supply/database_minimal/WindPVData_EH.csv", "r") as wind_file:
+        with open(renewable_eh, "r") as wind_file:
             reader = DictReader(wind_file)
             for row in reader:
                 data = [
@@ -272,7 +272,7 @@ def write_generators(init_file):
                     {"name": "PV_{}_EH".format(row["EH_Conn_Num"]), "build_year": row["Year"]}]
                 init_file.writerows(inter_data)
   
-        with open("data/energy_supply/database_minimal/WindPVData_Tran.csv", "r") as wind_file:
+        with open(renewable_tran, "r") as wind_file:
             reader = DictReader(wind_file)
             for row in reader:
                 data = [
@@ -308,13 +308,55 @@ def write_generators(init_file):
                     {"name": "PV_{}_Tran".format(row["BusNum"]), "build_year": row["Year"]}]
                 init_file.writerows(inter_data)
 
-with open("data/energy_supply/initial_conditions/historical_interventions_minimal2.csv", "w") as init_cond_file:
-    init_file = DictWriter(init_cond_file, ["name", "build_year"])
-    init_file.writeheader()
-    write_generators(init_file)
-    write_gasstorage(init_file)
-    write_gaspipes(init_file)
-    write_heattech(init_file)
-    write_gasterminals(init_file)
-    write_elecnetwork(init_file)
+if __name__ == "__main__":
+
+    with open("data/energy_supply/initial_conditions/historical_interventions_minimal.csv", "w") as init_cond_file:
+        init_file = DictWriter(init_cond_file, ["name", "build_year"])
+        init_file.writeheader()
+        write_generators(init_file, 
+                        "data/energy_supply/interventions/minimal/es_generators.csv",
+                        "data/energy_supply/database_minimal/GeneratorData.csv",
+                        "data/energy_supply/database_minimal/WindPVData_EH.csv",
+                        "data/energy_supply/database_minimal/WindPVData_Tran.csv"
+                        )
+        write_gasstorage(init_file, 
+                        "data/energy_supply/interventions/minimal/es_gasstorage.csv",
+                        "data/energy_supply/database_minimal/GasStorage.csv")
+        write_gaspipes(init_file, 
+                    "data/energy_supply/interventions/minimal/es_gaspipes.csv",
+                    "data/energy_supply/database_minimal/PipeData.csv")
+        write_heattech(init_file,
+                    "data/energy_supply/interventions/minimal/es_heattech.csv",
+                    "data/energy_supply/database_minimal/HeatTechData.csv")
+        write_gasterminals(init_file,
+                        "data/energy_supply/interventions/minimal/es_gasterminals.csv",
+                        "data/energy_supply/database_minimal/GasTerminal.csv")
+        write_elecnetwork(init_file,
+                        "data/energy_supply/interventions/minimal/es_elec_network.csv",
+                        "data/energy_supply/database_minimal/LineData.csv")
+
+    with open("data/energy_supply/initial_conditions/historical_interventions.csv", "w") as init_cond_file:
+        init_file = DictWriter(init_cond_file, ["name", "build_year"])
+        init_file.writeheader()
+        write_generators(init_file, 
+                        "data/energy_supply/interventions/full/es_generators.csv",
+                        "data/energy_supply/database_full/GeneratorData.csv",
+                        "data/energy_supply/database_full/WindPVData_EH.csv",
+                        "data/energy_supply/database_full/WindPVData_Tran.csv"
+                        )
+        write_gasstorage(init_file, 
+                        "data/energy_supply/interventions/full/es_gasstorage.csv",
+                        "data/energy_supply/database_full/GasStorage.csv")
+        write_gaspipes(init_file, 
+                    "data/energy_supply/interventions/full/es_gaspipes.csv",
+                    "data/energy_supply/database_full/PipeData.csv")
+        write_heattech(init_file,
+                    "data/energy_supply/interventions/full/es_heattech.csv",
+                    "data/energy_supply/database_full/HeatTechData.csv")
+        write_gasterminals(init_file,
+                        "data/energy_supply/interventions/full/es_gasterminals.csv",
+                        "data/energy_supply/database_full/GasTerminal.csv")
+        write_elecnetwork(init_file,
+                        "data/energy_supply/interventions/full/es_elec_network.csv",
+                        "data/energy_supply/database_full/LineData.csv")
 
