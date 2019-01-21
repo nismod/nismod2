@@ -106,7 +106,6 @@ class EnergyAgent(RuleBased):
         """
         cheapest_first = []
         for name, item in self.interventions.items():
-            cap_cost = 0.0
             try:
                 cap_cost = item['capital_cost']['value']
             except(KeyError):

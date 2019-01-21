@@ -2,7 +2,7 @@ path: models/energy_supply/energy_supply.py
 description: Toy version of the CGEN++ energy supply model which uses minimal data
 classname: EnergySupplyWrapper
 initial_conditions:
-- ../energy_supply/initial_conditions/historical_interventions_minimal.csv
+- ../energy_supply/initial_conditions/historical_interventions_minimal2.csv
 parameters:
 - description: cost of electricity load shedding
   default: ../energy_supply/parameters/load_shed.csv
@@ -18,12 +18,12 @@ parameters:
   dtype: float
 name: energy_supply_toy
 interventions:
-- ../energy_supply/interventions/minimal/es_elec_network_minimal.csv
-- ../energy_supply/interventions/minimal/es_gaspipes_minimal.csv
-- ../energy_supply/interventions/minimal/es_gasstorage_minimal.csv
-- ../energy_supply/interventions/minimal/es_gasterminals_minimal.csv
-- ../energy_supply/interventions/minimal/es_generators_minimal.csv
-- ../energy_supply/interventions/minimal/es_heattech_minimal.csv
+- ../energy_supply/interventions/minimal/es_elec_network.csv
+- ../energy_supply/interventions/minimal/es_gaspipes.csv
+- ../energy_supply/interventions/minimal/es_gasstorage.csv
+- ../energy_supply/interventions/minimal/es_gasterminals.csv
+- ../energy_supply/interventions/minimal/es_generators.csv
+- ../energy_supply/interventions/minimal/es_heattech.csv
 inputs:
 - name: elecload
   unit: MW
@@ -184,7 +184,7 @@ outputs:
   dtype: float
 - name: storage_level
   dims:
-  - national
+  - energy_hub
   - seasonal_week
   unit: mcm
   dtype: float

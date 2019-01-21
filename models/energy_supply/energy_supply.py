@@ -569,6 +569,10 @@ def build_generator(plants, current_timestep):
                              missing,
                              plant['name'])
             )
+        try:
+            plant['type'] = int(plant['type'])
+        except TypeError:
+            pass
 
         if isinstance(plant['type'], str):
             plant_type = {'ccgt': 1,
@@ -639,9 +643,11 @@ def build_generator(plants, current_timestep):
                     float(plant['build_year']) + lifetime,
                     plant['sys_layer']
                     )
-
-        cur.execute(sql, data)
-
+        try:
+            cur.execute(sql, data)
+        except psycopg2.DataError as ex:
+            print(sql, data)
+            raise psycopg2.DataError(ex)
         # Make the changes to the database persistent
         conn.commit()
 
