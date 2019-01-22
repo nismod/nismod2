@@ -213,7 +213,7 @@ def write_generators(init_file, destination, generatordata, renewable_eh, renewa
                 elif int(row["SysLayer"]) == 2:
                     location = row["EH_Conn_Num"]
                 else:
-                    location = ""
+                    raise RuntimeError("Cannot determine location for row %s", row["GenNum"])
 
                 data = {
                     "name": name,

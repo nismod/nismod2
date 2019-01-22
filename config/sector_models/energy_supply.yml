@@ -170,7 +170,7 @@ outputs:
   dtype: float
 - name: storage_level
   dims:
-  - national
+  - energy_hub
   - seasonal_week
   unit: mcm
   dtype: float
