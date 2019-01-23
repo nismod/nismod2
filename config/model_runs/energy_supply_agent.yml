@@ -9,14 +9,6 @@ narratives:
   - high_cost
 description: Runs the minimal energy supply model with a decision module
 strategies:
-# - description: high_renewables
-#   filename: ../energy_supply/strategies/high_renewable.csv
-#   model_name: energy_supply_toy
-#   type: pre-specified-planning
-# - strategy: pre-specified-planning
-#   description: high_distributed
-#   filename: high_distributed.csv
-#   model_name: energy_supply_toy
 - type: rule-based
   description: reduce emissions
   path: planning/energyagent.py

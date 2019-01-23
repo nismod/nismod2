@@ -1,6 +1,8 @@
 description: ''
 name: energy_supply_test
-narratives: {}
+narratives:
+  load_shedding:
+  - high_cost
 scenarios:
   es_prices: es_prices_dummy
   dummy_energy_demands_full: es_energy_demand_dummy_full
@@ -10,7 +12,3 @@ timesteps:
 - 2015
 - 2020
 strategies: []
-# - description: high_renewables
-#   filename: ../energy_supply/strategies/high_renewable.csv
-#   model_name: energy_supply
-#   type: pre-specified-planning

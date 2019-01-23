@@ -1,4 +1,4 @@
-strategies: {}
+strategies: []
 description: ''
 stamp: '2018-01-31T10:10:41.791Z'
 sos_model: energy_supply_toy
@@ -7,7 +7,8 @@ scenarios:
   es_prices: es_prices_dummy
   dummy_energy_demands_minimal: es_energy_demand_minimal
 narratives:
-  load_shedding: []
+  load_shedding:
+  - high_cost
 timesteps:
 - 2015
 name: energy_supply_toy

@@ -280,4 +280,17 @@ sector_models:
 - aggregate_residential_heatload
 - aggregate_service_heatload
 name: energy_supply_demand
-narratives: []
+narratives:
+- variants:
+  - data:
+      LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+      LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+    description: very high cost load shedding
+    name: high_cost
+  sos_model: energy_supply_toy
+  description: Costs of shedding load
+  name: load_shedding
+  provides:
+    energy_supply_toy:
+    - LoadShed_elec
+    - LoadShed_gas

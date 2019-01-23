@@ -7,7 +7,6 @@ from subprocess import check_output
 import numpy as np
 import psycopg2
 from smif.model.sector_model import SectorModel
-from models.energy_supply.utilities import establish_connection
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
