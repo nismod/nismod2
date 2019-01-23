@@ -65,14 +65,21 @@ class EDWrapper(SectorModel):
         # ------------------------------
         # Delete previous model results and create result folders
         # ------------------------------
-        result_paths = config['RESULT_DATA']
-        basic_functions.del_previous_setup(result_paths['data_results'])
+        result_paths = config['PATHS']['path_result_data']
+        basic_functions.del_previous_setup(result_paths)
+        
+        #result_paths = config['RESULT_DATA']
+        #basic_functions.del_previous_setup(result_paths['data_results'])
 
         basic_functions.create_folder(path_new_scenario)
+        
+        #folders_to_create = [
+        #    os.path.join(result_paths,result_paths['data_results_model_run_pop'],
+        #    result_paths['data_results_validation']]
 
         folders_to_create = [
-            result_paths['data_results_model_run_pop'],
-            result_paths['data_results_validation']]
+            os.path.join(result_paths, 'data_results_model_run_pop'),
+            os.path.join(result_paths, 'data_results_validation')]
 
         for folder in folders_to_create:
             basic_functions.create_folder(folder)
@@ -251,7 +258,8 @@ class EDWrapper(SectorModel):
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['result_paths'] = config['RESULT_DATA']
+        #data['result_paths'] = config['RESULT_DATA']
+        data['result_path'] = config['PATHS']['path_result_data']
         temp_path = config['PATHS']['path_result_data']
         self.create_folders_rename_folders(config)
 
@@ -383,7 +391,8 @@ class EDWrapper(SectorModel):
 
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        data['result_paths'] = config['RESULT_DATA']
+        #data['result_paths'] = config['RESULT_DATA']
+        data['result_path'] = config['PATHS']['path_result_data']
         temp_path = config['PATHS']['path_result_data']
 
         # --------------------------------------------------
@@ -505,7 +514,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         wrapper_model.write_user_defined_results(
             config['CRITERIA'],
-            data['result_paths'],
+            data['result_path'], #data['result_paths'],
             sim_obj,
             data,
             curr_yr,
