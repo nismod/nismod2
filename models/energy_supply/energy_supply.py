@@ -12,15 +12,6 @@ class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
 
-    def establish_connection():
-        """Connect to an existing database
-        """
-        config = ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), '..', '..', 'provision', 'dbconfig.ini'))
-        dbconfig = config['energy-supply']
-        conn = psycopg2.connect(**dbconfig)
-        return conn
-
     def before_model_run(self, data):
         pass
 
@@ -321,6 +312,15 @@ class EnergySupplyWrapper(SectorModel):
         """
         nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
         return os.path.join(nismod_dir, 'install', 'energy_supply', 'Energy_Supply_Master.exe')
+
+def establish_connection():
+    """Connect to an existing database
+    """
+    config = ConfigParser()
+    config.read(os.path.join(os.path.dirname(__file__), '..', '..', 'provision', 'dbconfig.ini'))
+    dbconfig = config['energy-supply']
+    conn = psycopg2.connect(**dbconfig)
+    return conn
 
 def clear_results(year):
     conn = establish_connection()
