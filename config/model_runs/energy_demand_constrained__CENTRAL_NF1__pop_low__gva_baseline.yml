@@ -1,6 +1,6 @@
 decision_module: ''
 description: ''
-name: energy_demand_constrained__NF1__pop_low__gva_baseline
+name: energy_demand_constrained__CENTRAL_NF1__pop_low__gva_baseline
 narratives:
   air_leakage:
   - central_narrative

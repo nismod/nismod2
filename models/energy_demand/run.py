@@ -1,8 +1,4 @@
-"""The sector model wrapper for smif to run the energy demand model test
-as_df())
-Remove default_by and add from variabls??
-TODO: Add sector in air_leakage and add sector in generic fuel switch
-TODO: How to load standard default empty parameters
+"""The sector model wrapper for smif to run the energy demand model
 """
 import os
 import logging
@@ -17,7 +13,6 @@ from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
 from energy_demand.read_write import (write_data, read_data, data_loader, 
                                       narrative_related)
-
 
 class EDWrapper(SectorModel):
     """Energy Demand Wrapper
@@ -67,19 +62,11 @@ class EDWrapper(SectorModel):
         # ------------------------------
         result_paths = config['PATHS']['path_result_data']
         basic_functions.del_previous_setup(result_paths)
-        
-        #result_paths = config['RESULT_DATA']
-        #basic_functions.del_previous_setup(result_paths['data_results'])
-
         basic_functions.create_folder(path_new_scenario)
-        
-        #folders_to_create = [
-        #    os.path.join(result_paths,result_paths['data_results_model_run_pop'],
-        #    result_paths['data_results_validation']]
 
         folders_to_create = [
-            os.path.join(result_paths, 'data_results_model_run_pop'),
-            os.path.join(result_paths, 'data_results_validation')]
+            os.path.join(result_paths, 'model_run_pop'),
+            os.path.join(result_paths, 'validation')]
 
         for folder in folders_to_create:
             basic_functions.create_folder(folder)
@@ -251,15 +238,13 @@ class EDWrapper(SectorModel):
             raise ValueError(msg)
 
         path_main = self._get_working_dir()
-        config_file_path = os.path.join(path_main, 'wrapperconfig.ini') 
+        config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
         
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        #data['result_paths'] = config['RESULT_DATA']
-        data['result_path'] = config['PATHS']['path_result_data']
         temp_path = config['PATHS']['path_result_data']
         self.create_folders_rename_folders(config)
 
@@ -329,11 +314,9 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         # Load switches
         # -----------------------------------------
-        # Read service switches
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
         switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
         service_switches = read_data.service_switch(switches_service_raw)
-        #service_switches = read_data.service_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_service.csv"), data['assumptions'].technologies)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
@@ -382,7 +365,7 @@ class EDWrapper(SectorModel):
 
         region_set_name = self._get_region_set_name()
         path_main = self._get_working_dir()
-        config_file_path = os.path.join(path_main, 'wrapperconfig.ini') 
+        config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
 
         curr_yr = self._get_simulation_yr(data_handle)
@@ -391,10 +374,12 @@ class EDWrapper(SectorModel):
 
         sim_yrs = self._get_simulation_yrs(data_handle)
 
-        #data['result_paths'] = config['RESULT_DATA']
-        data['result_path'] = config['PATHS']['path_result_data']
-        temp_path = config['PATHS']['path_result_data']
+        temp_and_result_path = config['PATHS']['path_result_data']
 
+        data['result_paths'] = basic_functions.get_result_paths(temp_and_result_path)
+        for path_folder in data['result_paths'].values():
+            basic_functions.create_folder(path_folder)
+    
         # --------------------------------------------------
         # Read all other data
         # --------------------------------------------------
@@ -472,10 +457,10 @@ class EDWrapper(SectorModel):
         # Read results from pre_simulate from disc
         # --------------------------------------------------
         logging.info("... reading in results from before_model_run()")
-        regional_vars = read_data.read_yaml(os.path.join(temp_path, "regional_vars.yml"))
-        non_regional_vars = read_data.read_yaml(os.path.join(temp_path, "non_regional_vars.yml"))
-        data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_path, "fuel_disagg.yml"))
-        crit_switch_happening = read_data.read_yaml(os.path.join(temp_path, "crit_switch_happening.yml"))
+        regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "regional_vars.yml"))
+        non_regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "non_regional_vars.yml"))
+        data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_and_result_path, "fuel_disagg.yml"))
+        crit_switch_happening = read_data.read_yaml(os.path.join(temp_and_result_path, "crit_switch_happening.yml"))
         setattr(data['assumptions'], 'crit_switch_happening', crit_switch_happening)
         setattr(data['assumptions'], 'regional_vars', regional_vars)
         setattr(data['assumptions'], 'non_regional_vars', non_regional_vars)
@@ -490,12 +475,6 @@ class EDWrapper(SectorModel):
             narrative_gshp_fraction=data['assumptions'].non_regional_vars['gshp_fraction'][curr_yr],
             crit_narrative_input=False)
         data['assumptions'].technologies.update(updated_techs)
-
-        # Write population data to file
-        '''write_data.write_scenaric_population_data(
-            curr_yr,
-            os.path.join(data['path_new_scenario'], 'model_run_pop'),
-            pop_array_cy)'''
 
         # --------------------------------------------------
         # Run main model function
@@ -514,11 +493,13 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         wrapper_model.write_user_defined_results(
             config['CRITERIA'],
-            data['result_path'], #data['result_paths'],
+            data['result_paths'],
             sim_obj,
             data,
             curr_yr,
-            region_selection)
+            region_selection,
+            pop_array_cy)
+
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
