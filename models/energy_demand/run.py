@@ -222,7 +222,7 @@ class EDWrapper(SectorModel):
                 simulation_base_yr=simulation_base_yr,
                 simulation_end_yr=simulation_end_yr,
                 default_streategy_var=default_streategy_vars[var_name],
-                var_name=var_name)
+                var_name=var_name)     
 
         return narrative_params
 
@@ -265,6 +265,10 @@ class EDWrapper(SectorModel):
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
+
+        print("----df-sdf-------")
+        print(user_defined_vars['f_eff_achieved'])
+        #raise Exception
 
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
@@ -320,6 +324,12 @@ class EDWrapper(SectorModel):
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
+
+
+        print("AAAAAAAAAAAAAAAAAAA")
+        print("------------")
+        print(switches_service_raw)
+        #raise Exception
 
         # -----------------------------------------
         # Perform pre-step calculations

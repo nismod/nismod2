@@ -2,13 +2,9 @@ decision_module: ''
 description: ''
 name: energy_demand_constrained__CENTRAL_NF1__pop_low__gva_baseline
 narratives:
-  air_leakage:
+  smart_meter_p:
   - central_narrative
-  assump_diff_floorarea_pp:
-  - central_narrative
-  cooled_floorarea:
-  - central_narrative
-  dm_improvement:
+  t_base_heating:
   - central_narrative
   f_eff_achieved:
   - central_narrative
@@ -16,13 +12,11 @@ narratives:
   - central_narrative
   heat_recovered:
   - central_narrative
-  t_base_heating:
-  - central_narrative
   p_cold_rolling_steel:
   - central_narrative
-  smart_meter_p:
-  - central_narrative
   generic_fuel_switch:
+  - central_narrative
+  switches_service:
   - central_narrative
 scenarios:
   gva: gva_baseline
@@ -34,4 +28,5 @@ stamp: ''
 strategies: {}
 timesteps:
 - 2015
+- 2030
 - 2050
