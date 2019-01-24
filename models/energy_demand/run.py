@@ -316,10 +316,21 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
         switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
+        
+        '''print("AAAAAAAAAAAAAAAAAAA")
+        print("------------")
+        print(switches_service_raw[
+            (switches_service_raw.enduses_service_switch == 'rs_space_heating') &
+            (switches_service_raw.sector == 'non_metallic_mineral_products')
+        ])
+        raise Exception'''
+
         service_switches = read_data.service_switch(switches_service_raw)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
+
+
 
         # -----------------------------------------
         # Perform pre-step calculations
