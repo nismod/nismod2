@@ -1,16 +1,16 @@
-name: transport_southampton
+name: transport
 description: Transport model for Southampton and neighbouring LADs
-path: ./models/transport/run_southampton.py
+path: ./models/transport/run.py
 classname: TransportWrapper
 inputs:
   - name: population
     dims:
-      - lad_southampton
+      - lad_uk_2016
     unit: people
     dtype: float
   - name: gva
     dims:
-      - lad_southampton
+      - lad_uk_2016
     unit: GBP
     dtype: float
   - name: fuel_price

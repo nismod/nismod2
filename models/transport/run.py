@@ -19,7 +19,7 @@ class TransportWrapper(SectorModel):
     def _get_working_dir(self):
         return os.path.join(
             os.path.dirname(__file__), '..', '..',
-            'data', 'transport', 'southampton')
+            'data', 'transport', 'TR_data_full_for_release_v2.0.0-alpha-5', 'full')
 
     def _get_input_dir(self):
         """Directory where this wrapper writes data/parameters
@@ -70,7 +70,7 @@ class TransportWrapper(SectorModel):
         working_dir = self._get_working_dir()
         path_to_jar = self._get_path_to_jar()
 
-        path_to_config = os.path.join(working_dir, 'config.properties')
+        path_to_config = os.path.join(working_dir, 'config', 'config.properties')
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = [
@@ -94,6 +94,7 @@ class TransportWrapper(SectorModel):
             output = check_output(arguments)
             self.logger.info(output.decode("utf-8"))
         except CalledProcessError as ex:
+            self.logger.error(ex.output.decode("utf-8"))
             self.logger.exception("Transport model failed %s", ex)
             raise ex
 
@@ -142,7 +143,7 @@ class TransportWrapper(SectorModel):
 
         population.population = population.population.astype(int)
         population = population.pivot(
-            index='year', columns='lad_southampton', values='population'
+            index='year', columns='lad_uk_2016', values='population'
         )
         population_filepath = os.path.join(
             input_dir, 'population.csv')
@@ -163,7 +164,7 @@ class TransportWrapper(SectorModel):
             gva = current_gva
 
         gva = gva.pivot(
-            index='year', columns='lad_southampton', values='gva'
+            index='year', columns='lad_uk_2016', values='gva_per_head'
         )
         gva_filepath = os.path.join(input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
@@ -218,7 +219,7 @@ class TransportWrapper(SectorModel):
         """Read results from model and write to data handle
         """
         working_dir = self._get_working_dir()
-        output_dir = os.path.join(working_dir, 'output')
+        output_dir = os.path.join(working_dir, 'output', 'main')
 
         energy_consumption_file = os.path.join(
             output_dir, str(data_handle.current_timestep), 'energyConsumptions.csv')

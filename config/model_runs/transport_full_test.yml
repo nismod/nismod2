@@ -1,6 +1,6 @@
-name: transport_southampton
-description: Small baseline transport model run for testing
-sos_model: transport_southampton_only
+name: transport_full_test
+description: Baseline transport model run for testing
+sos_model: transport_full
 timesteps: [2015, 2020]
 scenarios:
   population: pop_baseline

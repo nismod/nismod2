@@ -1,0 +1,27 @@
+name: transport_full
+description: Test model for transport
+sector_models:
+  - transport
+scenarios:
+  - population
+  - gva
+  - fuel_price
+narratives: []
+scenario_dependencies:
+  - source: population
+    source_output: population
+    sink: transport
+    sink_input: population
+  - source: gva
+    source_output: gva_per_head
+    sink: transport
+    sink_input: gva
+  - source: fuel_price
+    source_output: fuel_price
+    sink: transport
+    sink_input: fuel_price
+  - source: fuel_price
+    source_output: fuel_price_electricity
+    sink: transport
+    sink_input: fuel_price_electricity
+model_dependencies: []
