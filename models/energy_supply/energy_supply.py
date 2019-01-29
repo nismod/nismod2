@@ -209,7 +209,7 @@ class EnergySupplyWrapper(SectorModel):
             nismod_dir, 'energy_supply', 'model')))
         self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
-        self.logger.debug(check_output(['mosel', 'exec', arguments))
+        self.logger.debug(check_output(['mosel', 'exec', arguments]))
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
