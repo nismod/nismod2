@@ -1,6 +1,7 @@
-path: models/energy_supply/energy_supply_toy.py
+path: models/energy_supply/energy_supply.py
 description: Toy version of the CGEN++ energy supply model which uses minimal data
 classname: EnergySupplyToyWrapper
+# classname: EnergySupplyDevToyWrapper
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
 parameters:

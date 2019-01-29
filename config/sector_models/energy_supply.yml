@@ -1,5 +1,7 @@
 classname: EnergySupplyWrapper
+# classname: EnergySupplyDevWrapper
 description: energy_supply model description
+path: models/energy_supply/energy_supply.py
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions.csv
 inputs:
@@ -341,4 +343,3 @@ parameters:
   units: GBP/MWh
   dtype: float
   default: ../energy_supply/parameters/load_shed.csv
-path: models/energy_supply/energy_supply.py
