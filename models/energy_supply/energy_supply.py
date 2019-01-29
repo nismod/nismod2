@@ -195,15 +195,21 @@ class EnergySupplyWrapper(SectorModel):
                              now, region_names, interval_names)
 
 
+    def get_model_executable(self):
+        """Return path of current python interpreter
+        """
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+        return os.path.join(nismod_dir, 'energy_supply', 'model', 'Energy_Supply_Master.mos')
+
     def run_the_model(self):
         """Run the model
         """
         nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
         os.environ["ES_PATH"] = str(os.path.abspath(os.path.join(
-            nismod_dir, 'install', 'energy_supply')))
+            nismod_dir, 'energy_supply', 'model')))
         self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
         arguments = [self.get_model_executable()]
-        self.logger.debug(check_output(arguments))
+        self.logger.debug(check_output(['mosel', 'exec', arguments))
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
@@ -304,11 +310,7 @@ class EnergySupplyWrapper(SectorModel):
         interval_names = self.inputs[name].dim_coords(temporal_name).ids
         return region_names, interval_names
 
-    def get_model_executable(self):
-        """Return path of current python interpreter
-        """
-        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
-        return os.path.join(nismod_dir, 'install', 'energy_supply', 'Energy_Supply_Master.exe')
+
 
 def establish_connection():
     """Connect to an existing database
