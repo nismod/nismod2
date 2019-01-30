@@ -6,8 +6,8 @@ name: energy_supply_toy
 narratives:
 - variants:
   - data:
-      LoadShed_elec: high_load_shed.csv
-      LoadShed_gas: high_load_shed.csv
+      LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+      LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
     description: very high cost load shedding
     name: high_cost
   sos_model: energy_supply_toy

@@ -1,27 +1,18 @@
-name: energy_supply_agent
-narratives:
-  load_shedding:
-  - high_cost
-stamp: '2018-01-31T10:10:41.791Z'
-timesteps:
-- 2015
-- 2020
-- 2025
-description: Runs the minimal energy supply model with a decision module
-strategies:
-# - description: high_renewables
-#   filename: ../energy_supply/strategies/high_renewable.csv
-#   model_name: energy_supply_toy
-#   type: pre-specified-planning
-# - strategy: pre-specified-planning
-#   description: high_distributed
-#   filename: high_distributed.csv
-#   model_name: energy_supply_toy
-- type: rule-based
-  description: reduce emissions
-  path: planning/energyagent.py
-  classname: EnergyAgent
 scenarios:
   es_prices: es_prices_dummy
   dummy_energy_demands_minimal: es_energy_demand_minimal
 sos_model: energy_supply_toy
+name: energy_supply_agent
+stamp: '2018-01-31T10:10:41.791Z'
+narratives:
+  load_shedding:
+  - high_cost
+description: Runs the minimal energy supply model with a decision module
+strategies:
+- type: rule-based
+  description: reduce emissions
+  path: planning/energyagent.py
+  classname: EnergyAgent
+timesteps:
+- 2015
+- 2020
