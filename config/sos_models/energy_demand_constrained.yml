@@ -65,16 +65,6 @@ narratives:
 - description: ''
   provides:
     energy_demand_constrained:
-    - generic_enduse_change
-  name: generic_enduse_change
-  variants:
-  - data:
-      generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central.csv
-    description: Central assumptions
-    name: central_narrative
-- description: ''
-  provides:
-    energy_demand_constrained:
     - heat_recovered
   name: heat_recovered
   variants:
@@ -124,6 +114,16 @@ narratives:
   variants:
   - data:
       generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central.csv
+    description: Central assumptions
+    name: central_narrative
+- description: ''
+  provides:
+    energy_demand_constrained:
+    - switches_service
+  name: switches_service
+  variants:
+  - data:
+      switches_service: ../energy_demand/narratives/switches_service__central.csv
     description: Central assumptions
     name: central_narrative
 description: The future demand for energy in the UK
