@@ -231,7 +231,7 @@ INTERSECTIONS = -1.0
 USE_ROUTE_CHOICE_MODEL = true
 
 #Assignment type can be: 'lad', 'tempro', or 'combined'
-ASSIGNMENT_TYPE = tempro
+ASSIGNMENT_TYPE = combined
 
 # maximum inter-zonal distance (in metres) for 'combined' tempro/lad assignment type
 DISTANCE_THRESHOLD = 200000.0
