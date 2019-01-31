@@ -6,6 +6,7 @@ scenarios:
   population: pop_baseline
   gva: gva_baseline
   fuel_price: baseline
+  link_travel_time: default
 narratives: {}
 decision_module: []
 strategies: {}

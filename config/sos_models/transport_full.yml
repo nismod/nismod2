@@ -6,6 +6,7 @@ scenarios:
   - population
   - gva
   - fuel_price
+  - link_travel_time
 narratives: []
 scenario_dependencies:
   - source: population
@@ -24,4 +25,13 @@ scenario_dependencies:
     source_output: fuel_price_electricity
     sink: transport
     sink_input: fuel_price_electricity
-model_dependencies: []
+  - source: link_travel_time
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+model_dependencies:
+  - source: transport
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+    timestep: PREVIOUS  # dependency on own outputs from previous timestep

@@ -21,6 +21,9 @@ inputs:
   - name: fuel_price_electricity
     unit: £/kWh
     dtype: float
+  - name: link_travel_time
+    unit: h
+    dtype: float
 outputs:
   - name: energy_consumption
     dims:
@@ -32,6 +35,9 @@ outputs:
     dims:
       - annual_day
     unit: kWh
+    dtype: float
+  - name: link_travel_time
+    unit: h
     dtype: float
 parameters:
   - name: POPULATION_ETA

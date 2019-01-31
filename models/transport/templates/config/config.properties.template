@@ -55,9 +55,9 @@ autonomousVehiclesFile = $relative_path/data/csvfiles/autonomousVehiclesFraction
 engineTypeFractionsFile = $relative_path/data/csvfiles/engineTypeFractions.csv
 
 # pre-generated routes
-passengerRoutesFile = $relative_path/routes/passengerRoutes.dat
-freightRoutesFile = $relative_path/routes/freightRoutesTop5NodesMax3Routes.dat.gz
-temproRoutesFile = $relative_path/routes/mergedLadTop5NMax3RTempro200knDistanceBased.dat.gz
+passengerRoutesFile = $relative_path/data/routes/passengerRoutes.dat
+freightRoutesFile = $relative_path/data/routes/freightRoutesTop5NodesMax3Routes.dat.gz
+temproRoutesFile = $relative_path/data/routes/mergedLadTop5NMax3RTempro200knDistanceBased.dat.gz
 
 # cross-sectoral inputs (baseYear to maxPredictedYear)
 energyUnitCostsFile = $relative_path/input/energyUnitCosts.csv
