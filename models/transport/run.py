@@ -2,6 +2,7 @@
 """
 # -*- coding: utf-8 -*-
 
+import configparser
 import csv
 import os
 from subprocess import check_output, CalledProcessError
@@ -16,24 +17,36 @@ from smif.model.sector_model import SectorModel
 class TransportWrapper(SectorModel):
     """Wrap the transport model
     """
-    def _get_working_dir(self):
-        return os.path.join(
-            os.path.dirname(__file__), '..', '..',
-            'data', 'transport', 'southampton')
+    def __init__(self, *args, **kwargs):
+        self._set_options()
+        super().__init__(*args, **kwargs)
 
-    def _get_input_dir(self):
-        """Directory where this wrapper writes data/parameters
-        """
-        working_dir = self._get_working_dir()
-        return os.path.join(working_dir, 'input')
+    def _set_options(self):
+        this_dir = os.path.dirname(__file__)
 
-    def _get_path_to_jar(self):
-        return os.path.join(
-            os.path.dirname(__file__), '..', '..',
-            'install', 'transport', 'transport.jar')
+        config = configparser.ConfigParser()
+        config.read(os.path.join(this_dir, 'run_config.ini'))
 
-    def _get_path_to_config_templates(self):
-        return os.path.join(os.path.dirname(__file__), 'templates')
+        self._templates_dir = os.path.join(this_dir, 'templates')
+
+        if 'run' not in config:
+            raise KeyError("Expected '[run]' section in transport run_config.ini")
+
+        if 'jar' in config['run']:
+            self._jar_path = os.path.join(this_dir, config['run']['jar'])
+        else:
+            raise KeyError("Expected 'jar' in transport run_config.ini")
+
+        if 'working_dir' in config['run']:
+            self._working_dir = os.path.join(this_dir, config['run']['working_dir'])
+            self._input_dir = os.path.join(self._working_dir, 'input')
+        else:
+            raise KeyError("Expected 'data_dir' in transport run_config.ini")
+
+        if 'optional_args' in config['run']:
+            self._optional_args = config['run']['optional_args'].split(" ")
+        else:
+            self._optional_args = []
 
     def simulate(self, data):
         """Run the transport model
@@ -42,7 +55,7 @@ class TransportWrapper(SectorModel):
         ---------
         data: smif.data_layer.DataHandle
         """
-        input_dir = self._get_input_dir()
+        input_dir = self._input_dir
         if not os.path.exists(input_dir):
             os.mkdir(input_dir)
 
@@ -67,14 +80,13 @@ class TransportWrapper(SectorModel):
         into the smif loggerlogger
         """
 
-        working_dir = self._get_working_dir()
-        path_to_jar = self._get_path_to_jar()
+        working_dir = self._working_dir
+        path_to_jar = self._jar_path
 
-        path_to_config = os.path.join(working_dir, 'config.properties')
+        path_to_config = os.path.join(working_dir, 'config', 'config.properties')
 
         self.logger.info("FROM run.py: Running transport model")
-        arguments = [
-            'java',
+        arguments = ['java'] + self._optional_args + [
             '-cp',
             path_to_jar,
             'nismod.transport.App',
@@ -91,9 +103,11 @@ class TransportWrapper(SectorModel):
             ])
 
         try:
+            self.logger.debug(arguments)
             output = check_output(arguments)
             self.logger.info(output.decode("utf-8"))
         except CalledProcessError as ex:
+            self.logger.error(ex.output.decode("utf-8"))
             self.logger.exception("Transport model failed %s", ex)
             raise ex
 
@@ -103,7 +117,7 @@ class TransportWrapper(SectorModel):
     def _set_parameters(self, data_handle):
         """Read model parameters from data handle and set up config files
         """
-        input_dir = self._get_input_dir()
+        input_dir = self._input_dir
 
         # Elasticities for passenger and freight demand
         variables = ['POPULATION', 'GVA', 'TIME', 'COST']
@@ -124,7 +138,7 @@ class TransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        input_dir = self._get_input_dir()
+        input_dir = self._input_dir
 
         # Population
         base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
@@ -142,7 +156,7 @@ class TransportWrapper(SectorModel):
 
         population.population = population.population.astype(int)
         population = population.pivot(
-            index='year', columns='lad_southampton', values='population'
+            index='year', columns='lad_uk_2016', values='population'
         )
         population_filepath = os.path.join(
             input_dir, 'population.csv')
@@ -163,7 +177,7 @@ class TransportWrapper(SectorModel):
             gva = current_gva
 
         gva = gva.pivot(
-            index='year', columns='lad_southampton', values='gva'
+            index='year', columns='lad_uk_2016', values='gva_per_head'
         )
         gva_filepath = os.path.join(input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
@@ -184,8 +198,8 @@ class TransportWrapper(SectorModel):
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
         """
-        working_dir = self._get_working_dir()
-        path_to_config_templates = self._get_path_to_config_templates()
+        working_dir = self._working_dir
+        path_to_config_templates = self._templates_dir
 
         for root, _, filenames in os.walk(path_to_config_templates):
             for filename in filenames:
@@ -217,8 +231,8 @@ class TransportWrapper(SectorModel):
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
         """
-        working_dir = self._get_working_dir()
-        output_dir = os.path.join(working_dir, 'output')
+        working_dir = self._working_dir
+        output_dir = os.path.join(working_dir, 'output', 'main')
 
         energy_consumption_file = os.path.join(
             output_dir, str(data_handle.current_timestep), 'energyConsumptions.csv')

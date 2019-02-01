@@ -13,5 +13,5 @@ variants:
   - name: baseline
     description: Baseline fuel price projections
     data:
-      fuel_price: ../transport/southampton/smif/transport_fuel_price.csv
-      fuel_price_electricity: ../transport/southampton/smif/transport_fuel_price_electricity.csv
+      fuel_price: transport_fuel_price.csv
+      fuel_price_electricity: transport_fuel_price_electricity.csv
