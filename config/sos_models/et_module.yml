@@ -1,13 +1,32 @@
-name: et_module
 description: Energy demand assignement to hourly from hourly transportation demand
-sector_models: # Select 1 or more of the sector models
-- et_module
-scenarios:     # Select 0 or more of the scenario sets
-- transport_energy_demand
-scenario_dependencies:
-- source: transport_energy_demand
-  source_output: electricity
-  sink: et_module
-  sink_input: electricity
 model_dependencies: []
-narratives: []
+name: et_module
+narratives:
+- name: default
+  description: default narrative
+  sos_model: et_module
+  provides:
+    ev_adaptor:
+    - load_profile_charging_regime
+    - yr_until_changed_lp
+  variants:
+  - name: managed
+    description: EV charging is fully managed by the system operator
+    data:
+      load_profile_charging_regime: ev_scheduling_managed.csv
+      yr_until_changed_lp: ev_scheduling_managed.csv
+scenario_dependencies:
+- sink: ev_adaptor
+  sink_input: ev_trips
+  source: ev_transport_trips
+  source_output: ev_trip_start
+  timestep: CURRENT
+- sink: ev_adaptor
+  sink_input: ev_electricity
+  source: ev_transport_trips
+  source_output: ev_trip_elec
+  timestep: CURRENT
+scenarios:
+- ev_transport_trips
+sector_models:
+- ev_adaptor

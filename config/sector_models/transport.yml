@@ -39,6 +39,18 @@ outputs:
   - name: link_travel_time
     unit: h
     dtype: float
+  - name: ev_trip_count
+    dims:
+    - lad_uk_2016
+    - hourly_day
+    unit: 1
+    dtype: float
+  - name: ev_trip_electricity
+    dims:
+    - lad_uk_2016
+    - hourly_day
+    unit: kWh
+    dtype: float
 parameters:
   - name: POPULATION_ETA
     description: Population elasticity for passenger demand

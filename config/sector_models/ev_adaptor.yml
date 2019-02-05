@@ -1,0 +1,39 @@
+classname: ETWrapper
+description: Derives energy demand and V2G capacity from transport EV results
+initial_conditions: []
+inputs:
+- name: ev_electricity
+  description: Electricity demand of electric vehicles
+  dims:
+  - lad_uk_2016
+  - annual_day
+  unit: kWh
+  dtype: float
+- description: Trip count of electric vehicles
+  dims:
+  - lad_uk_2016
+  - annual_day
+  dtype: float
+  name: ev_trips
+  unit: '1'
+interventions: []
+name: ev_adaptor
+outputs:
+- dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+  name: v2g_g2v_capacity
+  unit: GWh
+parameters:
+- default: ev_scheduling_default.csv
+  description: Year until future load profile assignment is fully realised
+  dtype: float
+  name: yr_until_changed_lp
+  units: 1
+- default: ev_scheduling_default.csv
+  description: EV charging regime
+  dtype: float
+  name: load_profile_charging_regime
+  units: 1
+path: models/ev_adaptor.py

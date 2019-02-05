@@ -1,0 +1,14 @@
+decision_module: ''
+description: Check that the ev_adaptor computes available storage capacity from grid-connected
+  electric vehicles
+name: test_ev_adaptor
+narratives:
+  default:
+  - managed
+scenarios:
+  ev_transport_trips: ''
+sos_model: et_module
+stamp: '2019-02-05T16:19:25.130Z'
+timesteps:
+- 2015
+strategies: []
