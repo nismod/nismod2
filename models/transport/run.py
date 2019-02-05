@@ -18,6 +18,7 @@ class TransportWrapper(SectorModel):
     """Wrap the transport model
     """
     def __init__(self, *args, **kwargs):
+        self._current_timestep = None
         self._set_options()
         super().__init__(*args, **kwargs)
 
@@ -40,6 +41,7 @@ class TransportWrapper(SectorModel):
         if 'working_dir' in config['run']:
             self._working_dir = os.path.join(this_dir, config['run']['working_dir'])
             self._input_dir = os.path.join(self._working_dir, 'input')
+            self._output_dir = os.path.join(self._working_dir, 'output')
         else:
             raise KeyError("Expected 'data_dir' in transport run_config.ini")
 
@@ -48,6 +50,9 @@ class TransportWrapper(SectorModel):
         else:
             self._optional_args = []
 
+    def _output_file_path(self, filename):
+        return os.path.join(self._output_dir, str(self._current_timestep), filename)
+
     def simulate(self, data):
         """Run the transport model
 
@@ -55,10 +60,12 @@ class TransportWrapper(SectorModel):
         ---------
         data: smif.data_layer.DataHandle
         """
-        input_dir = self._input_dir
-        if not os.path.exists(input_dir):
-            os.mkdir(input_dir)
+        try:
+            os.mkdir(self._input_dir)
+        except FileExistsError:
+            pass
 
+        self._current_timestep = data.current_timestep
         self._set_parameters(data)
         self._set_inputs(data)
         self._set_properties(data)
@@ -231,11 +238,7 @@ class TransportWrapper(SectorModel):
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
         """
-        working_dir = self._working_dir
-        output_dir = os.path.join(working_dir, 'output', 'main')
-
-        energy_consumption_file = os.path.join(
-            output_dir, str(data_handle.current_timestep), 'energyConsumptions.csv')
+        energy_consumption_file = self._output_file_path('energyConsumptions.csv')
 
         try:
             fuels = self.outputs['energy_consumption'].dim_coords('transport_fuel_type').ids
