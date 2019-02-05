@@ -9,7 +9,7 @@ Here, a single day of 24 hours represents the whole year, so e.g. 'MIDNIGHT' map
 onto the time from 00:00-01:00 for each of the 365 days of the year.
 """
 import csv
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 
 def main():
     hour_ids = [
@@ -49,13 +49,13 @@ def main():
             for hour in range(24):
                 from_ = 'P{}DT{}H'.format(day, hour)
 
-                if (hour == 23):
+                if hour == 23:
                     to_ = 'P{}DT{}H'.format(day + 1, 0)
                 else:
                     to_ = 'P{}DT{}H'.format(day, hour + 1)
 
                 results[hour_ids[hour]].append([from_, to_])
-        
+
         for name, represents in results.items():
             w.writerow((
                 name, represents
