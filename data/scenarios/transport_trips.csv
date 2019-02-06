@@ -1,4 +1,4 @@
-year,zone,hour,ev_trip_start,ev_trip_elec
+timestep,lad_gb_2016,hourly_day,ev_trip_start,ev_trip_elec
 2015,E09000003,MIDNIGHT,38,39.5
 2015,E08000030,MIDNIGHT,40,30.55
 2015,E07000180,MIDNIGHT,27,4.61

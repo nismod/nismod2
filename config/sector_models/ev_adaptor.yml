@@ -5,25 +5,24 @@ inputs:
 - name: ev_electricity
   description: Electricity demand of electric vehicles
   dims:
-  - lad_uk_2016
-  - annual_day
+  - lad_gb_2016
+  - hourly_day
   unit: kWh
   dtype: float
 - description: Trip count of electric vehicles
   dims:
-  - lad_uk_2016
-  - annual_day
+  - lad_gb_2016
+  - hourly_day
   dtype: float
   name: ev_trips
   unit: '1'
 interventions: []
 name: ev_adaptor
 outputs:
-- dims:
-  - lad_uk_2016
-  - hourly
+- name: v2g_g2v_capacity
+  dims:
+  - lad_gb_2016
   dtype: float
-  name: v2g_g2v_capacity
   unit: GWh
 parameters:
 - default: ev_scheduling_default.csv

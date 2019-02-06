@@ -6,7 +6,7 @@ narratives:
   default:
   - managed
 scenarios:
-  ev_transport_trips: ''
+  ev_transport_trips: central
 sos_model: et_module
 stamp: '2019-02-05T16:19:25.130Z'
 timesteps:
