@@ -1,0 +1,13 @@
+name: transport_southampton_test
+description: Small baseline transport model run for testing
+sos_model: transport_southampton
+timesteps: [2015, 2020]
+scenarios:
+  population: pop_baseline
+  gva: gva_baseline
+  fuel_price: baseline
+  link_travel_time: default
+narratives: {}
+decision_module: []
+strategies: {}
+stamp: ''
