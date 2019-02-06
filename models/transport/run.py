@@ -10,6 +10,7 @@ from string import Template
 
 import pandas as pd
 import numpy as np
+from smif.data_layer.data_array import DataArray
 from smif.exception import SmifTimestepResolutionError
 from smif.model.sector_model import SectorModel
 
@@ -238,34 +239,72 @@ class TransportWrapper(SectorModel):
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
         """
-        energy_consumption_file = self._output_file_path('energyConsumptions.csv')
+        # EV trip starts
+        evt_name = 'electric_vehicle_trip_starts'
+        ev_trips = self._melt_output(
+            name=evt_name,
+            filename=self._output_file_path('zonalTemporalEVTripStarts.csv'),
+            dims={
+                'zone': 'lad_uk_2016',
+                'hour': 'annual_day_hours'
+            },
+            csv_id_vars=['zone'],
+            csv_melt_var='hour'
+        )
+        ev_trips = self._df_to_ndarray(evt_name, ev_trips)
+        data_handle.set_results(evt_name, ev_trips)
 
-        try:
-            fuels = self.outputs['energy_consumption'].dim_coords('transport_fuel_type').ids
-            consumption = {}
-            with open(energy_consumption_file) as fh:
-                r = csv.reader(fh)
-                header = next(r)[1:]
-                values = next(r)[1:]
+        # EV consumption
+        evc_name = 'electric_vehicle_electricity_consumption'
+        ev_consumption = self._melt_output(
+            name=evc_name,
+            filename=self._output_file_path('zonalTemporalEVTripElectricity.csv'),
+            dims={
+                'zone': 'lad_uk_2016',
+                'hour': 'annual_day_hours'
+            },
+            csv_id_vars=['zone'],
+            csv_melt_var='hour'
+        )
+        ev_consumption = self._df_to_ndarray(evc_name, ev_consumption)
+        data_handle.set_results(evc_name, ev_consumption)
 
-                for fuel, val in zip(header, values):
-                    consumption[fuel] = val
+        # Energy consumption, all fuels
+        ec_name = 'energy_consumption'
+        energy_consumption = self._melt_output(
+            name=ec_name,
+            filename=self._output_file_path('energyConsumptions.csv'),
+            dims={
+                'fuel': 'transport_fuel_type'
+            },
+            csv_id_vars=[],
+            csv_melt_var='fuel'
+        )
+        # Split - non-electricity (measured in litres)
+        non_elec = energy_consumption.reset_index()
+        non_elec[non_elec.transport_fuel_type != 'ELECTRICITY'].set_index('transport_fuel_type')
+        non_elec = self._df_to_ndarray(ec_name, non_elec)
+        data_handle.set_results(ec_name, non_elec)
+        # Split - electricity (measured in kWh)
+        elec = np.array(energy_consumption.loc['ELECTRICITY'])
+        data_handle.set_results('energy_consumption_electricity', elec)
 
-            data = np.zeros((1, len(fuels)))
-            for i, fuel in enumerate(fuels):
-                data[0, i] = consumption[fuel]
+    def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
+        return pd.read_csv(
+            filename
+        ).drop(
+            'year', axis=1  # ignore the year output, assume it's always current timestep
+        ).melt(
+            id_vars=csv_id_vars,
+            var_name=csv_melt_var,
+            value_name=name
+        ).rename(
+            dims, axis=1
+        ).set_index(
+            sorted(dims.values())
+        )
 
-            data_handle.set_results(
-                "energy_consumption",
-                data
-            )
-
-            data_handle.set_results(
-                "energy_consumption_electricity",
-                np.array([float(consumption['ELECTRICITY'])])
-            )
-
-        except FileNotFoundError as ex:
-            msg = "Cannot find the energy consumption file {}"
-            raise FileNotFoundError(
-                msg.format(energy_consumption_file)) from ex
+    def _df_to_ndarray(self, output_name, df):
+        spec = self.outputs[output_name]
+        da = DataArray.from_df(spec, df)
+        return da.data
