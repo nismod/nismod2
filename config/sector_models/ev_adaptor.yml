@@ -23,7 +23,7 @@ outputs:
   dims:
   - lad_gb_2016
   dtype: float
-  unit: GWh
+  unit: kW
 parameters:
 - default: ev_scheduling_default.csv
   description: Year until future load profile assignment is fully realised
