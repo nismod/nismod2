@@ -96,7 +96,7 @@ defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimesAfterIte
 ###############
 
 # output folder
-outputFolder = $relative_path/output/main/
+outputFolder = $relative_path/output/
 
 # predicted demand for passenger vehicles
 predictedODMatrixFile = predictedODMatrix.csv
