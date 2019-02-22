@@ -222,7 +222,7 @@ class EDWrapper(SectorModel):
                 simulation_base_yr=simulation_base_yr,
                 simulation_end_yr=simulation_end_yr,
                 default_streategy_var=default_streategy_vars[var_name],
-                var_name=var_name)     
+                var_name=var_name)
 
         return narrative_params
 
@@ -240,7 +240,7 @@ class EDWrapper(SectorModel):
         path_main = self._get_working_dir()
         config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
-        
+
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
@@ -265,7 +265,6 @@ class EDWrapper(SectorModel):
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
-
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
         strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
@@ -316,21 +315,11 @@ class EDWrapper(SectorModel):
         # -----------------------------------------
         switches_service_raw = data_handle.get_parameter('switches_service').as_df()
         switches_service_raw = self._series_to_df(switches_service_raw, 'switches_service')
-        
-        '''print("AAAAAAAAAAAAAAAAAAA")
-        print("------------")
-        print(switches_service_raw[
-            (switches_service_raw.enduses_service_switch == 'rs_space_heating') &
-            (switches_service_raw.sector == 'non_metallic_mineral_products')
-        ])
-        raise Exception'''
-
         service_switches = read_data.service_switch(switches_service_raw)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
-
-
+        
 
         # -----------------------------------------
         # Perform pre-step calculations
@@ -390,7 +379,7 @@ class EDWrapper(SectorModel):
         data['result_paths'] = basic_functions.get_result_paths(temp_and_result_path)
         for path_folder in data['result_paths'].values():
             basic_functions.create_folder(path_folder)
-    
+
         # --------------------------------------------------
         # Read all other data
         # --------------------------------------------------
@@ -453,7 +442,6 @@ class EDWrapper(SectorModel):
             sim_yrs,
             config,
             curr_yr)
-
         data['assumptions'].update('strategy_vars', strategy_vars)
 
         # -----------------------------------------
