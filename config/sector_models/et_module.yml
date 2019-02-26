@@ -9,6 +9,11 @@ inputs:
   - lad_uk_2016
   unit: GWh
   dtype: float
+- name: trips
+  dims:
+  - lad_uk_2016
+  unit:
+  dtype: float
 # ---------------------------------------------------
 outputs:
 - name: electricity
