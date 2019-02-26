@@ -3,6 +3,7 @@
 *.prj
 *.dbf
 *.shx
+*.json
 *.geojson
 *.cpg
 *.sbn
