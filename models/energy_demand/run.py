@@ -513,7 +513,7 @@ class EDWrapper(SectorModel):
                 data_handle.set_results(key_name, single_result)
             else:
                 logging.info(" '{}' is not provided and thus replaced with empty values".format(key_name))
-                single_result = np.zeros(391, 8760)
+                single_result = np.zeros((391, 8760))
                 data_handle.set_results(key_name, single_result)
 
 
