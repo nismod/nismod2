@@ -508,7 +508,7 @@ class EDWrapper(SectorModel):
                 logging.info("...writing `{}` to smif".format(key_name))
                 data_handle.set_results(key_name, result_to_txt)
             else:
-                logging.info(" '{}' is not in ouptuts".format(key_name))
+                logging.info(" '{}' is not in outputs".format(key_name))
                 raise Exception("Output '{}' is not defined".format(key_name))
 
         print("----FINISHED WRAPPER-----")
