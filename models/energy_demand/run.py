@@ -4,6 +4,7 @@ import os
 import logging
 from collections import defaultdict
 from shapely.geometry import shape, mapping
+import numpy as np
 
 from smif.model.sector_model import SectorModel
 
@@ -318,8 +319,11 @@ class EDWrapper(SectorModel):
         service_switches = read_data.service_switch(switches_service_raw)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
-        capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
         
+        #_fuel_switches_from_smif = data_handle.get_parameter('fuel_switches').as_df()
+        #print("AA" + str(_fuel_switches_from_smif))
+        #raise Exception("T")
+        capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
         # -----------------------------------------
         # Perform pre-step calculations
@@ -502,12 +506,15 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
-        for key_name, result_to_txt in sim_obj.supply_results.items():
-            if key_name in self.outputs:
+        for key_name in self.outputs:
+            if key_name in sim_obj.supply_results.keys():
                 logging.info("...writing `{}` to smif".format(key_name))
-                data_handle.set_results(key_name, result_to_txt)
+                single_result = sim_obj.supply_results[key_name]
+                data_handle.set_results(key_name, single_result)
             else:
-                logging.info(" '{}' is not in ouptuts".format(key_name))
-                raise Exception("Output '{}' is not defined".format(key_name))
+                logging.info(" '{}' is not provided and thus replaced with empty values".format(key_name))
+                single_result = np.zeros(391, 8760)
+                data_handle.set_results(key_name, single_result)
+
 
         print("----FINISHED WRAPPER-----")
