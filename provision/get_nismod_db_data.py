@@ -19,6 +19,7 @@ from requests_threads import AsyncSession
 
 MIN_YEAR = 2011
 MAX_YEAR = 2020
+POPULATION_DATA_VERSION = 5
 CACHE_PATH = os.path.join(os.path.dirname(__file__), 'cache')
 
 
@@ -40,10 +41,85 @@ async def main():
     except FileExistsError:
         pass
 
-    await get_population(auth)
+    await get_lads(auth)
+    lads = load_lads()
+    await get_oas(auth, lads)
+    process_geographies(lads)
 
-    process_lad_population()
-    process_oa_population()
+    # await get_population(auth)
+    # process_lad_population()
+    # process_oa_population()
+
+
+
+async def get_lads(auth):
+    print("Get lads (2011 Census Merged)")
+    lad_file = os.path.join(CACHE_PATH, 'lads.json')
+    if True: #not os.path.exists(lad_file):
+        r = await session.get(
+            'https://www.nismod.ac.uk/api/data/boundaries/lads',
+            auth=auth,
+            params={'lad_codes': 'all'}
+        )
+        with open(lad_file, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+
+
+async def get_oas(auth, lads):
+    for lad in lads:
+        lad_code = lad['lad_code']
+
+        oa_file = os.path.join(CACHE_PATH, 'oas_by_lad', 'oas_{}.json'.format(lad_code))
+        try:
+            with open(oa_file, 'r') as fh:
+                oa_data = json.load(fh)
+        except FileNotFoundError:
+            print("Get", lad_code)
+            r = await session.get(
+                'https://www.nismod.ac.uk/api/data/boundaries/oas_in_lad',
+                auth=auth,
+                params={'lad_codes': lad_code}
+            )
+            oa_data = r.json()
+            with open(oa_file, 'w') as fh:
+                json.dump(oa_data, fh, indent=2)
+
+
+def load_lads():
+    lads_json_path = os.path.join(CACHE_PATH, 'lads.json')
+    with open(lads_json_path, 'r') as in_fh:
+        lads = json.load(in_fh)
+    return lads
+
+
+def process_geographies(lads):
+    lads_csv_path = os.path.join(CACHE_PATH, 'lads.csv')
+    with open(lads_csv_path, 'w', newline='') as out_fh:
+        lad_writer = csv.DictWriter(
+            out_fh,
+            fieldnames=('lad_code', 'name', 'geom'),
+            extrasaction='ignore'
+        )
+        lad_writer.writeheader()
+        lad_writer.writerows(lads)
+
+    oas_json_path = os.path.join(CACHE_PATH, 'oas_by_lad', 'oas_{}.json')
+    oas_csv_path = os.path.join(CACHE_PATH, 'oas.csv')
+
+    with open(oas_csv_path, 'w', newline='') as out_fh:
+        oa_writer = csv.DictWriter(
+            out_fh,
+            fieldnames=('oa_code', 'lad_code', 'geom'),
+            extrasaction='ignore'
+        )
+        oa_writer.writeheader()
+        for lad in lads:
+            lad_code = lad['lad_code']
+            with open(oas_json_path.format(lad_code), 'r') as in_fh:
+                oas = json.load(in_fh)
+                oa_writer.writerows(oas)
 
 
 async def get_population(auth):
@@ -58,7 +134,7 @@ async def get_population(auth):
                 params={
                     'scale': 'lad',
                     'year': year,
-                    'data_version': 5
+                    'data_version': POPULATION_DATA_VERSION
                 },
                 stream=True
             )
@@ -76,7 +152,7 @@ async def get_population(auth):
                 params={
                     'scale': 'oa',
                     'year': year,
-                    'data_version': 5
+                    'data_version': POPULATION_DATA_VERSION
                 },
                 stream=True
             )
