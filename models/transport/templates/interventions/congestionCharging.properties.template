@@ -1,7 +1,0 @@
-#congestion charging intervention
-type = CongestionCharging
-startYear = 2016
-endYear = 2025
-name = "Itchen Bridge Toll"
-listOfCongestionChargedEdgeIDs = 718,719
-congestionChargingPricing = $relative_path/csvfiles/congestionChargingPricing.csv

@@ -8,7 +8,6 @@ import numpy as np
 import psycopg2
 from smif.model.sector_model import SectorModel
 
-
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
     """
@@ -162,11 +161,11 @@ class EnergySupplyWrapper(SectorModel):
         gasload_non_heat_com = input_service_gas_non_heating
         elecload_non_heat_com = input_service_electricity_non_heating
 
-        region_names, interval_names = self.get_names( "residential_electricity_non_heating")
+        region_names, interval_names = self.get_names("residential_electricity_non_heating")
         self.logger.debug('Writing %s to database', "elecload_non_heat_res")
         write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res",
                              now, region_names, interval_names)
-        region_names, interval_names = self.get_names( "service_electricity_non_heating")
+        region_names, interval_names = self.get_names("service_electricity_non_heating")
         self.logger.debug('Writing %s to database', "elecload_non_heat_com")
         write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com",
                              now, region_names, interval_names)
@@ -188,22 +187,26 @@ class EnergySupplyWrapper(SectorModel):
         write_input_timestep(elecload_tran, "elecload",
                              now, region_names, interval_names)
 
+        self.get_gasload(data, now)
+
+    def get_gasload(self, data, now):
+
         gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names( "gasload", spatial_name='gas_nodes_minimal')
+        region_names, interval_names = self.get_names( "gasload", spatial_name='gas_nodes')
         self.logger.debug('Writing %s to database', "gasload")
         write_input_timestep(gasload, "gasload",
                              now, region_names, interval_names)
-
 
     def run_the_model(self):
         """Run the model
         """
         nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
-        os.environ["ES_PATH"] = str(os.path.abspath(os.path.join(
-            nismod_dir, 'install', 'energy_supply')))
+        model_dir = os.path.join(nismod_dir, 'install', 'energy_supply')
+
+        os.environ["ES_PATH"] = str(os.path.abspath(model_dir))
         self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
-        arguments = [self.get_model_executable()]
-        self.logger.debug(check_output(arguments))
+        model_path = os.path.join(model_dir, 'Energy_Supply_Master.exe')
+        self.logger.debug(check_output([model_path]))
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
@@ -297,18 +300,14 @@ class EnergySupplyWrapper(SectorModel):
         # set on smif DataHandle
         data_handle.set_results(external_parameter_name, output)
 
-    def get_names(self, name, spatial_name='energy_hub_min', temporal_name='seasonal_week'):
+    def get_names(self, name, spatial_name='energy_hub', temporal_name='seasonal_week'):
         """Get region and interval names for a given input
         """
         region_names = self.inputs[name].dim_coords(spatial_name).ids
         interval_names = self.inputs[name].dim_coords(temporal_name).ids
         return region_names, interval_names
 
-    def get_model_executable(self):
-        """Return path of current python interpreter
-        """
-        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
-        return os.path.join(nismod_dir, 'install', 'energy_supply', 'Energy_Supply_Master.exe')
+
 
 def establish_connection():
     """Connect to an existing database
@@ -569,6 +568,10 @@ def build_generator(plants, current_timestep):
                              missing,
                              plant['name'])
             )
+        try:
+            plant['type'] = int(plant['type'])
+        except TypeError:
+            pass
 
         if isinstance(plant['type'], str):
             plant_type = {'ccgt': 1,
@@ -639,9 +642,11 @@ def build_generator(plants, current_timestep):
                     float(plant['build_year']) + lifetime,
                     plant['sys_layer']
                     )
-
-        cur.execute(sql, data)
-
+        try:
+            cur.execute(sql, data)
+        except psycopg2.DataError as ex:
+            print(sql, data)
+            raise psycopg2.DataError(ex)
         # Make the changes to the database persistent
         conn.commit()
 
@@ -775,7 +780,7 @@ def build_gas_stores(gas_stores, current_timestep):
 
     for store_num, store in enumerate(gas_stores):
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost") VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost", "Syslayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
         data = (store_num + 1,
                 store['location'],
@@ -784,7 +789,8 @@ def build_gas_stores(gas_stores, current_timestep):
                 store['inflowcap'],
                 store['outflowcap'],
                 store['capacity']['value'],
-                store['outflowcost']
+                store['outflowcost'],
+                store['syslayer']
                 )
 
         cur.execute(sql, data)
@@ -1060,11 +1066,17 @@ def write_input_timestep(input_data, parameter_name, year,
 
         region, interval = it.multi_index
         season, day, period = parse_season_day_period(int(interval_names[interval]))
+        try:
+            region_id = region_mapping[int(region_names[region])]
+        except KeyError as ex:
+            print("Error when trying to write '{}'. Regions: {}".format(parameter_name, region_mapping))
+            raise ex
+
         insert_data = (year,
                        season,
                        day,
                        period,
-                       region_mapping[int(region_names[region])],
+                       region_id,
                        parameter_name,
                        float(cell))
 
@@ -1079,3 +1091,43 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
+
+
+class EnergySupplyDevWrapper(EnergySupplyWrapper):
+    """Monkey patches run model method to call development version of the model
+
+    """
+    def run_the_model(self):
+        """Run the model
+        """
+        nismod_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+        model_dir = os.path.join(nismod_dir, 'energy_supply', 'model')
+
+        os.environ["ES_PATH"] = str(os.path.abspath(model_dir))
+        self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
+        model_path = os.path.join(nismod_dir, 'energy_supply', 'model', 'Energy_Supply_Master.mos')
+        self.logger.debug(check_output(['mosel', 'exec', model_path]))
+
+
+class EnergySupplyToyWrapper(EnergySupplyWrapper):
+    """Monkey patches methods in full version of wrapper with minimal dimension
+    definitions
+    """
+
+    def get_names(self, name, spatial_name='energy_hub_min', temporal_name='seasonal_week'):
+        """Get region and interval names for a given input
+        """
+        return super().get_names(name, spatial_name, temporal_name)
+
+    def get_gasload(self, data, now):
+        gasload = data.get_data('gasload')
+        region_names, interval_names = self.get_names("gasload", spatial_name='gas_nodes_minimal')
+        self.logger.debug('Writing %s to database', "gasload")
+        write_input_timestep(gasload, "gasload", now, region_names, interval_names)
+
+
+class EnergySupplyDevToyWrapper(EnergySupplyDevWrapper, EnergySupplyToyWrapper):
+    """Monkey patches run model method to call development version of the minimal 
+    model
+    
+    """

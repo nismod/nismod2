@@ -1,4 +1,4 @@
-name: transport_southampton_only
+name: transport_southampton
 description: Test model for transport
 sector_models:
   - transport_southampton
@@ -7,6 +7,7 @@ scenarios:
   - population
   - gva
   - fuel_price
+  - link_travel_time
 narratives: []
 scenario_dependencies:
   - source: population
@@ -25,6 +26,10 @@ scenario_dependencies:
     source_output: fuel_price_electricity
     sink: transport_southampton
     sink_input: fuel_price_electricity
+  - source: link_travel_time
+    source_output: link_travel_time
+    sink: transport_southampton
+    sink_input: link_travel_time
 model_dependencies:
   - source: extract_southampton_scenarios
     source_output: population
@@ -34,3 +39,8 @@ model_dependencies:
     source_output: gva
     sink: transport_southampton
     sink_input: gva
+  - source: transport_southampton
+    source_output: link_travel_time
+    sink: transport_southampton
+    sink_input: link_travel_time
+    timestep: PREVIOUS  # dependency on own outputs from previous timestep

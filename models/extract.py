@@ -42,7 +42,6 @@ class FilterAdaptor(SectorModel):
             input_df[input_dim].isin(output_coords)
         ]
         output_df = output_df.rename(columns={input_dim: output_dim, 0:output_spec.name})
-        print(output_df)
         # go from pandas.Series to smif.DataArray (tidy with MultiIndex -> compact ndarray)
         # may refactor/rework with helper methods on smif.DataArray
         output_df.set_index(output_spec.dims, inplace=True)
@@ -50,7 +49,6 @@ class FilterAdaptor(SectorModel):
         output_ds.name = output_spec.name
         output_xr = XDataArray.from_series(output_ds)
         data = output_xr.data
-        print(data)
         return data
 
     def _pick_dim_coords(self, a_spec, b_spec):
