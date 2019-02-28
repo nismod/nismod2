@@ -1,3 +1,4 @@
+name: energy_demand_constrained
 path: models/energy_demand/run.py
 description: Constrained model configuration
 classname: EDWrapper
@@ -19,6 +20,7 @@ parameters:
   name: generic_fuel_switch
   unit: ''
   dims:
+  - generic_switch_number
   - enduses
   - end_yr
   - param_generic_fuel_switch
@@ -151,7 +153,6 @@ parameters:
   - end_yr
   dtype: float
 # -----------------------------------------------
-name: energy_demand_constrained
 inputs:
 - name: latitude
   unit:

@@ -1,0 +1,32 @@
+decision_module: ''
+description: ''
+name: energy_demand_constrained__PROGRESSION_NF1__pop_baseline__gva_baseline
+narratives:
+  smart_meter_p:
+  - progression_narrative
+  t_base_heating:
+  - progression_narrative
+  f_eff_achieved:
+  - progression_narrative
+  generic_enduse_change:
+  - progression_narrative
+  heat_recovered:
+  - progression_narrative
+  p_cold_rolling_steel:
+  - progression_narrative
+  generic_fuel_switch:
+  - progression_narrative
+  switches_service:
+  - progression_narrative
+scenarios:
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
+sos_model: energy_demand_constrained
+stamp: ''
+strategies: {}
+timesteps:
+- 2015
+- 2030
+- 2050

@@ -1,0 +1,32 @@
+decision_module: ''
+description: ''
+name: energy_demand_constrained__THOUSANDFLOWERS_NF1__pop_baseline__gva_baseline
+narratives:
+  smart_meter_p:
+  - flower_narrative
+  t_base_heating:
+  - flower_narrative
+  f_eff_achieved:
+  - flower_narrative
+  generic_enduse_change:
+  - flower_narrative
+  heat_recovered:
+  - flower_narrative
+  p_cold_rolling_steel:
+  - flower_narrative
+  generic_fuel_switch:
+  - flower_narrative
+  switches_service:
+  - flower_narrative
+scenarios:
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
+sos_model: energy_demand_constrained
+stamp: ''
+strategies: {}
+timesteps:
+- 2015
+- 2030
+- 2050
