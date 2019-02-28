@@ -12,7 +12,7 @@ from energy_demand import wrapper_model
 from energy_demand.assumptions import strategy_vars_def, general_assumptions
 from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
-from energy_demand.read_write import (write_data, read_data, data_loader, 
+from energy_demand.read_write import (write_data, read_data, data_loader,
                                       narrative_related)
 
 class EDWrapper(SectorModel):
@@ -206,10 +206,10 @@ class EDWrapper(SectorModel):
             'f_eff_achieved',
             'generic_enduse_change',
             'heat_recovered',
-            'is_t_base_heating',
             'p_cold_rolling_steel',
             'rs_t_base_heating',
             'ss_t_base_heating',
+            'is_t_base_heating',
             'smart_meter_p',
             'generic_fuel_switch']
 
@@ -266,6 +266,11 @@ class EDWrapper(SectorModel):
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
+        
+        print("strategy_vars")
+        print(user_defined_vars['f_eff_achieved'])
+        raise Exception("TT")
+        
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
         strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
@@ -513,8 +518,6 @@ class EDWrapper(SectorModel):
                 data_handle.set_results(key_name, single_result)
             else:
                 logging.info(" '{}' is not provided and thus replaced with empty values".format(key_name))
-                single_result = np.zeros((391, 8760))
-                data_handle.set_results(key_name, single_result)
-
+            #    data_handle.set_results(key_name, np.zeros((391, 8760)))
 
         print("----FINISHED WRAPPER-----")
