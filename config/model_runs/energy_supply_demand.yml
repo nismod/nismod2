@@ -1,7 +1,9 @@
 decision_module: ''
 description: ''
 name: energy_supply_demand
-narratives: {}
+narratives:
+  load_shedding:
+  - high_cost
 scenarios:
   es_prices: es_prices_dummy
   gva: gva_baseline

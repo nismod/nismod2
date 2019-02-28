@@ -7,7 +7,7 @@ base_path=$1
 source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
 
 # Install energy_demand
-pip install git+https://github.com/nismod/energy_demand.git@$model_version#egg=energy_demand
+pip install git+https://github.com/nismod/energy_demand.git@$model_version#egg=energy_demand --upgrade
 
 # Setup wrapper config
 wrapperconfig_path=$base_path/models/energy_demand/wrapperconfig.ini

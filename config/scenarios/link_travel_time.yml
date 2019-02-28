@@ -1,0 +1,11 @@
+name: link_travel_time
+description: Passenger OD flows for transport base year
+provides:
+  - name: link_travel_time
+    unit: h
+    dtype: float
+variants:
+  - name: default
+    description: Test data for transport base year
+    data:
+      flow: link_travel_time.csv

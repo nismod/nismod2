@@ -1,18 +1,18 @@
 name: energy_supply_only
 narratives:
-- name: load_shedding
-  description: Cost of shedding load
+- variants:
+  - data:
+      LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+      LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+    description: very high cost load shedding
+    name: high_cost
+  sos_model: energy_supply_toy
+  description: Costs of shedding load
+  name: load_shedding
   provides:
-    energy_supply:
+    energy_supply_toy:
     - LoadShed_elec
     - LoadShed_gas
-  variants:
-  - name: default
-    description: Default costs of shedding load
-    data:
-      LoadShed_elec: es_parameters.csv
-      LoadShed_gas: es_parameters.csv
-  sos_model: ''
 scenario_dependencies:
 - sink: energy_supply
   source_output: gas_price
