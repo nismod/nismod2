@@ -266,11 +266,7 @@ class EDWrapper(SectorModel):
             simulation_base_yr=config['CONFIG']['base_yr'],
             simulation_end_yr=config['CONFIG']['user_defined_simulation_end_yr'],
             default_streategy_vars=default_streategy_vars)
-        
-        print("strategy_vars")
-        print(user_defined_vars['f_eff_achieved'])
-        raise Exception("TT")
-        
+
         strategy_vars = data_loader.replace_variable(user_defined_vars, strategy_vars)
 
         strategy_vars = strategy_vars_def.autocomplete_strategy_vars(
