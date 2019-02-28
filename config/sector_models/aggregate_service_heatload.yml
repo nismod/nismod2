@@ -32,12 +32,6 @@ inputs:
   - seasonal_week
   unit: MW
   dtype: float
-- name: service_gas_stirling_micro_gas
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: MW
-  dtype: float
 interventions: []
 name: aggregate_service_heatload
 outputs:

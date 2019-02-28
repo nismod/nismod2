@@ -25,10 +25,6 @@ model_dependencies:
   source_output: residential_electricity_district_heating_electricity
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
-  sink_input: residential_gas_stirling_micro_gas
-  source_output: residential_gas_stirling_micro_CHP_gas
-- sink: convert_regions_ed_to_es
-  source: energy_demand_constrained
   sink_input: service_gas_boiler_gas
   source_output: service_gas_boiler_gas
 - sink: convert_regions_ed_to_es
@@ -47,10 +43,6 @@ model_dependencies:
   source: energy_demand_constrained
   sink_input: service_electricity_district_heating_electricity
   source_output: service_electricity_district_heating_electricity
-- sink: convert_regions_ed_to_es
-  source: energy_demand_constrained
-  sink_input: service_gas_stirling_micro_gas
-  source_output: service_gas_stirling_micro_CHP_gas
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
   sink_input: industry_gas_boiler_gas
@@ -79,10 +71,6 @@ model_dependencies:
   source: energy_demand_constrained
   sink_input: industry_biomass_district_heating_biomass
   source_output: industry_biomass_district_heating_biomass
-- sink: convert_regions_ed_to_es
-  source: energy_demand_constrained
-  sink_input: industry_gas_stirling_micro_CHP_gas
-  source_output: industry_gas_stirling_micro_CHP_gas
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
   sink_input: residential_gas_non_heating
@@ -127,10 +115,6 @@ model_dependencies:
   sink: convert_intervals_ed_to_es
   source_output: residential_electricity_district_heating_electricity
   sink_input: residential_electricity_district_heating_electricity
-- source: convert_regions_ed_to_es
-  sink: convert_intervals_ed_to_es
-  source_output: residential_gas_stirling_micro_gas
-  sink_input: residential_gas_stirling_micro_CHP_gas
 - source: convert_regions_ed_to_es
   sink: convert_intervals_ed_to_es
   source_output: service_gas_boiler_gas
@@ -153,10 +137,6 @@ model_dependencies:
   sink_input: service_electricity_district_heating_electricity
 - source: convert_regions_ed_to_es
   sink: convert_intervals_ed_to_es
-  source_output: service_gas_stirling_micro_gas
-  sink_input: service_gas_stirling_micro_CHP_gas
-- source: convert_regions_ed_to_es
-  sink: convert_intervals_ed_to_es
   source_output: industry_gas_boiler_gas
   sink_input: industry_gas_boiler_gas
 - source: convert_regions_ed_to_es
@@ -183,10 +163,6 @@ model_dependencies:
   sink: convert_intervals_ed_to_es
   source_output: industry_biomass_district_heating_biomass
   sink_input: industry_biomass_district_heating_biomass
-- source: convert_regions_ed_to_es
-  sink: convert_intervals_ed_to_es
-  source_output: industry_gas_stirling_micro_CHP_gas
-  sink_input: industry_gas_stirling_micro_CHP_gas
 - source: convert_regions_ed_to_es
   sink: convert_intervals_ed_to_es
   source_output: residential_gas_non_heating
@@ -231,10 +207,6 @@ model_dependencies:
   source: convert_intervals_ed_to_es
   sink_input: residential_electricity_district_heating_electricity
   source_output: residential_electricity_district_heating_electricity
-- sink: convert_units_ed_to_es
-  source: convert_intervals_ed_to_es
-  sink_input: residential_gas_stirling_micro_gas
-  source_output: residential_gas_stirling_micro_CHP_gas
 - sink: convert_units_ed_to_es
   source: convert_intervals_ed_to_es
   sink_input: service_gas_boiler_gas
@@ -257,10 +229,6 @@ model_dependencies:
   source_output: service_electricity_district_heating_electricity
 - sink: convert_units_ed_to_es
   source: convert_intervals_ed_to_es
-  sink_input: service_gas_stirling_micro_gas
-  source_output: service_gas_stirling_micro_CHP_gas
-- sink: convert_units_ed_to_es
-  source: convert_intervals_ed_to_es
   sink_input: industry_gas_boiler_gas
   source_output: industry_gas_boiler_gas
 - sink: convert_units_ed_to_es
@@ -287,10 +255,6 @@ model_dependencies:
   source: convert_intervals_ed_to_es
   sink_input: industry_biomass_district_heating_biomass
   source_output: industry_biomass_district_heating_biomass
-- sink: convert_units_ed_to_es
-  source: convert_intervals_ed_to_es
-  sink_input: industry_gas_stirling_micro_CHP_gas
-  source_output: industry_gas_stirling_micro_CHP_gas
 - sink: convert_units_ed_to_es
   source: convert_intervals_ed_to_es
   sink_input: residential_gas_non_heating
@@ -351,10 +315,6 @@ model_dependencies:
   source: convert_units_ed_to_es
   sink_input: residential_electricity_district_heating_electricity
   source_output: residential_electricity_district_heating_electricity
-- sink: aggregate_residential_heatload
-  source: convert_units_ed_to_es
-  sink_input: residential_gas_stirling_micro_gas
-  source_output: residential_gas_stirling_micro_gas
 - sink: aggregate_service_heatload
   source: convert_units_ed_to_es
   sink_input: service_gas_boiler_gas
@@ -375,10 +335,6 @@ model_dependencies:
   source: convert_units_ed_to_es
   sink_input: service_electricity_district_heating_electricity
   source_output: service_electricity_district_heating_electricity
-- sink: aggregate_service_heatload
-  source: convert_units_ed_to_es
-  sink_input: service_gas_stirling_micro_gas
-  source_output: service_gas_stirling_micro_gas
 - sink: energy_supply
   source: convert_units_ed_to_es
   sink_input: residential_gas_non_heating
@@ -411,10 +367,6 @@ model_dependencies:
   source: convert_units_ed_to_es
   sink_input: industry_biomass_district_heating_biomass
   source_output: industry_biomass_district_heating_biomass
-- sink: aggregate_gasload
-  source: convert_units_ed_to_es
-  sink_input: industry_gas_stirling_micro_CHP_gas
-  source_output: industry_gas_stirling_micro_CHP_gas
 - sink: aggregate_gasload
   source: convert_units_ed_to_es
   sink_input: industry_gas_non_heating

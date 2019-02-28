@@ -267,18 +267,6 @@ outputs:
   - lad_uk_2016
   - hourly
   dtype: float
-- name: residential_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_stirling_micro_CHP_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
 - name: residential_hydrogen_fuel_cell_hydrogen
   unit: GW
   dims:
@@ -357,18 +345,6 @@ outputs:
   - lad_uk_2016
   - hourly
   dtype: float
-- name: service_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_stirling_micro_CHP_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
 - name: service_hydrogen_fuel_cell_hydrogen
   unit: GW
   dims:
@@ -442,18 +418,6 @@ outputs:
   - hourly
   dtype: float
 - name: industry_hydrogen_district_heating_fuel_cell
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_stirling_micro_CHP_electricity
   unit: GW
   dims:
   - lad_uk_2016

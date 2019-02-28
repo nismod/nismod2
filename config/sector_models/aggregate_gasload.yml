@@ -15,12 +15,6 @@ inputs:
   - seasonal_week
   unit: mcm
   dtype: float
-- name: industry_gas_stirling_micro_CHP_gas
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: mcm
-  dtype: float
 - name: industry_gas_district_heating_CHP_gas
   dims:
   - energy_hub

@@ -34,12 +34,6 @@ inputs:
   - hourly
   unit: GW
   dtype: float
-- name: residential_gas_stirling_micro_gas
-  dims:
-  - lad_uk_2016
-  - hourly
-  unit: GW
-  dtype: float
 - name: service_gas_boiler_gas
   dims:
   - lad_uk_2016
@@ -65,12 +59,6 @@ inputs:
   unit: GW
   dtype: float
 - name: service_electricity_district_heating_electricity
-  dims:
-  - lad_uk_2016
-  - hourly
-  unit: GW
-  dtype: float
-- name: service_gas_stirling_micro_gas
   dims:
   - lad_uk_2016
   - hourly
@@ -113,12 +101,6 @@ inputs:
   unit: GW
   dtype: float
 - name: industry_biomass_district_heating_biomass
-  dims:
-  - lad_uk_2016
-  - hourly
-  unit: GW
-  dtype: float
-- name: industry_gas_stirling_micro_CHP_gas
   dims:
   - lad_uk_2016
   - hourly
@@ -175,12 +157,6 @@ outputs:
   - seasonal_week
   unit: MW
   dtype: float
-- name: residential_gas_stirling_micro_gas
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: MW
-  dtype: float
 - name: residential_electricity_heat_pumps_electricity
   dims:
   - energy_hub
@@ -218,12 +194,6 @@ outputs:
   unit: MW
   dtype: float
 - name: service_electricity_boiler_electricity
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: MW
-  dtype: float
-- name: service_gas_stirling_micro_gas
   dims:
   - energy_hub
   - seasonal_week
@@ -272,12 +242,6 @@ outputs:
   unit: MW
   dtype: float
 - name: industry_biomass_boiler_biomass
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: mcm
-  dtype: float
-- name: industry_gas_stirling_micro_CHP_gas
   dims:
   - energy_hub
   - seasonal_week
