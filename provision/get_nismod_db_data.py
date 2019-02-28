@@ -13,14 +13,26 @@ import configparser
 import csv
 import json
 import os
+import sys
 
 from requests_threads import AsyncSession
 
 
-MIN_YEAR = 2011
-MAX_YEAR = 2020
-POPULATION_DATA_VERSION = 5
 CACHE_PATH = os.path.join(os.path.dirname(__file__), 'cache')
+BUILDINGS_YEAR = 2017
+POPULATION_MIN_YEAR = 2011
+POPULATION_MAX_YEAR = 2020
+POPULATION_DATA_VERSION = 5
+
+
+# Override default to be large, in case of LARGE geometries in csv fields
+FIELD_SIZE_LIMIT = sys.maxsize
+while True:
+    try:
+        csv.field_size_limit(FIELD_SIZE_LIMIT)
+        break
+    except OverflowError:
+        FIELD_SIZE_LIMIT = int(FIELD_SIZE_LIMIT/2)
 
 
 async def main():
@@ -41,21 +53,54 @@ async def main():
     except FileExistsError:
         pass
 
+    # LAD 2011, Census-Merged
     await get_lads(auth)
     lads = load_lads()
+    # OA 2011
     await get_oas(auth, lads)
     process_geographies(lads)
 
-    # await get_population(auth)
-    # process_lad_population()
-    # process_oa_population()
+    # Population
+    await get_population(auth)
+    process_oa_population()
 
+    # Buildings
+    await get_buildings(auth)
+
+
+async def get_buildings(auth):
+    oas_csv_path = os.path.join(CACHE_PATH, 'oas.csv')
+    with open(oas_csv_path, 'r') as oas_fh:
+        oas_r = csv.DictReader(oas_fh)
+        for oa in oas_r:
+            print("Get buildings for", oa['oa_code'])
+            oa_file = os.path.join(
+                CACHE_PATH, oa['lad_code'], 'buildings_{}.json'.format(oa['oa_code']))
+
+            try:
+                os.mkdir(os.path.join(CACHE_PATH, oa['lad_code']))
+            except FileExistsError:
+                pass
+
+            if not os.path.exists(oa_file):
+                r = await session.get(
+                    'https://www.nismod.ac.uk/api/data/mastermap/buildings',
+                    auth=auth,
+                    params={
+                        'scale': 'oa',
+                        'area_codes': oa['oa_code'],
+                        'building_year': BUILDINGS_YEAR
+                    }
+                )
+                oa_data = r.json()
+                with open(oa_file, 'w') as fh:
+                    json.dump(oa_data, fh, indent=2)
 
 
 async def get_lads(auth):
     print("Get lads (2011 Census Merged)")
     lad_file = os.path.join(CACHE_PATH, 'lads.json')
-    if True: #not os.path.exists(lad_file):
+    if not os.path.exists(lad_file):
         r = await session.get(
             'https://www.nismod.ac.uk/api/data/boundaries/lads',
             auth=auth,
@@ -63,7 +108,7 @@ async def get_lads(auth):
         )
         with open(lad_file, 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
-                if chunk: # filter out keep-alive new chunks
+                if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
 
 
@@ -71,7 +116,8 @@ async def get_oas(auth, lads):
     for lad in lads:
         lad_code = lad['lad_code']
 
-        oa_file = os.path.join(CACHE_PATH, 'oas_by_lad', 'oas_{}.json'.format(lad_code))
+        oa_file = os.path.join(CACHE_PATH, 'oas_by_lad',
+                               'oas_{}.json'.format(lad_code))
         try:
             with open(oa_file, 'r') as fh:
                 oa_data = json.load(fh)
@@ -124,25 +170,7 @@ def process_geographies(lads):
 
 async def get_population(auth):
     pop_url = 'https://www.nismod.ac.uk/api/data/households/population_totals'
-    for year in range(MIN_YEAR, MAX_YEAR + 1):
-        print("Get lad population", year)
-        lad_pop_file = get_lad_file(year)
-        if not os.path.exists(lad_pop_file):
-            r = await session.get(
-                pop_url,
-                auth=auth,
-                params={
-                    'scale': 'lad',
-                    'year': year,
-                    'data_version': POPULATION_DATA_VERSION
-                },
-                stream=True
-            )
-            with open(lad_pop_file, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk: # filter out keep-alive new chunks
-                        f.write(chunk)
-
+    for year in range(POPULATION_MIN_YEAR, POPULATION_MAX_YEAR + 1):
         print("Get oa population", year)
         oa_pop_file = get_oa_file(year)
         if not os.path.exists(oa_pop_file):
@@ -158,7 +186,7 @@ async def get_population(auth):
             )
             with open(oa_pop_file, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192):
-                    if chunk: # filter out keep-alive new chunks
+                    if chunk:  # filter out keep-alive new chunks
                         f.write(chunk)
 
 
@@ -170,21 +198,6 @@ def get_lad_file(year):
     return os.path.join(CACHE_PATH, 'lad_population_{}.json'.format(year))
 
 
-def process_lad_population():
-    lad_csv_path = os.path.join(CACHE_PATH, 'lad_population.csv')
-    with open(lad_csv_path, 'w', newline='') as lad_fh:
-        lad_writer = csv.DictWriter(
-            lad_fh,
-            fieldnames=('lad', 'total_population', 'year'),
-            extrasaction='ignore'
-        )
-        lad_writer.writeheader()
-        for year in range(MIN_YEAR, MAX_YEAR + 1):
-            with open(get_lad_file(year), 'r') as year_fh:
-                data = json.load(year_fh)
-                lad_writer.writerows(data)
-
-
 def process_oa_population():
     oa_csv_path = os.path.join(CACHE_PATH, 'oa_population.csv')
     with open(oa_csv_path, 'w', newline='') as oa_fh:
@@ -194,7 +207,7 @@ def process_oa_population():
             extrasaction='ignore'
         )
         oa_writer.writeheader()
-        for year in range(MIN_YEAR, MAX_YEAR + 1):
+        for year in range(POPULATION_MIN_YEAR, POPULATION_MAX_YEAR + 1):
             with open(get_oa_file(year), 'r') as year_fh:
                 data = json.load(year_fh)
                 oa_writer.writerows(data)
