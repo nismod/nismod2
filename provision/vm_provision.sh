@@ -206,6 +206,9 @@ bash -x $base_path/provision/install_energy_supply.sh $base_path
 bash -x $base_path/provision/get_data_transport.sh $base_path
 bash -x $base_path/provision/install_transport.sh $base_path
 
+# ET-Module
+bash -x $base_path/provision/get_data_et_module.sh $base_path
+bash -x $base_path/provision/install_et_module.sh $base_path
 
 #
 # User config
