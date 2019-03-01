@@ -166,10 +166,16 @@ class BaseTransportWrapper(SectorModel):
         population.to_csv(population_filepath)
 
         # GVA
-        base_gva = data_handle.get_base_timestep_data("gva").as_df().reset_index()
+        base_da = data_handle.get_base_timestep_data("gva")
+        base_gva = base_da.as_df().reset_index()
+        # work around smif not overriding source output name
+        base_gva = base_gva.rename(columns={base_da.name: 'gva'})
         base_gva['year'] = data_handle.base_timestep
 
-        current_gva = data_handle.get_data("gva").as_df().reset_index()
+        current_da = data_handle.get_data("gva")
+        current_gva = current_da.as_df().reset_index()
+        # work around smif not overriding source output name
+        current_gva = current_gva.rename(columns={current_da.name: 'gva'})
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
