@@ -15,6 +15,7 @@ import json
 import os
 import sys
 
+from tqdm import tqdm
 from requests_threads import AsyncSession
 
 
@@ -72,8 +73,7 @@ async def get_buildings(auth):
     oas_csv_path = os.path.join(CACHE_PATH, 'oas.csv')
     with open(oas_csv_path, 'r') as oas_fh:
         oas_r = csv.DictReader(oas_fh)
-        for oa in oas_r:
-            print("Get buildings for", oa['oa_code'])
+        for oa in tqdm(oas_r):
             oa_file = os.path.join(
                 CACHE_PATH, oa['lad_code'], 'buildings_{}.json'.format(oa['oa_code']))
 
@@ -118,10 +118,7 @@ async def get_oas(auth, lads):
 
         oa_file = os.path.join(CACHE_PATH, 'oas_by_lad',
                                'oas_{}.json'.format(lad_code))
-        try:
-            with open(oa_file, 'r') as fh:
-                oa_data = json.load(fh)
-        except FileNotFoundError:
+        if not os.path.exists(oa_file):
             print("Get", lad_code)
             r = await session.get(
                 'https://www.nismod.ac.uk/api/data/boundaries/oas_in_lad',
