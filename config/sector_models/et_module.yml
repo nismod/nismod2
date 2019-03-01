@@ -25,12 +25,12 @@ outputs:
   dtype: float
   unit: kW
 parameters:
-- default: ev_scheduling_default.csv
+- default: ../et_module/parameters/ev_scheduling_default.csv
   description: Year until future load profile assignment is fully realised
   dtype: float
   name: yr_until_changed_lp
   units: 1
-- default: ev_scheduling_default.csv
+- default: ../et_module/parameters/ev_scheduling_default.csv
   description: EV charging regime
   dtype: float
   name: load_profile_charging_regime
