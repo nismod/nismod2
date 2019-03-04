@@ -158,7 +158,7 @@ class EDWrapper(SectorModel):
             else:
                 pass
 
-            print("... load temperatuer of year {}".format(simulation_yr))
+            logging.info("... load temperature for year {}".format(simulation_yr))
             t_min = data_handle.get_data('t_min', 2015).as_ndarray()
             t_max = data_handle.get_data('t_max', 2015).as_ndarray()
 
@@ -214,7 +214,7 @@ class EDWrapper(SectorModel):
             'generic_fuel_switch']
 
         for var_name in variable_names:
-            print("... reading in scenaric values for parameter: '{}'".format(var_name))
+            logging.info("... reading in scenaric values for parameter: '{}'".format(var_name))
             param_raw_series = data_handle.get_parameter(var_name).as_df()
             df_raw = self._series_to_df(param_raw_series, var_name)
 
@@ -320,10 +320,7 @@ class EDWrapper(SectorModel):
         service_switches = read_data.service_switch(switches_service_raw)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
-        
-        #_fuel_switches_from_smif = data_handle.get_parameter('fuel_switches').as_df()
-        #print("AA" + str(_fuel_switches_from_smif))
-        #raise Exception("T")
+
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
         # -----------------------------------------
@@ -460,7 +457,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read results from pre_simulate from disc
         # --------------------------------------------------
-        logging.info("... reading in results from before_model_run()")
+        logging.info("... reading in results from before_model_run(): " + str(temp_and_result_path))
         regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "regional_vars.yml"))
         non_regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "non_regional_vars.yml"))
         data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_and_result_path, "fuel_disagg.yml"))
@@ -518,4 +515,4 @@ class EDWrapper(SectorModel):
                 logging.info(" '{}' is not in outputs".format(key_name))
                 raise Exception("Output '{}' is not defined".format(key_name))
 
-        print("----FINISHED WRAPPER-----")
+        logging.info("----Finished Energy Demand Wrapper-----")

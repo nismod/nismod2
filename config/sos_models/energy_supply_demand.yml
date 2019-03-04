@@ -241,9 +241,10 @@ scenario_dependencies:
   source_output: gva_per_sector
   sink: energy_demand_constrained
 scenarios:
-- population
-- es_prices
-- gva
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
 description: A full version of the energy demand - energy supply system-of-systems
   model
 sector_models:

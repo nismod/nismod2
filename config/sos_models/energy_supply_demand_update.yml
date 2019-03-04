@@ -1,7 +1,8 @@
 scenarios:
-- population
-- es_prices
-- gva
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
 model_dependencies:
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
