@@ -1,0 +1,3 @@
+name: generic_switch_number
+description: Points of all 87 gas offtake nodes
+elements: ../energy_demand/dimensions/generic_switch_number.csv

@@ -20,10 +20,6 @@ model_dependencies:
   source_output: residential_electricity_district_heating_electricity
   sink: convert_ed_to_es
 - source: energy_demand_constrained
-  sink_input: residential_gas_stirling_micro_gas
-  source_output: residential_gas_stirling_micro_CHP_gas
-  sink: convert_ed_to_es
-- source: energy_demand_constrained
   sink_input: service_gas_boiler_gas
   source_output: service_gas_boiler_gas
   sink: convert_ed_to_es
@@ -42,10 +38,6 @@ model_dependencies:
 - source: energy_demand_constrained
   sink_input: service_electricity_district_heating_electricity
   source_output: service_electricity_district_heating_electricity
-  sink: convert_ed_to_es
-- source: energy_demand_constrained
-  sink_input: service_gas_stirling_micro_gas
-  source_output: service_gas_stirling_micro_CHP_gas
   sink: convert_ed_to_es
 - source: energy_demand_constrained
   sink_input: industry_gas_boiler_gas
@@ -74,10 +66,6 @@ model_dependencies:
 - source: energy_demand_constrained
   sink_input: industry_biomass_district_heating_biomass
   source_output: industry_biomass_district_heating_biomass
-  sink: convert_ed_to_es
-- source: energy_demand_constrained
-  sink_input: industry_gas_stirling_micro_CHP_gas
-  source_output: industry_gas_stirling_micro_CHP_gas
   sink: convert_ed_to_es
 - source: energy_demand_constrained
   sink_input: residential_gas_non_heating
@@ -140,10 +128,6 @@ model_dependencies:
   source_output: residential_electricity_district_heating_electricity
   sink: aggregate_residential_heatload
 - source: convert_ed_to_es
-  sink_input: residential_gas_stirling_micro_gas
-  source_output: residential_gas_stirling_micro_gas
-  sink: aggregate_residential_heatload
-- source: convert_ed_to_es
   sink_input: service_gas_boiler_gas
   source_output: service_gas_boiler_gas
   sink: aggregate_service_heatload
@@ -162,10 +146,6 @@ model_dependencies:
 - source: convert_ed_to_es
   sink_input: service_electricity_district_heating_electricity
   source_output: service_electricity_district_heating_electricity
-  sink: aggregate_service_heatload
-- source: convert_ed_to_es
-  sink_input: service_gas_stirling_micro_gas
-  source_output: service_gas_stirling_micro_gas
   sink: aggregate_service_heatload
 - source: convert_ed_to_es
   sink_input: residential_gas_non_heating
@@ -198,10 +178,6 @@ model_dependencies:
 - source: convert_ed_to_es
   sink_input: industry_biomass_district_heating_biomass
   source_output: industry_biomass_district_heating_biomass
-  sink: aggregate_gasload
-- source: convert_ed_to_es
-  sink_input: industry_gas_stirling_micro_CHP_gas
-  source_output: industry_gas_stirling_micro_CHP_gas
   sink: aggregate_gasload
 - source: convert_ed_to_es
   sink_input: industry_gas_non_heating
@@ -265,9 +241,10 @@ scenario_dependencies:
   source_output: gva_per_sector
   sink: energy_demand_constrained
 scenarios:
-- population
-- es_prices
-- gva
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
 description: A full version of the energy demand - energy supply system-of-systems
   model
 sector_models:

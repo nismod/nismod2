@@ -18,5 +18,5 @@ variants:
   - name: gva_baseline
     description: Baseline gva for the UK
     data:
-      gva_per_head: ../energy_demand/scenarios/dummy_gva_constant.csv
-      gva_per_sector: ../energy_demand/scenarios/ed_gva_sectors.csv
+      gva_per_head: MISTRAL_pop_gva/data/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
+      gva_per_sector: MISTRAL_pop_gva/data/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv

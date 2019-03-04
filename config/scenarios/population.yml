@@ -11,12 +11,12 @@ variants:
   - name: pop_baseline
     description: Baseline population for the UK
     data:
-      population: uk_population_by_district_codes_Baseline.csv
+      population: MISTRAL_pop_gva/data/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
   - name: pop_high
     description: High population for the UK
     data:
-      population: uk_population_by_district_codes_High.csv
+      population: tbd
   - name: pop_low
     description: Low population for the UK
     data:
-      population: uk_population_by_district_codes_Low.csv
+      population: tbd

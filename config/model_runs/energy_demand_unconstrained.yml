@@ -3,11 +3,12 @@ description: Run energy demand for baseline population scenario
 stamp: '2017-11-07T14:15:00+00:00'
 timesteps:
 - 2015
+- 2030
 - 2050
 sos_model: energy_demand_unconstrained
 decision_module: ''
 scenarios:
-  population: pop_low #pop_low, pop_high, pop_baseline
+  population: pop_low
   gva: gva_baseline
 narratives: {}
 strategies: {}
