@@ -13,30 +13,21 @@ import configparser
 import csv
 import json
 import os
-import sys
+import shutil
 
-from tqdm import tqdm
-from requests_threads import AsyncSession
+import pandas
+import requests
 
 
 CACHE_PATH = os.path.join(os.path.dirname(__file__), 'cache')
-BUILDINGS_YEAR = 2017
+SCENARIOS_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'scenarios')
+PERSISTENT_DATA_PATH = os.path.join(os.path.dirname(__file__), 'persistent_data')
 POPULATION_MIN_YEAR = 2011
 POPULATION_MAX_YEAR = 2020
 POPULATION_DATA_VERSION = 5
 
 
-# Override default to be large, in case of LARGE geometries in csv fields
-FIELD_SIZE_LIMIT = sys.maxsize
-while True:
-    try:
-        csv.field_size_limit(FIELD_SIZE_LIMIT)
-        break
-    except OverflowError:
-        FIELD_SIZE_LIMIT = int(FIELD_SIZE_LIMIT/2)
-
-
-async def main():
+def main():
     # Read connection details
     if 'NISMOD_API_USER' in os.environ and 'NISMOD_API_PASSWORD' in os.environ:
         username = os.environ['NISMOD_API_USER']
@@ -54,124 +45,29 @@ async def main():
     except FileExistsError:
         pass
 
-    # LAD 2011, Census-Merged
-    await get_lads(auth)
-    lads = load_lads()
-    # OA 2011
-    await get_oas(auth, lads)
-    process_geographies(lads)
-
     # Population
-    await get_population(auth)
+    get_population(auth)
     process_oa_population()
+    process_oa_to_lad_population()
 
-    # Buildings
-    await get_buildings(auth)
-
-
-async def get_buildings(auth):
-    oas_csv_path = os.path.join(CACHE_PATH, 'oas.csv')
-    with open(oas_csv_path, 'r') as oas_fh:
-        oas_r = csv.DictReader(oas_fh)
-        for oa in tqdm(oas_r):
-            oa_file = os.path.join(
-                CACHE_PATH, oa['lad_code'], 'buildings_{}.json'.format(oa['oa_code']))
-
-            try:
-                os.mkdir(os.path.join(CACHE_PATH, oa['lad_code']))
-            except FileExistsError:
-                pass
-
-            if not os.path.exists(oa_file):
-                r = await session.get(
-                    'https://www.nismod.ac.uk/api/data/mastermap/buildings',
-                    auth=auth,
-                    params={
-                        'scale': 'oa',
-                        'area_codes': oa['oa_code'],
-                        'building_year': BUILDINGS_YEAR
-                    }
-                )
-                oa_data = r.json()
-                with open(oa_file, 'w') as fh:
-                    json.dump(oa_data, fh, indent=2)
+    # Move to data/scenarios folder
+    shutil.move(
+        os.path.join(CACHE_PATH, 'oa_population.csv'),
+        os.path.join(SCENARIOS_PATH, 'population_nismod_db.v5_oa.csv'),
+    )
+    shutil.move(
+        os.path.join(CACHE_PATH, 'lad_population.csv'),
+        os.path.join(SCENARIOS_PATH, 'population_nismod_db.v5_lad16.csv'),
+    )
 
 
-async def get_lads(auth):
-    print("Get lads (2011 Census Merged)")
-    lad_file = os.path.join(CACHE_PATH, 'lads.json')
-    if not os.path.exists(lad_file):
-        r = await session.get(
-            'https://www.nismod.ac.uk/api/data/boundaries/lads',
-            auth=auth,
-            params={'lad_codes': 'all'}
-        )
-        with open(lad_file, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                if chunk:  # filter out keep-alive new chunks
-                    f.write(chunk)
-
-
-async def get_oas(auth, lads):
-    for lad in lads:
-        lad_code = lad['lad_code']
-
-        oa_file = os.path.join(CACHE_PATH, 'oas_by_lad',
-                               'oas_{}.json'.format(lad_code))
-        if not os.path.exists(oa_file):
-            print("Get", lad_code)
-            r = await session.get(
-                'https://www.nismod.ac.uk/api/data/boundaries/oas_in_lad',
-                auth=auth,
-                params={'lad_codes': lad_code}
-            )
-            oa_data = r.json()
-            with open(oa_file, 'w') as fh:
-                json.dump(oa_data, fh, indent=2)
-
-
-def load_lads():
-    lads_json_path = os.path.join(CACHE_PATH, 'lads.json')
-    with open(lads_json_path, 'r') as in_fh:
-        lads = json.load(in_fh)
-    return lads
-
-
-def process_geographies(lads):
-    lads_csv_path = os.path.join(CACHE_PATH, 'lads.csv')
-    with open(lads_csv_path, 'w', newline='') as out_fh:
-        lad_writer = csv.DictWriter(
-            out_fh,
-            fieldnames=('lad_code', 'name', 'geom'),
-            extrasaction='ignore'
-        )
-        lad_writer.writeheader()
-        lad_writer.writerows(lads)
-
-    oas_json_path = os.path.join(CACHE_PATH, 'oas_by_lad', 'oas_{}.json')
-    oas_csv_path = os.path.join(CACHE_PATH, 'oas.csv')
-
-    with open(oas_csv_path, 'w', newline='') as out_fh:
-        oa_writer = csv.DictWriter(
-            out_fh,
-            fieldnames=('oa_code', 'lad_code', 'geom'),
-            extrasaction='ignore'
-        )
-        oa_writer.writeheader()
-        for lad in lads:
-            lad_code = lad['lad_code']
-            with open(oas_json_path.format(lad_code), 'r') as in_fh:
-                oas = json.load(in_fh)
-                oa_writer.writerows(oas)
-
-
-async def get_population(auth):
+def get_population(auth):
     pop_url = 'https://www.nismod.ac.uk/api/data/households/population_totals'
     for year in range(POPULATION_MIN_YEAR, POPULATION_MAX_YEAR + 1):
         print("Get oa population", year)
-        oa_pop_file = get_oa_file(year)
+        oa_pop_file = get_oa_population_file(year)
         if not os.path.exists(oa_pop_file):
-            r = await session.get(
+            r = requests.get(
                 pop_url,
                 auth=auth,
                 params={
@@ -187,12 +83,8 @@ async def get_population(auth):
                         f.write(chunk)
 
 
-def get_oa_file(year):
+def get_oa_population_file(year):
     return os.path.join(CACHE_PATH, 'oa_population_{}.json'.format(year))
-
-
-def get_lad_file(year):
-    return os.path.join(CACHE_PATH, 'lad_population_{}.json'.format(year))
 
 
 def process_oa_population():
@@ -200,16 +92,45 @@ def process_oa_population():
     with open(oa_csv_path, 'w', newline='') as oa_fh:
         oa_writer = csv.DictWriter(
             oa_fh,
-            fieldnames=('oa', 'total_population', 'year'),
-            extrasaction='ignore'
+            fieldnames=('oa', 'population', 'year')
         )
         oa_writer.writeheader()
         for year in range(POPULATION_MIN_YEAR, POPULATION_MAX_YEAR + 1):
-            with open(get_oa_file(year), 'r') as year_fh:
+            with open(get_oa_population_file(year), 'r') as year_fh:
                 data = json.load(year_fh)
-                oa_writer.writerows(data)
+                oa_writer.writerows({
+                    'oa': d['oa'],
+                    'population': d['total_population'],
+                    'year': d['year']
+                } for d in data)
+
+
+def process_oa_to_lad_population():
+    # read in lookups
+    oa_to_lad = pandas.read_csv(
+        os.path.join(PERSISTENT_DATA_PATH, 'gb_geog_lookup.csv.gz'), compression='infer')
+    lad_to_lad = pandas.read_csv(os.path.join(PERSISTENT_DATA_PATH, 'lad_nmcd_changes.csv'))
+
+    # read in OA population
+    oa_pop = pandas.read_csv(os.path.join(CACHE_PATH, 'oa_population.csv'))
+
+    # merge OA population with lookup, aggregate to LAD
+    lad11_pop = oa_pop.merge(
+        oa_to_lad, left_on='oa', right_on='OA'
+    )[
+        ['oa', 'population', 'year', 'LAD']
+    ].groupby(
+        ['year', 'LAD']
+    ).sum().reset_index()
+
+    # merge LAD11 population with changed codes lookup, output with LAD16 codes
+    lad16_pop = lad11_pop.merge(
+        lad_to_lad[['lad11cd', 'lad16cd']], left_on='LAD', right_on='lad11cd'
+    )[
+        ['year', 'lad16cd', 'population']
+    ]
+    lad16_pop.to_csv(os.path.join(CACHE_PATH, 'lad_population.csv'), index=False)
 
 
 if __name__ == '__main__':
-    session = AsyncSession(n=100)
-    session.run(main)
+    main()

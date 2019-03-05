@@ -3,12 +3,14 @@
 *.prj
 *.dbf
 *.shx
-*.json
 *.geojson
 *.cpg
 *.sbn
 *.sbx
 *.xml
+
+*.json
+*.zip
 
 # Energy supply
 xpauth.xpr
@@ -140,3 +142,4 @@ install/*
 data/*
 tmp/*
 results/*
+provision/cache/*
