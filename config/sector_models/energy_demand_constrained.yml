@@ -1,3 +1,4 @@
+name: energy_demand_constrained
 path: models/energy_demand/run.py
 description: Constrained model configuration
 classname: EDWrapper
@@ -19,6 +20,7 @@ parameters:
   name: generic_fuel_switch
   unit: ''
   dims:
+  - generic_switch_number
   - enduses
   - end_yr
   - param_generic_fuel_switch
@@ -151,7 +153,6 @@ parameters:
   - end_yr
   dtype: float
 # -----------------------------------------------
-name: energy_demand_constrained
 inputs:
 - name: latitude
   unit:
@@ -266,18 +267,6 @@ outputs:
   - lad_uk_2016
   - hourly
   dtype: float
-- name: residential_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_stirling_micro_CHP_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
 - name: residential_hydrogen_fuel_cell_hydrogen
   unit: GW
   dims:
@@ -356,18 +345,6 @@ outputs:
   - lad_uk_2016
   - hourly
   dtype: float
-- name: service_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_stirling_micro_CHP_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
 - name: service_hydrogen_fuel_cell_hydrogen
   unit: GW
   dims:
@@ -441,18 +418,6 @@ outputs:
   - hourly
   dtype: float
 - name: industry_hydrogen_district_heating_fuel_cell
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_gas_stirling_micro_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_stirling_micro_CHP_electricity
   unit: GW
   dims:
   - lad_uk_2016

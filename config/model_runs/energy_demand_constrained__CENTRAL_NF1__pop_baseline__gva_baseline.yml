@@ -1,6 +1,6 @@
 decision_module: ''
 description: ''
-name: energy_demand_constrained__CENTRAL_NF1__pop_low__gva_baseline
+name: energy_demand_constrained__CENTRAL_NF1__pop_baseline__gva_baseline
 narratives:
   smart_meter_p:
   - central_narrative
@@ -20,7 +20,7 @@ narratives:
   - central_narrative
 scenarios:
   gva: gva_baseline
-  population: pop_low
+  population: pop_baseline
   temperature: NF1
   weather_station_coordinates: weather_station_coordinates__NF1
 sos_model: energy_demand_constrained

@@ -14,12 +14,6 @@ inputs:
   - seasonal_week
   unit: MW
   dtype: float
-- name: residential_gas_stirling_micro_gas
-  dims:
-  - energy_hub
-  - seasonal_week
-  unit: MW
-  dtype: float
 - name: residential_electricity_heat_pumps_electricity
   dims:
   - energy_hub

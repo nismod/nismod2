@@ -1,0 +1,30 @@
+description:
+- name: central
+  description: central_scenario
+  data:
+    ev_trip_start: transport_trips.csv
+    ev_trip_elec: transport_trips.csv
+name: ev_transport_trips
+provides:
+- default: ../et_module/scenarios/transport_trips.csv
+  description: The number of electric vehicle trips commencing in each hour
+  dims:
+  - lad_gb_2016
+  - hourly_day
+  dtype: float
+  name: ev_trip_start
+  unit: '1'
+- default: ../et_module/scenarios/transport_trips.csv
+  description: The electric vehicle electricity demanded at origin in each hour
+  dims:
+  - lad_gb_2016
+  - hourly_day
+  dtype: float
+  name: ev_trip_elec
+  unit: kWh
+variants:
+- name: central
+  description: central_scenario
+  data:
+    ev_trip_start: ../et_module/scenarios/transport_trips.csv
+    ev_trip_elec: ../et_module/scenarios/transport_trips.csv

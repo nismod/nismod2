@@ -4,6 +4,7 @@ import os
 import logging
 from collections import defaultdict
 from shapely.geometry import shape, mapping
+import numpy as np
 
 from smif.model.sector_model import SectorModel
 
@@ -11,7 +12,7 @@ from energy_demand import wrapper_model
 from energy_demand.assumptions import strategy_vars_def, general_assumptions
 from energy_demand.main import energy_demand_model
 from energy_demand.basic import basic_functions
-from energy_demand.read_write import (write_data, read_data, data_loader, 
+from energy_demand.read_write import (write_data, read_data, data_loader,
                                       narrative_related)
 
 class EDWrapper(SectorModel):
@@ -157,7 +158,7 @@ class EDWrapper(SectorModel):
             else:
                 pass
 
-            print("... load temperatuer of year {}".format(simulation_yr))
+            logging.info("... load temperature for year {}".format(simulation_yr))
             t_min = data_handle.get_data('t_min', 2015).as_ndarray()
             t_max = data_handle.get_data('t_max', 2015).as_ndarray()
 
@@ -205,15 +206,15 @@ class EDWrapper(SectorModel):
             'f_eff_achieved',
             'generic_enduse_change',
             'heat_recovered',
-            'is_t_base_heating',
             'p_cold_rolling_steel',
             'rs_t_base_heating',
             'ss_t_base_heating',
+            'is_t_base_heating',
             'smart_meter_p',
             'generic_fuel_switch']
 
         for var_name in variable_names:
-            print("... reading in scenaric values for parameter: '{}'".format(var_name))
+            logging.info("... reading in scenaric values for parameter: '{}'".format(var_name))
             param_raw_series = data_handle.get_parameter(var_name).as_df()
             df_raw = self._series_to_df(param_raw_series, var_name)
 
@@ -222,7 +223,7 @@ class EDWrapper(SectorModel):
                 simulation_base_yr=simulation_base_yr,
                 simulation_end_yr=simulation_end_yr,
                 default_streategy_var=default_streategy_vars[var_name],
-                var_name=var_name)     
+                var_name=var_name)
 
         return narrative_params
 
@@ -240,7 +241,7 @@ class EDWrapper(SectorModel):
         path_main = self._get_working_dir()
         config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
-        
+
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
@@ -319,6 +320,7 @@ class EDWrapper(SectorModel):
         service_switches = read_data.service_switch(switches_service_raw)
 
         fuel_switches = read_data.read_fuel_switches(os.path.join(data['local_paths']['path_strategy_vars'], "switches_fuel.csv"), data['enduses'], data['assumptions'].fueltypes, data['assumptions'].technologies)
+
         capacity_switches = read_data.read_capacity_switch(os.path.join(data['local_paths']['path_strategy_vars'], "switches_capacity.csv"))
 
         # -----------------------------------------
@@ -379,7 +381,7 @@ class EDWrapper(SectorModel):
         data['result_paths'] = basic_functions.get_result_paths(temp_and_result_path)
         for path_folder in data['result_paths'].values():
             basic_functions.create_folder(path_folder)
-    
+
         # --------------------------------------------------
         # Read all other data
         # --------------------------------------------------
@@ -442,7 +444,6 @@ class EDWrapper(SectorModel):
             sim_yrs,
             config,
             curr_yr)
-
         data['assumptions'].update('strategy_vars', strategy_vars)
 
         # -----------------------------------------
@@ -456,7 +457,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read results from pre_simulate from disc
         # --------------------------------------------------
-        logging.info("... reading in results from before_model_run()")
+        logging.info("... reading in results from before_model_run(): " + str(temp_and_result_path))
         regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "regional_vars.yml"))
         non_regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "non_regional_vars.yml"))
         data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_and_result_path, "fuel_disagg.yml"))
@@ -503,12 +504,15 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
-        for key_name, result_to_txt in sim_obj.supply_results.items():
-            if key_name in self.outputs:
+        for key_name in self.outputs:
+            if key_name in sim_obj.supply_results.keys():
                 logging.info("...writing `{}` to smif".format(key_name))
-                data_handle.set_results(key_name, result_to_txt)
+                single_result = sim_obj.supply_results[key_name]
+                data_handle.set_results(key_name, single_result)
             else:
-                logging.info(" '{}' is not in ouptuts".format(key_name))
+                logging.info(" '{}' is not provided and thus replaced with empty values".format(key_name))
+                #data_handle.set_results(key_name, np.zeros((391, 8760)))
+                logging.info(" '{}' is not in outputs".format(key_name))
                 raise Exception("Output '{}' is not defined".format(key_name))
 
-        print("----FINISHED WRAPPER-----")
+        logging.info("----Finished Energy Demand Wrapper-----")
