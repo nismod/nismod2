@@ -43,18 +43,18 @@ crit_temp_min_max = True
 constant_weather = False
 
 [DATA_PATHS]
-local_path_datafolder = $base_path/data/energy_demand/energy_demand_minimal
-path_strategy_vars = $base_path/data/energy_demand/energy_demand_minimal/00_user_defined_variables
+local_path_datafolder = $base_path/data/energy_demand
+path_strategy_vars = $base_path/data/energy_demand/00_user_defined_variables
 #ONS principal projection
-path_population_data_for_disaggregation_LAD = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050.csv
+path_population_data_for_disaggregation_LAD = $base_path/data/energy_demand/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050.csv
 #ONS principal projection
-folder_raw_carbon_trust = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/G_Carbon_Trust_advanced_metering_trial/
-path_population_data_for_disaggregation_MSOA = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050_MSOA_lad.csv
-folder_path_weater_stations = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/A-temperature_data/cleaned_weather_stations.csv
-path_floor_area_virtual_stock_by = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/K-floor_area/floor_area_LAD_latest.csv
+folder_raw_carbon_trust = $base_path/data/energy_demand/_raw_data/G_Carbon_Trust_advanced_metering_trial/
+path_population_data_for_disaggregation_MSOA = $base_path/data/energy_demand/_raw_data/J-population_disagg_by/uk_pop_principal_2015_2050_MSOA_lad.csv
+folder_path_weater_stations = $base_path/data/energy_demand/_raw_data/A-temperature_data/cleaned_weather_stations.csv
+path_floor_area_virtual_stock_by = $base_path/data/energy_demand/_raw_data/K-floor_area/floor_area_LAD_latest.csv
 path_assumptions_db = $base_path/data/energy_demand/_processed_data/assumptions_from_db
 data_processed = $base_path/data/energy_demand/_processed_data
-lad_shapefile = $base_path/data/energy_demand/energy_demand_minimal/_raw_data/C_LAD_geography/same_as_pop_scenario/lad_2016_uk_simplified.shp
+lad_shapefile = $base_path/data/energy_demand/_raw_data/C_LAD_geography/same_as_pop_scenario/lad_2016_uk_simplified.shp
 path_post_installation_data = $base_path/data/energy_demand/_processed_data
 weather_data = /raw_data/A-temperature_data/cleaned_weather_stations_data
 load_profiles = $base_path/data/energy_demand/_processed_data/load_profiles
