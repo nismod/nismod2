@@ -9,6 +9,9 @@
 *.sbx
 *.xml
 
+*.json
+*.zip
+
 # Energy supply
 xpauth.xpr
 *.tar.gz
@@ -139,3 +142,4 @@ install/*
 data/*
 tmp/*
 results/*
+provision/cache/*

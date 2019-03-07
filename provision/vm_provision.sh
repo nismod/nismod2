@@ -156,6 +156,9 @@ pip install psycopg2-binary pytest
 # Install SFTP library to access NISMOD FTP
 pip install pysftp
 
+# Further requirements for provision python scripts
+pip install requests pandas
+
 
 #
 # Download data and install models
