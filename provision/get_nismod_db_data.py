@@ -68,11 +68,11 @@ def main():
         dtype='int'
     )
 
-    lads = list(lad_pop.lad16cd.unique())
+    lads = list(lad_pop.lad_gb_2016.unique())
     lad_spec = Spec(
         name='population',
-        dims=['timestep', 'lad16cd'],
-        coords={'lad16cd': lads, 'timestep': years},
+        dims=['timestep', 'lad_gb_2016'],
+        coords={'lad_gb_2016': lads, 'timestep': years},
         dtype='int'
     )
 
@@ -158,7 +158,9 @@ def process_oa_to_lad_population():
         lad_to_lad[['lad11cd', 'lad16cd']], left_on='LAD', right_on='lad11cd'
     )[
         ['timestep', 'lad16cd', 'population']
-    ]
+    ].rename(columns={
+        'lad16cd': 'lad_gb_2016'
+    })
     lad16_pop.to_csv(os.path.join(CACHE_PATH, 'lad_population.csv'), index=False)
 
 

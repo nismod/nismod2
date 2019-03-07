@@ -1,14 +1,21 @@
 name: population
 description: UK population, total people
 provides:
-  - name: population
+  - name: population_lad16
     description: ''
     dims:
       - lad_gb_2016
-    dtype: float
+    dtype: int
+    unit: people
+  - name: population_oa
+    description: ''
+    dims:
+      - oa
+    dtype: int
     unit: people
 variants:
   - name: pop_baseline
     description: Baseline population for England, Scotland and Wales
     data:
-      population: population_nismod_db.v5_lad16.csv
+      population_lad16: population_nismod_db.v5_lad16.csv
+      population_oa: population_nismod_db.v5_oa.csv
