@@ -1,4 +1,4 @@
-name,represents
+name,interval
 1,"[['PT0H', 'PT1H']]"
 2,"[['PT1H', 'PT2H']]"
 3,"[['PT2H', 'PT3H']]"

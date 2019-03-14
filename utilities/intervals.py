@@ -7,7 +7,7 @@ The transport simulation model models a single average day.  This single day
 is then mapped to the 365 days in the year.
 
 - name: "1"
-  represents: [
+  interval: [
         ["P0D", "P1D"],
         ["P1D", "P2D"]
                ]
@@ -20,7 +20,7 @@ The digital communications model doesn't have an internal time-interval, and
 models the entire year of operation of the communications network.
 
 - name: "1"
-  represents: [["P0D", "P365D"]]
+  interval: [["P0D", "P365D"]]
 
 Energy Supply
 -------------
@@ -46,7 +46,7 @@ with midnight to 1am on the 1st Jan, hour 0, and 23:00 to midnight on 31st Decem
 The problem is to map repeating intervals onto the year.
 
 - name: 1,
-  represents: [[PT0H,PT1H], [PT168H, PT169H]...]
+  interval: [[PT0H,PT1H], [PT168H, PT169H]...]
 
 There are 52 weeks in the year. 52 weeks of 4 seasons of 13 weeks each.
 Each week contains 168 hours.
@@ -61,7 +61,7 @@ import pytest
 from collections import OrderedDict
 
 def make_energy_supply():
-    """Maps each of hours in the 52 weeks of the year to the 168 hours of a 
+    """Maps each of hours in the 52 weeks of the year to the 168 hours of a
     representative week in each of the four seasons
 
     1) Dec/Jan/Feb - week 43 - 3 - hours 7224 - 8759; 0 - 671;
@@ -100,8 +100,8 @@ def make_energy_supply():
                 results[str(hour_id)] = [["PT{}H".format(smif_hour), "PT{}H".format(smif_hour + 1)]]
 
         new_results = []
-        for name, represents in results.items():
-            new_results.append({'name': name, 'represents': represents})
+        for name, interval in results.items():
+            new_results.append({'name': name, 'interval': interval})
 
     return new_results
 
@@ -144,7 +144,7 @@ def make_hourly():
         end_hour = hour + 1
         end_code = "PT{}H".format(int(end_hour))
         results.append({'name': name,
-                        'represents': [[start_code, end_code]]})
+                        'interval': [[start_code, end_code]]})
 
     return results
 
@@ -238,7 +238,7 @@ def create_water_supply_periods():
         results.append({'id': name,
                         'start': start_code,
                         'end': end_code})
-    return results    
+    return results
 
 
 def create_transport_periods():
@@ -279,7 +279,7 @@ def write_csv_file(interval_data, filename):
         The name of the file to produce
     """
     with open(filename, 'w+') as csvfile:
-        headers = ['name', 'represents']
+        headers = ['name', 'interval']
         writer = DictWriter(csvfile, headers)
         writer.writeheader()
         writer.writerows(interval_data)
@@ -290,7 +290,7 @@ if __name__ == '__main__':
     # write_file(interval_data, './test/model_configurations/transport_minimal/time_intervals.csv')
 
     # interval_data = create_water_supply_periods()
-    # write_file(interval_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')    
+    # write_file(interval_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')
 
     interval_data = make_energy_supply()
     write_csv_file(interval_data, '../data/dimensions/seasonal_week.csv')
@@ -305,14 +305,13 @@ class TestEnergySupplyIntervals:
         actual = make_energy_supply()
         print(actual[0])
         assert actual[0]['name'] == '1'
-        actual_intervals = actual[0]['represents']
+        actual_intervals = actual[0]['interval']
         assert isinstance(actual_intervals, list)
         assert actual_intervals[0] == ['PT0H', 'PT1H']
-        assert actual[167]['represents'][0] == ['PT167H', 'PT168H']
-        assert len(actual[167]['represents']) == 13
+        assert actual[167]['interval'][0] == ['PT167H', 'PT168H']
+        assert len(actual[167]['interval']) == 13
         assert len(actual) == 672
 
         expected = [['PT0H', 'PT1H'], ['PT168H', 'PT169H'], ['PT336H', 'PT337H'], ['PT504H', 'PT505H'], ['PT7224H', 'PT7225H'], ['PT7392H', 'PT7393H'], ['PT7560H', 'PT7561H'], ['PT7728H', 'PT7729H'], ['PT7896H', 'PT7897H'], ['PT8064H', 'PT8065H'], ['PT8232H', 'PT8233H'], ['PT8400H', 'PT8401H'], ['PT8568H', 'PT8569H'], ['PT8736H', 'PT8737H']]
 
         assert (actual_intervals) == (expected)
-
