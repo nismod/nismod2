@@ -52,13 +52,15 @@ There are 52 weeks in the year. 52 weeks of 4 seasons of 13 weeks each.
 Each week contains 168 hours.
 
 """
-
-from datetime import date, timedelta, datetime
+import json
 from calendar import monthrange
-from yaml import load, dump
-from itertools import cycle
-import pytest
 from collections import OrderedDict
+from csv import DictWriter
+from datetime import datetime
+from itertools import cycle
+
+from yaml import dump
+
 
 def make_energy_supply():
     """Maps each of hours in the 52 weeks of the year to the 168 hours of a
@@ -130,7 +132,6 @@ def get_season_of_hour(hour):
             return season
         else:
             pass
-    return season
 
 
 def make_hourly():
@@ -218,10 +219,11 @@ def first_day_of_month(month):
 
     delta = first_day - beginning_of_year
 
-    SECONDS_PER_MINUTE = 60
-    MINUTES_PER_HOUR = 60
+    seconds_per_minute = 60
+    minutes_per_hour = 60
 
-    return delta.total_seconds() / (SECONDS_PER_MINUTE * MINUTES_PER_HOUR)
+    return delta.total_seconds() / (seconds_per_minute * minutes_per_hour)
+
 
 def number_days_in(month):
     """Find number of days in a month
@@ -252,7 +254,6 @@ def create_transport_periods():
                         'end': end_code})
     return results
 
-from csv import DictWriter
 
 def write_yaml_file(interval_data, filename):
     """Writes the period configuration structure into a yaml file
@@ -278,25 +279,31 @@ def write_csv_file(interval_data, filename):
     filename: str
         The name of the file to produce
     """
-    with open(filename, 'w+') as csvfile:
+    with open(filename, 'w+', newline='') as csvfile:
         headers = ['name', 'interval']
         writer = DictWriter(csvfile, headers)
         writer.writeheader()
-        writer.writerows(interval_data)
+        writer.writerows(
+            {
+                'name': i['name'],
+                'interval': json.dumps(i['interval'])
+            } for i in interval_data
+        )
 
 if __name__ == '__main__':
 
-    # interval_data = create_transport_periods()
-    # write_file(interval_data, './test/model_configurations/transport_minimal/time_intervals.csv')
+    # INTERVAL_DATA = create_transport_periods()
+    # write_file(INTERVAL_DATA, './test/model_configurations/transport_minimal/time_intervals.csv')
 
-    # interval_data = create_water_supply_periods()
-    # write_file(interval_data, './test/model_configurations/water_supply_minimal/time_intervals.csv')
+    # INTERVAL_DATA = create_water_supply_periods()
+    # write_file(INTERVAL_DATA, './test/model_configurations/water_supply_minimal/time_intervals.csv')
 
-    interval_data = make_energy_supply()
-    write_csv_file(interval_data, '../data/dimensions/seasonal_week.csv')
+    INTERVAL_DATA = make_energy_supply()
+    write_csv_file(INTERVAL_DATA, 'seasonal_week.csv')
 
-    interval_data = make_hourly()
-    write_csv_file(interval_data, '../data/dimensions/hourly_intervals.csv')
+    INTERVAL_DATA = make_hourly()
+    write_csv_file(INTERVAL_DATA, 'hourly_intervals.csv')
+
 
 class TestEnergySupplyIntervals:
 

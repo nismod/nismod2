@@ -9,6 +9,7 @@ Here, a single day of 24 hours represents the whole year, so e.g. 'MIDNIGHT' map
 onto the time from 00:00-01:00 for each of the 365 days of the year.
 """
 import csv
+import json
 from collections import defaultdict
 
 def main():
@@ -40,7 +41,6 @@ def main():
     ]
 
     results = defaultdict(list)
-    [results[h] for h in hour_ids]
 
     with open('annual_day_hours.csv', 'w', newline='') as fh:
         w = csv.writer(fh)
@@ -58,7 +58,7 @@ def main():
 
         for name, interval in results.items():
             w.writerow((
-                name, interval
+                name, json.dumps(interval)
             ))
 
 if __name__ == '__main__':
