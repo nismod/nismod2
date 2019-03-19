@@ -51,15 +51,19 @@ class WaterWrapper(SectorModel):
         config = configparser.ConfigParser()
         config.read(config_file_path)
 
-        data_dir = config['PATHS']['path_local_data']
+        data_dir = '/vagrant/data/water_supply'
 
-        wathnet = os.path.join(data_dir, config['FILES']['wathnet_exe'])
+        wathnet_exe = 'w5_console.exe'
+        national_model = 'National_Model.wat'
+        nodal_file = 'wathnet.nodal'
+
+        wathnet = os.path.join(data_dir, wathnet_exe)
         assert(os.path.isfile(wathnet))
 
-        sysfile = os.path.join(data_dir, config['FILES']['national_model'])
+        sysfile = os.path.join(data_dir, national_model)
         assert(os.path.isfile(sysfile))
 
-        nodalfile = os.path.join(data_dir, config['FILES']['nodal_file'])
+        nodalfile = os.path.join(data_dir, nodal_file)
         assert(os.path.isfile(nodalfile))
 
         subprocess.call([
