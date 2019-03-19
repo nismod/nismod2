@@ -42,32 +42,29 @@ class WaterWrapper(SectorModel):
         """
 
         model_dir = os.path.dirname(os.path.realpath(__file__))
+        exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
 
-        wathnet_exe = 'w5_console.exe'
-        national_model = 'National_Model.wat'
-        nodal_file = self.prepare_nodal(nodal_dir)
-
-        wathnet = os.path.join(model_dir, wathnet_exe)
+        wathnet = os.path.join(exe_dir, 'w5_console.exe')
         assert(os.path.isfile(wathnet))
 
-        sysfile = os.path.join(model_dir, national_model)
+        sysfile = os.path.join(exe_dir, 'National_Model.wat')
         assert(os.path.isfile(sysfile))
 
-        nodalfile = os.path.join(model_dir, nodal_file)
-        assert(os.path.isfile(nodalfile))
+        nodal_file = self.prepare_nodal(nodal_dir)
+        assert(os.path.isfile(nodal_file))
 
         subprocess.call([
             wathnet,
             '-sysfile={}'.format(sysfile),
-            '-nodalfile={}'.format(nodalfile),
+            '-nodalfile={}'.format(nodal_file),
             '-output=RA',
         ])
 
-        arc_flows = os.path.join(model_dir, 'National_Model_arcFlow.csv')
+        arc_flows = os.path.join(exe_dir, 'National_Model_arcFlow.csv')
         assert(os.path.isfile(arc_flows))
 
-        res_vols = os.path.join(model_dir, 'National_Model_reservoirEndVolume.csv')
+        res_vols = os.path.join(exe_dir, 'National_Model_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols))
 
         arc_flows_df = pd.read_csv(
@@ -84,14 +81,15 @@ class WaterWrapper(SectorModel):
             usecols=lambda col: True  # might want to subset columns
         )
 
-        print(arc_flows_df)
-        print(res_vols_df)
+        # print(arc_flows_df)
+        # print(res_vols_df)
 
         # Need to decide what to do here...
 
         # data_handle.set_results('v2g_g2v_capacity', actual_v2g_capacity)
 
-    def prepare_nodal(self, nodal_dir):
+    @staticmethod
+    def prepare_nodal(nodal_dir):
         """Generates the nodal file necessary for the Wathnet model run.
 
         Arguments
