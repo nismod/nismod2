@@ -9,16 +9,18 @@ source <(grep = <(grep -A3 "\[water-supply\]" $base_path/provision/config.ini))
 # Locations for the git repo (temporary) and the nodal-related files
 repo_dir=$local_dir/repo
 nodal_dir=$local_dir/nodal
+exe_dir=$local_dir/exe
 
 # Clone repo and copy necessary files to the model directory
 mkdir -p $repo_dir
 git clone --depth 1 git@github.com:nismod/water_supply.git $repo_dir || exit "$?"
 
-cp $repo_dir/wathnet/w5_console.exe $local_dir
-cp $repo_dir/models/National_Model.wat $local_dir
+mkdir -p $exe_dir
+cp $repo_dir/wathnet/w5_console.exe $exe_dir
+cp $repo_dir/models/National_Model.wat $exe_dir
 
 # Seems to be necessary to add execution to the wathnet exe
-chmod +x $repo_dir/wathnet/w5_console.exe
+chmod +x $exe_dir/w5_console.exe
 
 # Copy files needed for creating nodal file. This will be superseded by data being fed directly.
 mkdir -p $nodal_dir
