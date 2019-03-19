@@ -17,6 +17,9 @@ git clone --depth 1 git@github.com:nismod/water_supply.git $repo_dir || exit "$?
 cp $repo_dir/wathnet/w5_console.exe $local_dir
 cp $repo_dir/models/National_Model.wat $local_dir
 
+# Seems to be necessary to add execution to the wathnet exe
+chmod +x $repo_dir/wathnet/w5_console.exe
+
 # Copy files needed for creating nodal file. This will be superseded by data being fed directly.
 mkdir -p $nodal_dir
 cp $local_dir/repo/scripts/preprocessing/prepare_nodal.py $nodal_dir
