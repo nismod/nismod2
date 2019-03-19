@@ -2,6 +2,6 @@ vkm=vehicle*kilometre
 PCU=people*vehicle
 vehicles = [flow] = vehicle
 lane = [capacity]
-mcm = 10.90135 * GW
+mcm = 10.901353 * GW
 GBP = [currency] = £
 people = [population] = capita
