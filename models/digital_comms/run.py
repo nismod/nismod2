@@ -102,29 +102,22 @@ class DigitalCommsWrapper(SectorModel):
 
     @cpuprofile
     @memprofile
-    def simulate(self, data):
+    def simulate(self, data_handle : smif.data_layer.DataHandle):
         """Implement smif.SectorModel simulate
         """
         # -----
         # Start
         # -----
-        data_handle = data
+        data_handle = data_handle
         now = data_handle.current_timestep
         self.logger.info("DigitalCommsWrapper received inputs in %s", now)
 
         # Set global parameters
         technology_strategy = data_handle.get_parameter('technology_strategy').data
 
-
-        technology = technology_strategy.split('_', 1)[0]
-        policy = technology_strategy.split('_', 1)[1]
-
         # -----------------------
         # Get scenario adoption rate
         # -----------------------
-        print("-------------------")
-        print("Running", technology, policy, data_handle.current_timestep)
-        print("-------------------")
         annual_adoption_rate = data_handle.get_data('adoption')
         adoption_desirability = [
             premise
@@ -136,7 +129,6 @@ class DigitalCommsWrapper(SectorModel):
             len(adoption_desirability) / len(total_premises) * 100)
         percentage_annual_increase = annual_adoption_rate - adoption_desirability_percentage
         percentage_annual_increase = round(float(percentage_annual_increase), 1)
-        print("* {} annual_adoption_rate is {} %".format(technology, percentage_annual_increase))
 
         # -----------------------
         # Run fixed network model
@@ -148,12 +140,8 @@ class DigitalCommsWrapper(SectorModel):
 
         adoption_cap = len(premises_adoption_desirability_ids) + \
             sum(getattr(premise, technology) for premise in self.system._premises)
-        # print("// length of premises_adoption_desirability_ids is {}".format(
-        #   len(premises_adoption_desirability_ids)+1))
-        # print("// sum of premises by tech {}".format(
-        #   sum(getattr(premise, technology) for premise in self.system._premises)))
-        # print("// adoption_cap is {}".format(adoption_cap))
 
+        # TODO: Move this into decision module
         self.logger.info("DigitalCommsWrapper - Decide interventions")
         interventions = decide_interventions(
             self.system,
@@ -173,6 +161,7 @@ class DigitalCommsWrapper(SectorModel):
         # -------------
         # Write outputs
         # -------------
+        # TODO: Change this into set_results calls
         interventions_lut = {intervention[0]: intervention for intervention in interventions}
 
         distribution_upgrades = np.empty(
