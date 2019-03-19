@@ -1,8 +1,8 @@
 """Water supply model
 """
-import configparser
 import os
 import subprocess
+import sys
 
 import numpy as np
 import pandas as pd
@@ -31,7 +31,7 @@ class WaterWrapper(SectorModel):
         pass
 
     def simulate(self, data_handle):
-        """Runs the Energy Demand model for one `timestep`
+        """Runs the water supply model.
 
         Arguments
         ---------
@@ -39,31 +39,22 @@ class WaterWrapper(SectorModel):
             A dictionary containing all parameters and model inputs defined in
             the smif configuration by name
 
-        Returns
-        =======
-        et_module_out : dict
-            Outputs of et_module
         """
 
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        config_file_path = os.path.join(base_path, 'wrapperconfig.ini')
-
-        config = configparser.ConfigParser()
-        config.read(config_file_path)
-
-        data_dir = '/vagrant/data/water_supply'
+        model_dir = os.path.dirname(os.path.realpath(__file__))
+        nodal_dir = os.path.join(model_dir, 'nodal')
 
         wathnet_exe = 'w5_console.exe'
         national_model = 'National_Model.wat'
-        nodal_file = 'wathnet.nodal'
+        nodal_file = self.prepare_nodal(nodal_dir)
 
-        wathnet = os.path.join(data_dir, wathnet_exe)
+        wathnet = os.path.join(model_dir, wathnet_exe)
         assert(os.path.isfile(wathnet))
 
-        sysfile = os.path.join(data_dir, national_model)
+        sysfile = os.path.join(model_dir, national_model)
         assert(os.path.isfile(sysfile))
 
-        nodalfile = os.path.join(data_dir, nodal_file)
+        nodalfile = os.path.join(model_dir, nodal_file)
         assert(os.path.isfile(nodalfile))
 
         subprocess.call([
@@ -73,10 +64,10 @@ class WaterWrapper(SectorModel):
             '-output=RA',
         ])
 
-        arc_flows = os.path.join(data_dir, 'National_Model_arcFlow.csv')
+        arc_flows = os.path.join(model_dir, 'National_Model_arcFlow.csv')
         assert(os.path.isfile(arc_flows))
 
-        res_vols = os.path.join(data_dir, 'National_Model_reservoirEndVolume.csv')
+        res_vols = os.path.join(model_dir, 'National_Model_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols))
 
         arc_flows_df = pd.read_csv(
@@ -99,6 +90,51 @@ class WaterWrapper(SectorModel):
         # Need to decide what to do here...
 
         # data_handle.set_results('v2g_g2v_capacity', actual_v2g_capacity)
+
+    def prepare_nodal(self, nodal_dir):
+        """Generates the nodal file necessary for the Wathnet model run.
+
+        Arguments
+        ---------
+        nodal_dir : str
+            Path to the directory containing the necessary files for preparing the nodal file.
+
+        Returns
+        =======
+        output_file : str
+            The path to the generated nodal file
+        """
+
+        # Check necessary files exist
+        prepare_nodal = os.path.join(nodal_dir, 'prepare_nodal.py')
+        print(prepare_nodal)
+        assert (os.path.isfile(prepare_nodal))
+
+        flow_file = os.path.join(nodal_dir, 'National_WRSM_NatModel_logNSE_obs_11018_1.txt')
+        assert (os.path.isfile(flow_file))
+
+        demand_file = os.path.join(nodal_dir, '001_daily.csv')
+        assert (os.path.isfile(demand_file))
+
+        catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
+        assert (os.path.isfile(catchment_file))
+
+        missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
+        assert (os.path.isfile(missing_data_file))
+
+        output_file = os.path.join(nodal_dir, 'wathnet.nodal')
+
+        subprocess.call([
+            sys.executable, prepare_nodal,
+            '--FlowFile', flow_file,
+            '--DemandFile', demand_file,
+            '--CatchmentFile', catchment_file,
+            '--MissingDataFile', missing_data_file,
+            '--OutputFile', output_file,
+        ])
+
+        assert(os.path.isfile(output_file))
+        return output_file
 
 
 if __name__ == '__main__':
