@@ -56,11 +56,8 @@ class RemapEnergyHubToGasNode(SectorModel):
         gasload_eh = data_handle.get_data('gasload')
         nismod_dir = os.path.join(os.path.dirname(__file__), '..')
         remap_file = os.path.join(
-            nismod_dir, 'data', 'energy_supply', 'data', '_GasLoadMap.csv')
+            nismod_dir, 'data', 'energy_supply', 'database_full', '_GasLoadMap.csv')
 
         gasload_nodes = remap_gas(gasload_eh, remap_file)
 
         data_handle.set_results('gasload', gasload_nodes)
-
-    def extract_obj(self, arg):
-        pass
