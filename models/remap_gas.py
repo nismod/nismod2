@@ -53,7 +53,7 @@ class RemapEnergyHubToGasNode(SectorModel):
     def simulate(self, data_handle):
         """Remaps energy demand from energy hubs to gas nodes
         """
-        gasload_eh = data_handle.get_data('gasload')
+        gasload_eh = data_handle.get_data('gasload').as_ndarray()
         nismod_dir = os.path.join(os.path.dirname(__file__), '..')
         remap_file = os.path.join(
             nismod_dir, 'data', 'energy_supply', 'database_full', '_GasLoadMap.csv')
