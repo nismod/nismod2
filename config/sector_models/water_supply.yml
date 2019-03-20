@@ -1,0 +1,14 @@
+classname: WaterWrapper
+description: Water supply model
+initial_conditions: []
+inputs: []
+interventions: []
+name: water_supply
+outputs:
+- name: water_supply_arcs
+  dims:
+  - water_supply_arcs
+  dtype: float
+  unit: 'TBA'
+parameters: []
+path: models/water_supply/run.py
