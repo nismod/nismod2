@@ -6,7 +6,11 @@ scenarios:
   adoption: fttp_baseline_adoption
 sos_model: digital_comms_fixed_only
 stamp: '2018-05-01T12:36:34.374Z'
-strategies: []
+strategies:
+- type: rule-based
+  description: reduce emissions
+  path: planning/digital_decisions.py
+  classname: DigitalDecisions
 timesteps:
 - 2019
 - 2020
