@@ -21,7 +21,7 @@ narratives:
     description: Central assumptions
     name: progression_narrative
   - data:
-      air_leakage: ../energy_demand/narratives/air_leakage__multivector.csv
+      air_leakage: ../energy_demand/narratives/air_leakage__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -43,7 +43,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      assump_diff_floorarea_pp: ../energy_demand/narratives/assump_diff_floorarea_pp__multivector.csv
+      assump_diff_floorarea_pp: ../energy_demand/narratives/assump_diff_floorarea_pp__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -65,7 +65,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      cooled_floorarea: ../energy_demand/narratives/cooled_floorarea__multivector.csv
+      cooled_floorarea: ../energy_demand/narratives/cooled_floorarea__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -87,7 +87,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      dm_improvement: ../energy_demand/narratives/dm_improvement__multivector.csv
+      dm_improvement: ../energy_demand/narratives/dm_improvement__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -109,7 +109,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector.csv
+      f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -131,7 +131,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector.csv
+      generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -153,7 +153,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      heat_recovered: ../energy_demand/narratives/heat_recovered__multivector.csv
+      heat_recovered: ../energy_demand/narratives/heat_recovered__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: Change in heating
@@ -183,9 +183,9 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector.csv
-      ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector.csv
-      rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector.csv
+      is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multi_vector.csv
+      ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multi_vector.csv
+      rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -207,7 +207,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      p_cold_rolling_steel: ../energy_demand/narratives/p_cold_rolling_steel__multivector.csv
+      p_cold_rolling_steel: ../energy_demand/narratives/p_cold_rolling_steel__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -229,7 +229,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector.csv
+      smart_meter_p: ../energy_demand/narratives/smart_meter_p__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -251,7 +251,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector.csv
+      generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 - description: ''
@@ -273,7 +273,7 @@ narratives:
     description: progression assumptions
     name: progression_narrative
   - data:
-      switches_service: ../energy_demand/narratives/switches_service__multivector.csv
+      switches_service: ../energy_demand/narratives/switches_service__multi_vector.csv
     description: multivector assumptions
     name: multivector_narrative
 description: The future demand for energy in the UK
