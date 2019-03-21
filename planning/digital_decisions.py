@@ -4,6 +4,10 @@ from smif.decision.decision import RuleBased
 from smif.data_layer.data_array import DataArray
 from logging import getLogger
 import pandas as pd
+from typing import Dict, List
+
+from digital_comms.fixed_network.interventions import decide_interventions
+from digital_comms.fixed_network.adoption import update_adoption_desirability
 
 
 class DigitalDecisions(RuleBased):
@@ -19,7 +23,24 @@ class DigitalDecisions(RuleBased):
         register = config['register']
         return DigitalDecisions(timesteps, register)
 
-    def get_decision(self, data_handle):
+    def get_decision(self, data_handle) -> List[Dict]:
+        """Return decisions for a given timestep and decision iteration
+
+        Parameters
+        ----------
+        results_handle : smif.data_layer.data_handle.ResultsHandle
+
+        Returns
+        -------
+        list of dict
+
+        Examples
+        --------
+        >>> register = {'intervention_a': {'capital_cost': {'value': 1234}}}
+        >>> dm = DecisionModule([2010, 2015], register)
+        >>> dm.get_decision(results_handle)
+        [{'name': 'intervention_a', 'build_year': 2010}])
+        """
 
         # Get the technology strategy parameter - this should consist of a string
         # which describes the policy and
@@ -29,7 +50,11 @@ class DigitalDecisions(RuleBased):
         # -----------------------
         # Get scenario adoption rate
         # -----------------------
-        annual_adoption_rate = data_handle.get_data('adoption').data
+        # annual_adoption_rate = data_handle.get_data('adoption').data
+
+        distributions = data_handle.get_data('distributions')
+
+        annual_adoption_rate = 40
 
         # get adoption desirability from previous timestep
         adoption_desirability = [
@@ -68,7 +93,7 @@ class DigitalDecisions(RuleBased):
 
         interventions = decide_interventions(
             self.system,
-            now,
+            data_handle.current_timestep,
             technology,
             policy,
             data_handle.get_parameter('annual_budget').data,

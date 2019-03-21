@@ -4,13 +4,10 @@ import configparser
 import csv
 import os
 
-
 import fiona  # type: ignore
 import numpy as np  # type: ignore
 
 from digital_comms.fixed_network.model import NetworkManager
-from digital_comms.fixed_network.interventions import decide_interventions
-from digital_comms.fixed_network.adoption import update_adoption_desirability
 from digital_comms.runner import read_csv, read_assets, read_links
 
 from smif.model.sector_model import SectorModel  # type: ignore
