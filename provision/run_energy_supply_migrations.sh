@@ -5,7 +5,8 @@
 #
 
 # Usage, e.g. from nismod repository root:
-#   bash ./provision/run_energty_supply_migrations.sh . full
+#    bash provision/run_energy_supply_migrations.sh . minimal
+#    bash provision/run_energy_supply_migrations.sh . full
 base_path=$1
 minimal_or_full=$2
 
