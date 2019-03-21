@@ -1,0 +1,893 @@
+name
+Replicate
+Day
+Year
+Ullswater to Haweswater
+Swindale to Haweswater
+Thirlmere spill
+Thirlmere inflow
+Stream_00008
+Conduit_00009
+Conduit_00010
+Conduit_00011
+Conduit_00011.1
+Lancaster
+LCUS
+LCUS Above MRF
+Franklaw BHs
+Stream_00020
+Thorneybank
+Conduit_00022
+Hodder WTW
+Conduit_00025
+Link71
+Conduit_00027
+Link52
+Link58
+Conduit_00032
+LCUS South
+Stream_00035
+Stream_00037
+Conduit_00038
+Gravity
+Stream_00042
+Conduit_00044
+Stream_00045
+Stream_00046
+Stream_00047
+Stream_00048
+Conduit_00052
+Conduit_00053
+Stream_00054
+Stream_00055
+Rivington Diesel Pump
+Conduit_00058
+Stream_00060
+Bolton WTW
+Stream_00062
+Conduit_00063
+Stream_00064
+Max
+Min
+Conduit_00067
+Conduit_00068
+Conduit_00068.1
+Pump
+Rivington to TA
+Conduit_00072
+Conduit_00072.1
+WELM Pump
+WELM Gravity
+Conduit_00075
+Conduit_00076
+Conduit_00077
+Godley WTW
+Conduit_00079
+Conduit_00081
+Conduit_00082
+Stream_00083
+Stream_00084
+Stream_00086
+Alwen compensation flow
+Brenig Regulation
+Conduit_00095
+Conduit_00098
+Max.1
+Min.1
+Oswestry WTW
+Lake Vyrnwy
+Conduit_00108
+Conduit_00109
+Alwen Spill
+Brenig Compensation
+Compensation
+Stream_00117
+Stream_00118
+Stream_00118.1
+Thirlmere compensation and flood release
+Brenig Spill
+Stream_00126
+Stream_00127
+Stream_00128
+Conduit_00129
+Stream_00131
+Spill
+Dunmail Raise WTW
+Conduit_00013
+Thirlmere (above CC)
+Thirlmere licence
+Thirlmere (below CC)
+Stream_00065
+Above CC
+Below CC
+Stream_00127.1
+Upper Thames abstraction
+Stream_00129
+Stream_00131.1
+WBGWS
+Stream_00135
+Stream_00136
+Conduit_00137
+Conduit_00138
+Stream_00139
+Lower Thames Abs
+Stream_00141
+Conduit_00142
+Stream_00148
+Stream_00149
+Conduit_00150
+Conduit_00151
+Stream_00153
+Stream_00154
+Gateway
+Stream_00157
+Stream_00156
+Teddington Above MRF
+ELReD
+Stratford Box
+CHARS ARS
+Hoddeston
+NLARS
+Hornsey
+Stream_00152
+Conduit_00165
+Conduit_00167
+Haweswater Gravity
+Shap Pupming Station
+WTW minimum flow (gravity)
+Conduit_00169
+Haweswater compensation release
+Bolton compensation release
+WTW minimum flow
+Environmental
+Chester Above MRF
+Stream_00166
+STW East to West
+Stream_00168
+Stream_00173
+Mythe
+Stream_00176
+Stream_00176.1
+DELETE ME
+Stream_00188
+Carsington Transfer (fill)
+Compensation.1
+Whatstandwell
+Stream_00197
+Conduit_00211
+Strensham
+Conduit_00210
+Conduit_00211.1
+Strensham to Mythe
+WTW capacity
+Minimum flow
+Stream_00219
+Compensation.2
+Stream_00222
+Conduit_00223
+Stream_00222.1
+Deerhurst Above MRF
+MRF
+Stream_00227
+Conduit_00228
+Stream_00229
+Severn Augmentation
+Stream_00232
+Bewdley MRF
+Stream_00233
+Wing Import
+Conduit_00235
+Conduit_00240
+Bewdley Above MRF
+Spill.1
+Stream_00243
+DVA
+Noe and Jagger compensation
+Stream_00250
+Stream_00251
+Stream_00252
+Conduit_00252
+Conduit_00254
+Derwent Valley (below CC)
+Derwent Valley (above CC)
+Draycote (below CC)
+Draycote (above CC)
+Draycote WTW
+Conduit_00262
+Conduit_00263
+Melbourne (above CC)
+Melbourne (below CC)
+Stream_00263
+Stream_00262
+Compensation.3
+Stream_00258
+Stream_00258.1
+Compensation.4
+Conduit_00261
+Stream
+Church Wilne WTW
+STW West to East
+Conduit_00265
+Conduit_00264
+Stream_00265
+Compensation.5
+Stream_00267
+Stream_00268
+Nethertown
+Stream_00272
+Compensation.6
+Release
+Stream_00278
+Stream_00281
+Conduit_00281
+Conduit_00281.1
+River Dee cutback
+Dee CC
+Elan Compensation
+Elan Spill
+Stream_00283
+Stream_00284
+Conduit_00285
+Conduit_00285.1
+Mitcheldean min flow
+Trimpley to S.Shrops
+Stream_00290
+Conduit_00293
+Mitcheldean Regulation
+Stream_00297
+Carsington Transfer (release)
+C&O (above CC)
+C&O (below CC)
+Church Wilne minimum
+Ogston compensation
+Eggington MRF
+St Mary's Bridge
+St Mary's Above MRF
+Stream_00304
+Little Eaton WTW
+Melbourne compensation
+Draycott
+Stream_00306
+Homesford and Cropston
+Stream_00308
+Stream_00309
+Whatstandwell Above MRF
+Draycott Above MRF
+C&O Spill
+Strensham GSOS
+Environmental.1
+Redbrook Above MRF
+Wye Usk Regulation
+Stream_00315
+Stream_00316
+Stream_00317
+Melbourne Spill
+Stream_00319
+Conduit_00322
+Conduit_00324
+Stream_00326
+Environmental.2
+Offord Above MRF
+Stream_00330
+Environmental.3
+Denver Above MRF
+Conduit_00335
+Stream_00336
+Conduit_00337
+Duston Above MRF
+Wansford Above MRF
+Tinwell
+Stream_00341
+Stream_00342
+Conduit_00343
+Conduit_00350
+Stream_00351
+Stream_00361
+Stream_00362
+Conduit_00364
+Conduit_00365
+Conduit_00367
+BHs (low cost)
+BHs (medium cost)
+BHs (high cost)
+Liverpool BHs
+Conduit_00368
+Conduit_00368.1
+Franklaw WTW
+TA to Franklaw
+Barnacre and Whitebull
+LCUS MRF
+Whitebull PS
+WTW min flow
+WTW min flow.1
+Compensation.7
+Stream_00375
+Stream_00376
+Conduit_00378
+Draycote and Campion
+Conduit_00379
+Wyre Abs
+Stream_00379
+Conduit_00380
+Stream_00381
+Conduit_00382
+Conduit_00383
+Minor sources south
+Cheap(er) boreholes
+Expensive boreholes
+Minor sources west
+Whitacre WTW
+Medium
+Expensive
+Cheap
+Mitcheldean
+Conduit_00390
+Conduit_00391
+Conduit_00394
+Environmental.4
+Environmental.5
+Environmental.6
+Below CC.1
+Above CC.1
+Stream_00402
+Stream_00403
+Conduit_00412
+Conduit_00415
+Conduit_00418
+Stream_00421
+Stream_00422
+Stream_00423
+Stream_00424
+Stream_00425
+Stream_00428
+Stream_00432
+Spill.2
+Stream_00436
+0-85
+0-75
+0-185
+MM to Wetherby
+MM to Elvington
+Stream_00448
+River Ouse intake
+Stream_00449
+Kilgram
+Stream_00450
+River Hull Abs
+Stream_00453
+Spill.3
+Stream_00456
+Stocks Spill
+Stocks Compensation
+Stream_00458
+Stream_00458.1
+Flood and Hydro
+Conduit_00461
+WTW Process Loss
+S.Staffs GW
+Wolves GW
+Stream_00465
+Stream_00466
+Conduit_00467
+Stream_00468
+Pitsford Spill
+Stream_00469
+Spill.4
+Below CC.2
+Above CC.2
+Conduit_00470
+Below CC.3
+Above CC.3
+Stream_00473
+Princes Drive Above MRF
+Stream_00474
+Compensation.8
+River Wharfe
+2-33
+2-33.1
+Stream_00479
+Stream_00480
+Stream_00479.1
+Environmetal Flow
+Molesley Constraint
+Stream_00481
+Stream_00334
+Clapham WTW
+Conduit_00486
+Conduit_00487
+Conduit_00488
+Compensation Flow to Gwash
+Compensation flow
+Conduit_00491
+Conduit_00492
+Conduit_00494
+Below CC.4
+Above CC.4
+Below CC.5
+Above CC.5
+South Flow
+Below CC.6
+Above CC.6
+Southwest Flow
+Below CC.7
+Above CC.7
+Central Flow
+Above CC.8
+Below CC.8
+Elvington
+Loftsome
+Conduit_00508
+Conduit_00509
+Conduit_00510
+Acomb Landing
+Stream_00511
+Spill.5
+Spill.6
+Stream_00515
+Stream_00514
+Stream_00515.1
+Stream_00516
+Spill.7
+Arthington
+Conduit_00517
+Conduit_00518
+Lobwood
+Conduit_00517.1
+Conduit_00518.1
+East Flow
+Conduit_00521
+Conduit_00521.1
+Conduit_00522
+Conduit_00523
+Winscar Flow
+Conduit_00524
+Above CC.9
+Below CC.9
+Northwest Flow
+Above CC.10
+Below CC.10
+Grimwith Flow
+Seedy Mill WTW
+Above CC.11
+Below CC.11
+Ogston WTW
+Conduit_00529
+Conduit_00530
+Trimpley to SSM
+Trimpley to Frankley
+Trimpley WTW
+Conduit_00533
+Conduit_00533.1
+Melbourne minimum
+Melbourne minimum 2
+Melbourne WTW
+Minimum flow.1
+Conduit_00535
+Bamford WTW
+Stream_00536
+Expensive.1
+Cheap.1
+Minor sources east
+Medium.1
+Elan Valley (below CC)
+Elan Valley (above CC)
+EVA
+Hampton Loade
+Stream_00541
+Stream_00542
+Stream_00542.1
+Stream_00542.2
+Stream_00543
+Stream_00542.3
+Max.2
+Min.2
+Conduit_00543
+Severn Thames Transfer (Vyrnwy)
+Stream_00545
+Conduit_00546
+Conduit_00547
+Conduit_00547.1
+Conduit_00548
+Stream_00549
+Stream_00550
+Conduit_00553
+Conduit_00554
+Conduit_00556
+London Options
+Conduit_00559
+Conduit_00563
+Conduit_00566
+Conduit_00574
+Stream_00581
+Conduit_00582
+Conduit_00583
+Leakage
+4-20
+4-20.1
+Conduit_00586
+Conduit_00584
+Conduit_00585
+Conduit_00586.1
+Liverpool Options
+Lancaster Options
+Fylde Options
+West Cumbria Options
+South Cumbria Options
+Manchester Options
+S.Pennines (Stocks) Options
+STW South Options
+STW West Options
+STW East Options
+NW Options
+SW Options
+S Options
+E Options
+Central Options
+Stream_00585
+Ruthamford Options
+Conduit_00587
+Conduit_00588
+Lincolnshire Options
+Norfolk Options
+Essex Options
+Brainne Dam Raising
+Conduit_00592
+Conduit_00592.1
+Conduit_00591
+Conduit_00592.2
+Compensation.9
+Stream_00593
+Stream_00594
+Stream_00595
+Stream_00596
+Conduit_00597
+Stream_00595.1
+Conduit_00596
+Conduit_00597.1
+Severn Thames Transfer (Severn)
+Stream_00595.2
+Stream_00593.1
+Stream_00594.1
+North Muskham Above MRF
+Conduit_00595
+Marham GW
+Conduit_00592.3
+Conduit_00588.1
+Conduit_00589
+Conduit_00590
+Conduit_00590.1
+Compensation.10
+Stream_00591
+Conduit_00592.4
+Stoke Ferry
+Conduit_00593
+Conduit_00393
+Conduit_00392
+Conduit_00595.1
+Conduit_00595.2
+Conduit_00596.1
+Stream_00597
+Severn Thames Transfer (Total)
+Conduit_00586.2
+Conduit_00469
+Conduit_00598
+Conduit_00407
+Conduit_00599
+Conduit_00600
+Conduit_00601
+Stream_00603
+Stream_00625
+Stream_00630
+Stream_00631
+Stream_00632
+Stream_00633
+Stream_00634
+Conduit_00635
+Stream_00639
+Stream_00640
+Stream_00641
+Stream_00642
+Stream_00651
+Stream_00652
+Stream_00654
+Stream_00655
+Stream_00656
+Stream_00658
+Stream_00660
+Stream_00661
+Stream_00666
+Stream_00667
+Stream_00668
+Stream_00666.1
+Stream_00667.1
+Stream_00667.2
+Stream_00668.1
+Stream_00667.3
+Stream_00668.2
+Stream_00669
+Stream_00668.3
+Stream_00667.4
+Stream_00668.4
+Stream_00668.5
+Stream_00669.1
+Stream_00671
+Stream_00672
+Environmental.7
+Stream_00674
+Stream_00675
+Stream_00674.1
+Stream_00674.2
+Stream_00675.1
+Stoke Ferry.1
+Conduit_00672
+Stream_00671.1
+Stream_00672.1
+Stream_00673
+Stream_00674.3
+Stream_00675.2
+Rutland Spill
+Stream_00675.3
+Stream_00675.4
+Stream_00676
+Stream_00677
+Stream_00678
+Stream_00674.4
+Stream_00675.5
+Stream_00676.1
+Stream_00674.5
+Stream_00675.6
+Stream_00675.7
+Stream_00675.8
+Stream_00676.2
+Stream_00676.3
+Stream_00677.1
+Stream_00676.4
+Stream_00677.2
+Stream_00677.3
+Stream_00678.1
+Stream_00678.2
+Stream_00679
+Stream_00679.1
+Stream_00680
+Stream_00679.2
+Stream_00680.1
+Stream_00680.2
+Lee overflow
+Stream_00682
+Stream_00681
+Stream_00682.1
+Stream_00683
+Stream_00684
+Stream_00270
+Stream_00684.1
+Stream_00684.2
+Stream_00685
+Conduit_00686
+Stream_00687
+Stream_00686
+Stream_00687.1
+Stream_00688
+Spills
+Stream_00689
+Stream_00690
+Stream_00379.1
+Stream_00691
+Stream_00692
+Stream_00693
+Haweswater spill
+Stream_00695
+Stream_00695.1
+Stream_00690.1
+Stream_00691.1
+Conduit_00691
+Conduit_00692
+Conduit_00693
+Conduit_00694
+Conduit_00695
+Conduit_00696
+Conduit_00697
+Conduit_00698
+Conduit_00699
+Conduit_00700
+Conduit_00701
+Conduit_00702
+Conduit_00703
+Conduit_00704
+Conduit_00705
+Conduit_00706
+Conduit_00707
+Conduit_00708
+Conduit_00709
+Conduit_00710
+Conduit_00711
+Conduit_00712
+Conduit_00713
+Conduit_00714
+Conduit_00715
+Conduit_00716
+Conduit_00717
+Conduit_00718
+Conduit_00719
+Conduit_00720
+Conduit_00722
+Conduit_00723
+Conduit_00724
+Stream_00726
+Stream_00727
+Stream_00728
+Stream_00729
+Stream_00730
+Stream_00731
+Stream_00732
+Stream_00733
+Stream_00734
+Stream_00735
+Stream_00736
+Stream_00737
+Stream_00738
+Stream_00739
+Stream_00740
+Stream_00741
+Stream_00742
+Stream_00743
+Stream_00744
+Stream_00745
+Stream_00746
+Stream_00747
+Stream_00748
+Stream_00749
+Stream_00750
+Stream_00751
+Stream_00752
+Stream_00753
+Stream_00754
+Stream_00755
+Stream_00756
+Stream_00757
+Stream_00758
+Stream_00759
+Stream_00760
+Stream_00761
+Stream_00762
+Stream_00763
+Stream_00764
+Stream_00765
+Stream_00766
+Stream_00767
+Stream_00768
+Stream_00769
+Stream_00770
+Stream_00771
+Stream_00772
+Stream_00773
+Stream_00774
+Stream_00775
+Stream_00776
+Stream_00777
+Stream_00778
+Stream_00779
+Stream_00780
+Stream_00781
+Stream_00782
+Stream_00783
+Stream_00784
+Stream_00785
+Stream_00786
+Stream_00787
+Stream_00789
+Stream_00790
+Stream_00791
+Stream_00792
+Stream_00793
+Stream_00794
+Stream_00795
+Stream_00796
+Stream_00797
+Stream_00798
+Stream_00799
+Stream_00800
+Stream_00801
+Stream_00802
+Stream_00803
+Stream_00804
+Stream_00805
+Stream_00806
+Stream_00807
+Stream_00808
+Stream_00809
+Stream_00810
+Stream_00812
+Stream_00813
+Stream_00814
+Stream_00815
+Stream_00816
+Stream_00817
+Stream_00818
+Stream_00819
+Stream_00820
+Stream_00821
+Stream_00822
+Stream_00823
+Stream_00824
+Stream_00825
+Stream_00826
+Stream_00827
+Stream_00828
+Stream_00829
+Stream_00830
+Stream_00831
+Stream_00832
+Stream_00834
+Stream_00835
+Stream_00836
+Stream_00837
+Stream_00838
+Stream_00839
+Stream_00840
+Stream_00841
+Stream_00842
+Stream_00843
+Stream_00844
+Stream_00845
+Stream_00846
+Stream_00847
+Stream_00848
+Stream_00849
+Stream_00850
+Stream_00851
+Stream_00852
+Stream_00853
+Stream_00854
+Stream_00855
+Stream_00856
+Stream_00857
+Stream_00858
+Stream_00859
+Stream_00860
+Stream_00861
+Stream_00862
+Stream_00863
+Stream_00864
+Stream_00865
+Stream_00866
+Stream_00867
+Stream_00868
+Stream_00869
+Stream_00870
+Stream_00871
+Stream_00872
+Stream_00873
+Stream_00874
+Stream_00875
+Stream_00876
+Stream_00878
+Heltondale Waterbank Adjustment
+Stream_00874.1
+Stream_00875.1
+Stream_00876.1
+Stream_00877
+Stream_00878.1
+Stream_00879
+Stream_00880
+Environmental.8
+Stream_00881
+Conduit_00880
+Conduit_00881
+Conduit_00882
+Conduit_00883
+Conduit_00884
+Conduit_00885
+Conduit_00886
+Conduit_00887
+Stream_00888
+Conduit_00889
+Conduit_00890
+Conduit_00891
+Stream_00890
+Stream_00890.1
+Stream_00890.2
+Stream_00890.3
+Conduit_00890.1
+Stream_00890.4
+Stream_00888.1
+Stream_00889
