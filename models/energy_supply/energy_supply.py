@@ -6,7 +6,32 @@ from subprocess import check_output
 
 import numpy as np
 import psycopg2
+import psycopg2.extras
 from smif.model.sector_model import SectorModel
+
+
+try:
+    from pyinstrument import Profiler  # import to enable profiling
+except ImportError:
+    pass
+
+
+def profile(func):
+    """Decorator - add to a function to profile cpu usage (requires pyinstrument):
+
+        @profile
+        def method_to_profile():
+            ...
+
+    """
+    def wrapper(*args, **kwargs):
+        profiler = Profiler()
+        profiler.start()
+        func(*args, **kwargs)
+        profiler.stop()
+        print(profiler.output_text(unicode=False, color=True))
+    return wrapper
+
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -1135,35 +1160,33 @@ def write_input_timestep(input_data, parameter_name, year,
     sql = """
         INSERT INTO
         input_timestep (year, season, day, period, region_id, parameter, value)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        VALUES %s
         """
 
     region_mapping = get_region_mapping(parameter_name)
 
-    it = np.nditer(input_data.as_ndarray(), flags=['multi_index'])
-    while not it.finished:
-        cell = it[0]
+    def values(input_data):
+        """Generate values tuples from input data
+        """
+        it = np.nditer(input_data.as_ndarray(), flags=['multi_index'])
+        while not it.finished:
+            cell = it[0]
 
-        region, interval = it.multi_index
-        season, day, period = parse_season_day_period(int(interval_names[interval]))
-        try:
-            region_id = region_mapping[int(region_names[region])]
-        except KeyError as ex:
-            print("Error when trying to write '{}'. Regions: {}".format(parameter_name, region_mapping))
-            raise ex
+            region, interval = it.multi_index
+            season, day, period = parse_season_day_period(int(interval_names[interval]))
+            try:
+                region_id = region_mapping[int(region_names[region])]
+            except KeyError as ex:
+                msg = "Error when trying to write '{}'. Regions: {}"
+                print(msg.format(parameter_name, region_mapping))
+                raise ex
 
-        insert_data = (year,
-                       season,
-                       day,
-                       period,
-                       region_id,
-                       parameter_name,
-                       float(cell))
+            yield (year, season, day, period, region_id, parameter_name, float(cell))
+            it.iternext()
 
-        # print("Data: {}".format(insert_data))
-
-        cur.execute(sql, insert_data)
-        it.iternext()
+    # bulk insert of `page_size` records at a time, runs faster than one-row-at-a-time
+    template = "(%s, %s, %s, %s, %s, %s, %s)"
+    psycopg2.extras.execute_values(cur, sql, values(input_data), template, page_size=1000)
 
     # Make the changes to the database persistent
     conn.commit()
