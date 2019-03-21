@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-# Usage:
+#
+# Run/re-run energy supply database migrations
+#
+
+# Usage, e.g. from nismod repository root:
 #    bash provision/run_energy_supply_migrations.sh . minimal
 #    bash provision/run_energy_supply_migrations.sh . full
-
-# Expect NISMOD dir as first argument
 base_path=$1
 minimal_or_full=$2
 
