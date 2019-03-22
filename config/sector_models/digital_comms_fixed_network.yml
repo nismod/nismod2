@@ -23,7 +23,7 @@ parameters:
   - 1000
   default: ../digital_comms/parameters/defaults.csv
   dims: []
-  name: costs_links_fiber_meter
+  name: costs_links_fibre_meter
   unit: GBP
 - description: The cost of installing a copper link
   dtype: int
@@ -420,133 +420,133 @@ outputs:
   dtype: int
   unit: Number of premises
 - name: interventions
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: assets
 - name: distribution_upgrades
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
   unit: GBP
 - name: distribution_upgrade_costs_fttp
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
   unit: GBP
 - name: distribution_upgrade_costs_fttdp
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
   unit: GBP
 - name: premises_upgrade_costs_fttp
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
   unit: GBP
 - name: premises_upgrade_costs_fttdp
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
   unit: GBP
 - name: premises_by_distribution
-  dims: 
+  dims:
   - broadband_distributions
   - annual
   dtype: int
-  unit: premises 
+  unit: premises
 - name: premises_adoption_desirability
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: premises_connection_statistics
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: premises_passed_with_fttp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: percentage_of_premises_passed_with_fttp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
-  unit: premises 
+  unit: premises
 - name: premises_connected_with_fttp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: percentage_of_premises_connected_with_fttp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
-  unit: premises 
+  unit: premises
 - name: premises_passed_with_fttdp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: percentage_of_premises_passed_with_fttdp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
-  unit: premises 
+  unit: premises
 - name: premises_connected_with_fttdp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: percentage_of_premises_connected_with_fttdp
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
-  unit: premises   
+  unit: premises
 - name: percentage_of_premises_with_fttc
-  dims: 
+  dims:
   - national
   - annual
   dtype: int
   unit: premises
 - name: lad_premises_with_fttp
-  dims: 
+  dims:
   - lad_uk_2016
   - annual
   dtype: int
   unit: premises
 - name: lad_premises_with_fttdp
-  dims: 
+  dims:
   - lad_uk_2016
   - annual
   dtype: int
   unit: premises
 - name: lad_premises_with_fttc
-  dims: 
+  dims:
   - lad_uk_2016
   - annual
   dtype: int
   unit: premises
 - name: lad_premises_with_adsl
-  dims: 
+  dims:
   - lad_uk_2016
   - annual
   dtype: int
