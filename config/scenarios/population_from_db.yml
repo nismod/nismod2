@@ -1,4 +1,4 @@
-name: population
+name: population_from_db
 description: UK population, total people
 provides:
   - name: population_lad16
