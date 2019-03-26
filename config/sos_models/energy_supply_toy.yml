@@ -1,5 +1,5 @@
 scenarios:
-- es_prices
+- fuel_price
 - dummy_energy_demands_minimal
 description: Links the toy version of the energy supply model to dummy scenarios
 name: energy_supply_toy
@@ -18,30 +18,14 @@ narratives:
     - LoadShed_elec
     - LoadShed_gas
 scenario_dependencies:
-- source_output: gas_price
-  sink_input: gas_price
-  sink: energy_supply_toy
-  source: es_prices
-- source_output: electricity_price
-  sink_input: electricity_price
-  sink: energy_supply_toy
-  source: es_prices
-- source_output: oil_price
-  sink_input: oil_price
-  sink: energy_supply_toy
-  source: es_prices
-- source_output: coal_price
-  sink_input: coal_price
-  sink: energy_supply_toy
-  source: es_prices
-- source_output: nuclearFuel_price
-  sink_input: nuclearFuel_price
-  sink: energy_supply_toy
-  source: es_prices
+- sink: energy_supply_toy
+  source_output: energy_supply_price
+  source: fuel_price
+  sink_input: fuel_price
 - source_output: cost_of_carbon
   sink_input: cost_of_carbon
   sink: energy_supply_toy
-  source: es_prices
+  source: fuel_price
 - source_output: residential_gas_non_heating
   sink_input: residential_gas_non_heating
   sink: energy_supply_toy

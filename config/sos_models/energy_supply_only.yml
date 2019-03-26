@@ -6,7 +6,7 @@ narratives:
       LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
     description: very high cost load shedding
     name: high_cost
-  sos_model: energy_supply_toy
+  sos_model: energy_supply_only
   description: Costs of shedding load
   name: load_shedding
   provides:
@@ -15,28 +15,12 @@ narratives:
     - LoadShed_gas
 scenario_dependencies:
 - sink: energy_supply
-  source_output: gas_price
-  source: es_prices
-  sink_input: gas_price
-- sink: energy_supply
-  source_output: electricity_price
-  source: es_prices
-  sink_input: electricity_price
-- sink: energy_supply
-  source_output: oil_price
-  source: es_prices
-  sink_input: oil_price
-- sink: energy_supply
-  source_output: coal_price
-  source: es_prices
-  sink_input: coal_price
-- sink: energy_supply
-  source_output: nuclearFuel_price
-  source: es_prices
-  sink_input: nuclearFuel_price
+  source_output: energy_supply_price
+  source: fuel_price
+  sink_input: fuel_price
 - sink: energy_supply
   source_output: cost_of_carbon
-  source: es_prices
+  source: fuel_price
   sink_input: cost_of_carbon
 - sink: energy_supply
   source_output: residential_gas_non_heating
@@ -76,5 +60,5 @@ sector_models:
 - energy_supply
 model_dependencies: []
 scenarios:
-- es_prices
+- fuel_price
 - dummy_energy_demands_full

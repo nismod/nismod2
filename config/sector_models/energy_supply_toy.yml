@@ -78,30 +78,11 @@ inputs:
   dims:
   - seasons
   dtype: float
-- name: electricity_price
-  unit: GBP/MWh
+- name: fuel_price
   dims:
-  - seasons
-  dtype: float
-- name: gas_price
+    - seasons
+    - es_fuel_types
   unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: nuclearFuel_price
-  unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: oil_price
-  unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: coal_price
-  unit: GBP/MWh
-  dims:
-  - seasons
   dtype: float
 outputs:
 - name: gasfired_gen_tran

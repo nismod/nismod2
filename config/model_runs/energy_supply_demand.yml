@@ -5,7 +5,7 @@ narratives:
   load_shedding:
   - high_cost
 scenarios:
-  es_prices: es_prices_dummy
+  fuel_price: baseline
   gva: gva_baseline
   population: pop_baseline
   temperature: NF1

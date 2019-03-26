@@ -57,29 +57,10 @@ inputs:
   - seasons
   unit: GBP/Mt
   dtype: float
-- name: electricity_price
+- name: fuel_price
   dims:
-  - seasons
-  unit: GBP/MWh
-  dtype: float
-- name: gas_price
-  dims:
-  - seasons
-  unit: GBP/MWh
-  dtype: float
-- name: nuclearFuel_price
-  dims:
-  - seasons
-  unit: GBP/MWh
-  dtype: float
-- name: oil_price
-  dims:
-  - seasons
-  unit: GBP/MWh
-  dtype: float
-- name: coal_price
-  dims:
-  - seasons
+    - seasons
+    - es_fuel_types
   unit: GBP/MWh
   dtype: float
 interventions:
