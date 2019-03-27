@@ -1,5 +1,5 @@
 scenarios:
-  es_prices: es_prices_dummy
+  fuel_price: baseline
   dummy_energy_demands_minimal: es_energy_demand_minimal
 sos_model: energy_supply_toy
 name: energy_supply_agent

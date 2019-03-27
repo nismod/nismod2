@@ -1,6 +1,6 @@
 path: models/energy_supply/energy_supply.py
 description: Toy version of the CGEN++ energy supply model which uses minimal data
-classname: EnergySupplyToyWrapper
+classname: EnergySupplyWrapper
 initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions_minimal.csv
 parameters:
@@ -73,35 +73,11 @@ inputs:
   - energy_hub_min
   - seasonal_week
   dtype: float
-- name: cost_of_carbon
-  unit: GBP/Mt
+- name: fuel_price
   dims:
-  - seasons
-  dtype: float
-- name: electricity_price
+    - seasons
+    - es_fuel_types
   unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: gas_price
-  unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: nuclearFuel_price
-  unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: oil_price
-  unit: GBP/MWh
-  dims:
-  - seasons
-  dtype: float
-- name: coal_price
-  unit: GBP/MWh
-  dims:
-  - seasons
   dtype: float
 outputs:
 - name: gasfired_gen_tran

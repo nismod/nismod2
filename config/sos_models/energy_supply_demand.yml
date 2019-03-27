@@ -1,4 +1,5 @@
 scenarios:
+  - fuel_price
   - gva
   - population
   - temperature
@@ -569,29 +570,9 @@ scenario_dependencies:
   sink_input: gva_per_head
   source_output: gva_per_head
 - sink: energy_supply
-  source: es_prices
-  sink_input: gas_price
-  source_output: gas_price
-- sink: energy_supply
-  source: es_prices
-  sink_input: electricity_price
-  source_output: electricity_price
-- sink: energy_supply
-  source: es_prices
-  sink_input: oil_price
-  source_output: oil_price
-- sink: energy_supply
-  source: es_prices
-  sink_input: coal_price
-  source_output: coal_price
-- sink: energy_supply
-  source: es_prices
-  sink_input: nuclearFuel_price
-  source_output: nuclearFuel_price
-- sink: energy_supply
-  source: es_prices
-  sink_input: cost_of_carbon
-  source_output: cost_of_carbon
+  source: fuel_price
+  sink_input: fuel_price
+  source_output: energy_supply_price
 - sink: energy_demand_constrained
   source: gva
   sink_input: gva_per_sector

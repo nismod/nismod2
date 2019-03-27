@@ -52,7 +52,7 @@ class EnergySupplyWrapper(SectorModel):
         self.clear_input_tables()
 
         self.build_interventions(data, now)
-        self.get_model_inputs(data, now)
+        self.get_model_inputs(data)
         self.run_the_model()
         self.retrieve_outputs(data, now)
 
@@ -142,92 +142,60 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
-    def get_model_inputs(self, data, now):
+    def get_model_inputs(self, data):
         # Get model inputs
-        self.logger.debug("Energy Supply Wrapper received inputs in %s", now)
-        input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
+        self.logger.debug("Energy Supply Wrapper received inputs in %s", data.current_timestep)
 
-        self.logger.debug(
-            'Input Residential gas non heating: %s', input_residential_gas_non_heating)
+        fuel_prices = data.get_data("fuel_price")
+        self.logger.debug('Input price: %s', fuel_prices)
+        write_prices(fuel_prices, data.current_timestep)
 
-        input_residential_electricity_non_heating = data.get_data(
-            "residential_electricity_non_heating")
-        self.logger.debug(
-            'Input Residential electricity non heating: %s',
-            input_residential_electricity_non_heating)
+        inputs_with_region_and_interval = [
+            {
+                'name_smif': 'residential_electricity_non_heating',
+                'name_database': 'elecload_non_heat_res'
+            },
+            {
+                'name_smif': 'service_electricity_non_heating',
+                'name_database': 'elecload_non_heat_com'
+            },
+            {
+                'name_smif': 'residential_gas_non_heating',
+                'name_database': 'gasload_non_heat_res'
+            },
+            {
+                'name_smif': 'service_gas_non_heating',
+                'name_database': 'gasload_non_heat_com'
+            },
+            {
+                'name_smif': 'residential_heatload',
+                'name_database': 'heatload_res'
+            },
+            {
+                'name_smif': 'service_heatload',
+                'name_database': 'heatload_com'
+            },
+            {
+                'name_smif': 'elecload',
+                'name_database': 'elecload'
+            },
+            {
+                'name_smif': 'gasload',
+                'name_database': 'gasload'
+            }
+        ]
+        for input_ in inputs_with_region_and_interval:
+            self._load_input_2d(data, **input_)
 
-        input_service_gas_non_heating = data.get_data("service_gas_non_heating")
-        self.logger.debug('Input Service gas non heating: %s', input_service_gas_non_heating)
+    def _load_input_2d(self, data_handle, name_smif, name_database):
+        data = data_handle.get_data(name_smif)
+        self.logger.debug("Input %s: %s", name_smif, data)
 
-        input_service_electricity_non_heating = data.get_data(
-            "service_electricity_non_heating")
-        self.logger.debug(
-            'Input Service electricity non heating: %s', input_service_electricity_non_heating)
+        region_names, interval_names = self.get_dim_names(data.spec)
 
-        input_cost_of_carbon = data.get_data("cost_of_carbon")
-        self.logger.debug('Input Cost of carbon: %s', input_cost_of_carbon)
-
-        input_electricity_price = data.get_data("electricity_price")
-        self.logger.debug('Input Electricity price: %s', input_electricity_price)
-
-        input_gas_price = data.get_data("gas_price")
-        self.logger.debug('Input Gas price: %s', input_gas_price)
-
-        input_nuclearFuel_price = data.get_data("nuclearFuel_price")
-        self.logger.debug('Input Nuclearfuel price: %s', input_nuclearFuel_price)
-
-        input_oil_price = data.get_data("oil_price")
-        self.logger.debug('Input Oil price: %s', input_oil_price)
-
-        input_coal_price = data.get_data("coal_price")
-        self.logger.debug('Input Coal price: %s', input_coal_price)
-
-        heatload_res = data.get_data('residential_heatload')
-        self.logger.debug('Residential heatload: %s', heatload_res)
-
-        heatload_com = data.get_data('service_heatload')
-        self.logger.debug('Service heatload: %s', heatload_com)
-
-        gasload_non_heat_res = input_residential_gas_non_heating
-        elecload_non_heat_res = input_residential_electricity_non_heating
-        gasload_non_heat_com = input_service_gas_non_heating
-        elecload_non_heat_com = input_service_electricity_non_heating
-
-        region_names, interval_names = self.get_names("residential_electricity_non_heating")
-        self.logger.debug('Writing %s to database', "elecload_non_heat_res")
-        write_input_timestep(elecload_non_heat_res, "elecload_non_heat_res",
-                             now, region_names, interval_names)
-        region_names, interval_names = self.get_names("service_electricity_non_heating")
-        self.logger.debug('Writing %s to database', "elecload_non_heat_com")
-        write_input_timestep(elecload_non_heat_com, "elecload_non_heat_com",
-                             now, region_names, interval_names)
-        self.logger.debug('Writing %s to database', "gasload_non_heat_res")
-        write_input_timestep(gasload_non_heat_res, "gasload_non_heat_res",
-                             now, region_names, interval_names)
-        self.logger.debug('Writing %s to database', "gasload_non_heat_com")
-        write_input_timestep(gasload_non_heat_com, "gasload_non_heat_com",
-                             now, region_names, interval_names)
-        self.logger.debug('Writing %s to database', "heatload_res")
-        write_input_timestep(heatload_res, "heatload_res",
-                             now, region_names, interval_names)
-        self.logger.debug('Writing %s to database', "heatload_com")
-        write_input_timestep(heatload_com, "heatload_com",
-                             now, region_names, interval_names)
-
-        elecload_tran = data.get_data('elecload')
-        self.logger.debug('Writing %s to database', "elecload")
-        write_input_timestep(elecload_tran, "elecload",
-                             now, region_names, interval_names)
-
-        self.get_gasload(data, now)
-
-    def get_gasload(self, data, now):
-
-        gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names( "gasload", spatial_name='gas_nodes')
-        self.logger.debug('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload",
-                             now, region_names, interval_names)
+        self.logger.debug("Writing %s to database", name_database)
+        write_input_timestep(
+            data, name_database, data_handle.current_timestep, region_names, interval_names)
 
     def run_the_model(self):
         """Run the model
@@ -246,64 +214,56 @@ class EnergySupplyWrapper(SectorModel):
         This results mapping maps output_parameters to sectormodel output names
         external => internal
         """
-        timestep_results = {
-            'gasfired_gen_tran': 'tran_gas_fired',
-            'coal_gen_tran': 'tran_coal',
-            'pumpedHydro_gen_tran': 'tran_pump_power',
-            'hydro_gen_tran': 'tran_hydro',
-            'nuclear_gen_tran': 'tran_nuclear',
-            'interconnector_elec_tran': 'tran_interconnector',
-            'renewable_gen_tran': 'tran_renewable',
-            'elec_cost': 'e_price',
-            'elec_reserve_tran': 'e_reserve',
-            'domestic_gas': 'gas_domestic',
-            'lng_supply': 'gas_lng',
-            'interconnector_gas': 'gas_interconnector',
-            'storage_gas': 'gas_storage',
-            'storage_level': 'storage_level',
-            'wind_gen_tran': 'tran_wind_power',
-            'pv_gen_tran': 'tran_pv_power',
-            'wind_curtail_tran': 'tran_wind_curtailed',
-            'pv_curtail_tran': 'tran_pv_curtailed',
-            'total_opt_cost': 'total_opt_cost',
-            'eh_gas_fired': 'eh_gas_fired',
-            'eh_wind_power': 'eh_wind_power',
-            'eh_pv_power': 'eh_pv_power',
-            'eh_gas_boiler': 'eh_gas_boiler',
-            'eh_heat_pump': 'eh_heat_pump',
-            'gas_load_shed': 'gas_load_shed',
-            'elec_load_shed': 'elec_load_shed',
-            'e_emissions': 'e_emissions',
-            'e_emissions_eh': 'e_emissions_eh',
-            'gas_load_shed_eh': 'gas_load_shed_eh',
-            'elec_load_shed_eh': 'elec_load_shed_eh',
-            'fresh_water_demand': 'fresh_water_demand',
-            'eh_chp': 'eh_chp',
-            'gasdemand_heat': 'gasdemand_heat',
-            'elecdemand_heat': 'elecdemand_heat',
-            'eh_gasboiler_b': 'eh_gasboiler_b',
-            'eh_heatpump_b': 'eh_heatpump_b',
-            'eh_gasboiler_dh': 'eh_gasboiler_dh',
-            'eh_chp_dh': 'eh_chp_dh',
-            'gas_injection': 'gas_injection',
-            'gas_withdraw': 'gas_withdraw'}
+        timestep_results = [
+            {'name_smif': 'gasfired_gen_tran', 'name_database': 'tran_gas_fired'},
+            {'name_smif': 'coal_gen_tran', 'name_database': 'tran_coal'},
+            {'name_smif': 'pumpedHydro_gen_tran', 'name_database': 'tran_pump_power'},
+            {'name_smif': 'hydro_gen_tran', 'name_database': 'tran_hydro'},
+            {'name_smif': 'nuclear_gen_tran', 'name_database': 'tran_nuclear'},
+            {'name_smif': 'interconnector_elec_tran', 'name_database': 'tran_interconnector'},
+            {'name_smif': 'renewable_gen_tran', 'name_database': 'tran_renewable'},
+            {'name_smif': 'elec_cost', 'name_database': 'e_price'},
+            {'name_smif': 'elec_reserve_tran', 'name_database': 'e_reserve'},
+            {'name_smif': 'domestic_gas', 'name_database': 'gas_domestic'},
+            {'name_smif': 'lng_supply', 'name_database': 'gas_lng'},
+            {'name_smif': 'interconnector_gas', 'name_database': 'gas_interconnector'},
+            {'name_smif': 'storage_gas', 'name_database': 'gas_storage'},
+            {'name_smif': 'storage_level', 'name_database': 'storage_level'},
+            {'name_smif': 'wind_gen_tran', 'name_database': 'tran_wind_power'},
+            {'name_smif': 'pv_gen_tran', 'name_database': 'tran_pv_power'},
+            {'name_smif': 'wind_curtail_tran', 'name_database': 'tran_wind_curtailed'},
+            {'name_smif': 'pv_curtail_tran', 'name_database': 'tran_pv_curtailed'},
+            {'name_smif': 'total_opt_cost', 'name_database': 'total_opt_cost'},
+            {'name_smif': 'eh_gas_fired', 'name_database': 'eh_gas_fired'},
+            {'name_smif': 'eh_wind_power', 'name_database': 'eh_wind_power'},
+            {'name_smif': 'eh_pv_power', 'name_database': 'eh_pv_power'},
+            {'name_smif': 'eh_gas_boiler', 'name_database': 'eh_gas_boiler'},
+            {'name_smif': 'eh_heat_pump', 'name_database': 'eh_heat_pump'},
+            {'name_smif': 'gas_load_shed', 'name_database': 'gas_load_shed'},
+            {'name_smif': 'elec_load_shed', 'name_database': 'elec_load_shed'},
+            {'name_smif': 'e_emissions', 'name_database': 'e_emissions'},
+            {'name_smif': 'e_emissions_eh', 'name_database': 'e_emissions_eh'},
+            {'name_smif': 'gas_load_shed_eh', 'name_database': 'gas_load_shed_eh'},
+            {'name_smif': 'elec_load_shed_eh', 'name_database': 'elec_load_shed_eh'},
+            {'name_smif': 'fresh_water_demand', 'name_database': 'fresh_water_demand'},
+            {'name_smif': 'eh_chp', 'name_database': 'eh_chp'},
+            {'name_smif': 'gasdemand_heat', 'name_database': 'gasdemand_heat'},
+            {'name_smif': 'elecdemand_heat', 'name_database': 'elecdemand_heat'},
+            {'name_smif': 'eh_gasboiler_b', 'name_database': 'eh_gasboiler_b'},
+            {'name_smif': 'eh_heatpump_b', 'name_database': 'eh_heatpump_b'},
+            {'name_smif': 'eh_gasboiler_dh', 'name_database': 'eh_gasboiler_dh'},
+            {'name_smif': 'eh_chp_dh', 'name_database': 'eh_chp_dh'},
+            {'name_smif': 'gas_injection', 'name_database': 'gas_injection'},
+            {'name_smif': 'gas_withdraw', 'name_database': 'gas_withdraw'}
+        ]
 
-        annual_results = {
-            # 'total_opt_cost': 'total_opt_cost',
-            # 'emissions_elec': 'e_emissions'
-            }
 
         # Open database connection
         conn = establish_connection()
 
         # Write timestep results to data handler
-        for external_name, internal_name in timestep_results.items():
-            self.logger.info("Writing results for %s", external_name)
-            self.set_results(internal_name, external_name, data, conn)
-
-        # Write annual results to data handler
-        for external_name, internal_name in annual_results.items():
-            self.set_results(internal_name, external_name, data, conn, is_annual=True)
+        for output in timestep_results:
+            self.set_results(data, conn, **output)
 
         # Close database connection
         conn.close()
@@ -311,37 +271,32 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug("Energy supplyWrapper produced outputs in %s", now)
 
 
-    def set_results(self, internal_parameter_name, external_parameter_name, data_handle, conn,
-                    is_annual=False):
+    def set_results(self, data_handle, conn, name_database, name_smif):
         """Pass results from database to data handle
         """
-        # long way around to get canonical entry names for spatial/temporal resolution
-        dim_names = self.outputs[external_parameter_name].dims
+        self.logger.info("Writing results for %s", name_smif)
+        spec = self.outputs[name_smif]
+        region_names, interval_names = self.get_dim_names(spec)
 
-        intervals = self.outputs[external_parameter_name].dim_coords('seasonal_week').ids
-        index = dim_names.index('seasonal_week')
-        dim_names.pop(index)
-        if dim_names:
-            regions = self.outputs[external_parameter_name].dim_coords(dim_names[0]).ids
-
-        # read from database - need to be careful with internal vs external param name
-        if is_annual:
-            output = get_annual_output(
-                conn, internal_parameter_name, data_handle.current_timestep, regions,
-                intervals)
-        else:
-            output = get_timestep_output(
-                conn, internal_parameter_name, data_handle.current_timestep, regions,
-                intervals)
+        output = get_timestep_output(
+            conn, name_database, data_handle.current_timestep, region_names, interval_names)
 
         # set on smif DataHandle
-        data_handle.set_results(external_parameter_name, output)
+        data_handle.set_results(name_smif, output)
 
-    def get_names(self, name, spatial_name='energy_hub', temporal_name='seasonal_week'):
+    def get_dim_names(self, spec):
         """Get region and interval names for a given input
         """
-        region_names = self.inputs[name].dim_coords(spatial_name).ids
-        interval_names = self.inputs[name].dim_coords(temporal_name).ids
+        dims = set(spec.dims)
+        # HACK Assume two-dimensional, assume seasonal_week is the name for the intervals dim
+        assert len(dims) == 2, "Expected 2 dimensions, got %s" % dims
+        assert 'seasonal_week' in dims, "Expected 'seasonal_week' in dims, got %s" % dims
+        dims.remove('seasonal_week')
+        interval_dim = 'seasonal_week'
+        region_dim = dims.pop()
+
+        region_names = spec.dim_coords(region_dim).ids
+        interval_names = spec.dim_coords(interval_dim).ids
         return region_names, interval_names
 
 
@@ -437,49 +392,51 @@ def write_simduration(year):
     conn.close()
 
 
-def write_gas_price(year, data):
-    """
+def write_prices(data_array, year):
+    """Write fuel price data
 
     Arguments
     ---------
-    year : int
-        The current model year
-    data : numpy.ndarray
+    data : smif.DataArray
        Price data
     """
-    conn = establish_connection()
     # Open a cursor to perform database operations
+    conn = establish_connection()
     cur = conn.cursor()
-
-    cur.execute("""DELETE FROM "FuelData" WHERE year=%s AND fuel_id=1;""", (year, ))
+    cur.execute('DELETE FROM "FuelData" WHERE "Year"=%s;', (year, ))
 
     sql = """
-    INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost)
-    VALUES (%s, %s, %s, %s, %s)
-    """
+        INSERT INTO "FuelData" ("Fuel_ID", "FuelType", "Year", "Season", "FuelCost")
+        VALUES (%s, %s, %s, %s, %s)
+        """
 
-    it = np.nditer(data, flags=['multi_index'])
-    while not it.finished:
-        cell = it[0]
+    dataframe = data_array.as_df().reset_index()
 
-        _, interval_index = it.multi_index
-        fuel_id = 1
-        fueltype = 'Gas'
-        insert_data = (fuel_id,
-                       fueltype,
-                       year,
-                       interval_index + 1,
-                       float(cell))
+    # HACK hard code ids for fuel types - fix is to add a fuel types table that FuelData and
+    # GeneratorParameters can both reference
+    fuel_ids = {
+        'gas': 1,
+        'coal': 2,
+        'nuclear': 3,
+        'oil': 4,
+        'biomass': 5,
+        'electricity': 6
+    }
 
-        # print("Data: {}".format(insert_data))
+    for datum in dataframe.itertuples():
+        cur.execute(
+            sql,
+            (
+                fuel_ids[datum.es_fuel_types],
+                datum.es_fuel_types.capitalize(),
+                year,
+                datum.seasons,
+                datum.energy_supply_price
+            )
+        )
 
-        cur.execute(sql, insert_data)
-        it.iternext()
-
-    # Make the changes to the database persistent
+    # Make the changes to the database persistent and close
     conn.commit()
-
-    # Close communication with the database
     cur.close()
     conn.close()
 
@@ -1194,21 +1151,3 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
-
-
-class EnergySupplyToyWrapper(EnergySupplyWrapper):
-    """Monkey patches methods in full version of wrapper with minimal dimension
-    definitions
-    """
-
-    def get_names(self, name, spatial_name='energy_hub_min', temporal_name='seasonal_week'):
-        """Get region and interval names for a given input
-        """
-        return super().get_names(name, spatial_name, temporal_name)
-
-    def get_gasload(self, data, now):
-        gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names(
-            "gasload", spatial_name='gas_nodes_minimal')
-        self.logger.debug('Writing %s to database', "gasload")
-        write_input_timestep(gasload, "gasload", now, region_names, interval_names)
