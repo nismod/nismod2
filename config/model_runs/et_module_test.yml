@@ -1,7 +1,7 @@
 decision_module: ''
 description: Check that the et_module computes available storage capacity from grid-connected
   electric vehicles
-name: test_et_module
+name: et_module_test
 narratives:
   default:
   - managed
