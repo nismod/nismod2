@@ -7,7 +7,7 @@ import os
 import fiona  # type: ignore
 import numpy as np  # type: ignore
 
-from digital_comms.fixed_network.model import NetworkManager
+from digital_comms.fixed_network.model import NetworkManager, Exchange
 from digital_comms.runner import read_csv, read_assets, read_links
 
 from typing import List
@@ -22,7 +22,7 @@ class DigitalCommsWrapper(SectorModel):
     """
     def __init__(self, name):
         super().__init__(name)
-        self.system = None
+        self.system = None # type: NetworkManager
 
     def before_model_run(self, data_handle : DataHandle):
         """Implement this method to conduct pre-model run tasks
@@ -57,7 +57,7 @@ class DigitalCommsWrapper(SectorModel):
         links = read_links(data_path)
 
         self.logger.info("DigitalCommsWrapper - Intitialise system")
-        self.system = NetworkManager(assets, links, parameters)
+        self.system = NetworkManager(assets, links, parameters) # type: NetworkManager
 
         # only distribution points with a benefit cost ratio > 1 can be upgraded
         # model rollout is constrained by the adoption desirability set by scenario
@@ -109,42 +109,64 @@ class DigitalCommsWrapper(SectorModel):
     def compute_spend(self):
         return 0
 
-    def save_exchange_attribute(self, data_handle : DataHandle,
+    def save_exchange_attribute(self,
                                 technologies : List,
                                 exchanges : List,
                                 attribute : str):
-        """Save an attribute of an exchange object to smif results
+        """Save an attribute of an Exchange object to smif results
 
         Arguments
         ---------
-        data_handle : DataHandle
         technologies : list
             The list of technology names
         exchanges : list
             A list of exchange names
         attribute : str
             The attribute to get from the digital comms model and save to disk
+
+        Returns
+        -------
+        numpy.ndarray
         """
         num_technologies = len(technologies)
         num_exchanges = len(exchanges)
+
+        # Create an empty array of the correct dimensions
         array = np.zeros((num_technologies, num_exchanges), dtype=np.float)
 
+        # Iterate through the technologies and exchanges and get the attribute
         for i, technology in enumerate(technologies):
             for j, exchange_id in enumerate(exchanges):
                 exchange = [exchange for exchange in self.system._exchanges
                                        if exchange.id == exchange_id][0]
+
                 value = getattr(exchange, attribute)[technology]
                 array[i, j] = value
-        data_handle.set_results(attribute, array)
+        return array
 
     def compute_upgrade_costs(self, data_handle : DataHandle):
-        # Compute upgrade costs for the current system
+        """Compute results for the current system and save to disk
+
+        Expects outputs for this wrapper to be defined with the same name as the
+        list of attributed below
+
+        Arguments
+        ---------
+        data_handle
+        """
         technologies = self.outputs['rollout_costs'].dim_coords('technology').ids
         exchanges = self.outputs['rollout_costs'].dim_coords('exchanges').ids
 
-        self.save_exchange_attribute(data_handle, technologies, exchanges, 'rollout_costs')
-        self.save_exchange_attribute(data_handle, technologies, exchanges, 'rollout_bcr')
+        attributes = ['rollout_costs',
+                      'rollout_bcr',
+                      'total_potential_benefit',
+                      'total_potential_bcr']
 
+        for attribute in attributes:
+            data = self.save_exchange_attribute(technologies,
+                                                exchanges,
+                                                attribute)
+            data_handle.set_results(attribute, data)
 
     def simulate(self, data_handle : DataHandle):
         """Implement smif.SectorModel simulate
@@ -156,26 +178,52 @@ class DigitalCommsWrapper(SectorModel):
         now = data_handle.current_timestep
         self.logger.info("DigitalCommsWrapper received inputs in %s", now)
 
-
         total_cost = 0
 
         interventions = data_handle.get_current_interventions()
         print("Interventions: {}".format(interventions))
+
+        dc_assets = []
+
         for name, intervention in interventions.items():
             technology = intervention['technology']
             asset_id = intervention['id']
             exchange = [exchange for exchange in self.system._exchanges
                         if exchange.id == asset_id][0]
             total_cost += exchange.rollout_costs[technology]
+
+            asset = (intervention['id'],
+                     intervention['technology'])
+            dc_assets.append(asset)
+
         data_handle.set_results('total_cost', total_cost)
 
         self.compute_upgrade_costs(data_handle)
 
         self.logger.debug("DigitalCommsWrapper - Upgrading system")
-        self.system.upgrade(interventions)
+        self.system.upgrade(dc_assets)
 
-        # adoption_cap = self.compute_adoption_cap(data_handle, technology)
+        exchange = self.system._exchanges[0] # type: Exchange
+        self.logger.debug("bf Asset costs: %s", exchange.list_of_asset_costs)
+        self.logger.debug("bf Tot pot bcr: %s", exchange.total_potential_bcr)
+        self.logger.debug("bf Rollout bcr: %s", exchange.rollout_bcr)
 
+        adoption_adsl = self.compute_adoption_cap(data_handle, 'adsl')
+        adoption_fttdp = self.compute_adoption_cap(data_handle, 'fttdp')
+        adoption_fttp = self.compute_adoption_cap(data_handle, 'fttp')
+        self.logger.debug(adoption_fttp)
+        self.logger.debug(adoption_fttdp)
+        self.logger.debug(adoption_adsl)
+
+        exchange = self.system._exchanges[0] # type: Exchange
+        self.logger.debug("af Asset costs: %s", exchange.list_of_asset_costs)
+        self.logger.debug("af Tot pot bcr: %s", exchange.total_potential_bcr)
+        self.logger.debug("af Rollout bcr: %s", exchange.rollout_bcr)
+
+        self.logger.debug("Total upgrade costs: %s",
+                          self.system.get_total_upgrade_costs('fttp'))
+        self.logger.debug("Total upgrade benefit: %s",
+                          self.system.get_total_benefit('fttp'))
         # data_handle.set_results('adoption_cap', adoption_cap)
 
         # -------------
@@ -231,4 +279,3 @@ class DigitalCommsWrapper(SectorModel):
 
         # capacity = self.system.capacity('lad')
         # spend = self.compute_spend()
-

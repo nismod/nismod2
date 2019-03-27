@@ -593,6 +593,20 @@ outputs:
   description: Total cost of all interventions
   dims: []
   unit: GBP
+- name: total_potential_bcr
+  dtype: float
+  description: The total potential benefit cost ratio of upgrading the exchange and all cabinets below it
+  dims:
+  - technology
+  - exchanges
+  unit: 1
+- name: total_potential_benefit
+  dtype: float
+  description: The total potential benefit of upgrading the exchange
+  dims:
+  - technology
+  - exchanges
+  unit: GBP
 - name: rollout_costs
   dtype: float
   description: The cost of upgrading the exchanges with a given technology for the

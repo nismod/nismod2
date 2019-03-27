@@ -15,7 +15,7 @@ class DigitalDecisions(RuleBased):
 
     def __init__(self, timesteps, register):
         super().__init__(timesteps, register)
-        self.model_name = 'digital_comms'
+        self.model_name = 'digital_comms_fixed_network'
         self.logger = getLogger(__name__)
 
     @staticmethod
@@ -42,44 +42,92 @@ class DigitalDecisions(RuleBased):
         >>> dm = DecisionModule([2010, 2015], register)
         >>> dm.get_decision(results_handle)
         [{'name': 'intervention_a', 'build_year': 2010}])
+
+        Notes
+        -----
+        The procedure for choosing interventions is
+
+        - retrieve the rollout costs and cost-benefit ratio from the previous iteration
+        - rank the interventions according to the cost-benefit ratio
+        - choose the subset of most beneficial interventions that do not exceed
+          budget
+
         """
+        annual_budget = 150000.0 # type: float
+
+        decisions = [{'name': '',
+                      'build_year': ''}] # type: List
+
         interventions = self.interventions # type: List
         print(interventions)
 
-        if data_handle.current_timestep > data_handle.base_timestep:
-            iteration_of_prev_timestep = self._max_iteration_by_timestep[data_handle.previous_timestep]
-            rollout_costs = data_handle.get_results(self.model_name,
+        if (self.current_iteration > 1
+            and self.current_timestep == data_handle.base_timestep):
+
+            iteration = self.current_iteration - 1
+
+            timestep = self.current_timestep
+
+            decisions = self.choose_interventions(data_handle,
+                                                  timestep,
+                                                  iteration,
+                                                  annual_budget)
+
+        elif (self.current_iteration > 1
+            and self.current_timestep > data_handle.base_timestep):
+
+            iteration = self._max_iteration_by_timestep[data_handle.previous_timestep]
+
+            timestep = data_handle.previous_timestep
+
+            decisions = self.choose_interventions(data_handle,
+                                                  timestep,
+                                                  iteration,
+                                                  annual_budget)
+
+        return decisions
+
+        # Get results from previous iteration
+
+    def choose_interventions(self, data_handle, timestep, iteration, annual_budget):
+
+        rollout_costs = data_handle.get_results(self.model_name,
                                                 'rollout_costs',
-                                                self.previous_timestep,
-                                                iteration_of_prev_timestep)
-            rollout_bcr = data_handle.get_results(self.model_name,
+                                                timestep,
+                                                iteration)
+        rollout_bcr = data_handle.get_results(self.model_name,
                                                 'rollout_bcr',
-                                                self.previous_timestep,
-                                                iteration_of_prev_timestep)
-            total_cost = data_handle.get_results(self.model_name,
+                                                timestep,
+                                                iteration)
+        total_cost = data_handle.get_results(self.model_name,
                                                 'total_cost',
-                                                self.previous_timestep,
-                                                iteration_of_prev_timestep)
+                                                timestep,
+                                                iteration)
+        self.logger.debug(rollout_costs.as_df())
+        self.logger.debug(rollout_bcr.as_df())
+        self.logger.debug(total_cost.as_df())
 
-            # Get the technology strategy parameter - this should consist of a string
-            # which describes the policy and
-            technology = 'fttdp'
-            policy = 's1_market_based_roll_out'
+        decision_data = rollout_costs.as_df() # type: pd.DataFrame
+        decision_data = decision_data.merge(rollout_bcr.as_df(),
+                                            on=['exchanges', 'technology'])
 
-            # suggested_interventions = decide_interventions(
-            #     interventions,
-            #     data_handle.current_timestep,
-            #     technology,
-            #     policy,
-            #     data_handle.get_parameter('annual_budget').data,
-            #     adoption_cap,
-            #     data_handle.get_parameter('subsidy').data,
-            #     data_handle.get_parameter('telco_match_funding').data,
-            #     data_handle.get_parameter('service_obligation_capacity').data,
-            # )
-            # print(suggested_interventions)
+        self.logger.debug(decision_data)
 
+        sorted_by_bcr = decision_data.sort_values(by=['rollout_bcr', 'rollout_costs'])
+        sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
 
+        self.logger.debug(sorted_by_bcr)
 
-        return [{'name': '',
-                 'build_year': data_handle.current_timestep }]
+        # sorted_by_bcr = sorted_by_bcr.set_index(['exchanges', 'technology'])
+        chosen = sorted_by_bcr.where(sorted_by_bcr['cumsum'] <= annual_budget).dropna()
+
+        self.logger.debug(chosen)
+
+        decisions = [{'name': '', 'build_year': ''}]
+        for row in chosen.itertuples(index=True, name='Intervention'):
+            print(row)
+            decisions.append({'name': "_".join(row.Index),
+                                'build_year': data_handle.current_timestep})
+        self.satisfied = True
+
+        return decisions
