@@ -588,6 +588,27 @@ outputs:
   - 0
   - 1
   unit: '%'
+- name: total_cost
+  dtype: float
+  description: Total cost of all interventions
+  dims: []
+  unit: GBP
+- name: rollout_costs
+  dtype: float
+  description: The cost of upgrading the exchanges with a given technology for the
+    current year
+  dims:
+  - technology
+  - exchanges
+  unit: GBP
+- name: rollout_bcr
+  dtype: float
+  description: The benefit cost ratio of upgrading the exchanges with a given technology for the
+    current year
+  dims:
+  - technology
+  - exchanges
+  unit: 1
 description: The Cambridge Communications Assessment Model provides analytics for
   decision-makers on (i) capacity-demand and (ii) risk, vulnerability and resilience.
   The fixed, wireless and satellite sectors are currently under development.

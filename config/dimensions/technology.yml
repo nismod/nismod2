@@ -1,0 +1,3 @@
+name: technology
+description: Technology options for the digital comms fixed network
+elements: ../digital_comms/dimensions/technology.csv

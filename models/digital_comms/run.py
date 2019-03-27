@@ -10,6 +10,8 @@ import numpy as np  # type: ignore
 from digital_comms.fixed_network.model import NetworkManager
 from digital_comms.runner import read_csv, read_assets, read_links
 
+from typing import List
+
 from digital_comms.fixed_network.adoption import update_adoption_desirability
 
 from smif.model.sector_model import SectorModel  # type: ignore
@@ -107,6 +109,43 @@ class DigitalCommsWrapper(SectorModel):
     def compute_spend(self):
         return 0
 
+    def save_exchange_attribute(self, data_handle : DataHandle,
+                                technologies : List,
+                                exchanges : List,
+                                attribute : str):
+        """Save an attribute of an exchange object to smif results
+
+        Arguments
+        ---------
+        data_handle : DataHandle
+        technologies : list
+            The list of technology names
+        exchanges : list
+            A list of exchange names
+        attribute : str
+            The attribute to get from the digital comms model and save to disk
+        """
+        num_technologies = len(technologies)
+        num_exchanges = len(exchanges)
+        array = np.zeros((num_technologies, num_exchanges), dtype=np.float)
+
+        for i, technology in enumerate(technologies):
+            for j, exchange_id in enumerate(exchanges):
+                exchange = [exchange for exchange in self.system._exchanges
+                                       if exchange.id == exchange_id][0]
+                value = getattr(exchange, attribute)[technology]
+                array[i, j] = value
+        data_handle.set_results(attribute, array)
+
+    def compute_upgrade_costs(self, data_handle : DataHandle):
+        # Compute upgrade costs for the current system
+        technologies = self.outputs['rollout_costs'].dim_coords('technology').ids
+        exchanges = self.outputs['rollout_costs'].dim_coords('exchanges').ids
+
+        self.save_exchange_attribute(data_handle, technologies, exchanges, 'rollout_costs')
+        self.save_exchange_attribute(data_handle, technologies, exchanges, 'rollout_bcr')
+
+
     def simulate(self, data_handle : DataHandle):
         """Implement smif.SectorModel simulate
         """
@@ -117,17 +156,27 @@ class DigitalCommsWrapper(SectorModel):
         now = data_handle.current_timestep
         self.logger.info("DigitalCommsWrapper received inputs in %s", now)
 
+
+        total_cost = 0
+
         interventions = data_handle.get_current_interventions()
         print("Interventions: {}".format(interventions))
         for name, intervention in interventions.items():
             technology = intervention['technology']
+            asset_id = intervention['id']
+            exchange = [exchange for exchange in self.system._exchanges
+                        if exchange.id == asset_id][0]
+            total_cost += exchange.rollout_costs[technology]
+        data_handle.set_results('total_cost', total_cost)
+
+        self.compute_upgrade_costs(data_handle)
 
         self.logger.debug("DigitalCommsWrapper - Upgrading system")
         self.system.upgrade(interventions)
 
-        adoption_cap = self.compute_adoption_cap(data_handle, technology)
+        # adoption_cap = self.compute_adoption_cap(data_handle, technology)
 
-        data_handle.set_results('adoption_cap', adoption_cap)
+        # data_handle.set_results('adoption_cap', adoption_cap)
 
         # -------------
         # Write outputs

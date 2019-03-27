@@ -44,11 +44,20 @@ class DigitalDecisions(RuleBased):
         [{'name': 'intervention_a', 'build_year': 2010}])
         """
         interventions = self.interventions # type: List
+        print(interventions)
 
         if data_handle.current_timestep > data_handle.base_timestep:
             iteration_of_prev_timestep = self._max_iteration_by_timestep[data_handle.previous_timestep]
-            adoption_cap = data_handle.get_results(self.model_name,
-                                                'adoption_cap',
+            rollout_costs = data_handle.get_results(self.model_name,
+                                                'rollout_costs',
+                                                self.previous_timestep,
+                                                iteration_of_prev_timestep)
+            rollout_bcr = data_handle.get_results(self.model_name,
+                                                'rollout_bcr',
+                                                self.previous_timestep,
+                                                iteration_of_prev_timestep)
+            total_cost = data_handle.get_results(self.model_name,
+                                                'total_cost',
                                                 self.previous_timestep,
                                                 iteration_of_prev_timestep)
 
@@ -57,20 +66,20 @@ class DigitalDecisions(RuleBased):
             technology = 'fttdp'
             policy = 's1_market_based_roll_out'
 
-            suggested_interventions = decide_interventions(
-                interventions,
-                data_handle.current_timestep,
-                technology,
-                policy,
-                data_handle.get_parameter('annual_budget').data,
-                adoption_cap,
-                data_handle.get_parameter('subsidy').data,
-                data_handle.get_parameter('telco_match_funding').data,
-                data_handle.get_parameter('service_obligation_capacity').data,
-            )
-            print(suggested_interventions)
+            # suggested_interventions = decide_interventions(
+            #     interventions,
+            #     data_handle.current_timestep,
+            #     technology,
+            #     policy,
+            #     data_handle.get_parameter('annual_budget').data,
+            #     adoption_cap,
+            #     data_handle.get_parameter('subsidy').data,
+            #     data_handle.get_parameter('telco_match_funding').data,
+            #     data_handle.get_parameter('service_obligation_capacity').data,
+            # )
+            # print(suggested_interventions)
 
 
 
-        return [{'name': 'exchange_EACOM_fttp',
+        return [{'name': '',
                  'build_year': data_handle.current_timestep }]
