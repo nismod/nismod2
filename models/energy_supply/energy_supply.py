@@ -167,20 +167,8 @@ class EnergySupplyWrapper(SectorModel):
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.debug('Input Cost of carbon: %s', input_cost_of_carbon)
 
-        input_electricity_price = data.get_data("electricity_price")
-        self.logger.debug('Input Electricity price: %s', input_electricity_price)
-
-        input_gas_price = data.get_data("gas_price")
-        self.logger.debug('Input Gas price: %s', input_gas_price)
-
-        input_nuclearFuel_price = data.get_data("nuclearFuel_price")
-        self.logger.debug('Input Nuclearfuel price: %s', input_nuclearFuel_price)
-
-        input_oil_price = data.get_data("oil_price")
-        self.logger.debug('Input Oil price: %s', input_oil_price)
-
-        input_coal_price = data.get_data("coal_price")
-        self.logger.debug('Input Coal price: %s', input_coal_price)
+        input_price = data.get_data("fuel_price")
+        self.logger.debug('Input price: %s', input_price)
 
         heatload_res = data.get_data('residential_heatload')
         self.logger.debug('Residential heatload: %s', heatload_res)
