@@ -15,13 +15,13 @@ provides:
       - seasons
       - es_fuel_types
     dtype: float
-    unit: £/MWh
+    unit: GBP/MWh
   - name: cost_of_carbon
     description: ''
     dims:
       - seasons
     dtype: float
-    unit: £/Mt
+    unit: GBP/Mt
 variants:
   - name: baseline
     description: Baseline fuel price projections
