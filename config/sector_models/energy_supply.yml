@@ -1,5 +1,4 @@
 classname: EnergySupplyWrapper
-# classname: EnergySupplyDevWrapper
 description: energy_supply model description
 path: models/energy_supply/energy_supply.py
 initial_conditions:
