@@ -52,11 +52,6 @@ inputs:
   - seasonal_week
   unit: MW
   dtype: float
-- name: cost_of_carbon
-  dims:
-  - seasons
-  unit: GBP/Mt
-  dtype: float
 - name: fuel_price
   dims:
     - seasons

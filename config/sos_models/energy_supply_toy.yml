@@ -22,10 +22,6 @@ scenario_dependencies:
   source_output: energy_supply_price
   source: fuel_price
   sink_input: fuel_price
-- source_output: cost_of_carbon
-  sink_input: cost_of_carbon
-  sink: energy_supply_toy
-  source: fuel_price
 - source_output: residential_gas_non_heating
   sink_input: residential_gas_non_heating
   sink: energy_supply_toy

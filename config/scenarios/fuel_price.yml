@@ -16,12 +16,6 @@ provides:
       - es_fuel_types
     dtype: float
     unit: GBP/MWh
-  - name: cost_of_carbon
-    description: ''
-    dims:
-      - seasons
-    dtype: float
-    unit: GBP/Mt
 variants:
   - name: baseline
     description: Baseline fuel price projections
@@ -29,4 +23,3 @@ variants:
       fuel_price: transport_fuel_price.csv
       fuel_price_electricity: transport_fuel_price_electricity.csv
       energy_supply_price: energy_supply_price.csv
-      cost_of_carbon: cost_of_carbon.csv

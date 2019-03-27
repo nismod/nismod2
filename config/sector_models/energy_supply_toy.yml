@@ -73,11 +73,6 @@ inputs:
   - energy_hub_min
   - seasonal_week
   dtype: float
-- name: cost_of_carbon
-  unit: GBP/Mt
-  dims:
-  - seasons
-  dtype: float
 - name: fuel_price
   dims:
     - seasons

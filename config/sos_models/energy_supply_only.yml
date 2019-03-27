@@ -19,10 +19,6 @@ scenario_dependencies:
   source: fuel_price
   sink_input: fuel_price
 - sink: energy_supply
-  source_output: cost_of_carbon
-  source: fuel_price
-  sink_input: cost_of_carbon
-- sink: energy_supply
   source_output: residential_gas_non_heating
   source: dummy_energy_demands_full
   sink_input: residential_gas_non_heating

@@ -573,10 +573,6 @@ scenario_dependencies:
   source: fuel_price
   sink_input: fuel_price
   source_output: energy_supply_price
-- sink: energy_supply
-  source: fuel_price
-  sink_input: cost_of_carbon
-  source_output: cost_of_carbon
 - sink: energy_demand_constrained
   source: gva
   sink_input: gva_per_sector
