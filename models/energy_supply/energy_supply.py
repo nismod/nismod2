@@ -146,11 +146,9 @@ class EnergySupplyWrapper(SectorModel):
         # Get model inputs
         self.logger.debug("Energy Supply Wrapper received inputs in %s", data.current_timestep)
 
-        input_cost_of_carbon = data.get_data("cost_of_carbon")
-        self.logger.debug('Input Cost of carbon: %s', input_cost_of_carbon)
-
-        input_price = data.get_data("fuel_price")
-        self.logger.debug('Input price: %s', input_price)
+        fuel_prices = data.get_data("fuel_price")
+        self.logger.debug('Input price: %s', fuel_prices)
+        write_prices(fuel_prices, data.current_timestep)
 
         inputs_with_region_and_interval = [
             {
@@ -394,49 +392,50 @@ def write_simduration(year):
     conn.close()
 
 
-def write_gas_price(year, data):
-    """
+def write_prices(data_array, year):
+    """Write fuel price data
 
     Arguments
     ---------
-    year : int
-        The current model year
-    data : numpy.ndarray
+    data : smif.DataArray
        Price data
     """
-    conn = establish_connection()
     # Open a cursor to perform database operations
+    conn = establish_connection()
     cur = conn.cursor()
-
-    cur.execute("""DELETE FROM "FuelData" WHERE year=%s AND fuel_id=1;""", (year, ))
+    cur.execute('DELETE FROM "FuelData" WHERE "Year"=%s;', (year, ))
 
     sql = """
-    INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost)
-    VALUES (%s, %s, %s, %s, %s)
-    """
+        INSERT INTO "FuelData" ("Fuel_ID", "FuelType", "Year", "Season", "FuelCost")
+        VALUES (%s, %s, %s, %s, %s)
+        """
 
-    it = np.nditer(data, flags=['multi_index'])
-    while not it.finished:
-        cell = it[0]
+    dataframe = data_array.as_df().reset_index()
 
-        _, interval_index = it.multi_index
-        fuel_id = 1
-        fueltype = 'Gas'
-        insert_data = (fuel_id,
-                       fueltype,
-                       year,
-                       interval_index + 1,
-                       float(cell))
+    # HACK hard code ids for fuel types - fix is to add a fuel types table that FuelData and
+    # GeneratorParameters can both reference
+    fuel_ids = {
+        'gas': 1,
+        'coal': 2,
+        'nuclear': 3,
+        'oil': 4,
+        'electricity': 5,
+    }
 
-        # print("Data: {}".format(insert_data))
+    for datum in dataframe.itertuples():
+        cur.execute(
+            sql,
+            (
+                fuel_ids[datum.es_fuel_types],
+                datum.es_fuel_types.capitalize(),
+                year,
+                datum.seasons,
+                datum.energy_supply_price
+            )
+        )
 
-        cur.execute(sql, insert_data)
-        it.iternext()
-
-    # Make the changes to the database persistent
+    # Make the changes to the database persistent and close
     conn.commit()
-
-    # Close communication with the database
     cur.close()
     conn.close()
 
