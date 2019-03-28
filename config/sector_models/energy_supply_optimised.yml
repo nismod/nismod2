@@ -73,43 +73,43 @@ interventions:
 - ../energy_supply/interventions/full/es_heattech.csv
 name: energy_supply
 outputs:
-- name: gasfired_gen_tran
+- name: tran_gasfired
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: coal_gen_tran
+- name: tran_coal
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: pumpedHydro_gen_tran
+- name: tran_pump_power
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: hydro_gen_tran
+- name: tran_hydro
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: nuclear_gen_tran
+- name: tran_nuclear
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: interconnector_elec_tran
+- name: tran_interconnector
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: renewable_gen_tran
+- name: tran_renewable
   dims:
   - national
   - seasonal_week
@@ -121,61 +121,55 @@ outputs:
   - seasonal_week
   unit: GBP/kWh
   dtype: float
-- name: elec_reserve_tran
+- name: e_reserve
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: domestic_gas
+- name: gas_domestic
   dims:
   - national
   - seasonal_week
   unit: mcm
   dtype: float
-- name: lng_supply
+- name: gas_lng
   dims:
   - national
   - seasonal_week
   unit: mcm
   dtype: float
-- name: interconnector_gas
+- name: gas_interconnector
   dims:
   - national
   - seasonal_week
   unit: mcm
   dtype: float
-- name: storage_gas
-  dims:
-  - national
-  - seasonal_week
-  unit: mcm
-  dtype: float
-- name: storage_level
+- name: gas_storage_level
   dims:
   - energy_hub
   - seasonal_week
   unit: mcm
   dtype: float
-- name: wind_gen_tran
+- name: tran_wind_power
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: pv_gen_tran
+- name: tran_pv_power
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: wind_curtail_tran
+- name: tran_wind_curtailed
   dims:
   - national
   - seasonal_week
   unit: MW
   dtype: float
-- name: pv_curtail_tran
+- name: tran_pv_curtailed
   dims:
   - national
   - seasonal_week
