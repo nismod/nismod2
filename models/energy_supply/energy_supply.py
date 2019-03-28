@@ -431,7 +431,7 @@ def write_prices(data_array, year):
                 datum.es_fuel_types.capitalize(),
                 year,
                 datum.seasons,
-                datum.energy_supply_price
+                datum.fuel_price
             )
         )
 
