@@ -1,0 +1,440 @@
+classname: EnergySupplyWrapper
+description: energy_supply model description
+path: models/energy_supply/energy_supply.py
+initial_conditions:
+- ../energy_supply/initial_conditions/historical_interventions.csv
+inputs:
+- name: elecload
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gasload
+  dims:
+  - gas_nodes
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gasload_non_heat_res
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elecload_non_heat_res
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gasload_non_heat_com
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elecload_non_heat_com
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: hydrogenload_non_heat_eh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: building_biomass_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: building_elec_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: building_heatpump
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: building_gas_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: building_hydrogen_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: building_oil_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: dh_biomass_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: dh_elec_boiler
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: dh_gas_CHP
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: dh_hydrogen_fuelcell
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: fuel_price
+  dims:
+    - seasons
+    - es_fuel_types
+  unit: GBP/MWh
+  dtype: float
+interventions:
+- ../energy_supply/interventions/full/es_elec_network.csv
+- ../energy_supply/interventions/full/es_gaspipes.csv
+- ../energy_supply/interventions/full/es_gasstorage.csv
+- ../energy_supply/interventions/full/es_gasterminals.csv
+- ../energy_supply/interventions/full/es_generators.csv
+- ../energy_supply/interventions/full/es_heattech.csv
+name: energy_supply
+outputs:
+- name: tran_gas_fired
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_coal
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_pump_power
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_hydro
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_nuclear
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_interconnector
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_renewable
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: elec_cost
+  dims:
+  - national
+  - seasonal_week
+  unit: GBP/kWh
+  dtype: float
+- name: e_reserve
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gas_domestic
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gas_lng
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gas_interconnector
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gas_storage_level
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: tran_wind_power
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_pv_power
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_wind_curtailed
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: tran_pv_curtailed
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: total_opt_cost
+  dims:
+  - national
+  - seasonal_week
+  unit: GBP
+  dtype: float
+- name: eh_gas_fired_other
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_wind_power
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_pv_power
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gas_load_shed
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elec_load_shed
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: e_emissions
+  dims:
+  - bus_bars
+  - seasonal_week
+  unit: t
+  dtype: float
+- name: e_emissions_eh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: t
+  dtype: float
+- name: h_emissions_eh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: t
+  dtype: float
+- name: gas_load_shed_eh
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: elec_load_shed_eh
+  dims:
+  - national
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: fresh_water_demand
+  dims:
+  - bus_bars
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_chp_gas
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_chp_biomass
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_chp_waste
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_fuel_cell
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gasdemand_heat
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: elecdemand_heat
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gasboiler_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gasboiler_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_gaschp_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_heatpump_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_heatpump_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_electricboiler_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_electricboiler_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_biomassboiler_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_biomassboiler_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_biomasschp_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_wastechp_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_hydrogenboiler_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_hydrogen_fuelcell_dh
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: eh_hydrogen_heatpump_b
+  dims:
+  - energy_hub
+  - seasonal_week
+  unit: MW
+  dtype: float
+- name: gas_injection
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+- name: gas_withdraw
+  dims:
+  - national
+  - seasonal_week
+  unit: mcm
+  dtype: float
+parameters:
+- description: cost of electricity load shedding
+  name: LoadShed_elec
+  units: GBP/MWh
+  dtype: float
+  default: ../energy_supply/parameters/load_shed.csv
+- description: cost of gas load shedding
+  name: LoadShed_gas
+  units: GBP/MWh
+  dtype: float
+  default: ../energy_supply/parameters/load_shed.csv
