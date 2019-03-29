@@ -57,6 +57,13 @@ provides:
     - seasonal_week
     dtype: float
     unit: MW
+  - name: hydrogen_non_heating
+    description: 'Non heat hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
 variants:
   - name: es_energy_demand_dummy_full
     description: ''
@@ -69,3 +76,4 @@ variants:
       service_heatload: ../energy_supply/scenarios/energy_demand_full.csv
       service_gas_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
       service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      hydrogen_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
