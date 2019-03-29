@@ -51,7 +51,7 @@ apt-get install -y \
 # Install FICO XPRESS for energy supply
 #
 
-XPRESS_VERSION="8.4.4"
+XPRESS_VERSION="8.5.10"
 XPRESS_URL="https://clientarea.xpress.fico.com/downloads/${XPRESS_VERSION}/xp${XPRESS_VERSION}_linux_x86_64_setup.tar"
 XPRESS_PKG="xp${XPRESS_VERSION}_linux_x86_64.tar.gz"
 XPRESS_DIR=/home/vagrant/xpress
