@@ -1,9 +1,4 @@
-description:
-- name: central
-  description: central_scenario
-  data:
-    ev_trip_start: transport_trips.csv
-    ev_trip_elec: transport_trips.csv
+description: ''
 name: ev_transport_trips
 provides:
 - default: ../et_module/scenarios/transport_trips.csv

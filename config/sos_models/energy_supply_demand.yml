@@ -1,7 +1,7 @@
 scenarios:
-  gva: gva_baseline
-  population: pop_baseline
-  temperature: NF1
+  - gva
+  - population
+  - temperature
 model_dependencies:
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
