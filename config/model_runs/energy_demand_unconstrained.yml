@@ -8,7 +8,7 @@ timesteps:
 sos_model: energy_demand_unconstrained
 decision_module: ''
 scenarios:
-  population: pop_low
+  population: pop_baseline
   gva: gva_baseline
 narratives: {}
 strategies: {}

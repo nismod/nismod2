@@ -292,14 +292,6 @@ scenario_dependencies:
   source: gva
   source_output: gva_per_sector
 - sink: energy_demand_unconstrained
-  sink_input: latitude
-  source: weather_station_coordinates
-  source_output: latitude
-- sink: energy_demand_unconstrained
-  sink_input: longitude
-  source: weather_station_coordinates
-  source_output: longitude
-- sink: energy_demand_unconstrained
   sink_input: t_min
   source: temperature
   source_output: t_min
@@ -311,4 +303,3 @@ scenarios:
 - gva
 - temperature
 - population
-- weather_station_coordinates

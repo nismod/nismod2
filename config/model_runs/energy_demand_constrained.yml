@@ -5,9 +5,8 @@ narratives:
   - central_narrative
 scenarios:
   gva: gva_baseline
-  population: pop_low
+  population: pop_baseline
   temperature: NF1
-  weather_station_coordinates: weather_station_coordinates__NF1
 strategies: {}
 stamp: '2017-11-07T14:15:00+00:00'
 timesteps:

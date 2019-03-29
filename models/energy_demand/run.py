@@ -4,7 +4,6 @@ import os
 import logging
 from collections import defaultdict
 from shapely.geometry import shape, mapping
-import numpy as np
 
 from smif.model.sector_model import SectorModel
 
@@ -127,28 +126,10 @@ class EDWrapper(SectorModel):
 
         return pop_density
 
-    def _get_weather_station_coordinates(self, data_handle):
-        """Load coordinates of weather stations
-        """
-        out_stations = {}
-
-        stations_latitude = data_handle.get_data('latitude', 2015).as_ndarray()
-        stations_longitude = data_handle.get_data('longitude', 2015).as_ndarray()
-
-        temperature_input_spec = self.inputs['latitude']
-        station_ids = temperature_input_spec.dim_coords('station_id').elements
-
-        for station_array_nr, station_dict in enumerate(station_ids):
-            station_id = station_dict['name']
-            out_stations[station_id] = {
-                'latitude' : stations_latitude[station_array_nr],
-                'longitude': stations_longitude[station_array_nr]}
-
-        return out_stations
-
-    def _get_temperatures(self, data_handle, sim_yrs, weather_station_ids, constant_weather=False):
+    def _get_temperatures(self, data_handle, sim_yrs, regions, constant_weather=False):
         """Load minimum and maximum temperatures
         """
+        logging.info("... load temperature")
         temp_data = defaultdict(dict)
 
         for simulation_yr in sim_yrs:
@@ -158,14 +139,13 @@ class EDWrapper(SectorModel):
             else:
                 pass
 
-            logging.info("... load temperature for year {}".format(simulation_yr))
             t_min = data_handle.get_data('t_min', 2015).as_ndarray()
             t_max = data_handle.get_data('t_max', 2015).as_ndarray()
 
-            for array_nr, station_id in enumerate(weather_station_ids):
-                temp_data[simulation_yr][station_id] = {
-                    't_min': t_min[array_nr],
-                    't_max': t_max[array_nr]}
+            for region_nr, region_name in enumerate(regions):
+                temp_data[simulation_yr][region_name] = {
+                    't_min': t_min[region_nr],
+                    't_max': t_max[region_nr]}
 
         return dict(temp_data)
 
@@ -294,8 +274,7 @@ class EDWrapper(SectorModel):
         # -----------------------------
         # Load temperatures and weather stations
         # -----------------------------
-        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
-        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['weather_stations'], constant_weather=False)
+        data['temp_data'] = self._get_temperatures(data_handle, sim_yrs, data['regions'], constant_weather=False)
 
         # -----------------------------------------
         # Load data
@@ -432,9 +411,8 @@ class EDWrapper(SectorModel):
         # -----------------------------
         # Load temperatures
         # -----------------------------
-        data['weather_stations'] = self._get_weather_station_coordinates(data_handle)
         data['temp_data'] = self._get_temperatures(
-            data_handle, sim_yrs, data['weather_stations'], constant_weather=False)
+            data_handle, sim_yrs, data['regions'], constant_weather=False)
 
         # -----------------------------------------
         # Load data
@@ -485,7 +463,6 @@ class EDWrapper(SectorModel):
             data,
             config['CRITERIA'],
             data['assumptions'],
-            data['weather_stations'],
             weather_yr=weather_yr,
             weather_by=data['assumptions'].weather_by)
 

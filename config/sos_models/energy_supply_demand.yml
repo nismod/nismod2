@@ -2,7 +2,6 @@ scenarios:
   gva: gva_baseline
   population: pop_baseline
   temperature: NF1
-  weather_station_coordinates: weather_station_coordinates__NF1
 model_dependencies:
 - sink: convert_regions_ed_to_es
   source: energy_demand_constrained
@@ -544,14 +543,6 @@ description: A full version of the energy demand - energy supply system-of-syste
   model
 name: energy_supply_demand
 scenario_dependencies:
-- sink: energy_demand_constrained
-  sink_input: latitude
-  source: weather_station_coordinates
-  source_output: latitude
-- sink: energy_demand_constrained
-  sink_input: longitude
-  source: weather_station_coordinates
-  source_output: longitude
 - sink: energy_demand_constrained
   sink_input: t_min
   source: temperature
