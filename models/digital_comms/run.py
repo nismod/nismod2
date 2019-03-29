@@ -174,14 +174,12 @@ class DigitalCommsWrapper(SectorModel):
         # -----
         # Start
         # -----
-        data_handle = data_handle
         now = data_handle.current_timestep
         self.logger.info("DigitalCommsWrapper received inputs in %s", now)
 
         total_cost = 0
 
         interventions = data_handle.get_current_interventions()
-        print("Interventions: {}".format(interventions))
 
         dc_assets = []
 
@@ -203,10 +201,6 @@ class DigitalCommsWrapper(SectorModel):
         self.logger.debug("DigitalCommsWrapper - Upgrading system")
         self.system.upgrade(dc_assets)
 
-        exchange = self.system._exchanges[0] # type: Exchange
-        self.logger.debug("bf Asset costs: %s", exchange.list_of_asset_costs)
-        self.logger.debug("bf Tot pot bcr: %s", exchange.total_potential_bcr)
-        self.logger.debug("bf Rollout bcr: %s", exchange.rollout_bcr)
 
         adoption_adsl = self.compute_adoption_cap(data_handle, 'adsl')
         adoption_fttdp = self.compute_adoption_cap(data_handle, 'fttdp')
