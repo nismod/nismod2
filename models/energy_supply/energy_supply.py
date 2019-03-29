@@ -151,51 +151,42 @@ class EnergySupplyWrapper(SectorModel):
         write_prices(fuel_prices, data.current_timestep)
 
         inputs_with_region_and_interval = [
-            {
-                'name_smif': 'residential_electricity_non_heating',
-                'name_database': 'elecload_non_heat_res'
-            },
-            {
-                'name_smif': 'service_electricity_non_heating',
-                'name_database': 'elecload_non_heat_com'
-            },
-            {
-                'name_smif': 'residential_gas_non_heating',
-                'name_database': 'gasload_non_heat_res'
-            },
-            {
-                'name_smif': 'service_gas_non_heating',
-                'name_database': 'gasload_non_heat_com'
-            },
-            {
-                'name_smif': 'residential_heatload',
-                'name_database': 'heatload_res'
-            },
-            {
-                'name_smif': 'service_heatload',
-                'name_database': 'heatload_com'
-            },
-            {
-                'name_smif': 'elecload',
-                'name_database': 'elecload'
-            },
-            {
-                'name_smif': 'gasload',
-                'name_database': 'gasload'
-            }
+            # both modes
+            'elecload',
+            'gasload',
+            'gasload_non_heat_res',
+            'elecload_non_heat_res',
+            'gasload_non_heat_com',
+            'elecload_non_heat_com',
+            'hydrogenload_non_heat_eh',
+            # optimised mode only
+            'heatload_res',
+            'heatload_com',
+            # constrained mode only
+            'building_biomass_boiler',
+            'building_elec_boiler',
+            'building_heatpump',
+            'building_gas_boiler',
+            'building_hydrogen_boiler',
+            'building_oil_boiler',
+            'dh_biomass_boiler',
+            'dh_elec_boiler',
+            'dh_gas_CHP',
+            'dh_hydrogen_fuelcell',
         ]
         for input_ in inputs_with_region_and_interval:
-            self._load_input_2d(data, **input_)
+            if input_ in self.inputs:
+                self._load_input_2d(data, input_)
 
-    def _load_input_2d(self, data_handle, name_smif, name_database):
-        data = data_handle.get_data(name_smif)
-        self.logger.debug("Input %s: %s", name_smif, data)
+    def _load_input_2d(self, data_handle, name):
+        data = data_handle.get_data(name)
+        self.logger.debug("Input %s: %s", name, data)
 
         region_names, interval_names = self.get_dim_names(data.spec)
 
-        self.logger.debug("Writing %s to database", name_database)
+        self.logger.debug("Writing %s to database", name)
         write_input_timestep(
-            data, name_database, data_handle.current_timestep, region_names, interval_names)
+            data, name, data_handle.current_timestep, region_names, interval_names)
 
     def run_the_model(self):
         """Run the model
@@ -210,60 +201,13 @@ class EnergySupplyWrapper(SectorModel):
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
-
-        This results mapping maps output_parameters to sectormodel output names
-        external => internal
         """
-        timestep_results = [
-            {'name_smif': 'gasfired_gen_tran', 'name_database': 'tran_gas_fired'},
-            {'name_smif': 'coal_gen_tran', 'name_database': 'tran_coal'},
-            {'name_smif': 'pumpedHydro_gen_tran', 'name_database': 'tran_pump_power'},
-            {'name_smif': 'hydro_gen_tran', 'name_database': 'tran_hydro'},
-            {'name_smif': 'nuclear_gen_tran', 'name_database': 'tran_nuclear'},
-            {'name_smif': 'interconnector_elec_tran', 'name_database': 'tran_interconnector'},
-            {'name_smif': 'renewable_gen_tran', 'name_database': 'tran_renewable'},
-            {'name_smif': 'elec_cost', 'name_database': 'e_price'},
-            {'name_smif': 'elec_reserve_tran', 'name_database': 'e_reserve'},
-            {'name_smif': 'domestic_gas', 'name_database': 'gas_domestic'},
-            {'name_smif': 'lng_supply', 'name_database': 'gas_lng'},
-            {'name_smif': 'interconnector_gas', 'name_database': 'gas_interconnector'},
-            {'name_smif': 'storage_gas', 'name_database': 'gas_storage'},
-            {'name_smif': 'storage_level', 'name_database': 'storage_level'},
-            {'name_smif': 'wind_gen_tran', 'name_database': 'tran_wind_power'},
-            {'name_smif': 'pv_gen_tran', 'name_database': 'tran_pv_power'},
-            {'name_smif': 'wind_curtail_tran', 'name_database': 'tran_wind_curtailed'},
-            {'name_smif': 'pv_curtail_tran', 'name_database': 'tran_pv_curtailed'},
-            {'name_smif': 'total_opt_cost', 'name_database': 'total_opt_cost'},
-            {'name_smif': 'eh_gas_fired', 'name_database': 'eh_gas_fired'},
-            {'name_smif': 'eh_wind_power', 'name_database': 'eh_wind_power'},
-            {'name_smif': 'eh_pv_power', 'name_database': 'eh_pv_power'},
-            {'name_smif': 'eh_gas_boiler', 'name_database': 'eh_gas_boiler'},
-            {'name_smif': 'eh_heat_pump', 'name_database': 'eh_heat_pump'},
-            {'name_smif': 'gas_load_shed', 'name_database': 'gas_load_shed'},
-            {'name_smif': 'elec_load_shed', 'name_database': 'elec_load_shed'},
-            {'name_smif': 'e_emissions', 'name_database': 'e_emissions'},
-            {'name_smif': 'e_emissions_eh', 'name_database': 'e_emissions_eh'},
-            {'name_smif': 'gas_load_shed_eh', 'name_database': 'gas_load_shed_eh'},
-            {'name_smif': 'elec_load_shed_eh', 'name_database': 'elec_load_shed_eh'},
-            {'name_smif': 'fresh_water_demand', 'name_database': 'fresh_water_demand'},
-            {'name_smif': 'eh_chp', 'name_database': 'eh_chp'},
-            {'name_smif': 'gasdemand_heat', 'name_database': 'gasdemand_heat'},
-            {'name_smif': 'elecdemand_heat', 'name_database': 'elecdemand_heat'},
-            {'name_smif': 'eh_gasboiler_b', 'name_database': 'eh_gasboiler_b'},
-            {'name_smif': 'eh_heatpump_b', 'name_database': 'eh_heatpump_b'},
-            {'name_smif': 'eh_gasboiler_dh', 'name_database': 'eh_gasboiler_dh'},
-            {'name_smif': 'eh_chp_dh', 'name_database': 'eh_chp_dh'},
-            {'name_smif': 'gas_injection', 'name_database': 'gas_injection'},
-            {'name_smif': 'gas_withdraw', 'name_database': 'gas_withdraw'}
-        ]
-
-
         # Open database connection
         conn = establish_connection()
 
         # Write timestep results to data handler
-        for output in timestep_results:
-            self.set_results(data, conn, **output)
+        for output in self.outputs:
+            self.set_results(data, conn, output)
 
         # Close database connection
         conn.close()
@@ -271,18 +215,18 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug("Energy supplyWrapper produced outputs in %s", now)
 
 
-    def set_results(self, data_handle, conn, name_database, name_smif):
+    def set_results(self, data_handle, conn, name):
         """Pass results from database to data handle
         """
-        self.logger.info("Writing results for %s", name_smif)
-        spec = self.outputs[name_smif]
+        self.logger.info("Writing results for %s", name)
+        spec = self.outputs[name]
         region_names, interval_names = self.get_dim_names(spec)
 
         output = get_timestep_output(
-            conn, name_database, data_handle.current_timestep, region_names, interval_names)
+            conn, name, data_handle.current_timestep, region_names, interval_names)
 
         # set on smif DataHandle
-        data_handle.set_results(name_smif, output)
+        data_handle.set_results(name, output)
 
     def get_dim_names(self, spec):
         """Get region and interval names for a given input
