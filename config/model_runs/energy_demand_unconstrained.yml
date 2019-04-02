@@ -14,4 +14,5 @@ scenarios:
   population: pop_baseline
   gva: gva_baseline
   temperature: NF1
+narratives: {}
 strategies: {}

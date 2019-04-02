@@ -6,7 +6,32 @@ from subprocess import check_output
 
 import numpy as np
 import psycopg2
+import psycopg2.extras
 from smif.model.sector_model import SectorModel
+
+
+try:
+    from pyinstrument import Profiler  # import to enable profiling
+except ImportError:
+    pass
+
+
+def profile(func):
+    """Decorator - add to a function to profile cpu usage (requires pyinstrument):
+
+        @profile
+        def method_to_profile():
+            ...
+
+    """
+    def wrapper(*args, **kwargs):
+        profiler = Profiler()
+        profiler.start()
+        func(*args, **kwargs)
+        profiler.stop()
+        print(profiler.output_text(unicode=False, color=True))
+    return wrapper
+
 
 class EnergySupplyWrapper(SectorModel):
     """Energy supply
@@ -111,7 +136,8 @@ class EnergySupplyWrapper(SectorModel):
         build_heattech(heattech, current_timestep)
         self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
         # build_distributed(dist_eh, current_timestep)
-        self.logger.debug('Building %s transmission connected distributed generators', len(dist_tran))
+        self.logger.debug(
+            'Building %s transmission connected distributed generators', len(dist_tran))
         # build_distributed(dist_tran, current_timestep)
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
@@ -121,16 +147,22 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug("Energy Supply Wrapper received inputs in %s", now)
         input_residential_gas_non_heating = data.get_data("residential_gas_non_heating")
 
-        self.logger.debug('Input Residential gas non heating: %s', input_residential_gas_non_heating)
+        self.logger.debug(
+            'Input Residential gas non heating: %s', input_residential_gas_non_heating)
 
-        input_residential_electricity_non_heating = data.get_data("residential_electricity_non_heating")
-        self.logger.debug('Input Residential electricity non heating: %s', input_residential_electricity_non_heating)
+        input_residential_electricity_non_heating = data.get_data(
+            "residential_electricity_non_heating")
+        self.logger.debug(
+            'Input Residential electricity non heating: %s',
+            input_residential_electricity_non_heating)
 
         input_service_gas_non_heating = data.get_data("service_gas_non_heating")
         self.logger.debug('Input Service gas non heating: %s', input_service_gas_non_heating)
 
-        input_service_electricity_non_heating = data.get_data("service_electricity_non_heating")
-        self.logger.debug('Input Service electricity non heating: %s', input_service_electricity_non_heating)
+        input_service_electricity_non_heating = data.get_data(
+            "service_electricity_non_heating")
+        self.logger.debug(
+            'Input Service electricity non heating: %s', input_service_electricity_non_heating)
 
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.debug('Input Cost of carbon: %s', input_cost_of_carbon)
@@ -279,7 +311,8 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug("Energy supplyWrapper produced outputs in %s", now)
 
 
-    def set_results(self, internal_parameter_name, external_parameter_name, data_handle, conn, is_annual=False):
+    def set_results(self, internal_parameter_name, external_parameter_name, data_handle, conn,
+                    is_annual=False):
         """Pass results from database to data handle
         """
         # long way around to get canonical entry names for spatial/temporal resolution
@@ -293,9 +326,13 @@ class EnergySupplyWrapper(SectorModel):
 
         # read from database - need to be careful with internal vs external param name
         if is_annual:
-            output = get_annual_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
+            output = get_annual_output(
+                conn, internal_parameter_name, data_handle.current_timestep, regions,
+                intervals)
         else:
-            output = get_timestep_output(conn, internal_parameter_name, data_handle.current_timestep, regions, intervals)
+            output = get_timestep_output(
+                conn, internal_parameter_name, data_handle.current_timestep, regions,
+                intervals)
 
         # set on smif DataHandle
         data_handle.set_results(external_parameter_name, output)
@@ -308,15 +345,16 @@ class EnergySupplyWrapper(SectorModel):
         return region_names, interval_names
 
 
-
 def establish_connection():
     """Connect to an existing database
     """
     config = ConfigParser()
-    config.read(os.path.join(os.path.dirname(__file__), '..', '..', 'provision', 'dbconfig.ini'))
+    config.read(
+        os.path.join(os.path.dirname(__file__), '..', '..', 'provision', 'dbconfig.ini'))
     dbconfig = config['energy-supply']
     conn = psycopg2.connect(**dbconfig)
     return conn
+
 
 def clear_results(year):
     conn = establish_connection()
@@ -359,6 +397,7 @@ def parse_season_day_period(time_id):
     day, period = divmod(season[1], 24)
     return (season[0] + 1, day + 1, period + 1)
 
+
 def compute_interval_id(season, day, period):
     """
     Arguments
@@ -374,6 +413,7 @@ def compute_interval_id(season, day, period):
     """
     return 1 + (168 * (season - 1)) + (24 * (day - 1)) + (period - 1)
 
+
 def write_simduration(year):
     """
     """
@@ -382,7 +422,10 @@ def write_simduration(year):
     cur = conn.cursor()
     cur.execute("""DELETE FROM "SimDuration";""")
 
-    sql = """INSERT INTO "SimDuration" ("TimeStep", "Year", "Seasons", "Days", "Periods") VALUES (%s, %s, %s, %s, %s);"""
+    sql = """
+    INSERT INTO "SimDuration" ("TimeStep", "Year", "Seasons", "Days", "Periods")
+    VALUES (%s, %s, %s, %s, %s)
+    """
 
     cur.execute(sql, ('1', year, '4', '7', '24'))
 
@@ -392,6 +435,7 @@ def write_simduration(year):
     # Close communication with the database
     cur.close()
     conn.close()
+
 
 def write_gas_price(year, data):
     """
@@ -409,7 +453,10 @@ def write_gas_price(year, data):
 
     cur.execute("""DELETE FROM "FuelData" WHERE year=%s AND fuel_id=1;""", (year, ))
 
-    sql = """INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost) VALUES (%s, %s, %s, %s, %s);"""
+    sql = """
+    INSERT INTO "FuelData" (fuel_id, fueltype, year, season, fuelcost)
+    VALUES (%s, %s, %s, %s, %s)
+    """
 
     it = np.nditer(data, flags=['multi_index'])
     while not it.finished:
@@ -497,7 +544,8 @@ def get_timestep_output(conn, output_parameter, year, regions, intervals):
             for row in cur
         )
         try:
-            results = write_rows_into_array(region_interval_value_generator, regions, intervals)
+            results = write_rows_into_array(
+                region_interval_value_generator, regions, intervals)
         except(KeyError) as ex:
             raise KeyError(str(ex) + " in parameter %s" % output_parameter) from ex
     return results
@@ -521,8 +569,8 @@ def write_load_shed_costs(loadshedcost_elec,
         cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
 
     conn.commit()
-
     conn.close()
+
 
 def retire_generator(plants):
     conn = establish_connection()
@@ -540,6 +588,7 @@ def retire_generator(plants):
     # Close communication with the database
     cur.close()
     conn.close()
+
 
 def build_generator(plants, current_timestep):
     """Writes an intervention into the GeneratorData table
@@ -605,7 +654,10 @@ def build_generator(plants, current_timestep):
 
         if int(plant['sys_layer']) == 2:
 
-            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "EH_Conn_Num","MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"""
+            sql = """
+            INSERT INTO "GeneratorData" ("Type", "GeneratorName", "EH_Conn_Num","MinPower",
+                "MaxPower", "Year", "Retire", "SysLayer")
+            VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"""
             data = (plant_type,
                     plant['name'],
                     plant['location'],
@@ -618,7 +670,11 @@ def build_generator(plants, current_timestep):
 
         elif plant_type == 1:
 
-            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName", "GasNode", "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "GasNode", "BusNum",
+                    "MinPower", "MaxPower", "Year", "Retire", "SysLayer")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
             data = (plant_type,
                     plant['name'],
                     plant['to_location'],
@@ -632,7 +688,11 @@ def build_generator(plants, current_timestep):
 
         else:
 
-            sql = """INSERT INTO "GeneratorData" ("Type", "GeneratorName",  "BusNum", "MinPower", "MaxPower", "Year", "Retire", "SysLayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+            sql = """
+            INSERT INTO "GeneratorData" ("Type", "GeneratorName",  "BusNum", "MinPower",
+                "MaxPower", "Year", "Retire", "SysLayer")
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
             data = (plant_type,
                     plant['name'],
                     plant['location'],
@@ -654,9 +714,14 @@ def build_generator(plants, current_timestep):
     cur.close()
     conn.close()
 
+
 def get_distributed_eh(location, year):
 
-    sql =  """SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity" FROM "WindPVData_EH" WHERE "EH_Conn_Num"=%s AND "Year"=%s;"""
+    sql =  """
+    SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity"
+    FROM "WindPVData_EH"
+    WHERE "EH_Conn_Num"=%s AND "Year"=%s;
+    """
 
     conn = establish_connection()
     # Open a cursor to perform database operations
@@ -665,10 +730,15 @@ def get_distributed_eh(location, year):
         mapping = cur.fetchone()
     conn.close()
     return mapping
+
 
 def get_distributed_tran(location, year):
 
-    sql =  """SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity" FROM "WindPVData_Tran" WHERE "BusNum"=%s AND "Year"=%s;"""
+    sql =  """
+    SELECT "OnshoreWindCap", "OffshoreWindCap", "PvCapacity"
+    FROM "WindPVData_Tran"
+    WHERE "BusNum"=%s AND "Year"=%s;
+    """
 
     conn = establish_connection()
     # Open a cursor to perform database operations
@@ -677,6 +747,7 @@ def get_distributed_tran(location, year):
         mapping = cur.fetchone()
     conn.close()
     return mapping
+
 
 def build_distributed(plants, current_timestep):
     """Writes a list of interventions into the WindPVData_* table
@@ -712,10 +783,18 @@ def build_distributed(plants, current_timestep):
     for index, (location, plant) in enumerate(plant_remap.items()):
 
         if plant['table_name'] == 'WindPVData_EH':
-            sql = """INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap", "OffshoreWindCap", "PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
+            sql = """
+            INSERT INTO "WindPVData_EH" ("EH_Conn_Num", "Year", "OnshoreWindCap",
+                "OffshoreWindCap", "PvCapacity")
+            VALUES (%s, %s, %s, %s, %s)
+            """
 
         elif plant['table_name'] == 'WindPVData_Tran':
-            sql = """INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap", "OffshoreWindCap","PvCapacity") VALUES (%s, %s, %s, %s, %s)"""
+            sql = """
+            INSERT INTO "WindPVData_Tran" ("BusNum", "Year", "OnshoreWindCap",
+                "OffshoreWindCap","PvCapacity")
+            VALUES (%s, %s, %s, %s, %s)
+            """
         else:
             raise ValueError("Cannot read table name of element {}: {}".format(index, plant))
 
@@ -780,7 +859,11 @@ def build_gas_stores(gas_stores, current_timestep):
 
     for store_num, store in enumerate(gas_stores):
 
-        sql = """INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap", "OutFlowCap", "StorageCap", "OutFlowCost", "Syslayer") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """
+        INSERT INTO "GasStorage" ("StorageNum", "region", "Name", "Year", "InFlowCap",
+            "OutFlowCap", "StorageCap", "OutFlowCost", "Syslayer")
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
 
         data = (store_num + 1,
                 store['location'],
@@ -833,7 +916,12 @@ def build_gas_terminals(gas_terminals, current_timestep):
 
     for terminal_num, terminal in enumerate(gas_terminals):
 
-        sql = """INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode", "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity", "DomCapacity") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """
+        INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode",
+            "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity",
+            "DomCapacity")
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
 
         data = (terminal_num + 1,
                 current_timestep,
@@ -885,7 +973,11 @@ def build_pipes(pipes, current_timestep):
 
     for pipe_num, pipe in enumerate(pipes):
 
-        sql = """INSERT INTO "PipeData" ("PipeNum", "FromNode", "ToNode", "Year", "Length", "Diameter", "PipeEff", "MinFlow", "MaxFlow") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """
+        INSERT INTO "PipeData" ("PipeNum", "FromNode", "ToNode", "Year", "Length", "Diameter",
+            "PipeEff", "MinFlow", "MaxFlow")
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
 
         data = (pipe_num + 1,
                 pipe['location'],
@@ -934,7 +1026,11 @@ def build_heattech(heat_techs, current_timestep):
 
     for heat_num, heat_tech in enumerate(heat_techs):
 
-        sql = """INSERT INTO "HeatTechData" ("HeatNum", "Type", "HeatTechName", "EH_Conn_Num", "MinPower", "MaxPower", "Year") VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+        sql = """
+        INSERT INTO "HeatTechData" ("HeatNum", "Type", "HeatTechName", "EH_Conn_Num",
+            "MinPower", "MaxPower", "Year")
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
 
         data = (heat_num + 1,
                 heat_tech['type'],
@@ -982,7 +1078,10 @@ def build_lines(lines, current_timestep):
 
     for line_num, line in enumerate(lines):
 
-        sql = """INSERT INTO "LineData" ("LineNum", "FromBus", "ToBus", "Year", "MaxCapacity") VALUES (%s, %s, %s, %s, %s);"""
+        sql = """
+        INSERT INTO "LineData" ("LineNum", "FromBus", "ToBus", "Year", "MaxCapacity")
+        VALUES (%s, %s, %s, %s, %s)
+        """
 
         data = (line_num + 1,
                 line['location'],
@@ -1054,36 +1153,40 @@ def write_input_timestep(input_data, parameter_name, year,
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute("""DELETE FROM "input_timestep" WHERE parameter=%s AND year=%s;""", (parameter_name, year))
+    cur.execute(
+        'DELETE FROM "input_timestep" WHERE parameter=%s AND year=%s;',
+        (parameter_name, year))
 
-    sql = """INSERT INTO "input_timestep" (year, season, day, period, region_id, parameter, value) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    sql = """
+        INSERT INTO
+        input_timestep (year, season, day, period, region_id, parameter, value)
+        VALUES %s
+        """
 
     region_mapping = get_region_mapping(parameter_name)
 
-    it = np.nditer(input_data.as_ndarray(), flags=['multi_index'])
-    while not it.finished:
-        cell = it[0]
+    def values(input_data):
+        """Generate values tuples from input data
+        """
+        it = np.nditer(input_data.as_ndarray(), flags=['multi_index'])
+        while not it.finished:
+            cell = it[0]
 
-        region, interval = it.multi_index
-        season, day, period = parse_season_day_period(int(interval_names[interval]))
-        try:
-            region_id = region_mapping[int(region_names[region])]
-        except KeyError as ex:
-            print("Error when trying to write '{}'. Regions: {}".format(parameter_name, region_mapping))
-            raise ex
+            region, interval = it.multi_index
+            season, day, period = parse_season_day_period(int(interval_names[interval]))
+            try:
+                region_id = region_mapping[int(region_names[region])]
+            except KeyError as ex:
+                msg = "Error when trying to write '{}'. Regions: {}"
+                print(msg.format(parameter_name, region_mapping))
+                raise ex
 
-        insert_data = (year,
-                       season,
-                       day,
-                       period,
-                       region_id,
-                       parameter_name,
-                       float(cell))
+            yield (year, season, day, period, region_id, parameter_name, float(cell))
+            it.iternext()
 
-        # print("Data: {}".format(insert_data))
-
-        cur.execute(sql, insert_data)
-        it.iternext()
+    # bulk insert of `page_size` records at a time, runs faster than one-row-at-a-time
+    template = "(%s, %s, %s, %s, %s, %s, %s)"
+    psycopg2.extras.execute_values(cur, sql, values(input_data), template, page_size=1000)
 
     # Make the changes to the database persistent
     conn.commit()
@@ -1105,7 +1208,8 @@ class EnergySupplyDevWrapper(EnergySupplyWrapper):
 
         os.environ["ES_PATH"] = str(os.path.abspath(model_dir))
         self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
-        model_path = os.path.join(nismod_dir, 'energy_supply', 'model', 'Energy_Supply_Master.mos')
+        model_path = os.path.join(
+            nismod_dir, 'energy_supply', 'model', 'Energy_Supply_Master.mos')
         self.logger.debug(check_output(['mosel', 'exec', model_path]))
 
 
@@ -1121,13 +1225,13 @@ class EnergySupplyToyWrapper(EnergySupplyWrapper):
 
     def get_gasload(self, data, now):
         gasload = data.get_data('gasload')
-        region_names, interval_names = self.get_names("gasload", spatial_name='gas_nodes_minimal')
+        region_names, interval_names = self.get_names(
+            "gasload", spatial_name='gas_nodes_minimal')
         self.logger.debug('Writing %s to database', "gasload")
         write_input_timestep(gasload, "gasload", now, region_names, interval_names)
 
 
 class EnergySupplyDevToyWrapper(EnergySupplyDevWrapper, EnergySupplyToyWrapper):
-    """Monkey patches run model method to call development version of the minimal 
+    """Monkey patches run model method to call development version of the minimal
     model
-    
     """
