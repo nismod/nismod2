@@ -62,8 +62,11 @@ class DigitalDecisions(RuleBased):
             and self.current_timestep == data_handle.base_timestep):
 
             iteration = self.current_iteration - 1
-
             timestep = self.current_timestep
+
+            state = data_handle.get_state(timestep, iteration)
+            self.logger.debug("Updating state with %s", state)
+            self.update_decisions(state)
 
             rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
                                                                               timestep,
@@ -74,13 +77,12 @@ class DigitalDecisions(RuleBased):
             and self.current_timestep > data_handle.base_timestep):
 
             iteration = self._max_iteration_by_timestep[data_handle.previous_timestep]
+            timestep = data_handle.previous_timestep
 
-            state = data_handle.get_state(self.previous_timestep,
-                                          iteration)
-            print("Updating state with {}".format(state))
+            state = data_handle.get_state(timestep, iteration)
+            self.logger.debug("Updating state with %s", state)
             self.update_decisions(state)
 
-            timestep = data_handle.previous_timestep
             rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
              timestep,
             iteration)
@@ -96,8 +98,8 @@ class DigitalDecisions(RuleBased):
                                                 'rollout_costs',
                                                 timestep,
                                                 iteration)
-        rollout_bcr = data_handle.get_results(self.model_name,
-                                                'rollout_bcr',
+        total_potential_bcr = data_handle.get_results(self.model_name,
+                                                'total_potential_bcr',
                                                 timestep,
                                                 iteration)
         total_cost = data_handle.get_results(self.model_name,
@@ -105,31 +107,28 @@ class DigitalDecisions(RuleBased):
                                                 timestep,
                                                 iteration)
         decision_data = rollout_costs.as_df() # type: pd.DataFrame
-        decision_data = decision_data.merge(rollout_bcr.as_df(),
+        decision_data = decision_data.merge(total_potential_bcr.as_df(),
                                             on=['exchanges', 'technology'])
         decision_data = decision_data.reset_index()
         decision_data['name'] = decision_data['exchanges'].str.cat(decision_data['technology'], sep="_")
         decision_data = decision_data.set_index('name')
-        self.logger.debug(decision_data)
 
         return decision_data, total_cost
 
     def choose_interventions(self, decision_data, annual_budget):
 
-        print("Available interventions: {}".format(self.interventions))
+        self.logger.debug("Available interventions:\n%s", self.interventions)
         decision_data = decision_data.loc[self.interventions]
 
-        sorted_by_bcr = decision_data.sort_values(by=['rollout_bcr', 'rollout_costs'])
+        sorted_by_bcr = decision_data.sort_values(by=['total_potential_bcr', 'rollout_costs'])
         sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
 
-        self.logger.debug(sorted_by_bcr)
+        self.logger.debug("Interventions sorted by bcr:\n%s", sorted_by_bcr)
 
         # Filter by available interventions
-
-        # sorted_by_bcr = sorted_by_bcr.set_index(['exchanges', 'technology'])
         chosen = sorted_by_bcr.where(sorted_by_bcr['cumsum'] <= annual_budget).dropna()
 
-        self.logger.debug(chosen)
+        self.logger.debug("Selected interventions sorted by bcr:\n%s", chosen)
 
         decisions = [{'name': '', 'build_year': ''}]
         for row in chosen.itertuples(index=True, name='Intervention'):

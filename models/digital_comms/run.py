@@ -71,11 +71,9 @@ class DigitalCommsWrapper(SectorModel):
             distribution for distribution in self.system._distributions
             if distribution.adoption_desirability]
 
-        total_distributions = [distribution for distribution in self.system._distributions]
-
         adoption_desirability_percentage = (
             len([dist.total_prems for dist in adoption_desirability]) /
-            len([dist.total_prems for dist in total_distributions]) * 100)
+            len([dist.total_prems for dist in self.system._distributions]) * 100)
 
         percentage_annual_increase = float(annual_adoption_rate - \
             adoption_desirability_percentage)
@@ -96,7 +94,7 @@ class DigitalCommsWrapper(SectorModel):
 
         total_adoption_desirability_percentage = \
             (len([dist.total_prems for dist in adoption_desirability_now]) /
-             len([dist.total_prems for dist in total_distributions])
+             len([dist.total_prems for dist in self.system._distributions])
              * 100)
 
         # calculate the maximum adoption level based on the scenario, to make sure the
@@ -137,15 +135,15 @@ class DigitalCommsWrapper(SectorModel):
         # Iterate through the technologies and exchanges and get the attribute
         for i, technology in enumerate(technologies):
             for j, exchange_id in enumerate(exchanges):
-                exchange = [exchange for exchange in self.system._exchanges
+                xchange = [exchange for exchange in self.system._exchanges
                                        if exchange.id == exchange_id][0]
 
-                value = getattr(exchange, attribute)[technology]
+                value = getattr(xchange, attribute)[technology]
                 array[i, j] = value
         return array
 
-    def compute_upgrade_costs(self, data_handle : DataHandle):
-        """Compute results for the current system and save to disk
+    def save_decision_metrics(self, data_handle : DataHandle):
+        """Compute decision metrics for the current system and save to disk
 
         Expects outputs for this wrapper to be defined with the same name as the
         list of attributed below
@@ -196,11 +194,10 @@ class DigitalCommsWrapper(SectorModel):
 
         data_handle.set_results('total_cost', total_cost)
 
-        self.compute_upgrade_costs(data_handle)
-
         self.logger.debug("DigitalCommsWrapper - Upgrading system")
         self.system.upgrade(dc_assets)
 
+        self.save_decision_metrics(data_handle)
 
         adoption_adsl = self.compute_adoption_cap(data_handle, 'adsl')
         adoption_fttdp = self.compute_adoption_cap(data_handle, 'fttdp')
