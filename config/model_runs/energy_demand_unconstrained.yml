@@ -1,6 +1,9 @@
 name: energy_demand_unconstrained
 description: Run energy demand for baseline population scenario
 stamp: '2017-11-07T14:15:00+00:00'
+narratives:
+  mode:
+  - unconstrained_mode
 timesteps:
 - 2015
 - 2030
@@ -10,5 +13,5 @@ decision_module: ''
 scenarios:
   population: pop_baseline
   gva: gva_baseline
-narratives: {}
+  temperature: NF1
 strategies: {}

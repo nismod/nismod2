@@ -5,7 +5,12 @@ classname: EDWrapper
 initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
-- description: Service switches
+- description: Mode of model
+  default: ../energy_demand/parameters/mode.csv
+  name: mode
+  unit: ''
+  dtype: float
+- description: 
   default: ../energy_demand/parameters/switches_service.csv
   name: switches_service
   unit: ''

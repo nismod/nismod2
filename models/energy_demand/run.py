@@ -41,6 +41,19 @@ class EDWrapper(SectorModel):
             dict_out[region] = array_in[r_idx]
         return dict_out
 
+    def _get_mode(self, data_handle):
+        """Get constrained or unconstrained mode
+        """
+        param_raw_series = data_handle.get_parameter('mode').as_df()
+        df_raw = self._series_to_df(param_raw_series, 'mode')
+        mode = int(df_raw['mode'][0])
+
+        if mode == 1:
+            mode_out = True
+        if mode == 0:
+            mode_out = False
+        return mode_out
+
     def _get_working_dir(self):
         """Get path
         """
@@ -222,6 +235,10 @@ class EDWrapper(SectorModel):
         config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
 
+        # Replace constrained | unconstrained mode from narrative
+        mode = self._get_mode(data_handle)
+        config['CRITERIA']['mode_constrained'] = mode
+
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
         sim_yrs = self._get_simulation_yrs(data_handle)
@@ -348,6 +365,10 @@ class EDWrapper(SectorModel):
         path_main = self._get_working_dir()
         config_file_path = os.path.join(path_main, 'wrapperconfig.ini')
         config = data_loader.read_config_file(config_file_path)
+
+        # Replace constrained | unconstrained mode from narrative
+        mode = self._get_mode(data_handle)
+        config['CRITERIA']['mode_constrained'] = mode
 
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
@@ -481,6 +502,8 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
+        print("=========")
+        print(sim_obj.supply_results.keys())
         for key_name in self.outputs:
             if key_name in sim_obj.supply_results.keys():
                 logging.info("...writing `{}` to smif".format(key_name))

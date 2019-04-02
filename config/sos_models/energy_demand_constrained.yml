@@ -5,6 +5,20 @@ narratives:
 - description: ''
   provides:
     energy_demand_constrained:
+    - mode
+  name: mode
+  variants:
+  - data:
+      mode: ../energy_demand/narratives/mode_constrained.csv
+    description: ''
+    name: constrained_mode
+  - data:
+      mode: ../energy_demand/narratives/mode_unconstrained.csv
+    description: ''
+    name: unconstrained_mode
+- description: ''
+  provides:
+    energy_demand_constrained:
     - air_leakage
   name: air_leakage
   variants:

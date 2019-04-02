@@ -164,6 +164,11 @@ outputs:
   dtype: float
 # Parameters-----------------------------------------------
 parameters:
+- description: Mode of model
+  default: ../energy_demand/parameters/mode.csv
+  name: mode
+  unit: ''
+  dtype: int
 - description: Service switches
   default: ../energy_demand/parameters/switches_service.csv
   name: switches_service

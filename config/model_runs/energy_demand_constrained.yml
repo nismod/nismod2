@@ -1,18 +1,17 @@
+decision_module: ''
+description: Run energy demand for baseline population scenario
+name: energy_demand_constrained
 narratives:
-  t_base_heating:
-  - central_narrative
-  generic_enduse_change:
-  - central_narrative
+  mode:
+  - constrained_mode
 scenarios:
   gva: gva_baseline
   population: pop_baseline
   temperature: NF1
+sos_model: energy_demand_constrained
+stamp: ''
 strategies: {}
-stamp: '2017-11-07T14:15:00+00:00'
 timesteps:
 - 2015
+- 2030
 - 2050
-name: energy_demand_constrained
-description: Run energy demand for baseline population scenario
-sos_model: energy_demand_constrained
-decision_module: ''
