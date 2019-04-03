@@ -53,7 +53,7 @@ class DigitalDecisions(RuleBased):
           budget
 
         """
-        annual_budget = 300000.0 # type: float
+        annual_budget = 10000000.0 # type: float
 
         decisions = [{'name': '',
                       'build_year': ''}] # type: List
@@ -120,7 +120,9 @@ class DigitalDecisions(RuleBased):
         self.logger.debug("Available interventions:\n%s", self.interventions)
         decision_data = decision_data.loc[self.interventions]
 
-        sorted_by_bcr = decision_data.sort_values(by=['total_potential_bcr', 'rollout_costs'])
+        sorted_by_bcr = decision_data.sort_values(
+            by=['total_potential_bcr', 'rollout_costs'],
+            ascending=[False, True])
         sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
 
         self.logger.debug("Interventions sorted by bcr:\n%s", sorted_by_bcr)

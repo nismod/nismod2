@@ -59,8 +59,6 @@ class DigitalCommsWrapper(SectorModel):
         self.logger.info("DigitalCommsWrapper - Intitialise system")
         self.system = NetworkManager(assets, links, parameters) # type: NetworkManager
 
-        # only distribution points with a benefit cost ratio > 1 can be upgraded
-        # model rollout is constrained by the adoption desirability set by scenario
 
     def compute_adoption_cap(self, data_handle, technology):
 
@@ -205,17 +203,6 @@ class DigitalCommsWrapper(SectorModel):
         self.logger.debug(adoption_fttp)
         self.logger.debug(adoption_fttdp)
         self.logger.debug(adoption_adsl)
-
-        exchange = self.system._exchanges[0] # type: Exchange
-        self.logger.debug("af Asset costs: %s", exchange.list_of_asset_costs)
-        self.logger.debug("af Tot pot bcr: %s", exchange.total_potential_bcr)
-        self.logger.debug("af Rollout bcr: %s", exchange.rollout_bcr)
-
-        self.logger.debug("Total upgrade costs: %s",
-                          self.system.get_total_upgrade_costs('fttp'))
-        self.logger.debug("Total upgrade benefit: %s",
-                          self.system.get_total_benefit('fttp'))
-        # data_handle.set_results('adoption_cap', adoption_cap)
 
         # -------------
         # Write outputs
