@@ -10,6 +10,7 @@ from typing import Dict, List
 from digital_comms.fixed_network.interventions import decide_interventions
 from digital_comms.fixed_network.adoption import update_adoption_desirability
 
+from pytest import fixture
 
 class DigitalDecisions(RuleBased):
 
@@ -71,7 +72,10 @@ class DigitalDecisions(RuleBased):
             rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
                                                                               timestep,
                                                                               iteration)
-            decisions = self.choose_interventions(rollout_results, annual_budget)
+            decisions = choose_interventions(rollout_results,
+                                             annual_budget,
+                                             self.current_timestep)
+            self.satisfied = True
 
         elif (self.current_iteration > 1
             and self.current_timestep > data_handle.base_timestep):
@@ -86,7 +90,10 @@ class DigitalDecisions(RuleBased):
             rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
              timestep,
             iteration)
-            decisions = self.choose_interventions(rollout_results, annual_budget)
+            decisions = choose_interventions(rollout_results,
+                                             annual_budget,
+                                             self.current_timestep)
+            self.satisfied = True
 
         return decisions
 
@@ -113,29 +120,95 @@ class DigitalDecisions(RuleBased):
         decision_data['name'] = decision_data['exchanges'].str.cat(decision_data['technology'], sep="_")
         decision_data = decision_data.set_index('name')
 
+        decision_data = decision_data.loc[list(self.interventions.keys())]
+
         return decision_data, total_cost
 
-    def choose_interventions(self, decision_data, annual_budget):
+def choose_interventions(decision_data, annual_budget, timestep):
 
-        self.logger.debug("Available interventions:\n%s", self.interventions)
-        decision_data = decision_data.loc[self.interventions]
+    best_by_exchange = _get_largest_in_each_exchange(decision_data, 'total_potential_bcr', 'exchanges')
 
-        sorted_by_bcr = decision_data.sort_values(
-            by=['total_potential_bcr', 'rollout_costs'],
-            ascending=[False, True])
-        sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
+    df = decision_data.loc[best_by_exchange]
 
-        self.logger.debug("Interventions sorted by bcr:\n%s", sorted_by_bcr)
+    sorted_by_bcr = df.sort_values(
+        by=['total_potential_bcr', 'rollout_costs'],
+        ascending=[False, True])
+    sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
 
-        # Filter by available interventions
-        chosen = sorted_by_bcr.where(sorted_by_bcr['cumsum'] <= annual_budget).dropna()
+    # Filter by available interventions
+    chosen = sorted_by_bcr.where(sorted_by_bcr['cumsum'] <= annual_budget).dropna()
 
-        self.logger.debug("Selected interventions sorted by bcr:\n%s", chosen)
-
-        decisions = [{'name': '', 'build_year': ''}]
-        for row in chosen.itertuples(index=True, name='Intervention'):
-            decisions.append({'name': row.Index,
-                              'build_year': self.current_timestep})
-        self.satisfied = True
-
+    decisions = []
+    for row in chosen.itertuples(index=True, name='Intervention'):
+        decisions.append({'name': row.Index,
+                            'build_year': timestep})
+    if decisions:
         return decisions
+    else:
+        return [{'name': '', 'build_year': ''}]
+
+def _get_largest_in_each_exchange(df, metric, group):
+    """Returns list of largest values of ``metric`` in each ``group``
+
+    Arguments
+    ---------
+    df : pandas.DataFrame
+        Expects columns exchanges and total_potential_bcr
+    metric : str
+        The decision metric that will be used to find the largest value
+    group : str or list
+        The column name or list of column names to group over
+
+    Returns
+    -------
+    list of str
+        The list of index names which can be used to filter the original dataframe
+    """
+    if isinstance(group, list):
+        subset = []
+        subset.extend(group).append(metric)
+    else:
+        subset = [group, metric]
+
+    df = df[subset]
+
+    largest = df.groupby(
+        by=[group], as_index=False
+        ).nth(0)
+    return list(largest.index)
+
+
+class TestInterventionChooser:
+
+    @fixture(scope='function')
+    def decision_data(self):
+
+        columns = ['name', 'exchanges', 'technology', 'rollout_costs' ,'total_potential_bcr']
+        data = [
+            ('exchange_STBNMTH_fttdp', 'exchange_STBNMTH', 'fttdp', 133512, 91),
+            ('exchange_EACAM_fttc', 'exchange_EACAM', 'fttc', 761070, 82),
+            ('exchange_NEILB_fttc', 'exchange_NEILB', 'fttc', 631140, 46),
+            ('exchange_NEILB_fttdp', 'exchange_NEILB', 'fttdp', 916095, 32)]
+
+        df = pd.DataFrame(
+            data=data, columns=columns)
+        df = df.set_index('name')
+
+        return df
+
+    def test_get_largest_in_group(self, decision_data):
+
+        expected = ['exchange_STBNMTH_fttdp',
+                    'exchange_EACAM_fttc',
+                    'exchange_NEILB_fttc']
+        actual = _get_largest_in_each_exchange(decision_data, 'total_potential_bcr', 'exchanges')
+
+        assert actual == expected
+
+    def test_grouping(self, decision_data):
+
+        actual = choose_interventions(decision_data, 133513, 2019)
+        expected = [{
+            'name': 'exchange_STBNMTH_fttdp',
+             'build_year': 2019}]
+        assert actual == expected
