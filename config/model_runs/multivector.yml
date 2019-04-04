@@ -1,0 +1,30 @@
+decision_module: ''
+description: ''
+name: multivector
+narratives:
+  smart_meter_p:
+  - multivector_world
+  t_base_heating:
+  - multivector_world
+  f_eff_achieved:
+  - multivector_world
+  generic_enduse_change:
+  - multivector_world
+  heat_recovered:
+  - multivector_world
+  generic_fuel_switch:
+  - multivector_world
+  switches_service:
+  - multivector_world
+scenarios:
+  es_prices: multivector_world #TODO update
+  gva: gva_low
+  population: pop_low
+  temperature: NF1
+sos_model: energy_supply_demand
+stamp: ''
+strategies: {}
+timesteps:
+- 2015
+- 2030
+- 2050

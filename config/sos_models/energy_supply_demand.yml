@@ -392,6 +392,20 @@ model_dependencies:
   sink_input: residential_heatload
   source_output: residential_heatload
 narratives:
+- description: ''
+  provides:
+    energy_demand_constrained:
+    - mode
+  name: mode
+  variants:
+  - data:
+      mode: ../energy_demand/narratives/mode_constrained.csv
+    description: ''
+    name: constrained_mode
+  - data:
+      mode: ../energy_demand/narratives/mode_unconstrained.csv
+    description: ''
+    name: unconstrained_mode
 - variants:
   - data:
       LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
@@ -454,6 +468,14 @@ narratives:
       f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__electric_world.csv
+    description: Central assumptions
+    name: electric_world
+  - data:
+      f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world.csv
+    description: Central assumptions
+    name: multivector_world
 - description: ''
   provides:
     energy_demand_constrained:
@@ -464,6 +486,14 @@ narratives:
       generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__electric_world.csv
+    description: Electirc world assumptions
+    name: electric_world
+  - data:
+      generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world.csv
+    description: Multivector assumptions
+    name: multivector_world
 - description: ''
   provides:
     energy_demand_constrained:
@@ -474,6 +504,14 @@ narratives:
       heat_recovered: ../energy_demand/narratives/heat_recovered__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      heat_recovered: ../energy_demand/narratives/heat_recovered__electric_world.csv
+    description: Central assumptions
+    name: electric_world
+  - data:
+      heat_recovered: ../energy_demand/narratives/heat_recovered__multivector_world.csv
+    description: Central assumptions
+    name: multivector_world
 - description: Change in heating
   provides:
     energy_demand_constrained:
@@ -488,6 +526,18 @@ narratives:
       rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world.csv
+      ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world.csv
+      rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world.csv
+    description: Electric world assumptions
+    name: electric_world
+  - data:
+      is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world.csv
+      ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world.csv
+      rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world.csv
+    description: Central assumptions
+    name: multivector_world
 - description: ''
   provides:
     energy_demand_constrained:
@@ -508,6 +558,14 @@ narratives:
       smart_meter_p: ../energy_demand/narratives/smart_meter_p__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector_world.csv
+    description: Central assumptions
+    name: multivector_world
+  - data:
+      smart_meter_p: ../energy_demand/narratives/smart_meter_p__electric_world.csv
+    description: Central assumptions
+    name: electric_world
 - description: ''
   provides:
     energy_demand_constrained:
@@ -518,6 +576,14 @@ narratives:
       generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector_world.csv
+    description: Multivector assumptions
+    name: multivector_world
+  - data:
+      generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world.csv
+    description: Electirc world assumptions
+    name: electric_world
 - description: ''
   provides:
     energy_demand_constrained:
@@ -528,6 +594,14 @@ narratives:
       switches_service: ../energy_demand/narratives/switches_service__central.csv
     description: Central assumptions
     name: central_narrative
+  - data:
+      switches_service: ../energy_demand/narratives/switches_service__electric_world.csv
+    description: Electric world assumptions
+    name: electric_world
+  - data:
+      switches_service: ../energy_demand/narratives/switches_service__multivector_world.csv
+    description: Multivector assumptions
+    name: multivector_world
 sector_models:
 - energy_supply
 - energy_demand_constrained

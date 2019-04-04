@@ -1,0 +1,34 @@
+decision_module: ''
+description: ''
+name: electricworld
+narratives:
+  mode:
+  - constrained_mode
+  load_shedding:
+  - high_cost
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  heat_recovered:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
+scenarios:
+  es_prices: electric_world #TODO update
+  gva: gva_high
+  population: pop_high
+  temperature: NF1
+sos_model: energy_supply_demand
+stamp: ''
+strategies: {}
+timesteps:
+- 2015
+- 2030
+- 2050
