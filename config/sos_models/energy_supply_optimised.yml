@@ -45,7 +45,7 @@ scenario_dependencies:
 - source: dummy_energy_demands_full
   source_output: hydrogen_non_heating
   sink: energy_supply_optimised
-  sink_input: hydrogenload_non_heat_eh
+  sink_input: hydrogen_non_heat_eh
 - source: dummy_energy_demands_full
   source_output: residential_heatload
   sink: energy_supply_optimised
