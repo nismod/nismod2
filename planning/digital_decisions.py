@@ -54,10 +54,9 @@ class DigitalDecisions(RuleBased):
           budget
 
         """
-        annual_budget = 10000000.0 # type: float
+        annual_budget = 100000000.0 # type: float
 
-        decisions = [{'name': '',
-                      'build_year': ''}] # type: List
+        decisions = []
 
         if (self.current_iteration > 1
             and self.current_timestep == data_handle.base_timestep):
@@ -65,17 +64,8 @@ class DigitalDecisions(RuleBased):
             iteration = self.current_iteration - 1
             timestep = self.current_timestep
 
-            state = data_handle.get_state(timestep, iteration)
-            self.logger.debug("Updating state with %s", state)
-            self.update_decisions(state)
-
-            rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
-                                                                              timestep,
-                                                                              iteration)
-            decisions = choose_interventions(rollout_results,
-                                             annual_budget,
-                                             self.current_timestep)
-            self.satisfied = True
+            decisions = self.make_decisions_based_on_results(
+                iteration, timestep, data_handle, annual_budget)
 
         elif (self.current_iteration > 1
             and self.current_timestep > data_handle.base_timestep):
@@ -83,21 +73,46 @@ class DigitalDecisions(RuleBased):
             iteration = self._max_iteration_by_timestep[data_handle.previous_timestep]
             timestep = data_handle.previous_timestep
 
-            state = data_handle.get_state(timestep, iteration)
-            self.logger.debug("Updating state with %s", state)
-            self.update_decisions(state)
-
-            rollout_results, total_cost = self.get_previous_iteration_results(data_handle,
-             timestep,
-            iteration)
-            decisions = choose_interventions(rollout_results,
-                                             annual_budget,
-                                             self.current_timestep)
-            self.satisfied = True
+            decisions = self.make_decisions_based_on_results(
+                iteration, timestep, data_handle, annual_budget)
 
         return decisions
 
+    def make_decisions_based_on_results(self, iteration: int, timestep: int,
+                                        data_handle: ResultsHandle,
+                                        annual_budget: float):
+        state = self.get_previous_state(data_handle)
+        rollout_results, total_cost = self.get_previous_iteration_results(
+                data_handle, timestep, iteration)
+
+        available_budget = self.compute_available_budget(
+            state, rollout_results, annual_budget)
+
+        # Filter exhaustive results by available interventions
+        available_interventions = self.available_interventions(state)
+        rollout_results = rollout_results.loc[available_interventions]
+
+        decisions, budget_surplus = choose_interventions(
+                rollout_results, available_budget, self.current_timestep)
+
+        self.satisfied = True
+        self.logger.info("Digital decisions remaining budget for %s: %s",
+                            self.current_timestep, budget_surplus)
+        return decisions
+
         # Get results from previous iteration
+    def compute_available_budget(self, state: List[Dict],
+                                 rollout_results: pd.DataFrame,
+                                 annual_budget: float):
+            # Reduce budget by amount spent on pre-specified interventions
+            planned_interventions = get_planned_interventions(
+                state, self.current_timestep)
+            expenditure = compute_rollout_costs(rollout_results,
+                                                planned_interventions)
+            self.logger.info("Digital decisions pre-spec expenditure in %s: %s",
+                             self.current_timestep, expenditure)
+            return annual_budget - expenditure
+
 
     def get_previous_iteration_results(self, data_handle, timestep, iteration):
 
@@ -117,12 +132,21 @@ class DigitalDecisions(RuleBased):
         decision_data = decision_data.merge(total_potential_bcr.as_df(),
                                             on=['exchanges', 'technology'])
         decision_data = decision_data.reset_index()
+
+        # Create an index name (to match interventions file) by concatenating
+        # values in exchanges and technology columns
         decision_data['name'] = decision_data['exchanges'].str.cat(decision_data['technology'], sep="_")
         decision_data = decision_data.set_index('name')
 
-        decision_data = decision_data.loc[list(self.interventions.keys())]
-
         return decision_data, total_cost
+
+def get_planned_interventions(state: List[Dict], timestep: int) -> List[str]:
+    return [x['name'] for x in state if x['build_year'] == timestep]
+
+def compute_rollout_costs(df: pd.DataFrame,
+                          planned_interventions: List[str]) -> float:
+    return df['rollout_costs'].loc[planned_interventions].sum()
+
 
 def choose_interventions(decision_data, annual_budget, timestep):
 
@@ -138,14 +162,16 @@ def choose_interventions(decision_data, annual_budget, timestep):
     # Filter by available interventions
     chosen = sorted_by_bcr.where(sorted_by_bcr['cumsum'] <= annual_budget).dropna()
 
+    remaining_budget = annual_budget - chosen['rollout_costs'].sum()
+
     decisions = []
     for row in chosen.itertuples(index=True, name='Intervention'):
         decisions.append({'name': row.Index,
-                            'build_year': timestep})
+                          'build_year': timestep})
     if decisions:
-        return decisions
+        return decisions, remaining_budget
     else:
-        return [{'name': '', 'build_year': ''}]
+        return [{'name': '', 'build_year': ''}], remaining_budget
 
 def _get_largest_in_each_exchange(df, metric, group):
     """Returns list of largest values of ``metric`` in each ``group``

@@ -56,7 +56,6 @@ class DigitalCommsWrapper(SectorModel):
         # Load links
         links = read_links(data_path)
 
-        self.logger.info("DigitalCommsWrapper - Intitialise system")
         self.system = NetworkManager(assets, links, parameters) # type: NetworkManager
 
 
@@ -171,8 +170,6 @@ class DigitalCommsWrapper(SectorModel):
         # Start
         # -----
         now = data_handle.current_timestep
-        self.logger.info("DigitalCommsWrapper received inputs in %s", now)
-
         total_cost = 0
 
         interventions = data_handle.get_current_interventions()
