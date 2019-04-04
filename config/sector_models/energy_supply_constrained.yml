@@ -41,7 +41,7 @@ inputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: hydrogenload_non_heat_eh
+  - name: hydrogen_non_heat_eh
     dims:
     - energy_hub
     - seasonal_week
