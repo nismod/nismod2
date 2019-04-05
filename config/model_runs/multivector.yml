@@ -2,6 +2,10 @@ decision_module: ''
 description: ''
 name: multivector
 narratives:
+  mode:
+  - constrained_mode
+  load_shedding:
+  - high_cost
   smart_meter_p:
   - multivector_world
   t_base_heating:
@@ -9,8 +13,6 @@ narratives:
   f_eff_achieved:
   - multivector_world
   generic_enduse_change:
-  - multivector_world
-  heat_recovered:
   - multivector_world
   generic_fuel_switch:
   - multivector_world

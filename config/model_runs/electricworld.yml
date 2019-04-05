@@ -14,8 +14,6 @@ narratives:
   - electric_world
   generic_enduse_change:
   - electric_world
-  heat_recovered:
-  - electric_world
   generic_fuel_switch:
   - electric_world
   switches_service:
