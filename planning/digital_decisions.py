@@ -58,20 +58,9 @@ class DigitalDecisions(RuleBased):
 
         decisions = []
 
-        if (self.current_iteration > 1
-            and self.current_timestep == data_handle.base_timestep):
+        if self.current_iteration > 1:
 
-            iteration = self.current_iteration - 1
-            timestep = self.current_timestep
-
-            decisions = self.make_decisions_based_on_results(
-                iteration, timestep, data_handle, annual_budget)
-
-        elif (self.current_iteration > 1
-            and self.current_timestep > data_handle.base_timestep):
-
-            iteration = self._max_iteration_by_timestep[data_handle.previous_timestep]
-            timestep = data_handle.previous_timestep
+            timestep, iteration = self.get_previous_iteration_timestep()
 
             decisions = self.make_decisions_based_on_results(
                 iteration, timestep, data_handle, annual_budget)
@@ -92,6 +81,22 @@ class DigitalDecisions(RuleBased):
         available_interventions = self.available_interventions(state)
         rollout_results = rollout_results.loc[available_interventions]
 
+        # Also filter available interventions by the exchanges of current year
+        # pre-specified planning interventions
+        planned = [x['name'] for x in state
+                   if x['build_year'] == self.current_timestep]
+        planned_exchanges = set()
+        for name in planned:
+            # string operation hack based on name, because pre-specified planning
+            # interventions aren't accessible using get_intervention
+            intervention = "_".join(name.split("_")[0:2])
+            planned_exchanges.add(intervention)
+            self.logger.info("Exchanges affected by planned interventions in %s:\n%s",
+                             self.current_timestep, planned_exchanges)
+
+        rollout_results = rollout_results[~rollout_results.exchanges.isin(planned_exchanges)]
+
+
         decisions, budget_surplus = choose_interventions(
                 rollout_results, available_budget, self.current_timestep)
 
@@ -100,7 +105,6 @@ class DigitalDecisions(RuleBased):
                             self.current_timestep, budget_surplus)
         return decisions
 
-        # Get results from previous iteration
     def compute_available_budget(self, state: List[Dict],
                                  rollout_results: pd.DataFrame,
                                  annual_budget: float):
