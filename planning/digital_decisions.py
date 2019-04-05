@@ -56,7 +56,7 @@ class DigitalDecisions(RuleBased):
         """
         annual_budget = 100000000.0 # type: float
 
-        decisions = []
+        decisions = []  #  type: List
 
         if self.current_iteration > 1:
 
@@ -172,10 +172,7 @@ def choose_interventions(decision_data, annual_budget, timestep):
     for row in chosen.itertuples(index=True, name='Intervention'):
         decisions.append({'name': row.Index,
                           'build_year': timestep})
-    if decisions:
-        return decisions, remaining_budget
-    else:
-        return [{'name': '', 'build_year': ''}], remaining_budget
+    return decisions, remaining_budget
 
 def _get_largest_in_each_exchange(df, metric, group):
     """Returns list of largest values of ``metric`` in each ``group``
