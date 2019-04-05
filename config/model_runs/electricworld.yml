@@ -19,7 +19,7 @@ narratives:
   switches_service:
   - electric_world
 scenarios:
-  es_prices: electric_world #TODO update
+  es_prices: es_prices_electric_world
   gva: gva_high
   population: pop_high
   temperature: NF1

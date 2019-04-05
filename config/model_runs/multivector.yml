@@ -19,7 +19,7 @@ narratives:
   switches_service:
   - multivector_world
 scenarios:
-  es_prices: multivector_world #TODO update
+  es_prices: es_prices_multivector_world
   gva: gva_low
   population: pop_low
   temperature: NF1
