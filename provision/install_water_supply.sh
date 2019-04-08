@@ -10,6 +10,7 @@ source <(grep = <(grep -A3 "\[water-supply\]" $base_path/provision/config.ini))
 repo_dir=$local_dir/repo
 nodal_dir=$local_dir/nodal
 exe_dir=$local_dir/exe
+dim_dir=$dim_dir
 
 # Clone repo and copy necessary files to the model directory
 mkdir -p $repo_dir
@@ -25,6 +26,10 @@ chmod +x $exe_dir/w5_console.exe
 # Copy files needed for creating nodal file. This will be superseded by data being fed directly.
 mkdir -p $nodal_dir
 cp $local_dir/repo/scripts/preprocessing/prepare_nodal.py $nodal_dir
+
+# Copy data dimensions
+mkdir -p $dim_dir
+cp $repo_dir/data_dimensions/* $dim_dir
 
 python $base_path/provision/get_data.py $remote_data $nodal_dir
 

@@ -71,20 +71,15 @@ class WaterWrapper(SectorModel):
             arc_flows,
             sep=',',
             skiprows=1,  # Row at top called 'Arc flow'
-            usecols=lambda col: True  # might want to subset columns
+            usecols=lambda col: col.lower() not in ['replicate', 'year'],
         )
 
         res_vols_df = pd.read_csv(
             res_vols,
             sep=',',
             skiprows=1,  # Row at top called 'Reservoir end volume'
-            usecols=lambda col: True  # might want to subset columns
+            usecols=lambda col: col.lower() not in ['replicate', 'year'],
         )
-
-        # print(arc_flows_df)
-        # print(res_vols_df)
-
-        # Need to decide what to do here...
 
         # data_handle.set_results('v2g_g2v_capacity', actual_v2g_capacity)
 
@@ -117,6 +112,9 @@ class WaterWrapper(SectorModel):
         catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
         assert (os.path.isfile(catchment_file))
 
+        nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
+        assert (os.path.isfile(nonpublic_file))
+
         missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
         assert (os.path.isfile(missing_data_file))
 
@@ -127,8 +125,10 @@ class WaterWrapper(SectorModel):
             '--FlowFile', flow_file,
             '--DemandFile', demand_file,
             '--CatchmentFile', catchment_file,
+            '--NonpublicFile', nonpublic_file,
             '--MissingDataFile', missing_data_file,
             '--OutputFile', output_file,
+            # '--Year', '2003',
         ])
 
         assert(os.path.isfile(output_file))
