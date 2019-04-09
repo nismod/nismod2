@@ -47,14 +47,20 @@ class WaterWrapper(SectorModel):
         exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
 
+        # This is the executable itself that requires a sysfile and a nodal file
         wathnet = os.path.join(exe_dir, 'w5_console.exe')
         assert(os.path.isfile(wathnet))
 
+        # This is the national model file, which must be edited to specify which days are simulated
         sysfile = os.path.join(exe_dir, 'National_Model.wat')
         assert(os.path.isfile(sysfile))
 
+        sysfile = self.inject_simulation_days(sysfile, now)
+        assert(os.path.isfile(sysfile))
+
+        # This is the nodal file which is generated from various static data files
         nodal_file = self.prepare_nodal(nodal_dir, now)
-        assert(os.path.isfile(nodal_file))
+        assert(os.path.isfile(nodal_file))        
 
         subprocess.call([
             wathnet,
@@ -63,10 +69,13 @@ class WaterWrapper(SectorModel):
             '-output=RA',
         ])
 
-        arc_flows = os.path.join(exe_dir, 'National_Model_arcFlow.csv')
+        # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
+        # and with (for instance) '_arcFlow.csv' added.
+        #   e.g. `modified_model_arcFlow.csv`        
+        arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
         assert(os.path.isfile(arc_flows))
 
-        res_vols = os.path.join(exe_dir, 'National_Model_reservoirEndVolume.csv')
+        res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols))
 
         arc_flows_df = pd.read_csv(
@@ -83,13 +92,8 @@ class WaterWrapper(SectorModel):
             usecols=lambda col: col.lower() not in ['replicate', 'day', 'year'],
         )
 
-        # The wathnet exe is not producing the expected number of rows.
-        # Currently working to understand this...
-        arc_flows_hacked = arc_flows_df.iloc[0:365, :].values
-        res_vols_hacked = res_vols_df.iloc[0:365, :].values
-
-        data_handle.set_results('water_supply_arc_flows', arc_flows_hacked)
-        data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_hacked)
+        data_handle.set_results('water_supply_arc_flows', arc_flows_df.values)
+        data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_df.values)
 
     @staticmethod
     def prepare_nodal(nodal_dir, year_now):
@@ -99,6 +103,9 @@ class WaterWrapper(SectorModel):
         ---------
         nodal_dir : str
             Path to the directory containing the necessary files for preparing the nodal file.
+        
+        year_now: int
+            The year to be simulated
 
         Returns
         =======
@@ -141,6 +148,54 @@ class WaterWrapper(SectorModel):
 
         assert(os.path.isfile(output_file))
         return output_file
+    
+    @staticmethod
+    def inject_simulation_days(sysfile, year_now):
+        """Injects the current year into the sysfile so that the current year is simulated.
+
+        Arguments
+        ---------
+        sysfile : str
+            Path to the sysfile ('National_Model.wat')
+        
+        year_now: int
+            The year to be simulated
+        """
+
+        modified_sysfile = os.path.join(os.path.dirname(sysfile), 'modified_model.wat')
+
+        # This is the unique line directly before the lines we need to edit
+        # We should hit this exactly once, which we use to test that nothing has gone wrong
+        sentinel_line = '! Run options'
+        sentinel_lines_hit = 0
+
+        # String that we want to edit in place
+        new_string = '   {}\n  {}\n   {}\n  {}\n'.format('1', str(year_now), '365', str(year_now))
+
+        with open(modified_sysfile, 'w') as new_file:
+            with open(sysfile, 'r') as old_file:
+
+                # Write every line from the old file directly into the new file
+                for line in old_file:
+                    new_file.write(line)
+                    
+                    # If we see the sentinel, skip 4 lines in the old file and
+                    # write the replacement string out instead to the new file
+                    if sentinel_line in line:
+
+                        old_file.readline()
+                        old_file.readline()
+                        old_file.readline()
+                        old_file.readline()
+
+                        sentinel_lines_hit += 1
+                        new_file.write(new_string)
+        
+        assert(sentinel_lines_hit == 1)
+
+        return modified_sysfile
+
+
 
 
 if __name__ == '__main__':
