@@ -41,6 +41,8 @@ class WaterWrapper(SectorModel):
 
         """
 
+        now = data_handle.current_timestep
+
         model_dir = os.path.dirname(os.path.realpath(__file__))
         exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
@@ -51,7 +53,7 @@ class WaterWrapper(SectorModel):
         sysfile = os.path.join(exe_dir, 'National_Model.wat')
         assert(os.path.isfile(sysfile))
 
-        nodal_file = self.prepare_nodal(nodal_dir)
+        nodal_file = self.prepare_nodal(nodal_dir, now)
         assert(os.path.isfile(nodal_file))
 
         subprocess.call([
@@ -90,7 +92,7 @@ class WaterWrapper(SectorModel):
         data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_hacked)
 
     @staticmethod
-    def prepare_nodal(nodal_dir):
+    def prepare_nodal(nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.
 
         Arguments
@@ -134,7 +136,7 @@ class WaterWrapper(SectorModel):
             '--NonpublicFile', nonpublic_file,
             '--MissingDataFile', missing_data_file,
             '--OutputFile', output_file,
-            # '--Year', '2003',
+            '--Year', str(year_now),
         ])
 
         assert(os.path.isfile(output_file))
