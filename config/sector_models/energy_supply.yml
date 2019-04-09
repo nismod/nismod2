@@ -58,11 +58,11 @@ inputs:
   - seasons
   unit: GBP/Mt
   dtype: float
-- name: electricity_price
-  dims:
-  - seasons
-  unit: GBP/MWh
-  dtype: float
+#- name: electricity_price
+#  dims:
+#  - seasons
+#  unit: GBP/MWh
+#  dtype: float
 - name: gas_price
   dims:
   - seasons

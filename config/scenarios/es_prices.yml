@@ -48,7 +48,7 @@ variants:
     description: Dummy prices data to pass to the energy_supply toy model
     data:
       gas_price: ../energy_supply/scenarios/price.csv
-      electricity_price: ../energy_supply/scenarios/price.csv
+      #electricity_price: ../energy_supply/scenarios/price.csv
       oil_price: ../energy_supply/scenarios/price.csv
       coal_price: ../energy_supply/scenarios/price.csv
       nuclearFuel_price: ../energy_supply/scenarios/price.csv
@@ -56,16 +56,16 @@ variants:
   - name: es_prices_multivector_world
     description: Multivector prices data to pass to the energy_supply toy model
     data:
-      gas_price: prices/prices__multivector_world.csv
-      oil_price: prices/prices__multivector_world.csv
-      coal_price: prices/prices__multivector_world.csv
-      nuclearFuel_price: prices/prices__multivector_world.csv
-      cost_of_carbon: prices/prices__multivector_world.csv
+      gas_price: ../scenarios/prices/prices__multivector_world.csv
+      oil_price: ../scenarios/prices/prices__multivector_world.csv
+      coal_price: ../scenarios/prices/prices__multivector_world.csv
+      nuclearFuel_price: ../scenarios/prices/prices__multivector_world.csv
+      cost_of_carbon: ../scenarios/prices/prices__multivector_world.csv
   - name: es_prices_electric_world
     description: Electirc world prices data to pass to the energy_supply toy model
     data:
-      gas_price: prices/prices__electric_world.csv
-      oil_price: prices/prices__electric_world.csv
-      coal_price: prices/prices__electric_world.csv
-      nuclearFuel_price: prices/prices__electric_world.csv
-      cost_of_carbon: prices/prices__electric_world.csv
+      gas_price: ../scenarios/prices/prices__electric_world.csv
+      oil_price: ../scenarios/prices/prices__electric_world.csv
+      coal_price: ../scenarios/prices/prices__electric_world.csv
+      nuclearFuel_price: ../scenarios/prices/prices__electric_world.csv
+      cost_of_carbon: ../scenarios/prices/prices__electric_world.csv

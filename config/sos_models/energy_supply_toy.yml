@@ -22,10 +22,10 @@ scenario_dependencies:
   sink_input: gas_price
   sink: energy_supply_toy
   source: es_prices
-- source_output: electricity_price
-  sink_input: electricity_price
-  sink: energy_supply_toy
-  source: es_prices
+#- source_output: electricity_price
+#  sink_input: electricity_price
+#  sink: energy_supply_toy
+#  source: es_prices
 - source_output: oil_price
   sink_input: oil_price
   sink: energy_supply_toy

@@ -167,8 +167,8 @@ class EnergySupplyWrapper(SectorModel):
         input_cost_of_carbon = data.get_data("cost_of_carbon")
         self.logger.debug('Input Cost of carbon: %s', input_cost_of_carbon)
 
-        input_electricity_price = data.get_data("electricity_price")
-        self.logger.debug('Input Electricity price: %s', input_electricity_price)
+        #input_electricity_price = data.get_data("electricity_price")
+        #self.logger.debug('Input Electricity price: %s', input_electricity_price)
 
         input_gas_price = data.get_data("gas_price")
         self.logger.debug('Input Gas price: %s', input_gas_price)
