@@ -1,0 +1,62 @@
+name: aggregate_service_heatload
+description: Aggregates energy demand outputs for energy supply in constrained heat mode
+classname: AggregateEnergyConstrained
+path: models/aggregate.py
+initial_conditions: []
+interventions: []
+parameters: []
+inputs:
+  - name: industry_biomass_district_heating_biomass
+  - name: industry_electricity_boiler_electricity
+  - name: industry_electricity_district_heating_electricity
+  - name: industry_electricity_heat_pumps_electricity
+  - name: industry_electricity_non_heating
+  - name: industry_gas_boiler_gas
+  - name: industry_gas_district_heating_CHP_gas
+  - name: industry_gas_non_heating
+  - name: industry_hydrogen_boiler_hydrogen
+  - name: industry_hydrogen_district_heating_fuel_cell
+  - name: industry_hydrogen_fuel_cell_hydrogen
+  - name: industry_hydrogen_heat_pumps_hydrogen
+  - name: industry_hydrogen_non_heating
+  - name: residential_biomass_boiler_biomass
+  - name: residential_biomass_district_heating_biomass
+  - name: residential_electricity_boiler_electricity
+  - name: residential_electricity_district_heating_electricity
+  - name: residential_electricity_heat_pumps_electricity
+  - name: residential_gas_boiler_gas
+  - name: residential_gas_district_heating_CHP_gas
+  - name: residential_hydrogen_boiler_hydrogen
+  - name: residential_hydrogen_district_heating_fuel_cell
+  - name: residential_hydrogen_fuel_cell_hydrogen
+  - name: residential_hydrogen_heat_pumps_hydrogen
+  - name: residential_hydrogen_non_heating
+  - name: residential_oil_boiler_oil
+  - name: service_biomass_boiler_biomass
+  - name: service_biomass_district_heating_biomass
+  - name: service_electricity_boiler_electricity
+  - name: service_electricity_district_heating_electricity
+  - name: service_electricity_heat_pumps_electricity
+  - name: service_gas_boiler_gas
+  - name: service_gas_district_heating_CHP_gas
+  - name: service_hydrogen_boiler_hydrogen
+  - name: service_hydrogen_district_heating_fuel_cell
+  - name: service_hydrogen_fuel_cell_hydrogen
+  - name: service_hydrogen_heat_pumps_hydrogen
+  - name: service_hydrogen_non_heating
+  - name: service_oil_boiler_oil
+outputs:
+  - name: building_biomass_boiler
+  - name: building_elec_boiler
+  - name: building_gas_boiler
+  - name: building_heatpump
+  - name: building_hydrogen_boiler
+  - name: building_hydrogen_heatpump
+  - name: building_oil_boiler
+  - name: dh_biomass_boiler
+  - name: dh_elec_boiler
+  - name: dh_gas_CHP
+  - name: dh_hydrogen_fuelcell
+  - name: elecload
+  - name: gasload
+  - name: hydrogen_non_heat_eh
