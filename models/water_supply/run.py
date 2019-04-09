@@ -71,17 +71,23 @@ class WaterWrapper(SectorModel):
             arc_flows,
             sep=',',
             skiprows=1,  # Row at top called 'Arc flow'
-            usecols=lambda col: col.lower() not in ['replicate', 'year'],
+            usecols=lambda col: col.lower() not in ['replicate', 'day', 'year'],
         )
 
         res_vols_df = pd.read_csv(
             res_vols,
             sep=',',
             skiprows=1,  # Row at top called 'Reservoir end volume'
-            usecols=lambda col: col.lower() not in ['replicate', 'year'],
+            usecols=lambda col: col.lower() not in ['replicate', 'day', 'year'],
         )
 
-        # data_handle.set_results('v2g_g2v_capacity', actual_v2g_capacity)
+        # The wathnet exe is not producing the expected number of rows.
+        # Currently working to understand this...
+        arc_flows_hacked = arc_flows_df.iloc[0:365, :].values
+        res_vols_hacked = res_vols_df.iloc[0:365, :].values
+
+        data_handle.set_results('water_supply_arc_flows', arc_flows_hacked)
+        data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_hacked)
 
     @staticmethod
     def prepare_nodal(nodal_dir):
