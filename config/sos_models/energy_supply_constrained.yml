@@ -67,6 +67,10 @@ scenario_dependencies:
   sink: energy_supply_constrained
   sink_input: building_hydrogen_boiler
 - source: dummy_energy_demands_full
+  source_output: building_hydrogen_heatpump
+  sink: energy_supply_constrained
+  sink_input: building_hydrogen_heatpump
+- source: dummy_energy_demands_full
   source_output: building_oil_boiler
   sink: energy_supply_constrained
   sink_input: building_oil_boiler

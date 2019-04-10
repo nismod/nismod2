@@ -99,6 +99,13 @@ provides:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: building_hydrogen_heatpump
+    description: 'Building hydrogen heatpump hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
   - name: building_oil_boiler
     description: 'Building oil boiler oil demand'
     dims:
@@ -153,6 +160,7 @@ variants:
       building_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
       building_gas_boiler : ../energy_supply/scenarios/energy_demand_full.csv
       building_hydrogen_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      building_hydrogen_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
       building_oil_boiler : ../energy_supply/scenarios/energy_demand_full.csv
       dh_biomass_boiler : ../energy_supply/scenarios/energy_demand_full.csv
       dh_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
