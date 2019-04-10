@@ -165,7 +165,7 @@ outputs:
 # Parameters-----------------------------------------------
 parameters:
 - description: Mode of model
-  default: ../energy_demand/parameters/mode.csv
+  default: ../energy_demand/parameters/mode_unconstrained.csv
   name: mode
   unit: ''
   dtype: int

@@ -2,8 +2,6 @@ decision_module: ''
 description: ''
 name: multivector
 narratives:
-  mode:
-  - constrained_mode
   load_shedding:
   - high_cost
   smart_meter_p:

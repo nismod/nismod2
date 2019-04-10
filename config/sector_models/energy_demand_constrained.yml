@@ -6,7 +6,7 @@ initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
 - description: Mode of model
-  default: ../energy_demand/parameters/mode.csv
+  default: ../energy_demand/parameters/mode_constrained.csv
   name: mode
   unit: ''
   dtype: float

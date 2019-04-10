@@ -1,9 +1,7 @@
 name: energy_demand_unconstrained
 description: Run energy demand for baseline population scenario
 stamp: '2017-11-07T14:15:00+00:00'
-narratives:
-  mode:
-  - unconstrained_mode
+narratives: {}
 timesteps:
 - 2015
 - 2030

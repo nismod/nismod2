@@ -1,9 +1,7 @@
 decision_module: ''
 description: Run energy demand for baseline population scenario
 name: energy_demand_constrained
-narratives:
-  mode:
-  - constrained_mode
+narratives: {}
 scenarios:
   gva: gva_baseline
   population: pop_baseline
