@@ -200,7 +200,7 @@ outputs:
     dtype: float
   - name: gasload
     dims:
-      - gas_nodes
+      - energy_hub
       - seasonal_week
     unit: mcm
     dtype: float

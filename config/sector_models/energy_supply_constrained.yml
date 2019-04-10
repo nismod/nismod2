@@ -19,7 +19,7 @@ inputs:
     dtype: float
   - name: gasload_non_heat_res
     dims:
-    - energy_hub
+    - gas_nodes
     - seasonal_week
     unit: mcm
     dtype: float
@@ -31,7 +31,7 @@ inputs:
     dtype: float
   - name: gasload_non_heat_com
     dims:
-    - energy_hub
+    - gas_nodes
     - seasonal_week
     unit: mcm
     dtype: float

@@ -1,4 +1,4 @@
-name: aggregate_service_heatload
+name: aggregate_energy_constrained
 description: Aggregates energy demand outputs for energy supply in constrained heat mode
 classname: AggregateEnergyConstrained
 path: models/aggregate.py

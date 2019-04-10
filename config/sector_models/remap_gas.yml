@@ -29,14 +29,17 @@ outputs:
       - gas_nodes
       - seasonal_week
     unit: mcm
+    dtype: float
   - name: gasload_non_heat_com
     dims:
       - gas_nodes
       - seasonal_week
     unit: mcm
+    dtype: float
   - name: gasload_non_heat_res
     dims:
       - gas_nodes
       - seasonal_week
     unit: mcm
+    dtype: float
 parameters: []
