@@ -7,6 +7,7 @@ scenarios:
   gva: gva_baseline
   population: pop_baseline
   temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
 narratives:
   load_shedding:
    - high_cost

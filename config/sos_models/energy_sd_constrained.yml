@@ -4,9 +4,9 @@ description: A full version of the energy demand - energy supply system-of-syste
 sector_models:
   - energy_demand_constrained
   - aggregate_energy_constrained
-  - convert_regions_ed_to_es
-  - convert_intervals_ed_to_es
-  - convert_units_ed_to_es
+  - convert_regions_ed_to_es_constrained
+  - convert_intervals_ed_to_es_constrained
+  - convert_units_ed_to_es_constrained
   - remap_gas
   - energy_supply_constrained
 scenarios:
@@ -14,6 +14,7 @@ scenarios:
   - gva
   - population
   - temperature
+  - weather_station_coordinates
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -439,10 +440,10 @@ model_dependencies:
     source_output: building_hydrogen_boiler
     sink: energy_supply_constrained
     sink_input: building_hydrogen_boiler
-  - source: convert_units_ed_to_es
-    source_output: building_hydrogen_heatpump
-    sink: energy_supply_constrained
-    sink_input: building_hydrogen_heatpump
+  # - source: convert_units_ed_to_es
+  #   source_output: building_hydrogen_heatpump
+  #   sink: energy_supply_constrained
+  #   sink_input: building_hydrogen_heatpump
   - source: convert_units_ed_to_es
     source_output: building_oil_boiler
     sink: energy_supply_constrained
@@ -482,7 +483,7 @@ model_dependencies:
 scenario_dependencies:
   - source: fuel_price
     source_output: energy_supply_price
-    sink: energy_supply
+    sink: energy_supply_constrained
     sink_input: fuel_price
   - source: gva
     source_output: gva_per_head
@@ -504,6 +505,14 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
+  - source: weather_station_coordinates
+    source_output: latitude
+    sink: energy_demand_constrained
+    sink_input: latitude
+  - source: weather_station_coordinates
+    source_output: longitude
+    sink: energy_demand_constrained
+    sink_input: longitude
 narratives:
   - name: load_shedding
     description: Costs of shedding load
