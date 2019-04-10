@@ -127,6 +127,9 @@ class WaterWrapper(SectorModel):
         catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
         assert (os.path.isfile(catchment_file))
 
+        borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
+        assert (os.path.isfile(borehole_file))
+
         nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
         assert (os.path.isfile(nonpublic_file))
 
@@ -140,6 +143,7 @@ class WaterWrapper(SectorModel):
             '--FlowFile', flow_file,
             '--DemandFile', demand_file,
             '--CatchmentFile', catchment_file,
+            '--BoerholeForcingFile', borehole_file,
             '--NonpublicFile', nonpublic_file,
             '--MissingDataFile', missing_data_file,
             '--OutputFile', output_file,
