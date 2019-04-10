@@ -1,0 +1,18 @@
+name: energy_sd_constrained
+stamp: '2018-02-23T12:00:22.154Z'
+description: ''
+sos_model: energy_sd_constrained
+scenarios:
+  fuel_price: baseline
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+narratives:
+  load_shedding:
+   - high_cost
+decision_module: ''
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050

@@ -1,4 +1,4 @@
-name: energy_supply_demand_constrained
+name: energy_sd_constrained
 description: A full version of the energy demand - energy supply system-of-systems
   model in constrained heat technology mode
 sector_models:
