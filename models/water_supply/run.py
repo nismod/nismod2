@@ -198,10 +198,3 @@ class WaterWrapper(SectorModel):
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
-
-
-
-
-if __name__ == '__main__':
-    ww = WaterWrapper('sdfg')
-    ww.simulate({})
