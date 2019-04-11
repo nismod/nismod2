@@ -1,4 +1,4 @@
-name: convert_units_ed_to_es
+name: convert_units_ed_to_es_constrained
 description: Performs a unit conversion of the energy demand data from GW to either MW or mcm
 path: models/convert.py
 classname: ConvertGWMW

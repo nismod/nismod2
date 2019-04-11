@@ -4,9 +4,9 @@ description: A full version of the energy demand - energy supply system-of-syste
 sector_models:
   - energy_demand_constrained
   - aggregate_energy_constrained
-  - convert_regions_ed_to_es_constrained
-  - convert_intervals_ed_to_es_constrained
-  - convert_units_ed_to_es_constrained
+  - convert_regions_ed_to_es_constrained_constrained
+  - convert_intervals_ed_to_es_constrained_constrained
+  - convert_units_ed_to_es_constrained_constrained
   - remap_gas
   - energy_supply_constrained
 scenarios:
@@ -176,225 +176,225 @@ model_dependencies:
   # from energy demand to region conversion
   - source: energy_demand_constrained
     source_output: residential_electricity_non_heating
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: elecload_non_heat_res
   - source: energy_demand_constrained
     source_output: service_electricity_non_heating
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained_constrained
     sink_input: elecload_non_heat_com
   - source: energy_demand_constrained
     source_output: residential_gas_non_heating
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: gasload_non_heat_res
   - source: energy_demand_constrained
     source_output: service_gas_non_heating
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: gasload_non_heat_com
   # from aggregation to region conversion
   - source: aggregate_energy_constrained
     source_output: building_biomass_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_biomass_boiler
   - source: aggregate_energy_constrained
     source_output: building_elec_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_elec_boiler
   - source: aggregate_energy_constrained
     source_output: building_gas_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_gas_boiler
   - source: aggregate_energy_constrained
     source_output: building_heatpump
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_heatpump
   - source: aggregate_energy_constrained
     source_output: building_hydrogen_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_hydrogen_boiler
   - source: aggregate_energy_constrained
     source_output: building_hydrogen_heatpump
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_hydrogen_heatpump
   - source: aggregate_energy_constrained
     source_output: building_oil_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: building_oil_boiler
   - source: aggregate_energy_constrained
     source_output: dh_biomass_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: dh_biomass_boiler
   - source: aggregate_energy_constrained
     source_output: dh_elec_boiler
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: dh_elec_boiler
   - source: aggregate_energy_constrained
     source_output: dh_gas_CHP
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: dh_gas_CHP
   - source: aggregate_energy_constrained
     source_output: dh_hydrogen_fuelcell
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: dh_hydrogen_fuelcell
   - source: aggregate_energy_constrained
     source_output: elecload
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: elecload
   - source: aggregate_energy_constrained
     source_output: gasload
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: gasload
   - source: aggregate_energy_constrained
     source_output: hydrogen_non_heat_eh
-    sink: convert_regions_ed_to_es
+    sink: convert_regions_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
   # from region conversion to interval conversion
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: elecload_non_heat_res
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: elecload_non_heat_res
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: elecload_non_heat_com
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: elecload_non_heat_com
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: gasload_non_heat_res
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: gasload_non_heat_res
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: gasload_non_heat_com
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: gasload_non_heat_com
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_biomass_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_biomass_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_elec_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_elec_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_gas_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_gas_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_heatpump
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_heatpump
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_hydrogen_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_hydrogen_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_hydrogen_heatpump
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_hydrogen_heatpump
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: building_oil_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: building_oil_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: dh_biomass_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: dh_biomass_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: dh_elec_boiler
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: dh_elec_boiler
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: dh_gas_CHP
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: dh_gas_CHP
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: dh_hydrogen_fuelcell
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: dh_hydrogen_fuelcell
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: elecload
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: elecload
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: gasload
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: gasload
-  - source: convert_regions_ed_to_es
+  - source: convert_regions_ed_to_es_constrained
     source_output: hydrogen_non_heat_eh
-    sink: convert_intervals_ed_to_es
+    sink: convert_intervals_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
   # from interval conversion to unit conversion
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: elecload_non_heat_res
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: elecload_non_heat_res
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: elecload_non_heat_com
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: elecload_non_heat_com
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: gasload_non_heat_res
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: gasload_non_heat_res
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: gasload_non_heat_com
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: gasload_non_heat_com
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_biomass_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_biomass_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_elec_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_elec_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_gas_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_gas_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_heatpump
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_heatpump
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_hydrogen_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_hydrogen_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_hydrogen_heatpump
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_hydrogen_heatpump
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: building_oil_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: building_oil_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: dh_biomass_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: dh_biomass_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: dh_elec_boiler
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: dh_elec_boiler
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: dh_gas_CHP
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: dh_gas_CHP
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: dh_hydrogen_fuelcell
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: dh_hydrogen_fuelcell
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: elecload
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: elecload
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: gasload
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: gasload
-  - source: convert_intervals_ed_to_es
+  - source: convert_intervals_ed_to_es_constrained
     source_output: hydrogen_non_heat_eh
-    sink: convert_units_ed_to_es
+    sink: convert_units_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
   # from unit conversion to remap gas nodes
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: gasload
     sink: remap_gas
     sink_input: gasload
@@ -404,71 +404,71 @@ model_dependencies:
     sink: energy_supply_constrained
     sink_input: gasload
   # from unit conversion to energy supply
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: gasload_non_heat_com
     sink: energy_supply_constrained
     sink_input: gasload_non_heat_com
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: gasload_non_heat_res
     sink: energy_supply_constrained
     sink_input: gasload_non_heat_res
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_biomass_boiler
     sink: energy_supply_constrained
     sink_input: building_biomass_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_elec_boiler
     sink: energy_supply_constrained
     sink_input: building_elec_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_gas_boiler
     sink: energy_supply_constrained
     sink_input: building_gas_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_heatpump
     sink: energy_supply_constrained
     sink_input: building_heatpump
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_hydrogen_boiler
     sink: energy_supply_constrained
     sink_input: building_hydrogen_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_hydrogen_heatpump
     sink: energy_supply_constrained
     sink_input: building_hydrogen_heatpump
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: building_oil_boiler
     sink: energy_supply_constrained
     sink_input: building_oil_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: dh_biomass_boiler
     sink: energy_supply_constrained
     sink_input: dh_biomass_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: dh_elec_boiler
     sink: energy_supply_constrained
     sink_input: dh_elec_boiler
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: dh_gas_CHP
     sink: energy_supply_constrained
     sink_input: dh_gas_CHP
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: dh_hydrogen_fuelcell
     sink: energy_supply_constrained
     sink_input: dh_hydrogen_fuelcell
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: elecload
     sink: energy_supply_constrained
     sink_input: elecload
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: elecload_non_heat_com
     sink: energy_supply_constrained
     sink_input: elecload_non_heat_com
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: elecload_non_heat_res
     sink: energy_supply_constrained
     sink_input: elecload_non_heat_res
-  - source: convert_units_ed_to_es
+  - source: convert_units_ed_to_es_constrained
     source_output: hydrogen_non_heat_eh
     sink: energy_supply_constrained
     sink_input: hydrogen_non_heat_eh

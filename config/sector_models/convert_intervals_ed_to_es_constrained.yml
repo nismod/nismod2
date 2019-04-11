@@ -1,4 +1,4 @@
-name: convert_intervals_ed_to_es
+name: convert_intervals_ed_to_es_constrained
 description: Performs a spatial aggregation of the energy demand data assuming a uniform spatial distribution
 path: models/convert.py
 classname: ConvertHourlyToSeasonalWeek
