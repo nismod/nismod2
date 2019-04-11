@@ -432,10 +432,10 @@ model_dependencies:
     source_output: building_hydrogen_boiler
     sink: energy_supply_constrained
     sink_input: building_hydrogen_boiler
-  # - source: convert_units_ed_to_es
-  #   source_output: building_hydrogen_heatpump
-  #   sink: energy_supply_constrained
-  #   sink_input: building_hydrogen_heatpump
+  - source: convert_units_ed_to_es
+    source_output: building_hydrogen_heatpump
+    sink: energy_supply_constrained
+    sink_input: building_hydrogen_heatpump
   - source: convert_units_ed_to_es
     source_output: building_oil_boiler
     sink: energy_supply_constrained
