@@ -4,9 +4,9 @@ description: A full version of the energy demand - energy supply system-of-syste
 sector_models:
   - energy_demand_constrained
   - aggregate_energy_constrained
-  - convert_regions_ed_to_es_constrained_constrained
-  - convert_intervals_ed_to_es_constrained_constrained
-  - convert_units_ed_to_es_constrained_constrained
+  - convert_regions_ed_to_es_constrained
+  - convert_intervals_ed_to_es_constrained
+  - convert_units_ed_to_es_constrained
   - remap_gas
   - energy_supply_constrained
 scenarios:
@@ -180,7 +180,7 @@ model_dependencies:
     sink_input: elecload_non_heat_res
   - source: energy_demand_constrained
     source_output: service_electricity_non_heating
-    sink: convert_regions_ed_to_es_constrained_constrained
+    sink: convert_regions_ed_to_es_constrained
     sink_input: elecload_non_heat_com
   - source: energy_demand_constrained
     source_output: residential_gas_non_heating
