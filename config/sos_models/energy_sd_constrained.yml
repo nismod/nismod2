@@ -398,28 +398,20 @@ model_dependencies:
     source_output: gasload
     sink: remap_gas
     sink_input: gasload
-  - source: convert_units_ed_to_es
-    source_output: gasload_non_heat_com
-    sink: remap_gas
-    sink_input: gasload_non_heat_com
-  - source: convert_units_ed_to_es
-    source_output: gasload_non_heat_res
-    sink: remap_gas
-    sink_input: gasload_non_heat_res
   # remap gas nodes to energy supply
   - source: remap_gas
     source_output: gasload
     sink: energy_supply_constrained
     sink_input: gasload
-  - source: remap_gas
+  # from unit conversion to energy supply
+  - source: convert_units_ed_to_es
     source_output: gasload_non_heat_com
     sink: energy_supply_constrained
     sink_input: gasload_non_heat_com
-  - source: remap_gas
+  - source: convert_units_ed_to_es
     source_output: gasload_non_heat_res
     sink: energy_supply_constrained
     sink_input: gasload_non_heat_res
-  # from unit conversion to energy supply
   - source: convert_units_ed_to_es
     source_output: building_biomass_boiler
     sink: energy_supply_constrained
