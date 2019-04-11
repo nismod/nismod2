@@ -1,0 +1,228 @@
+name: energy_sd_optimised
+description: A full version of the energy demand - energy supply system-of-systems
+  model in unconstrained/optimised heat technology mode
+sector_models:
+  - energy_demand_unconstrained
+  - aggregate_energy_optimised
+  - convert_regions_ed_to_es_optimised
+  - convert_intervals_ed_to_es_optimised
+  - convert_units_ed_to_es_optimised
+  - remap_gas
+  - energy_supply_optimised
+scenarios:
+  - fuel_price
+  - gva
+  - population
+  - temperature
+  - weather_station_coordinates
+model_dependencies:
+  # from energy demand to aggregation
+  - source: energy_demand_unconstrained
+    source_output: residential_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: residential_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: service_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: service_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: industry_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: industry_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: service_heat
+    sink: aggregate_energy_optimised
+    sink_input: service_heat
+  - source: energy_demand_unconstrained
+    source_output: industry_heat
+    sink: aggregate_energy_optimised
+    sink_input: industry_heat
+  # from aggregation to region conversion
+  - source: aggregate_energy_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: aggregate_energy_optimised
+    source_output: heatload_com
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: heatload_com
+  # from energy demand to region conversion
+  - source: energy_demand_unconstrained
+    source_output: residential_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: energy_demand_unconstrained
+    source_output: residential_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: energy_demand_unconstrained
+    source_output: residential_heat
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: heatload_res
+  - source: energy_demand_unconstrained
+    source_output: service_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: energy_demand_unconstrained
+    source_output: service_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: energy_demand_unconstrained
+    source_output: industry_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload
+  - source: energy_demand_unconstrained
+    source_output: industry_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload
+  # from region conversion to interval conversion
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: heatload_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: heatload_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: heatload_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: heatload_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload
+  - source: convert_regions_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  # from interval conversion to unit conversion
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: heatload_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: heatload_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: heatload_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: heatload_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  # from unit conversion to remap gas nodes
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload
+    sink: remap_gas
+    sink_input: gasload
+  # from remap gas nodes to energy supply
+  - source: remap_gas
+    source_output: gasload
+    sink: energy_supply_optimised
+    sink_input: gasload
+  # from unit conversion to energy supply
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload
+    sink: energy_supply_optimised
+    sink_input: elecload
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: energy_supply_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: energy_supply_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: energy_supply_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: energy_supply_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: convert_units_ed_to_es_optimised
+    source_output: heatload_res
+    sink: energy_supply_optimised
+    sink_input: heatload_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: heatload_com
+    sink: energy_supply_optimised
+    sink_input: heatload_com
+scenario_dependencies:
+  - source: fuel_price
+    source_output: energy_supply_price
+    sink: energy_supply_optimised
+    sink_input: fuel_price
+  - source: gva
+    source_output: gva_per_head
+    sink: energy_demand_unconstrained
+    sink_input: gva_per_head
+  - source: gva
+    source_output: gva_per_sector
+    sink: energy_demand_unconstrained
+    sink_input: gva_per_sector
+  - source: population
+    source_output: population
+    sink: energy_demand_unconstrained
+    sink_input: population
+  - source: temperature
+    source_output: t_min
+    sink: energy_demand_unconstrained
+    sink_input: t_min
+  - source: temperature
+    source_output: t_max
+    sink: energy_demand_unconstrained
+    sink_input: t_max
+  - source: weather_station_coordinates
+    source_output: latitude
+    sink: energy_demand_unconstrained
+    sink_input: latitude
+  - source: weather_station_coordinates
+    source_output: longitude
+    sink: energy_demand_unconstrained
+    sink_input: longitude
+narratives: []

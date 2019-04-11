@@ -5,50 +5,41 @@ import numpy as np
 from smif.model import SectorModel
 
 
-class AggregateInputs(SectorModel):
-    """An Adapter to aggregate all inputs
+def _aggregate_inputs_to_output(data_handle, input_names, inputs, output_name, outputs):
+    # check output exists
+    assert output_name in outputs, \
+        "Expected to find output '{}' when aggregating".format(output_name)
 
-    Outputs the same aggregate to each output.
-    """
-    def simulate(self, data_handle):
-        """Aggregates inputs to output
-        """
-        inputs = []
-        for input_name in self.inputs.keys():
-            self.logger.debug("Model input: %s", input_name)
-            inputs.append(data_handle.get_data(input_name).as_ndarray())
+    # set up zero output
+    output_spec = outputs[output_name]
+    output_data = np.zeros(output_spec.shape)
 
-        data_array = np.array(inputs)
-        aggregate_data = np.add.reduce(data_array, axis=0)
+    for input_name in input_names:
+        # check input exists
+        assert input_name in inputs, \
+            "Expected to find input '{}' when aggregating to output '{}'".format(
+                input_name, output_name)
+        # check specs match
+        input_spec = inputs[input_name]
+        assert input_spec.shape == output_spec.shape, \
+            "Expected input {} and output {} spec shapes to match".format(
+                input_spec, output_spec)
+        # add input to output data in-place
+        input_data = data_handle.get_data(input_name).as_ndarray()
+        output_data += input_data
 
-        for output_name in self.outputs.keys():
-            data_handle.set_results(output_name, aggregate_data)
+    # write output
+    data_handle.set_results(output_name, output_data)
+
 
 class AggregateEnergyConstrained(SectorModel):
     """Aggregate inputs to outputs for energy models in constrained heat mode
     """
     def simulate(self, data_handle):
         to_output_from_inputs = self._get_aggregate_map()
-
         for output_name, input_names in to_output_from_inputs.items():
-            assert output_name in self.outputs, \
-                "Expected to find output '{}' when aggregating".format(output_name)
-            output_spec = self.outputs[output_name]
-            output_data = np.zeros(output_spec.shape)
-
-            for input_name in input_names:
-                assert input_name in self.inputs, \
-                    "Expected to find input '{}' when aggregating to output '{}'".format(
-                        input_name, output_name)
-                input_spec = self.inputs[input_name]
-                assert input_spec.shape == output_spec.shape, \
-                    "Expected input {} and output {} spec shapes to match".format(
-                        input_spec, output_spec)
-                input_data = data_handle.get_data(input_name).as_ndarray()
-
-                output_data += input_data
-
-            data_handle.set_results(output_name, output_data)
+            _aggregate_inputs_to_output(
+                data_handle, input_names, self.inputs, output_name, self.outputs)
 
     def _get_aggregate_map(self):
         return {
@@ -118,5 +109,28 @@ class AggregateEnergyConstrained(SectorModel):
                 'industry_hydrogen_boiler_hydrogen',
                 'industry_hydrogen_heat_pumps_hydrogen',
                 'industry_hydrogen_non_heating',
+            ]
+        }
+
+
+class AggregateEnergyOptimised(SectorModel):
+    """Aggregate inputs to outputs for energy models in unconstrained/optimised heat mode
+    """
+    def simulate(self, data_handle):
+        to_output_from_inputs = self._get_aggregate_map()
+        for output_name, input_names in to_output_from_inputs.items():
+            _aggregate_inputs_to_output(
+                data_handle, input_names, self.inputs, output_name, self.outputs)
+
+    def _get_aggregate_map(self):
+        return {
+            'hydrogen_non_heat_eh': [
+                'residential_hydrogen',
+                'service_hydrogen',
+                'industry_hydrogen'
+            ],
+            'heatload_com': [
+                'service_heat',
+                'industry_heat'
             ]
         }

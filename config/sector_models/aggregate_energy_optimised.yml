@@ -1,0 +1,51 @@
+name: aggregate_energy_optimised
+description: Aggregates energy demand outputs for energy supply in optimised heat mode
+classname: AggregateEnergyOptimised
+path: models/aggregate.py
+initial_conditions: []
+inputs:
+  - name: residential_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_heat
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_heat
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+interventions: []
+outputs:
+  - name: hydrogen_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: heatload_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+parameters: []

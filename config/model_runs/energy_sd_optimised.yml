@@ -1,0 +1,17 @@
+name: energy_sd_optimised
+stamp: '2018-04-11T12:00:00.000Z'
+description: ''
+sos_model: energy_sd_optimised
+scenarios:
+  fuel_price: baseline
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  weather_station_coordinates: weather_station_coordinates__NF1
+narratives: {}
+decision_module: ''
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
