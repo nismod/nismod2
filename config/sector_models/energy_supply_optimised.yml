@@ -390,3 +390,45 @@ outputs:
     - seasonal_week
     unit: mcm
     dtype: float
+  - name: eh_tran_e
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_tran_g
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_gas_qs
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_gstorage_level
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_h2
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_h2_qs
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_h2storage_level
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
