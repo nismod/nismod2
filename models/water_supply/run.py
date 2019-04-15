@@ -48,14 +48,14 @@ class WaterWrapper(SectorModel):
 
         # This is the executable itself that requires a sysfile and a nodal file
         wathnet = os.path.join(exe_dir, 'w5_console.exe')
-        assert(os.path.isfile(wathnet))
+        assert(os.path.isfile(wathnet)), "Expected to find water supply WATHNET executable at {}".format(wathnet)
 
         # This is the national model file, which must be edited to specify which days are simulated
         sysfile = os.path.join(exe_dir, 'National_Model.wat')
-        assert(os.path.isfile(sysfile))
+        assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         sysfile = self.inject_simulation_days(sysfile, now)
-        assert(os.path.isfile(sysfile))
+        assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # This is the nodal file which is generated from various static data files
         nodal_file = self.prepare_nodal(nodal_dir, now)
@@ -72,10 +72,10 @@ class WaterWrapper(SectorModel):
         # and with (for instance) '_arcFlow.csv' added.
         #   e.g. `modified_model_arcFlow.csv`        
         arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
-        assert(os.path.isfile(arc_flows))
+        assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
 
         res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
-        assert (os.path.isfile(res_vols))
+        assert (os.path.isfile(res_vols)), "Expected to find water supply reservoir results at {}".format(res_vols)
 
         arc_flows_df = pd.read_csv(
             arc_flows,
@@ -114,26 +114,25 @@ class WaterWrapper(SectorModel):
 
         # Check necessary files exist
         prepare_nodal = os.path.join(nodal_dir, 'prepare_nodal.py')
-        print(prepare_nodal)
-        assert (os.path.isfile(prepare_nodal))
+        assert (os.path.isfile(prepare_nodal)), "Expected to find prepare_nodal script at {}".format(prepare_nodal)
 
         flow_file = os.path.join(nodal_dir, 'National_WRSM_NatModel_logNSE_obs_11018_1.txt')
-        assert (os.path.isfile(flow_file))
+        assert (os.path.isfile(flow_file)), "Expected to find water supply flows file at {}".format(flow_file)
 
         demand_file = os.path.join(nodal_dir, '001_daily.csv')
-        assert (os.path.isfile(demand_file))
+        assert (os.path.isfile(demand_file)), "Expected to find water supply demand file at {}".format(demand_file)
 
         catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
-        assert (os.path.isfile(catchment_file))
+        assert (os.path.isfile(catchment_file)), "Expected to find water supply catchment file at {}".format(catchment_file)
 
         borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
-        assert (os.path.isfile(borehole_file))
+        assert (os.path.isfile(borehole_file)), "Expected to find water supply borehole data at {}".format(borehole_file)
 
         nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
-        assert (os.path.isfile(nonpublic_file))
+        assert (os.path.isfile(nonpublic_file)), "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
 
         missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
-        assert (os.path.isfile(missing_data_file))
+        assert (os.path.isfile(missing_data_file)), "Expected to find water supply missing data at {}".format(missing_data_file)
 
         output_file = os.path.join(nodal_dir, 'wathnet.nodal')
 
@@ -149,7 +148,7 @@ class WaterWrapper(SectorModel):
             '--Year', str(year_now),
         ])
 
-        assert(os.path.isfile(output_file))
+        assert(os.path.isfile(output_file)), "Expected to find WATHNET nodal file at {}".format(output_file)
         return output_file
     
     @staticmethod
