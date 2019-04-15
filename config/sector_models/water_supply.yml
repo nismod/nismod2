@@ -10,12 +10,12 @@ outputs:
   - water_supply_days_into_year
   - water_supply_reservoirs
   dtype: float
-  unit: ML(?)
+  unit: ML
 - name: water_supply_arc_flows
   dims:
   - water_supply_days_into_year
   - water_supply_arcs
   dtype: float
-  unit: ML/day(?)
+  unit: ML/day
 parameters: []
 path: models/water_supply/run.py
