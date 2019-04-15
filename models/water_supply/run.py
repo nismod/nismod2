@@ -27,7 +27,6 @@ class WaterWrapper(SectorModel):
         -----
         `self.user_data` allows to pass data from before_model_run to main model
         """
-        # This might have to handle the prepare_nodal that is currently done during installation
         pass
 
     def simulate(self, data_handle):
