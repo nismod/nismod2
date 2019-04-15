@@ -34,7 +34,5 @@ cp $local_dir/repo/scripts/preprocessing/prepare_nodal.py $nodal_dir
 mkdir -p $dim_dir
 cp $repo_dir/data_dimensions/* $dim_dir
 
-python $base_path/provision/get_data.py $remote_data $nodal_dir
-
 # Clean up the cloned repo
 rm -rf $repo_dir
