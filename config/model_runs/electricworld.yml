@@ -1,7 +1,7 @@
 name: electricworld
 stamp: ''
 description: ''
-sos_model: energy_supply_demand
+sos_model: energy_sd_constrained
 scenarios:
   es_prices: es_prices_electric_world
   gva: gva_high

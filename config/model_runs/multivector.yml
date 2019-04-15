@@ -1,7 +1,7 @@
 name: multivector
 stamp: ''
 description: ''
-sos_model: energy_supply_demand
+sos_model: energy_sd_constrained
 scenarios:
   es_prices: es_prices_multivector_world
   gva: gva_low
