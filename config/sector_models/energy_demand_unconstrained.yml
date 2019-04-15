@@ -5,26 +5,16 @@ classname: EDWrapper
 initial_conditions: []
 # ---------------------------------------------------
 inputs:
-- name: latitude
-  unit:
-  dims:
-  - station_id
-  dtype: float
-- name: longitude
-  unit:
-  dims:
-  - station_id
-  dtype: float
 - name: t_min
   unit: Degree Celcius
   dims:
-  - station_id
+  - lad_uk_2016
   - yearday
   dtype: float
 - name: t_max
   unit: Degree Celcius
   dims:
-  - station_id
+  - lad_uk_2016
   - yearday
   dtype: float
 - name: population
@@ -174,6 +164,11 @@ outputs:
   dtype: float
 # Parameters-----------------------------------------------
 parameters:
+- description: Mode of model
+  default: ../energy_demand/parameters/mode_unconstrained.csv
+  name: mode
+  unit: ''
+  dtype: int
 - description: Service switches
   default: ../energy_demand/parameters/switches_service.csv
   name: switches_service
