@@ -3,7 +3,7 @@ stamp: ''
 description: ''
 sos_model: energy_sd_constrained
 scenarios:
-  es_prices: es_prices_electric_world
+  fuel_price: es_prices_electric_world
   gva: gva_high
   population: pop_high
   temperature: NF1

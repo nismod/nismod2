@@ -496,14 +496,6 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
-  - source: weather_station_coordinates
-    source_output: latitude
-    sink: energy_demand_constrained
-    sink_input: latitude
-  - source: weather_station_coordinates
-    source_output: longitude
-    sink: energy_demand_constrained
-    sink_input: longitude
 narratives:
   - name: load_shedding
     description: Costs of shedding load

@@ -9,7 +9,7 @@ scenarios:
   temperature: NF1
 narratives:
   load_shedding:
-   - high_cost
+  - high_cost
 decision_module: ''
 strategies: []
 timesteps:

@@ -216,12 +216,4 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_unconstrained
     sink_input: t_max
-  - source: weather_station_coordinates
-    source_output: latitude
-    sink: energy_demand_unconstrained
-    sink_input: latitude
-  - source: weather_station_coordinates
-    source_output: longitude
-    sink: energy_demand_unconstrained
-    sink_input: longitude
 narratives: []
