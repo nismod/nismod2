@@ -4,7 +4,7 @@
 base_path=$1
 
 # Read remote_data, local_dir from config.ini
-source <(grep = <(grep -A3 "\[water-supply\]" $base_path/provision/config.ini))
+source <(grep = <(grep -A4 "\[water-supply\]" $base_path/provision/config.ini))
 
 # Locations for the git repo (temporary) and the nodal-related files
 repo_dir=$local_dir/repo
@@ -14,7 +14,10 @@ dim_dir=$dim_dir
 
 # Clone repo and copy necessary files to the model directory
 mkdir -p $repo_dir
-git clone --depth 1 git@github.com:nismod/water_supply.git $repo_dir || exit "$?"
+git clone git@github.com:nismod/water_supply.git $repo_dir || exit "$?"
+pushd $repo_dir
+    git checkout $model_version
+popd
 
 mkdir -p $exe_dir
 cp $repo_dir/wathnet/w5_console.exe $exe_dir
@@ -35,4 +38,3 @@ python $base_path/provision/get_data.py $remote_data $nodal_dir
 
 # Clean up the cloned repo
 rm -rf $repo_dir
-
