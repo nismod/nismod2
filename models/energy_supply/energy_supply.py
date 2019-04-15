@@ -135,10 +135,9 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug('Building %s heattech interventions', len(heattech))
         build_heattech(heattech, current_timestep)
         self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
-        # build_distributed(dist_eh, current_timestep)
-        self.logger.debug(
-            'Building %s transmission connected distributed generators', len(dist_tran))
-        # build_distributed(dist_tran, current_timestep)
+        build_distributed(dist_eh, current_timestep)
+        self.logger.debug('Building %s transmission connected distributed generators', len(dist_tran))
+        build_distributed(dist_tran, current_timestep)
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -535,7 +534,10 @@ def build_generator(plants, current_timestep):
                           'chp gas': 13,
                           'pumped_storage': 15,
                           'gas fired generation of ehs': 20,
-                          'dummygenerator': 21}[plant['type'].lower()]
+                          'efw chp of ehs ': 21,
+                          'biomass chp of ehs ': 22,
+                          'h2 fuel cell ': 30,
+                          'dummygenerator': 100}[plant['type'].lower()]
         elif isinstance(plant['type'], int):
             plant_type = plant['type']
         else:
@@ -665,7 +667,7 @@ def build_distributed(plants, current_timestep):
                        'onshore': 0,
                        'pv': 0,
                        'table_name': ''}
-                   for x in range(1, 3)}
+                   for x in range(1, 30)}
 
     for plant in plants:
         location = int(plant['location'])
