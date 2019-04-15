@@ -14,7 +14,6 @@ scenarios:
   - gva
   - population
   - temperature
-  - weather_station_coordinates
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -497,14 +496,6 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
-  - source: weather_station_coordinates
-    source_output: latitude
-    sink: energy_demand_constrained
-    sink_input: latitude
-  - source: weather_station_coordinates
-    source_output: longitude
-    sink: energy_demand_constrained
-    sink_input: longitude
 narratives:
   - name: load_shedding
     description: Costs of shedding load
@@ -568,6 +559,14 @@ narratives:
         description: Central assumptions
         data:
           f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__central.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__electric_world.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world.csv
   - name: generic_enduse_change
     description: ''
     provides:
@@ -578,6 +577,14 @@ narratives:
         description: Central assumptions
         data:
           generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central.csv
+      - name: electric_world
+        description: Electirc world assumptions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__electric_world.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world.csv
   - name: heat_recovered
     description: ''
     provides:
@@ -588,6 +595,14 @@ narratives:
         description: Central assumptions
         data:
           heat_recovered: ../energy_demand/narratives/heat_recovered__central.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          heat_recovered: ../energy_demand/narratives/heat_recovered__electric_world.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          heat_recovered: ../energy_demand/narratives/heat_recovered__multivector_world.csv
   - name: t_base_heating
     description: Change in heating
     provides:
@@ -596,12 +611,24 @@ narratives:
         - ss_t_base_heating
         - is_t_base_heating
     variants:
-      - data:
+      - name: central_narrative
+        description: Central assumptions
+        data:
           is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__central.csv
           ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__central.csv
           rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central.csv
+      - name: electric_world
+        description: Electric world assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world.csv
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world.csv
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world.csv
+      - name: multivector_world
         description: Central assumptions
-        name: central_narrative
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world.csv
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world.csv
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world.csv
   - name: p_cold_rolling_steel
     description: ''
     provides:
@@ -622,6 +649,14 @@ narratives:
         description: Central assumptions
         data:
           smart_meter_p: ../energy_demand/narratives/smart_meter_p__central.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector_world.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__electric_world.csv
   - name: generic_fuel_switch
     description: ''
     provides:
@@ -632,6 +667,14 @@ narratives:
         description: Central assumptions
         data:
           generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector_world.csv
+      - name: electric_world
+        description: Electirc world assumptions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world.csv
   - name: switches_service
     description: ''
     provides:
@@ -642,3 +685,11 @@ narratives:
         description: Central assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__central.csv
+      - name: electric_world
+        description: Electric world assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__electric_world.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__multivector_world.csv

@@ -133,7 +133,7 @@ provides:
     - energy_hub
     - seasonal_week
     unit: mcm
-    dtype: float  
+    dtype: float
   - name: dh_hydrogen_fuelcell
     description: 'Hydrogen fuel cell hydrogen demand'
     dims:

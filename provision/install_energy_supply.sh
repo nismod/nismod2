@@ -68,4 +68,4 @@ PGUSER=$user \
 PGPORT=$port \
 PGDATABASE=$dbname \
     python $MODEL_DIR/energy_supply/run_migrations.py \
-    -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
+    -r $DATA_DIR/database_full $MIGRATIONS_DIR
