@@ -213,6 +213,9 @@ bash -x $base_path/provision/install_transport.sh $base_path
 bash -x $base_path/provision/get_data_et_module.sh $base_path
 bash -x $base_path/provision/install_et_module.sh $base_path
 
+# Water supply
+bash -x $base_path/provision/install_water_supply.sh $base_path
+
 #
 # User config
 #
