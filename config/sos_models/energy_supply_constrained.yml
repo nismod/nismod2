@@ -10,7 +10,7 @@ narratives:
   description: Costs of shedding load
   name: load_shedding
   provides:
-    energy_supply_toy:
+    energy_supply_constrained:
     - LoadShed_elec
     - LoadShed_gas
 scenario_dependencies:
