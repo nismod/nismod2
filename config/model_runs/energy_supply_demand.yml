@@ -10,7 +10,7 @@ scenarios:
   population: pop_baseline
   temperature: NF1
   weather_station_coordinates: weather_station_coordinates__NF1
-sos_model: energy_supply_demand_update
+sos_model: energy_supply_demand
 stamp: '2018-02-23T12:00:22.154Z'
 timesteps:
 - 2015
