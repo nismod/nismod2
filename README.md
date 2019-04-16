@@ -227,7 +227,7 @@ bash ./provision/install_transport.sh .
 Run post-install scripts:
 
 ```bash
-energy_demand minimal_setup -d ./models/energy_demand/wrapperconfig.ini
+energy_demand setup -f ./models/energy_demand/wrapperconfig.ini
 ```
 
 
