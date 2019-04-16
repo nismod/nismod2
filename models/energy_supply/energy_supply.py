@@ -58,14 +58,21 @@ class EnergySupplyWrapper(SectorModel):
 
     def get_model_parameters(self, data):
         # Get model parameters
-        parameter_LoadShed_elec = data.get_parameter('LoadShed_elec').as_ndarray()
-        self.logger.debug('Parameter Loadshed elec: %s', parameter_LoadShed_elec)
+        load_shed_elec = float(data.get_parameter('LoadShed_elec').as_ndarray())
+        self.logger.debug('Parameter Loadshed elec: %s', load_shed_elec)
 
-        parameter_LoadShed_gas = data.get_parameter('LoadShed_gas').as_ndarray()
-        self.logger.debug('Parameter Loadshed gas: %s', parameter_LoadShed_gas)
+        load_shed_gas = float(data.get_parameter('LoadShed_gas').as_ndarray())
+        self.logger.debug('Parameter Loadshed gas: %s', load_shed_gas)
 
-        write_load_shed_costs(float(parameter_LoadShed_elec),
-                              float(parameter_LoadShed_gas))
+        heat_technology_mode = int(data.get_parameter('heat_mode').as_ndarray())
+        self.logger.debug('Parameter heat mode: %s', heat_technology_mode)
+
+        with establish_connection() as conn:
+            write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
+            write_flags(heat_technology_mode, conn)
+
+        conn.close()
+
 
     def clear_input_tables(self):
         """Removes all state data from database tables
@@ -451,25 +458,24 @@ def get_timestep_output(conn, output_parameter, year, regions, intervals):
     return results
 
 
-def write_load_shed_costs(loadshedcost_elec,
-                          loadshedcost_gas):
+def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
+    """Write load shed cost parameters
     """
+    with conn.cursor() as cur:
+        cur.execute('DELETE FROM "LoadShedCosts";')
+        cur.execute(
+            'INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);',
+            (loadshedcost_elec, loadshedcost_gas))
+
+
+def write_flags(heat_mode, conn):
+    """Write model configuration flags
     """
-    # Connect to an existing database
-    conn = establish_connection()
-
-    sql = """INSERT INTO "LoadShedCosts" ("EShedC", "GShedC") VALUES (%s, %s);"""
-
-    # print("New loadshed cost values: {}, {}".format(loadshedcost_elec, loadshedcost_gas))
-
-    # Open a cursor to perform database operations
     with conn.cursor() as cur:
-        cur.execute("""DELETE FROM "LoadShedCosts";""")
-    with conn.cursor() as cur:
-        cur.execute(sql, (loadshedcost_elec, loadshedcost_gas))
-
-    conn.commit()
-    conn.close()
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('heat_mode', heat_mode))
 
 
 def retire_generator(plants):
