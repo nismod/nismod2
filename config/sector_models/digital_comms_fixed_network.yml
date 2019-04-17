@@ -590,7 +590,7 @@ outputs:
   unit: '%'
 - name: total_cost
   dtype: float
-  description: Total cost of all interventions
+  description: Total cost of all interventions installed in a year
   dims: []
   unit: GBP
 - name: total_potential_bcr

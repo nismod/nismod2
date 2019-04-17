@@ -3,7 +3,7 @@ description: ''
 name: digital_comms_test
 narratives: {}
 scenarios:
-  adoption: fttp_baseline_adoption
+  adoption: fttp_high_adoption
 sos_model: digital_comms_fixed_only
 stamp: '2018-05-01T12:36:34.374Z'
 strategies:
@@ -11,19 +11,19 @@ strategies:
   description: reduce emissions
   path: planning/digital_decisions.py
   classname: DigitalDecisions
-- type: pre-specified-planning
-  description: fibre to the premises all in one go
-  filename: ../digital_comms/strategies/fttp.csv
+# - type: pre-specified-planning
+#   description: fibre to the premises all in one go
+#   filename: ../digital_comms/strategies/fttp.csv
 timesteps:
 - 2019
 - 2020
-# - 2021
-# - 2022
-# - 2023
-# - 2024
-# - 2025
-# - 2026
-# - 2027
-# - 2028
-# - 2029
-# - 2030
+- 2021
+- 2022
+- 2023
+- 2024
+- 2025
+- 2026
+- 2027
+- 2028
+- 2029
+- 2030

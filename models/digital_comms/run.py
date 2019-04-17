@@ -33,8 +33,17 @@ class DigitalCommsWrapper(SectorModel):
             Access parameter values (before any model is run, no dependency
             input data or state is guaranteed to be available)
         """
-        print('before model run')
+        self.system = self.load_network(data_handle)
 
+    def load_network(self, data_handle: DataHandle) -> NetworkManager:
+        """Implement this method to conduct pre-model run tasks
+
+        Arguments
+        ---------
+        data_handle: smif.data_layer.DataHandle
+            Access parameter values (before any model is run, no dependency
+            input data or state is guaranteed to be available)
+        """
         # Get wrapper configuration
         path_main = os.path.dirname(os.path.abspath(__file__))
         config = configparser.ConfigParser()
@@ -56,10 +65,10 @@ class DigitalCommsWrapper(SectorModel):
         # Load links
         links = read_links(data_path)
 
-        self.system = NetworkManager(assets, links, parameters) # type: NetworkManager
+        return NetworkManager(assets, links, parameters)
 
 
-    def compute_adoption_cap(self, data_handle, technology):
+    def update_adoption_desirability(self, data_handle):
 
         annual_adoption_rate = data_handle.get_data('adoption').data
 
@@ -77,32 +86,14 @@ class DigitalCommsWrapper(SectorModel):
 
         # update the number of premises wanting to adopt (adoption_desirability)
         desirability_ids = update_adoption_desirability(
-            self.system._distributions, percentage_annual_increase, technology)
+            self.system._distributions, percentage_annual_increase)
 
         self.system.update_adoption_desirability(desirability_ids)
 
-        # -----------------------
-        # Run fixed network model
-        # -----------------------
-        # get total adoption desirability for this time step (has to be done after
-        # system.update_adoption_desirability)
-        adoption_desirability_now = [
-            dist for dist in self.system._distributions if dist.adoption_desirability]
-
-        total_adoption_desirability_percentage = \
-            (len([dist.total_prems for dist in adoption_desirability_now]) /
-             len([dist.total_prems for dist in self.system._distributions])
-             * 100)
-
-        # calculate the maximum adoption level based on the scenario, to make sure the
-        # model doesn't overestimate
-        adoption_cap = len(desirability_ids) + \
-            sum(getattr(distribution, technology) for distribution in self.system._distributions)
-
-        return adoption_cap
 
     def compute_spend(self):
         return 0
+
 
     def save_exchange_attribute(self,
                                 technologies : List,
@@ -177,29 +168,29 @@ class DigitalCommsWrapper(SectorModel):
         dc_assets = []
 
         for name, intervention in interventions.items():
-            technology = intervention['technology']
-            asset_id = intervention['id']
-            exchange = [exchange for exchange in self.system._exchanges
-                        if exchange.id == asset_id][0]
-            total_cost += exchange.rollout_costs[technology]
+            if intervention['build_year'] == now:
+                technology = intervention['technology']
+                asset_id = intervention['id']
+                exchange = [exchange for exchange in self.system._exchanges
+                            if exchange.id == asset_id][0]
+                total_cost += exchange.rollout_costs[technology]
 
-            asset = (intervention['id'],
-                     intervention['technology'])
-            dc_assets.append(asset)
+                asset = (intervention['id'],
+                        intervention['technology'])
+                dc_assets.append(asset)
+
+        self.logger.debug(self.system.capacity('exchange'))
 
         data_handle.set_results('total_cost', total_cost)
 
-        self.logger.debug("DigitalCommsWrapper - Upgrading system")
+        self.logger.debug("Upgrading dc assets with %s", dc_assets)
         self.system.upgrade(dc_assets)
 
-        self.save_decision_metrics(data_handle)
+        self.logger.debug(self.system.capacity('exchange'))
 
-        adoption_adsl = self.compute_adoption_cap(data_handle, 'adsl')
-        adoption_fttdp = self.compute_adoption_cap(data_handle, 'fttdp')
-        adoption_fttp = self.compute_adoption_cap(data_handle, 'fttp')
-        self.logger.debug(adoption_fttp)
-        self.logger.debug(adoption_fttdp)
-        self.logger.debug(adoption_adsl)
+        adoption = self.update_adoption_desirability(data_handle)
+
+        self.save_decision_metrics(data_handle)
 
         # -------------
         # Write outputs

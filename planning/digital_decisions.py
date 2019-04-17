@@ -91,8 +91,9 @@ class DigitalDecisions(RuleBased):
             # interventions aren't accessible using get_intervention
             intervention = "_".join(name.split("_")[0:2])
             planned_exchanges.add(intervention)
-            self.logger.info("Exchanges affected by planned interventions in %s:\n%s",
-                             self.current_timestep, planned_exchanges)
+
+        self.logger.info("Exchanges affected by planned interventions in %s:\n%s",
+                            self.current_timestep, planned_exchanges)
 
         rollout_results = rollout_results[~rollout_results.exchanges.isin(planned_exchanges)]
 
@@ -124,8 +125,8 @@ class DigitalDecisions(RuleBased):
                                                 'rollout_costs',
                                                 timestep,
                                                 iteration)
-        total_potential_bcr = data_handle.get_results(self.model_name,
-                                                'total_potential_bcr',
+        rollout_bcr = data_handle.get_results(self.model_name,
+                                                'rollout_bcr',
                                                 timestep,
                                                 iteration)
         total_cost = data_handle.get_results(self.model_name,
@@ -133,7 +134,7 @@ class DigitalDecisions(RuleBased):
                                                 timestep,
                                                 iteration)
         decision_data = rollout_costs.as_df() # type: pd.DataFrame
-        decision_data = decision_data.merge(total_potential_bcr.as_df(),
+        decision_data = decision_data.merge(rollout_bcr.as_df(),
                                             on=['exchanges', 'technology'])
         decision_data = decision_data.reset_index()
 
@@ -149,17 +150,22 @@ def get_planned_interventions(state: List[Dict], timestep: int) -> List[str]:
 
 def compute_rollout_costs(df: pd.DataFrame,
                           planned_interventions: List[str]) -> float:
-    return df['rollout_costs'].loc[planned_interventions].sum()
+    if planned_interventions:
+        return df['rollout_costs'].loc[planned_interventions].sum()
+    else:
+        return 0
 
 
 def choose_interventions(decision_data, annual_budget, timestep):
+    """
+    """
 
-    best_by_exchange = _get_largest_in_each_exchange(decision_data, 'total_potential_bcr', 'exchanges')
+    best_by_exchange = _get_largest_in_each_exchange(decision_data, 'rollout_bcr', 'exchanges')
 
     df = decision_data.loc[best_by_exchange]
 
     sorted_by_bcr = df.sort_values(
-        by=['total_potential_bcr', 'rollout_costs'],
+        by=['rollout_bcr', 'rollout_costs'],
         ascending=[False, True])
     sorted_by_bcr['cumsum'] = sorted_by_bcr['rollout_costs'].cumsum()
 
@@ -174,13 +180,13 @@ def choose_interventions(decision_data, annual_budget, timestep):
                           'build_year': timestep})
     return decisions, remaining_budget
 
-def _get_largest_in_each_exchange(df, metric, group):
+def _get_largest_in_each_exchange(df, metric, group, threshold=1):
     """Returns list of largest values of ``metric`` in each ``group``
 
     Arguments
     ---------
     df : pandas.DataFrame
-        Expects columns exchanges and total_potential_bcr
+        Expects columns exchanges and rollout_bcr
     metric : str
         The decision metric that will be used to find the largest value
     group : str or list
@@ -198,6 +204,7 @@ def _get_largest_in_each_exchange(df, metric, group):
         subset = [group, metric]
 
     df = df[subset]
+    df = df[df[metric] >= threshold]
 
     largest = df.groupby(
         by=[group], as_index=False
@@ -210,11 +217,11 @@ class TestInterventionChooser:
     @fixture(scope='function')
     def decision_data(self):
 
-        columns = ['name', 'exchanges', 'technology', 'rollout_costs' ,'total_potential_bcr']
+        columns = ['name', 'exchanges', 'technology', 'rollout_costs' ,'rollout_bcr']
         data = [
-            ('exchange_STBNMTH_fttdp', 'exchange_STBNMTH', 'fttdp', 133512, 91),
-            ('exchange_EACAM_fttc', 'exchange_EACAM', 'fttc', 761070, 82),
-            ('exchange_NEILB_fttc', 'exchange_NEILB', 'fttc', 631140, 46),
+            ('exchange_STBNMTH_fttdp', 'exchange_STBNMTH', 'fttdp', 133512, 1),  # bcr >= 1 so good
+            ('exchange_EACAM_fttc', 'exchange_EACAM', 'fttc', 761070, 0),  # bcr < 1 so excluded
+            ('exchange_NEILB_fttc', 'exchange_NEILB', 'fttc', 631140, 46),  # dominates so should beat fttdp
             ('exchange_NEILB_fttdp', 'exchange_NEILB', 'fttdp', 916095, 32)]
 
         df = pd.DataFrame(
@@ -226,9 +233,8 @@ class TestInterventionChooser:
     def test_get_largest_in_group(self, decision_data):
 
         expected = ['exchange_STBNMTH_fttdp',
-                    'exchange_EACAM_fttc',
                     'exchange_NEILB_fttc']
-        actual = _get_largest_in_each_exchange(decision_data, 'total_potential_bcr', 'exchanges')
+        actual = _get_largest_in_each_exchange(decision_data, 'rollout_bcr', 'exchanges')
 
         assert actual == expected
 
