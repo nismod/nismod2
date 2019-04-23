@@ -1,0 +1,29 @@
+name: extract_gb_scenarios
+description: Filter GVA and Population scenarios down to Great Britain LADs
+path: ./models/extract.py
+classname: FilterAdaptor
+inputs:
+  - name: population
+    dims:
+      - lad_uk_2016
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_uk_2016
+    unit: GBP
+    dtype: float
+outputs:
+  - name: population
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_gb_2016
+    unit: GBP
+    dtype: float
+parameters: []
+interventions: []
+initial_conditions: []

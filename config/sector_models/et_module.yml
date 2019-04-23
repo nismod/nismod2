@@ -7,20 +7,20 @@ inputs:
     description: Electricity demand of electric vehicles
     dims:
       - annual_day_hours
-      - lad_uk_2016
+      - lad_gb_2016
     unit: kWh
     dtype: float
   - name: ev_trips
     description: Trip count of electric vehicles
     dims:
       - annual_day_hours
-      - lad_uk_2016
+      - lad_gb_2016
     dtype: int
     unit: trips
 outputs:
   - name: v2g_g2v_capacity
     dims:
-     - lad_uk_2016
+     - lad_gb_2016
     dtype: float
     unit: kW
 parameters:
