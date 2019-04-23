@@ -1,0 +1,16 @@
+name: energy_transport
+stamp: '2019-04-23'
+description: 'Test model run for energy (supply-demand constrained) and transport'
+sos_model: energy_transport
+scenarios:
+  fuel_price: baseline
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  link_travel_time: default
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
