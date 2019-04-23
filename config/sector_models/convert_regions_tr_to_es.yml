@@ -6,12 +6,12 @@ inputs:
   - name: electric_vehicle_electricity_consumption
     dims:
       - annual_day_hours
-      - lad_gb_2016
+      - lad_uk_2016
     unit: kWh
     dtype: float
   - name: v2g_g2v_capacity
     dims:
-      - lad_gb_2016
+      - lad_uk_2016
     unit: kW
     dtype: float
 outputs:

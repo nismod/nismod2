@@ -12,8 +12,8 @@ inputs:
 outputs:
   - name: electric_vehicle_electricity_consumption
     dims:
-      - seasonal_week
       - energy_hub
+      - seasonal_week
     unit: kWh
     dtype: float
 parameters: []

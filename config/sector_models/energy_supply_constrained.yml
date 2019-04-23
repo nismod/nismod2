@@ -113,6 +113,17 @@ inputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: elec_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: EV_Cap
+    dims:
+    - energy_hub
+    unit: MW
+    dtype: float
   - name: fuel_price
     dims:
       - seasons

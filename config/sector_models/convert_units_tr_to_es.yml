@@ -5,8 +5,8 @@ classname: ConvertGWMW
 inputs:
   - name: electric_vehicle_electricity_consumption
     dims:
-      - seasonal_week
       - energy_hub
+      - seasonal_week
     unit: kWh
     dtype: float
   - name: v2g_g2v_capacity
@@ -17,8 +17,8 @@ inputs:
 outputs:
   - name: electric_vehicle_electricity_consumption
     dims:
-      - seasonal_week
       - energy_hub
+      - seasonal_week
     unit: MWh
     dtype: float
   - name: v2g_g2v_capacity

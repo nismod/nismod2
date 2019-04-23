@@ -6,7 +6,7 @@ provides:
       - transport_fuel_type
     dtype: float
     unit: £/l
-  - name: tr_fuel_price_electricity
+  - name: fuel_price_electricity
     dtype: float
     unit: £/kWh
   - name: energy_supply_price
