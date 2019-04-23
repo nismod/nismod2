@@ -8,49 +8,37 @@ REGION_SET_NAME = 'lad_gb_2016'
 class ETWrapper(SectorModel):
     """Energy-Transport Model Wrapper
     """
-    def before_model_run(self, data_handle=None):
+    def before_model_run(self, data):
         """Implement this method to conduct pre-model run tasks
 
         Arguments
         ---------
-        data_handle: smif.data_layer.DataHandle
+        data: smif.data_layer.DataHandle
             Access parameter values (before any model is run, no dependency
             input data or state is guaranteed to be available)
-
-        Info
-        -----
-        `self.user_data` allows to pass data from before_model_run to main model
         """
-        pass
 
-    def simulate(self, data_handle):
-        """Runs the Energy Demand model for one `timestep`
+    def simulate(self, data):
+        """Runs the model for one `timestep`
 
         Arguments
         ---------
-        data_handle : dict
-            A dictionary containing all parameters and model inputs defined in
-            the smif configuration by name
-
-        Returns
-        =======
-        et_module_out : dict
-            Outputs of et_module
+        data : smif.data_layer.DataHandle
+            Access all parameters and model inputs defined in the smif configuration by name
         """
-        simulation_yr = data_handle.current_timestep
+        simulation_yr = data.current_timestep
 
-        # Read number of EV trips starting in regions (np.array(regions, 24h))
-        reg_trips_ev_24h = data_handle.get_data('ev_trips')
-        
+        # Read number of EV trips starting
+        # transpose from (24h, regions) to (regions, 24h)
+        reg_trips_ev_24h = data.get_data('ev_trips').as_ndarray().T
+
+        # Get hourly demand data for day for every region (kWh)
+        # transpose from (24h, regions) to (regions, 24h)
+        reg_elec_24h = data.get_data('ev_electricity').as_ndarray().T
+
         # Obtain the list of regions from the model input
-        regions = reg_trips_ev_24h.dim_coords(REGION_SET_NAME).ids
+        regions = self.inputs['ev_trips'].dim_coords(REGION_SET_NAME).ids
 
-        # Get hourly demand data for day for every region (np.array(regions, 24h)) (kWh)
-        reg_elec_24h = data_handle.get_data('ev_electricity')
+        actual_v2g_capacity = main(regions, simulation_yr, reg_trips_ev_24h, reg_elec_24h)
 
-        actual_v2g_capacity = main(regions, 
-                                   simulation_yr, 
-                                   reg_trips_ev_24h.as_ndarray(), 
-                                   reg_elec_24h.as_ndarray())
-
-        data_handle.set_results('v2g_g2v_capacity', actual_v2g_capacity)
+        data.set_results('v2g_g2v_capacity', actual_v2g_capacity)
