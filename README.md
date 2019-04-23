@@ -211,6 +211,7 @@ bash ./provision/get_data_digital_comms.sh .
 bash ./provision/get_data_energy_demand.sh .
 bash ./provision/get_data_energy_supply.sh .
 bash ./provision/get_data_transport.sh .
+bash ./provision/get_data_water_supply.sh .
 ```
 
 ### Install models
@@ -222,6 +223,7 @@ bash ./provision/install_digital_comms.sh .
 bash ./provision/install_energy_demand.sh .
 bash ./provision/install_energy_supply.sh . ./path/to/xpress_install_dir
 bash ./provision/install_transport.sh .
+bash ./provision/install_water_supply.sh .
 ```
 
 Run post-install scripts:
@@ -229,6 +231,8 @@ Run post-install scripts:
 ```bash
 energy_demand setup -f ./models/energy_demand/wrapperconfig.ini
 ```
+
+Note that `install_water_supply.sh` clones a repository that is currently private: setting up the water supply model may require requesting access to the repository.
 
 
 ## Running NISMOD on a virtual machine
