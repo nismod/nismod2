@@ -289,13 +289,14 @@ class BaseTransportWrapper(SectorModel):
             csv_melt_var='fuel'
         )
         # Split - non-electricity (measured in litres)
-        non_elec = energy_consumption.reset_index()
+        non_elec = energy_consumption.copy()
         non_elec = non_elec[non_elec.transport_fuel_type != 'ELECTRICITY']
         non_elec['annual_day'] = 'annual_day'
         non_elec = self._df_to_ndarray(ec_name, non_elec)
         data_handle.set_results(ec_name, non_elec)
         # Split - electricity (measured in kWh)
-        elec = np.array(energy_consumption['ELECTRICITY'])
+        elec = energy_consumption[energy_consumption.transport_fuel_type == 'ELECTRICITY']
+        elec = np.array(elec.energy_consumption)
         data_handle.set_results('energy_consumption_electricity', elec)
 
     def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
