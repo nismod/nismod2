@@ -292,8 +292,6 @@ class BaseTransportWrapper(SectorModel):
         non_elec = energy_consumption.reset_index()
         non_elec = non_elec[non_elec.transport_fuel_type != 'ELECTRICITY']
         non_elec['annual_day'] = 'annual_day'
-        non_elec = non_elec.set_index(['annual_day', 'transport_fuel_type'])
-        print(non_elec)
         non_elec = self._df_to_ndarray(ec_name, non_elec)
         data_handle.set_results(ec_name, non_elec)
         # Split - electricity (measured in kWh)
@@ -311,12 +309,11 @@ class BaseTransportWrapper(SectorModel):
             value_name=name
         ).rename(
             dims, axis=1
-        ).set_index(
-            sorted(dims.values())
         )
 
     def _df_to_ndarray(self, output_name, df):
         spec = self.outputs[output_name]
+        df.set_index(spec.dims, inplace=True)
         da = DataArray.from_df(spec, df)
         return da.data
 
