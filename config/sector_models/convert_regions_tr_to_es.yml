@@ -5,8 +5,8 @@ classname: ConvertLADtoEnergyHub
 inputs:
   - name: electric_vehicle_electricity_consumption
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     unit: kWh
     dtype: float
   - name: v2g_g2v_capacity

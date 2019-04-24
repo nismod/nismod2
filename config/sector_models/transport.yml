@@ -38,14 +38,14 @@ outputs:
     dtype: float
   - name: electric_vehicle_electricity_consumption
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     unit: kWh
     dtype: float
   - name: electric_vehicle_trip_starts
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     unit: trips
     dtype: int
   - name: link_travel_time

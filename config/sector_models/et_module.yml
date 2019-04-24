@@ -6,15 +6,15 @@ inputs:
   - name: ev_electricity
     description: Electricity demand of electric vehicles
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     unit: kWh
     dtype: float
   - name: ev_trips
     description: Trip count of electric vehicles
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     dtype: int
     unit: trips
 outputs:
