@@ -17,3 +17,4 @@ MODEL_DIR=$base_path/install
 mkdir -p $MODEL_DIR
 rm -rf $MODEL_DIR/transport
 unzip $TMP/$FILENAME -d $MODEL_DIR
+mv $MODEL_DIR/transport* $MODEL_DIR/transport
