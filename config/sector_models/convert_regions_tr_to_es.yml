@@ -17,8 +17,8 @@ inputs:
 outputs:
   - name: electric_vehicle_electricity_consumption
     dims:
-      - annual_day_hours
       - energy_hub
+      - annual_day_hours
     unit: kWh
     dtype: float
   - name: v2g_g2v_capacity
