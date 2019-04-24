@@ -295,7 +295,7 @@ class BaseTransportWrapper(SectorModel):
         non_elec = self._df_to_ndarray(ec_name, non_elec)
         data_handle.set_results(ec_name, non_elec)
         # Split - electricity (measured in kWh)
-        elec = np.array(energy_consumption.loc['ELECTRICITY'])
+        elec = np.array(energy_consumption['ELECTRICITY'])
         data_handle.set_results('energy_consumption_electricity', elec)
 
     def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
