@@ -26,7 +26,7 @@ class EnergyAgent(RuleBased):
     """
     def __init__(self, timesteps, register):
         super().__init__(timesteps, register)
-        self.model_name = 'energy_supply'
+        self.model_name = 'energy_supply_optimised'
         self.logger = getLogger(__name__)
 
     @staticmethod
@@ -53,7 +53,7 @@ class EnergyAgent(RuleBased):
         iteration = data_handle.decision_iteration
         self.logger.debug("Current iteration is %s", iteration)
         if data_handle.current_timestep > data_handle.base_timestep:
-            self.logger.debug("Current timestep %s is greater than base timestep %s",  
+            self.logger.debug("Current timestep %s is greater than base timestep %s",
                               data_handle.current_timestep, data_handle.base_timestep)
             cost = self.get_operating_cost(data_handle)
         else:
@@ -62,7 +62,7 @@ class EnergyAgent(RuleBased):
         BUDGET -= cost
 
         self.satisfied = True
-        
+
         return BUDGET
 
     def get_emissions(self, data_handle):
@@ -71,7 +71,7 @@ class EnergyAgent(RuleBased):
         for output_name in output_names:
             da = self._get_results(data_handle, output_name)
             emissions += da.as_ndarray().sum()
-            self.logger.debug("Retrieved emissions for %s: %s", 
+            self.logger.debug("Retrieved emissions for %s: %s",
                             data_handle.previous_timestep,
                             output_name)
         return emissions
@@ -82,16 +82,16 @@ class EnergyAgent(RuleBased):
         for output_name in output_names:
             da = self._get_results(data_handle, output_name)
             total_opt_cost += da.as_ndarray().sum()
-            self.logger.debug("Retrieved total operating cost for %s: %s", 
+            self.logger.debug("Retrieved total operating cost for %s: %s",
                             data_handle.previous_timestep,
                             output_name)
-        return total_opt_cost        
+        return total_opt_cost
 
 
     def _get_results(self, data_handle, output_name) -> DataArray:
         previous_timestep = data_handle.previous_timestep
         iteration = self._max_iteration_by_timestep[previous_timestep]
-        return data_handle.get_results(model_name='energy_supply_toy',
+        return data_handle.get_results(model_name=self.model_name,
                                        output_name=output_name,
                                        timestep=previous_timestep,
                                        decision_iteration=iteration)
@@ -127,7 +127,7 @@ class EnergyAgent(RuleBased):
                 remaining_budget -= intervention[1]
 
         self.logger.debug("Remaining budget: %s", remaining_budget)
-        
+
         self.logger.debug("List of cheapest interventions: %s", cheapest_first)
         self.logger.debug(within_budget)
         return within_budget
@@ -145,12 +145,12 @@ def simple_lcoe(capital_cost, lifetime, capacity_factor, discount_rate):
 
 def capital_recovery_factor(interest_rate, years):
     """Compute the capital recovery factor
-    
-    Computes the ratio of a constant loan payment to the present value 
+
+    Computes the ratio of a constant loan payment to the present value
     of paying that loan for a given length of time. In other words,
-    this works out the fraction of the overnight capital cost you need 
+    this works out the fraction of the overnight capital cost you need
     to pay back each year if you were to use debt to
-    pay for the expenditure. 
+    pay for the expenditure.
 
     Arguments
     ---------

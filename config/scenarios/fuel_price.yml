@@ -6,12 +6,20 @@ provides:
       - transport_fuel_type
     dtype: float
     unit: £/l
-  - name: fuel_price_electricity
+  - name: tr_fuel_price_electricity
     dtype: float
     unit: £/kWh
+  - name: energy_supply_price
+    description: ''
+    dims:
+      - seasons
+      - es_fuel_types
+    dtype: float
+    unit: GBP/MWh
 variants:
   - name: baseline
     description: Baseline fuel price projections
     data:
       fuel_price: transport_fuel_price.csv
       fuel_price_electricity: transport_fuel_price_electricity.csv
+      energy_supply_price: energy_supply_price.csv

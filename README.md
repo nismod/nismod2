@@ -229,7 +229,7 @@ bash ./provision/install_water_supply.sh .
 Run post-install scripts:
 
 ```bash
-energy_demand minimal_setup -d ./models/energy_demand/wrapperconfig.ini
+energy_demand setup -f ./models/energy_demand/wrapperconfig.ini
 ```
 
 Note that `install_water_supply.sh` clones a repository that is currently private: setting up the water supply model may require requesting access to the repository.

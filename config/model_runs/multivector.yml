@@ -1,0 +1,30 @@
+name: multivector
+stamp: ''
+description: ''
+sos_model: energy_sd_constrained
+scenarios:
+  fuel_price: es_prices_multivector_world
+  gva: gva_low
+  population: pop_low
+  temperature: NF1
+narratives:
+  load_shedding:
+  - high_cost
+  smart_meter_p:
+  - multivector_world
+  t_base_heating:
+  - multivector_world
+  f_eff_achieved:
+  - multivector_world
+  generic_enduse_change:
+  - multivector_world
+  generic_fuel_switch:
+  - multivector_world
+  switches_service:
+  - multivector_world
+decision_module: ''
+strategies: {}
+timesteps:
+  - 2015
+  - 2030
+  - 2050

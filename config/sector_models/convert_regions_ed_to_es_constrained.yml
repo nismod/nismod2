@@ -1,0 +1,226 @@
+name: convert_regions_ed_to_es_constrained
+description: Performs a spatial aggregation of the energy demand data assuming a uniform
+  spatial distribution
+path: models/convert.py
+classname: ConvertLADtoEnergyHub
+initial_conditions: []
+inputs:
+  - name: building_biomass_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_elec_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_gas_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_heatpump
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_heatpump
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_oil_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_biomass_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_elec_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_gas_CHP
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_hydrogen_fuelcell
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_res
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_res
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: hydrogen_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+interventions: []
+outputs:
+  - name: building_biomass_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_elec_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_gas_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_heatpump
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_heatpump
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_oil_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_biomass_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_elec_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_gas_CHP
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_hydrogen_fuelcell
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: hydrogen_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+parameters: []

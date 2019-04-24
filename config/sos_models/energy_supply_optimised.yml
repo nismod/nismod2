@@ -1,0 +1,64 @@
+name: energy_supply_optimised
+narratives:
+- variants:
+  - data:
+      LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+      LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+    description: very high cost load shedding
+    name: high_cost
+  sos_model: energy_supply_only
+  description: Costs of shedding load
+  name: load_shedding
+  provides:
+    energy_supply_optimised:
+    - LoadShed_elec
+    - LoadShed_gas
+scenario_dependencies:
+- source: fuel_price
+  source_output: energy_supply_price
+  sink: energy_supply_optimised
+  sink_input: fuel_price
+- source: dummy_energy_demands_full
+  source_output: elecload
+  sink: energy_supply_optimised
+  sink_input: elecload
+- source: dummy_energy_demands_full
+  source_output: gasload
+  sink: energy_supply_optimised
+  sink_input: gasload
+- source: dummy_energy_demands_full
+  source_output: residential_gas_non_heating
+  sink: energy_supply_optimised
+  sink_input: gasload_non_heat_res
+- source: dummy_energy_demands_full
+  source_output: residential_electricity_non_heating
+  sink: energy_supply_optimised
+  sink_input: elecload_non_heat_res
+- source: dummy_energy_demands_full
+  source_output: service_gas_non_heating
+  sink: energy_supply_optimised
+  sink_input: gasload_non_heat_com
+- source: dummy_energy_demands_full
+  source_output: service_electricity_non_heating
+  sink: energy_supply_optimised
+  sink_input: elecload_non_heat_com
+- source: dummy_energy_demands_full
+  source_output: hydrogen_non_heating
+  sink: energy_supply_optimised
+  sink_input: hydrogen_non_heat_eh
+- source: dummy_energy_demands_full
+  source_output: residential_heatload
+  sink: energy_supply_optimised
+  sink_input: heatload_res
+- source: dummy_energy_demands_full
+  source_output: service_heatload
+  sink: energy_supply_optimised
+  sink_input: heatload_com
+description: Contains only energy supply wrapper with full data and full energy demand
+  scenarios
+sector_models:
+- energy_supply_optimised
+model_dependencies: []
+scenarios:
+- fuel_price
+- dummy_energy_demands_full

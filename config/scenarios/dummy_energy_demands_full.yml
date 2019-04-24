@@ -57,6 +57,91 @@ provides:
     - seasonal_week
     dtype: float
     unit: MW
+  - name: hydrogen_non_heating
+    description: 'Non heat hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: MW
+  - name: building_biomass_boiler
+    description: 'Building biomass boiler biomass demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: building_elec_boiler
+    description: 'Building electric boiler electricity demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: building_heatpump
+    description: 'Building heat pump electricity demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: building_gas_boiler
+    description: 'Building gas boiler gas demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: building_hydrogen_boiler
+    description: 'Building hydrogen boiler hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: building_hydrogen_heatpump
+    description: 'Building hydrogen heatpump hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: building_oil_boiler
+    description: 'Building oil boiler oil demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dh_biomass_boiler
+    description: 'District heating biomass boiler biomass demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dh_elec_boiler
+    description: 'District heating electric boiler electricity demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dh_gas_CHP
+    description: 'District heating gas CHP gas demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: dh_hydrogen_fuelcell
+    description: 'Hydrogen fuel cell hydrogen demand'
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+
 variants:
   - name: es_energy_demand_dummy_full
     description: ''
@@ -69,3 +154,15 @@ variants:
       service_heatload: ../energy_supply/scenarios/energy_demand_full.csv
       service_gas_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
       service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      hydrogen_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
+      building_biomass_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      building_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      building_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
+      building_gas_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      building_hydrogen_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      building_hydrogen_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
+      building_oil_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      dh_biomass_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      dh_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
+      dh_gas_CHP : ../energy_supply/scenarios/energy_demand_full.csv
+      dh_hydrogen_fuelcell : ../energy_supply/scenarios/energy_demand_full.csv

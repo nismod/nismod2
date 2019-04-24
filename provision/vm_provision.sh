@@ -51,7 +51,7 @@ apt-get install -y \
 # Install FICO XPRESS for energy supply
 #
 
-XPRESS_VERSION="8.4.4"
+XPRESS_VERSION="8.5.10"
 XPRESS_URL="https://clientarea.xpress.fico.com/downloads/${XPRESS_VERSION}/xp${XPRESS_VERSION}_linux_x86_64_setup.tar"
 XPRESS_PKG="xp${XPRESS_VERSION}_linux_x86_64.tar.gz"
 XPRESS_DIR=/home/vagrant/xpress
@@ -190,6 +190,9 @@ do
     su vagrant -c "ssh-keyscan $host >> /home/vagrant/.ssh/known_hosts"
 done
 
+# Get scenarios
+bash -x $base_path/provision/get_data_scenarios.sh $base_path
+
 # Digital comms
 bash -x $base_path/provision/get_data_digital_comms.sh $base_path
 bash -x $base_path/provision/install_digital_comms.sh $base_path
@@ -203,7 +206,8 @@ energy_demand setup -f $base_path/models/energy_demand/wrapperconfig.ini
 bash -x $base_path/provision/get_data_energy_supply.sh $base_path $XPRESS_DIR
 # use default dbconfig if no other provided
 cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/dbconfig.ini
-bash -x $base_path/provision/install_energy_supply.sh $base_path
+# run install as vagrant to set up ODBC connection
+su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
 
 # Transport
 bash -x $base_path/provision/get_data_transport.sh $base_path
@@ -215,6 +219,7 @@ bash -x $base_path/provision/install_et_module.sh $base_path
 
 # Water supply
 bash -x $base_path/provision/install_water_supply.sh $base_path
+
 
 #
 # User config

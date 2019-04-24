@@ -1,0 +1,118 @@
+name: convert_regions_ed_to_es_optimised
+description: Performs a spatial aggregation of the energy demand data assuming a uniform
+  spatial distribution
+path: models/convert.py
+classname: ConvertLADtoEnergyHub
+initial_conditions: []
+inputs:
+  - name: gasload_non_heat_res
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_res
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: heatload_res
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: heatload_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: hydrogen_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+interventions: []
+outputs:
+  - name: gasload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: heatload_res
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: heatload_com
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: hydrogen_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+parameters: []

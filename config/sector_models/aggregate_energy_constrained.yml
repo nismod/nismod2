@@ -1,0 +1,327 @@
+name: aggregate_energy_constrained
+description: Aggregates energy demand outputs for energy supply in constrained heat mode
+classname: AggregateEnergyConstrained
+path: models/aggregate.py
+initial_conditions: []
+inputs:
+  - name: industry_biomass_district_heating_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_electricity_boiler_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_electricity_district_heating_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_electricity_heat_pumps_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_electricity_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_gas_boiler_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_gas_district_heating_CHP_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_gas_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen_boiler_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen_district_heating_fuel_cell
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen_fuel_cell_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen_heat_pumps_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_hydrogen_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_biomass_boiler_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_biomass_district_heating_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_electricity_boiler_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_electricity_district_heating_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_electricity_heat_pumps_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_gas_boiler_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_gas_district_heating_CHP_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_hydrogen_boiler_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_hydrogen_district_heating_fuel_cell
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_hydrogen_fuel_cell_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_hydrogen_heat_pumps_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_hydrogen_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_oil_boiler_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_biomass_boiler_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_biomass_district_heating_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_electricity_boiler_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_electricity_district_heating_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_electricity_heat_pumps_electricity
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_gas_boiler_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_gas_district_heating_CHP_gas
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen_boiler_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen_district_heating_fuel_cell
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen_fuel_cell_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen_heat_pumps_hydrogen
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_hydrogen_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_oil_boiler_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+interventions: []
+outputs:
+  - name: building_biomass_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_elec_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_gas_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_heatpump
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_hydrogen_heatpump
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_oil_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_biomass_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_elec_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_gas_CHP
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: dh_hydrogen_fuelcell
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: elecload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: gasload
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: hydrogen_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+parameters: []
