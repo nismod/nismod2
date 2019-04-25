@@ -2,6 +2,9 @@ name: link_travel_time
 description: Passenger OD flows for transport base year
 provides:
   - name: link_travel_time
+    dims:
+      - road_edge_id
+      - annual_day_hours
     unit: h
     dtype: float
 variants:

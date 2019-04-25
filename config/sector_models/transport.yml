@@ -22,6 +22,9 @@ inputs:
     unit: £/kWh
     dtype: float
   - name: link_travel_time
+    dims:
+      - road_edge_id
+      - annual_day_hours
     unit: h
     dtype: float
   - name: time_of_day_distribution_passenger
@@ -71,6 +74,9 @@ outputs:
     unit: trips
     dtype: int
   - name: link_travel_time
+    dims:
+      - road_edge_id
+      - annual_day_hours
     unit: h
     dtype: float
 parameters:
