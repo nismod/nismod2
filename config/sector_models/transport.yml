@@ -27,17 +27,6 @@ inputs:
       - annual_day_hours
     unit: h
     dtype: float
-  - name: time_of_day_distribution_passenger
-    description:
-    dtype: float
-    dims:
-      - annual_day_hours
-  - name: time_of_day_distribution_freight
-    description:
-    dtype: float
-    dims:
-      - annual_day_hours
-      - freight_vehicle_type
   - name: engine_type_fractions
     description:
     dtype: float
