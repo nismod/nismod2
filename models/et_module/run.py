@@ -29,12 +29,10 @@ class ETWrapper(SectorModel):
         simulation_yr = data.current_timestep
 
         # Read number of EV trips starting
-        # transpose from (24h, regions) to (regions, 24h)
-        reg_trips_ev_24h = data.get_data('ev_trips').as_ndarray().T
+        reg_trips_ev_24h = data.get_data('ev_trips').as_ndarray()
 
         # Get hourly demand data for day for every region (kWh)
-        # transpose from (24h, regions) to (regions, 24h)
-        reg_elec_24h = data.get_data('ev_electricity').as_ndarray().T
+        reg_elec_24h = data.get_data('ev_electricity').as_ndarray()
 
         # Obtain the list of regions from the model input
         regions = self.inputs['ev_trips'].dim_coords(REGION_SET_NAME).ids

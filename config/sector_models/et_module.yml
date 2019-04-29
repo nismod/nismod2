@@ -20,7 +20,7 @@ inputs:
 outputs:
   - name: v2g_g2v_capacity
     dims:
-     - lad_gb_2016
+      - lad_gb_2016
     dtype: float
     unit: kW
 parameters:
