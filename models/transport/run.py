@@ -19,7 +19,7 @@ class BaseTransportWrapper(SectorModel):
     """Base wrapper for the transport model - override class variables in implementations
     """
     _config_filename = 'run_config.ini'
-    _templates_dirname = 'templates'
+    _template_filename = 'config.properties.template'
 
     def __init__(self, *args, **kwargs):
         # shared setup
@@ -33,7 +33,7 @@ class BaseTransportWrapper(SectorModel):
         config = configparser.ConfigParser()
         config.read(os.path.join(this_dir, self._config_filename))
 
-        self._templates_dir = os.path.join(this_dir, 'templates', self._templates_dirname)
+        self._templates_dir = os.path.join(this_dir, 'templates')
 
         if 'run' not in config:
             raise KeyError("Expected '[run]' section in transport run_config.ini")
@@ -207,34 +207,27 @@ class BaseTransportWrapper(SectorModel):
         """Set the transport model properties, such as paths and interventions
         """
         working_dir = self._working_dir
-        path_to_config_templates = self._templates_dir
+        working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
+        path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
 
-        for root, _, filenames in os.walk(path_to_config_templates):
-            for filename in filenames:
-                with open(os.path.join(root, filename), 'r') as template_fh:
-                    config = Template(template_fh.read())
+        with open(path_to_config_template) as template_fh:
+            config = Template(template_fh.read())
 
-                working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
+        config_str = config.substitute({
+            'relative_path': working_dir_path,
+            'intervention_files': '',
+            'link_travel_time_averaging_weight': 1.0,
+            'assignment_iterations': 1,
+            'prediction_iterations': 1,
+            'use_route_choice_model': False
+        })
 
-                try:
-                    prev = data_handle.previous_timestep
-                except SmifTimestepResolutionError:
-                    prev = None
-
-                config_str = config.substitute({
-                    'base_timestep': data_handle.base_timestep,
-                    'previous_timestep': prev,
-                    'current_timestep': data_handle.current_timestep,
-                    'relative_path': working_dir_path
-                })
-
-                config_path = os.path.join(
-                    working_dir,
-                    os.path.relpath(root, path_to_config_templates),
-                    filename.replace('.template', '')
-                )
-                with open(config_path, 'w') as template_fh:
-                    template_fh.write(config_str)
+        config_path = os.path.join(
+            working_dir,
+            'config.properties'
+        )
+        with open(config_path, 'w') as template_fh:
+            template_fh.write(config_str)
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
@@ -323,11 +316,11 @@ class TransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'full' configuration
     """
     _config_filename = 'run_config_full.ini'
-    _templates_dirname = 'full'
+    _template_filename = 'gb-config.properties.template'
 
 
 class SouthamptonTransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'southampton' configuration
     """
     _config_filename = 'run_config_southampton.ini'
-    _templates_dirname = 'southampton'
+    _template_filename = 'southampton-config.properties.template'
