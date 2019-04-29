@@ -99,7 +99,7 @@ class BaseTransportWrapper(SectorModel):
             arguments.append('-b')
         else:
             arguments.extend([
-                '-r',
+                '-road',
                 str(data_handle.current_timestep),
                 str(data_handle.previous_timestep)
             ])
