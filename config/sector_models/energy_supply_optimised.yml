@@ -65,6 +65,30 @@ inputs:
       - es_fuel_types
     unit: GBP/MWh
     dtype: float
+  - name: wind_speed_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: m/s
+    dtype: float
+  - name: wind_speed_bus
+    dims:
+      - bus_bars
+      - seasonal_week
+    unit: m/s
+    dtype: float
+  - name: insolation_bus
+    dims:
+      - bus_bars
+      - seasonal_week
+    unit: W/m2
+    dtype: float
+  - name: insolation_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: W/m2
+    dtype: float
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
@@ -89,45 +113,45 @@ interventions:
   - ../energy_supply/interventions/full/es_generators.csv
   - ../energy_supply/interventions/full/es_heattech.csv
 outputs:
-  - name: tran_gasfired
+  - name: tran_gas_fired
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_coal
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pump_power
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_hydro
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_nuclear
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_interconnector
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_renewable
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
@@ -167,27 +191,33 @@ outputs:
     - seasonal_week
     unit: mcm
     dtype: float
-  - name: tran_wind_power
+  - name: tran_wind_onshore
     dims:
-    - national
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_wind_offshore
+    dims:
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pv_power
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_wind_curtailed
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pv_curtailed
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
@@ -209,7 +239,19 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: eh_wind_curtalied
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
   - name: eh_pv_power
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_pv_curtailed
     dims:
     - energy_hub
     - seasonal_week
@@ -217,13 +259,13 @@ outputs:
     dtype: float
   - name: gas_load_shed
     dims:
-    - national
+    - gas_nodes
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elec_load_shed
     dims:
-    - national
+    - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
@@ -247,13 +289,13 @@ outputs:
     dtype: float
   - name: gas_load_shed_eh
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elec_load_shed_eh
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float

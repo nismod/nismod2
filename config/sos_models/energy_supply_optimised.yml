@@ -54,6 +54,22 @@ scenario_dependencies:
   source_output: service_heatload
   sink: energy_supply_optimised
   sink_input: heatload_com
+- source: dummy_weather_inputs_full
+  source_output: wind_speed_eh
+  sink: energy_supply_constrained
+  sink_input: wind_speed_eh
+- source: dummy_weather_inputs_full
+  source_output: wind_speed_bus
+  sink: energy_supply_constrained
+  sink_input: wind_speed_bus
+- source: dummy_weather_inputs_full
+  source_output: insolation_eh
+  sink: energy_supply_constrained
+  sink_input: insolation_eh
+- source: dummy_weather_inputs_full
+  source_output: insolation_bus
+  sink: energy_supply_constrained
+  sink_input: insolation_bus
 description: Contains only energy supply wrapper with full data and full energy demand
   scenarios
 sector_models:
@@ -62,3 +78,4 @@ model_dependencies: []
 scenarios:
 - fuel_price
 - dummy_energy_demands_full
+- dummy_weather_inputs_full

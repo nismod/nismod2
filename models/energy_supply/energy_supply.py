@@ -141,10 +141,10 @@ class EnergySupplyWrapper(SectorModel):
         build_generator(generators, current_timestep)
         self.logger.debug('Building %s heattech interventions', len(heattech))
         build_heattech(heattech, current_timestep)
-        self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
-        build_distributed(dist_eh, current_timestep)
-        self.logger.debug('Building %s transmission connected distributed generators', len(dist_tran))
-        build_distributed(dist_tran, current_timestep)
+        #self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
+        #build_distributed(dist_eh, current_timestep)
+        #self.logger.debug('Building %s transmission connected distributed generators', len(dist_tran))
+        #build_distributed(dist_tran, current_timestep)
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -179,6 +179,11 @@ class EnergySupplyWrapper(SectorModel):
             'dh_elec_boiler',
             'dh_gas_CHP',
             'dh_hydrogen_fuelcell',
+            #weather_data
+            'wind_speed_eh',
+            'wind_speed_bus',
+            'insolation_eh',
+            'insolation_bus',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:
@@ -543,6 +548,9 @@ def build_generator(plants, current_timestep):
                           'efw chp of ehs ': 21,
                           'biomass chp of ehs ': 22,
                           'h2 fuel cell ': 30,
+                          'wind onshore' : 3,
+                          'wind offshore': 12,
+                          'pv'         : 23 ,
                           'dummygenerator': 100}[plant['type'].lower()]
         elif isinstance(plant['type'], int):
             plant_type = plant['type']
@@ -657,14 +665,14 @@ def get_distributed_tran(location, year):
     conn.close()
     return mapping
 
-
+'''
 def build_distributed(plants, current_timestep):
-    """Writes a list of interventions into the WindPVData_* table
+    #Writes a list of interventions into the WindPVData_* table
 
-    Arguments
-    ---------
-    plants : list
-    """
+    #Arguments
+    #---------
+    #plants : list
+    
     conn = establish_connection()
     cur = conn.cursor()
 
@@ -724,6 +732,7 @@ def build_distributed(plants, current_timestep):
     # Close communication with the database
     cur.close()
     conn.close()
+'''
 
 def delete_from(table_name):
     conn = establish_connection()

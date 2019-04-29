@@ -1,0 +1,41 @@
+name: dummy_weather_inputs_full
+description: Dummy weather data inputs for the energy supply model (full dataset)
+provides:
+  - name: wind_speed_eh
+    description: 'wind speed in m/s for energy hubs'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: m/s
+  - name: wind_speed_bus
+    description: 'wind speed in m/s for bus bars'
+    dims:
+    - bus_bars
+    - seasonal_week
+    dtype: float
+    unit: m/s
+  - name: insolation_eh
+    description: 'solar insolation for energy hubs'
+    dims:
+    - energy_hub
+    - seasonal_week
+    dtype: float
+    unit: W/m2
+  - name: insolation_bus
+    description: 'solar insolation for bus bars'
+    dims:
+    - bus_bars
+    - seasonal_week
+    dtype: float
+    unit: W/m2
+
+variants:
+  - name: es_dummy_weather_inputs_full
+    description: ''
+    data:
+      wind_speed_eh: ../energy_supply/scenarios/weather_dummy_full_eh.csv
+      wind_speed_bus: ../energy_supply/scenarios/weather_dummy_full_bus.csv
+      insolation_eh: ../energy_supply/scenarios/weather_dummy_full_eh.csv
+      insolation_bus: ../energy_supply/scenarios/weather_dummy_full_bus.csv
+
