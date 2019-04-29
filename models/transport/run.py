@@ -16,13 +16,13 @@ from smif.model.sector_model import SectorModel
 
 
 class BaseTransportWrapper(SectorModel):
-    """Base wrapper for the transport model - override private variables in implementations
+    """Base wrapper for the transport model - override class variables in implementations
     """
-    def __init__(self, *args, **kwargs):
-        # override these
-        # self._config_filename
-        # self._templates_dirname
+    _config_filename = 'run_config.ini'
+    _templates_dirname = 'templates'
 
+    def __init__(self, *args, **kwargs):
+        # shared setup
         self._current_timestep = None
         self._set_options()
         super().__init__(*args, **kwargs)
@@ -312,28 +312,22 @@ class BaseTransportWrapper(SectorModel):
             dims, axis=1
         )
 
-    def _df_to_ndarray(self, output_name, df):
+    def _df_to_ndarray(self, output_name, dataframe):
         spec = self.outputs[output_name]
-        df.set_index(spec.dims, inplace=True)
-        da = DataArray.from_df(spec, df)
-        return da.data
+        dataframe.set_index(spec.dims, inplace=True)
+        dataarray = DataArray.from_df(spec, dataframe)
+        return dataarray.data
 
 
 class TransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'full' configuration
     """
-    def __init__(self, *args, **kwargs):
-        # override these to configure 'full' model
-        self._config_filename = 'run_config_full.ini'
-        self._templates_dirname = 'full'
-        super().__init__(*args, **kwargs)
+    _config_filename = 'run_config_full.ini'
+    _templates_dirname = 'full'
 
 
 class SouthamptonTransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'southampton' configuration
     """
-    def __init__(self, *args, **kwargs):
-        # override these to configure 'southampton' model
-        self._config_filename = 'run_config_southampton.ini'
-        self._templates_dirname = 'southampton'
-        super().__init__(*args, **kwargs)
+    _config_filename = 'run_config_southampton.ini'
+    _templates_dirname = 'southampton'
