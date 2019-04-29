@@ -4,16 +4,16 @@ provides:
   - default: ../et_module/scenarios/transport_trips.csv
     description: The number of electric vehicle trips commencing in each hour
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     dtype: int
     name: ev_trip_start
     unit: trips
   - default: ../et_module/scenarios/transport_trips.csv
     description: The electric vehicle electricity demanded at origin in each hour
     dims:
-      - annual_day_hours
       - lad_gb_2016
+      - annual_day_hours
     dtype: float
     name: ev_trip_elec
     unit: kWh
