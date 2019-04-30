@@ -210,16 +210,26 @@ class BaseTransportWrapper(SectorModel):
         working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
         path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
 
+        # read config as a Template for easy substitution of values
         with open(path_to_config_template) as template_fh:
             config = Template(template_fh.read())
 
+        intervention_files = []
+        for i, intervention in enumerate(data_handle.get_current_interventions()):
+            fname = self._write_intervention(intervention)
+            intervention_files.append("interventionFile{} = {}".format(i, fname))
+
         config_str = config.substitute({
             'relative_path': working_dir_path,
-            'intervention_files': '',
-            'link_travel_time_averaging_weight': 1.0,
-            'assignment_iterations': 1,
-            'prediction_iterations': 1,
-            'use_route_choice_model': False
+            'intervention_files': '\n'.join(intervention_files),
+            'link_travel_time_averaging_weight': \
+                float(data_handle.get_parameter('link_travel_time_averaging_weight').data),
+            'assignment_iterations': \
+                int(data_handle.get_parameter('assignment_iterations').data),
+            'prediction_iterations': \
+                int(data_handle.get_parameter('prediction_iterations').data),
+            'use_route_choice_model': \
+                bool(data_handle.get_parameter('use_route_choice_model').data),
         })
 
         config_path = os.path.join(
@@ -228,6 +238,16 @@ class BaseTransportWrapper(SectorModel):
         )
         with open(config_path, 'w') as template_fh:
             template_fh.write(config_str)
+
+    def _write_intervention(self, intervention):
+        """Write a single intervention file, returning the full path
+        """
+        path = os.path.join(self._input_dir, "{}.properties".format(intervention['name']))
+        with open(path, 'w') as file_handle:
+            for key, value in intervention.items():
+                file_handle.write("{} = {}\n".format(key, value))
+
+        return os.path.normpath(os.path.abspath(path))
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
