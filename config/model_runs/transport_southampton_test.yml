@@ -9,5 +9,9 @@ scenarios:
   link_travel_time: default
 narratives: {}
 decision_module: []
-strategies: {}
+strategies:
+  - type: pre-specified-planning
+    description: test interventions
+    filename: transport_test.csv
+    model_name: transport_southampton
 stamp: ''

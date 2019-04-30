@@ -215,7 +215,7 @@ class BaseTransportWrapper(SectorModel):
             config = Template(template_fh.read())
 
         intervention_files = []
-        for i, intervention in enumerate(data_handle.get_current_interventions()):
+        for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
             intervention_files.append("interventionFile{} = {}".format(i, fname))
 
@@ -242,12 +242,21 @@ class BaseTransportWrapper(SectorModel):
     def _write_intervention(self, intervention):
         """Write a single intervention file, returning the full path
         """
-        path = os.path.join(self._input_dir, "{}.properties".format(intervention['name']))
+        path = os.path.normpath(os.path.abspath(os.path.join(
+            self._input_dir, "{}.properties".format(intervention['name']))))
+
+        # compute start/end year from smif intervention keys
+        intervention['startYear'] = intervention['build_year']
+        intervention['endYear'] =  intervention['build_year'] + \
+            intervention['technical_lifetime']['value']
+        del intervention['build_year']
+        del intervention['technical_lifetime']
+
         with open(path, 'w') as file_handle:
             for key, value in intervention.items():
                 file_handle.write("{} = {}\n".format(key, value))
 
-        return os.path.normpath(os.path.abspath(path))
+        return path
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
