@@ -47,6 +47,7 @@ class BaseTransportWrapper(SectorModel):
             self._working_dir = os.path.join(this_dir, config['run']['working_dir'])
             self._input_dir = os.path.join(self._working_dir, 'input')
             self._output_dir = os.path.join(self._working_dir, 'output')
+            self._config_path = os.path.join(self._working_dir, 'config.properties')
         else:
             raise KeyError("Expected 'data_dir' in transport run_config.ini")
 
@@ -85,15 +86,13 @@ class BaseTransportWrapper(SectorModel):
         working_dir = self._working_dir
         path_to_jar = self._jar_path
 
-        path_to_config = os.path.join(working_dir, 'config', 'config.properties')
-
         self.logger.info("FROM run.py: Running transport model")
         arguments = ['java'] + self._optional_args + [
             '-cp',
             path_to_jar,
             'nismod.transport.App',
             '-c',
-            path_to_config
+            self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
             arguments.append('-b')
@@ -232,11 +231,7 @@ class BaseTransportWrapper(SectorModel):
                 bool(data_handle.get_parameter('use_route_choice_model').data),
         })
 
-        config_path = os.path.join(
-            working_dir,
-            'config.properties'
-        )
-        with open(config_path, 'w') as template_fh:
+        with open(self._config_path, 'w') as template_fh:
             template_fh.write(config_str)
 
     def _write_intervention(self, intervention):
