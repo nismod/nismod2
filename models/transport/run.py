@@ -265,6 +265,13 @@ class BaseTransportWrapper(SectorModel):
         del intervention['build_year']
         del intervention['technical_lifetime']
 
+        # fix up path to congestion charging pricing details file
+        if 'congestionChargingPricing' in intervention:
+            cccp_filename = intervention['congestionChargingPricing']
+            intervention['congestionChargingPricing'] = os.path.join(
+                self._working_dir, 'csvfiles', cccp_filename
+            )
+
         with open(path, 'w') as file_handle:
             for key, value in intervention.items():
                 file_handle.write("{} = {}\n".format(key, value))
