@@ -90,6 +90,22 @@ parameters:
     description: Cost elasticity for freight demand
     dtype: float
     default: default_transport_elasticities.csv
+  - name: link_travel_time_averaging_weight
+    description: Averages link travel time with the time from previous iterations (1.0 = overwrite with new)
+    dtype: float
+    default: default_transport_flags.csv
+  - name: assignment_iterations
+    description: How many times to repeat the same assignment to obtain average times
+    dtype: int
+    default: default_transport_flags.csv
+  - name: prediction_iterations
+    description: How many times to iterate between flow prediction and flow assignment
+    dtype: int
+    default: default_transport_flags.csv
+  - name: use_route_choice_model
+    description: Whether to use route-choice model (true) or routing with A-Star (false)
+    dtype: bool
+    default: default_transport_flags.csv
 interventions:
   - transport_lane_expansions.csv
   - transport_new_links.csv
