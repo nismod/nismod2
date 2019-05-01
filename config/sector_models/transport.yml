@@ -30,11 +30,6 @@ inputs:
     dims:
       - vehicle_type
       - engine_type
-  - name: autonomous_vehicle_fractions
-    description:
-    dtype: float
-    dims:
-      - vehicle_type
 outputs:
   - name: energy_consumption
     dims:

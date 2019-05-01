@@ -139,9 +139,12 @@ class BaseTransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        input_dir = self._input_dir
+        self._set_population(data_handle)
+        self._set_gva(data_handle)
+        self._set_fuel_price(data_handle)
+        self._set_engine_fractions(data_handle)
 
-        # Population
+    def _set_population(self, data_handle):
         base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
         base_population['year'] = data_handle.base_timestep
 
@@ -156,42 +159,40 @@ class BaseTransportWrapper(SectorModel):
             population = base_population
 
         population.population = population.population.astype(int)
+        # use region dimension name (could change) for columns
         colname = self.inputs['population'].dims[0]
         population = population.pivot(
             index='year', columns=colname, values='population'
         )
         population_filepath = os.path.join(
-            input_dir, 'population.csv')
+            self._input_dir, 'population.csv')
         population.to_csv(population_filepath)
 
-        # GVA
-        base_da = data_handle.get_base_timestep_data("gva")
-        base_gva = base_da.as_df().reset_index()
-        # work around smif not overriding source output name
-        base_gva = base_gva.rename(columns={base_da.name: 'gva'})
-        base_gva['year'] = data_handle.base_timestep
-
+    def _set_gva(self, data_handle):
         current_da = data_handle.get_data("gva")
         current_gva = current_da.as_df().reset_index()
-        # work around smif not overriding source output name
-        current_gva = current_gva.rename(columns={current_da.name: 'gva'})
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
+            base_da = data_handle.get_base_timestep_data("gva")
+            base_gva = base_da.as_df().reset_index()
+            base_gva['year'] = data_handle.base_timestep
+
             gva = pd.concat(
                 [base_gva, current_gva]
             )
         else:
             gva = current_gva
 
+        # use region dimension name (could change) for columns
         colname = self.inputs['gva'].dims[0]
         gva = gva.pivot(
             index='year', columns=colname, values='gva'
         )
-        gva_filepath = os.path.join(input_dir, 'gva.csv')
+        gva_filepath = os.path.join(self._input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
 
-        # Fuel prices
+    def _set_fuel_price(self, data_handle):
         fuel_price = data_handle.get_data('fuel_price').as_df().reset_index()
         fuel_price['year'] = data_handle.current_timestep
         fuel_price = fuel_price.pivot(
@@ -199,8 +200,17 @@ class BaseTransportWrapper(SectorModel):
         )
         fuel_price['ELECTRICITY'] = float(data_handle.get_data('fuel_price_electricity').data)
 
-        fuel_price_filepath = os.path.join(input_dir, 'energyUnitCosts.csv')
+        fuel_price_filepath = os.path.join(self._input_dir, 'energyUnitCosts.csv')
         fuel_price.to_csv(fuel_price_filepath)
+
+    def _set_engine_fractions(self, data_handle):
+        engine_fractions = data_handle.get_data('engine_fractions').as_df().reset_index()
+        engine_fractions['year'] = data_handle.current_timestep
+        engine_fractions.pivot(
+            index='year', columns='engine_type', values='engine_fractions'
+        ).to_csv(
+            os.path.join(self._input_dir, 'engineFractions.csv')
+        )
 
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions

@@ -24,6 +24,12 @@ inputs:
   - name: link_travel_time
     unit: h
     dtype: float
+  - name: engine_type_fractions
+    description:
+    dtype: float
+    dims:
+      - vehicle_type
+      - engine_type
 outputs:
   - name: energy_consumption
     dims:

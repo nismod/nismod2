@@ -1,0 +1,14 @@
+name: engine_type_fractions
+description: Composition of fuel/engine types for the road vehicle fleet
+provides:
+  - name: engine_type_fractions
+    description:
+    dtype: float
+    dims:
+      - vehicle_type
+      - engine_type
+variants:
+  - name: baseline
+    description: baseline_scenario
+    data:
+      engine_type_fractions: engine_type_fractions.csv

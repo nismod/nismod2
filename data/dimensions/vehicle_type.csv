@@ -1,0 +1,9 @@
+name,description
+CAR,Car
+VAN,Van
+RIGID,Rigid truck
+ARTIC,Articulated vehicle (lorry)
+CAR_AV,Autonomous car
+VAN_AV,Autonomous van
+RIGID_AV,Autonomous rigid truck
+ARTIC_AV,Autonomous articulated vehicle (lorry)
