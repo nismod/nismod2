@@ -33,7 +33,7 @@ scenario_dependencies:
     sink_input: link_travel_time
   - source: engine_type_fractions
     source_output: engine_type_fractions
-    sink: transport
+    sink: transport_southampton
     sink_input: engine_type_fractions
 model_dependencies:
   - source: extract_southampton_scenarios
