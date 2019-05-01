@@ -12,3 +12,7 @@ variants:
     description: baseline_scenario
     data:
       engine_type_fractions: engine_type_fractions.csv
+  - name: test
+    description: test scenario
+    data:
+      engine_type_fractions: engine_type_fractions_test.csv
