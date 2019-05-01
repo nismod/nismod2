@@ -269,7 +269,7 @@ class BaseTransportWrapper(SectorModel):
         if 'congestionChargingPricing' in intervention:
             cccp_filename = intervention['congestionChargingPricing']
             intervention['congestionChargingPricing'] = os.path.join(
-                self._working_dir, 'csvfiles', cccp_filename
+                self._working_dir, 'data', 'csvfiles', cccp_filename
             )
 
         with open(path, 'w') as file_handle:
