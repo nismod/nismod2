@@ -25,6 +25,7 @@ def main(input_filename, output_filename):
     ).rename(
         columns={
             'year': 'timestep',
+            'vehicle': 'vehicle_type',
             'variable': 'engine_type',
             'value': 'engine_type_fractions'
         }

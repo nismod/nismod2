@@ -204,12 +204,20 @@ class BaseTransportWrapper(SectorModel):
         fuel_price.to_csv(fuel_price_filepath)
 
     def _set_engine_fractions(self, data_handle):
-        engine_fractions = data_handle.get_data('engine_fractions').as_df().reset_index()
-        engine_fractions['year'] = data_handle.current_timestep
-        engine_fractions.pivot(
-            index='year', columns='engine_type', values='engine_fractions'
-        ).to_csv(
-            os.path.join(self._input_dir, 'engineFractions.csv')
+        engine_fractions = data_handle.get_data('engine_type_fractions').as_df().reset_index()
+        engine_fractions = engine_fractions.pivot(
+            index='vehicle_type', columns='engine_type', values='engine_type_fractions'
+        )
+        engine_fractions.columns = engine_fractions.columns.values
+        engine_fractions = engine_fractions.reset_index().rename(
+            columns={
+                'vehicle_type': 'vehicle'
+            }
+        )
+        # insert year in first-place column
+        engine_fractions.insert(loc=0, column='year', value=data_handle.current_timestep)
+        engine_fractions.to_csv(
+            os.path.join(self._input_dir, 'engineTypeFractions.csv'), index=False
         )
 
     def _set_properties(self, data_handle):
