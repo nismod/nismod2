@@ -8,6 +8,7 @@ scenarios:
   population: pop_baseline
   temperature: NF1
   link_travel_time: default
+  engine_type_fractions: baseline
 narratives: {}
 strategies: []
 timesteps:
