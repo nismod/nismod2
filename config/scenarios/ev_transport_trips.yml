@@ -1,25 +1,33 @@
-description: ''
 name: ev_transport_trips
+description: Transport outputs used by energy models
 provides:
-  - default: ../et_module/scenarios/transport_trips.csv
+  - name: electric_vehicle_trip_starts
     description: The number of electric vehicle trips commencing in each hour
     dims:
       - lad_gb_2016
       - annual_day_hours
     dtype: int
-    name: ev_trip_start
     unit: trips
-  - default: ../et_module/scenarios/transport_trips.csv
+  - name: electric_vehicle_electricity_consumption
     description: The electric vehicle electricity demanded at origin in each hour
     dims:
       - lad_gb_2016
       - annual_day_hours
     dtype: float
-    name: ev_trip_elec
     unit: kWh
 variants:
   - name: central
-    description: central_scenario
+    description: Central (test) scenario for et_module verification
     data:
-      ev_trip_start: ../et_module/scenarios/transport_trips.csv
-      ev_trip_elec: ../et_module/scenarios/transport_trips.csv
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__central.csv
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__central.csv
+  - name: electricworld
+    description: Initial outputs for electric world (energy narrative)
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__ew.csv
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__ew.csv
+  - name: multivector
+    description: Initial outputs for multi-vector (energy narrative)
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv.csv
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv.csv

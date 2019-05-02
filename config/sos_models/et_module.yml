@@ -7,11 +7,11 @@ scenarios:
 model_dependencies: []
 scenario_dependencies:
   - source: ev_transport_trips
-    source_output: ev_trip_start
+    source_output: electric_vehicle_trip_starts
     sink: et_module
     sink_input: ev_trips
   - source: ev_transport_trips
-    source_output: ev_trip_elec
+    source_output: electric_vehicle_electricity_consumption
     sink: et_module
     sink_input: ev_electricity
 narratives:
