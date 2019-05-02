@@ -90,6 +90,14 @@ scenario_dependencies:
   source_output: dh_hydrogen_fuelcell
   sink: energy_supply_constrained
   sink_input: dh_hydrogen_fuelcell
+- source: dummy_energy_demands_full
+  source_output: elec_trans
+  sink: energy_supply_constrained
+  sink_input: elec_trans
+- source: dummy_energy_demands_full
+  source_output: EV_Cap
+  sink: energy_supply_constrained
+  sink_input: EV_Cap
 description: Contains only energy supply wrapper with full data and full energy demand
   scenarios
 sector_models:
