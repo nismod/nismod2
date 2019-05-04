@@ -14,6 +14,7 @@ scenarios:
   - gva
   - population
   - temperature
+  - dummy_weather_inputs_full
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -496,6 +497,22 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_eh
+    sink: energy_supply_constrained
+    sink_input: wind_speed_eh
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_bus
+    sink: energy_supply_constrained
+    sink_input: wind_speed_bus
+  - source: dummy_weather_inputs_full
+    source_output: insolation_eh
+    sink: energy_supply_constrained
+    sink_input: insolation_eh
+  - source: dummy_weather_inputs_full
+    source_output: insolation_bus
+    sink: energy_supply_constrained
+    sink_input: insolation_bus
 narratives:
   - name: load_shedding
     description: Costs of shedding load
