@@ -36,7 +36,8 @@ on a desktop, server or cluster:
    - Java (for transport)
    - PostgreSQL and ODBC (for energy supply)
 1. Configure:
-   - connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - (retiring soon) connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - (coming soon) connection details for the NISMOD AWS S3 bucket `s3://nismod2-data`
    - connection details for a Postgres database (copy `template.dbconfig.ini` to
      `dbconfig.ini` and edit for your database)
 1. Install models (run `provision/install_*` scripts)
@@ -74,7 +75,7 @@ git checkout master  # to make sure you’re on the master branch
 git pull             # pull changes from Github to your local machine
 ```
 
-### Configure connection details for the NISMOD FTP
+### Configure connection details for the NISMOD FTP and AWS
 
 Within the NISMOD folder, copy `provision/template.ftp.ini` to `provision/ftp.ini` and add your
 credentials to connect to the NISMOD FTP server:
@@ -85,6 +86,18 @@ ftp_host=sage-itrc.ncl.ac.uk
 ftp_username=username
 ftp_password=password
 ```
+
+Add AWS connection details in a similar block:
+
+```
+[aws]
+access_key=ABC123ID
+secret_key=random1234secret
+```
+
+Contact [Tom Russell](mailto:tom.russell@ouce.ox.ac.uk) or [Craig Robson](mailto:Craig.Robson1@newcastle.ac.uk) 
+to request credentials.
+
 
 ### Configure connection details for a Postgres database
 
