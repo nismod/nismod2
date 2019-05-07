@@ -16,13 +16,13 @@ from smif.model.sector_model import SectorModel
 
 
 class BaseTransportWrapper(SectorModel):
-    """Base wrapper for the transport model - override private variables in implementations
+    """Base wrapper for the transport model - override class variables in implementations
     """
-    def __init__(self, *args, **kwargs):
-        # override these
-        # self._config_filename
-        # self._templates_dirname
+    _config_filename = 'run_config.ini'
+    _template_filename = 'config.properties.template'
 
+    def __init__(self, *args, **kwargs):
+        # shared setup
         self._current_timestep = None
         self._set_options()
         super().__init__(*args, **kwargs)
@@ -33,7 +33,7 @@ class BaseTransportWrapper(SectorModel):
         config = configparser.ConfigParser()
         config.read(os.path.join(this_dir, self._config_filename))
 
-        self._templates_dir = os.path.join(this_dir, 'templates', self._templates_dirname)
+        self._templates_dir = os.path.join(this_dir, 'templates')
 
         if 'run' not in config:
             raise KeyError("Expected '[run]' section in transport run_config.ini")
@@ -47,6 +47,7 @@ class BaseTransportWrapper(SectorModel):
             self._working_dir = os.path.join(this_dir, config['run']['working_dir'])
             self._input_dir = os.path.join(self._working_dir, 'input')
             self._output_dir = os.path.join(self._working_dir, 'output')
+            self._config_path = os.path.join(self._working_dir, 'config.properties')
         else:
             raise KeyError("Expected 'data_dir' in transport run_config.ini")
 
@@ -85,21 +86,19 @@ class BaseTransportWrapper(SectorModel):
         working_dir = self._working_dir
         path_to_jar = self._jar_path
 
-        path_to_config = os.path.join(working_dir, 'config', 'config.properties')
-
         self.logger.info("FROM run.py: Running transport model")
         arguments = ['java'] + self._optional_args + [
             '-cp',
             path_to_jar,
             'nismod.transport.App',
             '-c',
-            path_to_config
+            self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
             arguments.append('-b')
         else:
             arguments.extend([
-                '-r',
+                '-road',
                 str(data_handle.current_timestep),
                 str(data_handle.previous_timestep)
             ])
@@ -140,9 +139,12 @@ class BaseTransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        input_dir = self._input_dir
+        self._set_population(data_handle)
+        self._set_gva(data_handle)
+        self._set_fuel_price(data_handle)
+        self._set_engine_fractions(data_handle)
 
-        # Population
+    def _set_population(self, data_handle):
         base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
         base_population['year'] = data_handle.base_timestep
 
@@ -157,42 +159,40 @@ class BaseTransportWrapper(SectorModel):
             population = base_population
 
         population.population = population.population.astype(int)
+        # use region dimension name (could change) for columns
         colname = self.inputs['population'].dims[0]
         population = population.pivot(
             index='year', columns=colname, values='population'
         )
         population_filepath = os.path.join(
-            input_dir, 'population.csv')
+            self._input_dir, 'population.csv')
         population.to_csv(population_filepath)
 
-        # GVA
-        base_da = data_handle.get_base_timestep_data("gva")
-        base_gva = base_da.as_df().reset_index()
-        # work around smif not overriding source output name
-        base_gva = base_gva.rename(columns={base_da.name: 'gva'})
-        base_gva['year'] = data_handle.base_timestep
-
+    def _set_gva(self, data_handle):
         current_da = data_handle.get_data("gva")
         current_gva = current_da.as_df().reset_index()
-        # work around smif not overriding source output name
-        current_gva = current_gva.rename(columns={current_da.name: 'gva'})
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
+            base_da = data_handle.get_base_timestep_data("gva")
+            base_gva = base_da.as_df().reset_index()
+            base_gva['year'] = data_handle.base_timestep
+
             gva = pd.concat(
                 [base_gva, current_gva]
             )
         else:
             gva = current_gva
 
+        # use region dimension name (could change) for columns
         colname = self.inputs['gva'].dims[0]
         gva = gva.pivot(
             index='year', columns=colname, values='gva'
         )
-        gva_filepath = os.path.join(input_dir, 'gva.csv')
+        gva_filepath = os.path.join(self._input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
 
-        # Fuel prices
+    def _set_fuel_price(self, data_handle):
         fuel_price = data_handle.get_data('fuel_price').as_df().reset_index()
         fuel_price['year'] = data_handle.current_timestep
         fuel_price = fuel_price.pivot(
@@ -200,41 +200,103 @@ class BaseTransportWrapper(SectorModel):
         )
         fuel_price['ELECTRICITY'] = float(data_handle.get_data('fuel_price_electricity').data)
 
-        fuel_price_filepath = os.path.join(input_dir, 'energyUnitCosts.csv')
+        fuel_price_filepath = os.path.join(self._input_dir, 'energyUnitCosts.csv')
         fuel_price.to_csv(fuel_price_filepath)
+
+    def _set_engine_fractions(self, data_handle):
+        current_data = self._get_engine_fractions(data_handle, data_handle.current_timestep)
+
+        if data_handle.current_timestep != data_handle.base_timestep:
+            base_data = self._get_engine_fractions(data_handle, data_handle.base_timestep)
+
+            data = pd.concat([base_data, current_data])
+        else:
+            data = current_data
+
+        data.to_csv(
+            os.path.join(self._input_dir, 'engineTypeFractions.csv'), index=False,
+            float_format='%f')
+
+
+    def _get_engine_fractions(self, data_handle, timestep):
+        engine_fractions = data_handle.get_data(
+            'engine_type_fractions', timestep=timestep).as_df().reset_index()
+        engine_fractions = engine_fractions.pivot(
+            index='vehicle_type', columns='engine_type', values='engine_type_fractions'
+        )
+        engine_fractions.columns = engine_fractions.columns.values
+        engine_fractions = engine_fractions.reset_index().rename(
+            columns={
+                'vehicle_type': 'vehicle'
+            }
+        )
+        engine_fractions['year'] = timestep
+
+        # ensure column order matches EngineType enum definition (Java CSV reading assumes
+        # fixed column order)
+        column_order = [
+            'year', 'vehicle', 'ICE_PETROL', 'ICE_DIESEL', 'ICE_LPG', 'ICE_H2', 'ICE_CNG',
+            'HEV_PETROL', 'HEV_DIESEL', 'FCEV_H2', 'PHEV_PETROL', 'PHEV_DIESEL', 'BEV']
+        engine_fractions = engine_fractions[column_order]
+        return engine_fractions
 
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
         """
         working_dir = self._working_dir
-        path_to_config_templates = self._templates_dir
+        working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
+        path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
 
-        for root, _, filenames in os.walk(path_to_config_templates):
-            for filename in filenames:
-                with open(os.path.join(root, filename), 'r') as template_fh:
-                    config = Template(template_fh.read())
+        # read config as a Template for easy substitution of values
+        with open(path_to_config_template) as template_fh:
+            config = Template(template_fh.read())
 
-                working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
+        intervention_files = []
+        for i, intervention in enumerate(data_handle.get_current_interventions().values()):
+            fname = self._write_intervention(intervention)
+            intervention_files.append("interventionFile{} = {}".format(i, fname))
 
-                try:
-                    prev = data_handle.previous_timestep
-                except SmifTimestepResolutionError:
-                    prev = None
+        config_str = config.substitute({
+            'relative_path': working_dir_path,
+            'intervention_files': '\n'.join(intervention_files),
+            'link_travel_time_averaging_weight': \
+                float(data_handle.get_parameter('link_travel_time_averaging_weight').data),
+            'assignment_iterations': \
+                int(data_handle.get_parameter('assignment_iterations').data),
+            'prediction_iterations': \
+                int(data_handle.get_parameter('prediction_iterations').data),
+            'use_route_choice_model': \
+                bool(data_handle.get_parameter('use_route_choice_model').data),
+        })
 
-                config_str = config.substitute({
-                    'base_timestep': data_handle.base_timestep,
-                    'previous_timestep': prev,
-                    'current_timestep': data_handle.current_timestep,
-                    'relative_path': working_dir_path
-                })
+        with open(self._config_path, 'w') as template_fh:
+            template_fh.write(config_str)
 
-                config_path = os.path.join(
-                    working_dir,
-                    os.path.relpath(root, path_to_config_templates),
-                    filename.replace('.template', '')
-                )
-                with open(config_path, 'w') as template_fh:
-                    template_fh.write(config_str)
+    def _write_intervention(self, intervention):
+        """Write a single intervention file, returning the full path
+        """
+        path = os.path.normpath(os.path.abspath(os.path.join(
+            self._input_dir, "{}.properties".format(intervention['name']))))
+
+        # compute start/end year from smif intervention keys
+        intervention['startYear'] = intervention['build_year']
+        intervention['endYear'] =  intervention['build_year'] + \
+            intervention['technical_lifetime']['value']
+        del intervention['build_year']
+        del intervention['technical_lifetime']
+
+        # fix up path to congestion charging pricing details file
+        if 'congestionChargingPricing' in intervention:
+            cccp_filename = intervention['congestionChargingPricing']
+            intervention['congestionChargingPricing'] = os.path.join(
+                self._working_dir, 'data', 'csvfiles', cccp_filename
+            )
+
+        with open(path, 'w') as file_handle:
+            for key, value in intervention.items():
+                file_handle.write("{} = {}\n".format(key, value))
+
+        return path
 
     def _set_outputs(self, data_handle):
         """Read results from model and write to data handle
@@ -289,15 +351,14 @@ class BaseTransportWrapper(SectorModel):
             csv_melt_var='fuel'
         )
         # Split - non-electricity (measured in litres)
-        non_elec = energy_consumption.reset_index()
+        non_elec = energy_consumption.copy()
         non_elec = non_elec[non_elec.transport_fuel_type != 'ELECTRICITY']
         non_elec['annual_day'] = 'annual_day'
-        non_elec = non_elec.set_index(['annual_day', 'transport_fuel_type'])
-        print(non_elec)
         non_elec = self._df_to_ndarray(ec_name, non_elec)
         data_handle.set_results(ec_name, non_elec)
         # Split - electricity (measured in kWh)
-        elec = np.array(energy_consumption.loc['ELECTRICITY'])
+        elec = energy_consumption[energy_consumption.transport_fuel_type == 'ELECTRICITY']
+        elec = np.array(elec.energy_consumption)
         data_handle.set_results('energy_consumption_electricity', elec)
 
     def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
@@ -311,31 +372,24 @@ class BaseTransportWrapper(SectorModel):
             value_name=name
         ).rename(
             dims, axis=1
-        ).set_index(
-            sorted(dims.values())
         )
 
-    def _df_to_ndarray(self, output_name, df):
+    def _df_to_ndarray(self, output_name, dataframe):
         spec = self.outputs[output_name]
-        da = DataArray.from_df(spec, df)
-        return da.data
+        dataframe.set_index(spec.dims, inplace=True)
+        dataarray = DataArray.from_df(spec, dataframe)
+        return dataarray.data
 
 
 class TransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'full' configuration
     """
-    def __init__(self, *args, **kwargs):
-        # override these to configure 'full' model
-        self._config_filename = 'run_config_full.ini'
-        self._templates_dirname = 'full'
-        super().__init__(*args, **kwargs)
+    _config_filename = 'run_config_full.ini'
+    _template_filename = 'gb-config.properties.template'
 
 
 class SouthamptonTransportWrapper(BaseTransportWrapper):
     """Wrap the transport model, in 'southampton' configuration
     """
-    def __init__(self, *args, **kwargs):
-        # override these to configure 'southampton' model
-        self._config_filename = 'run_config_southampton.ini'
-        self._templates_dirname = 'southampton'
-        super().__init__(*args, **kwargs)
+    _config_filename = 'run_config_southampton.ini'
+    _template_filename = 'southampton-config.properties.template'

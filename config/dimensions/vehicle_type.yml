@@ -1,0 +1,3 @@
+name: vehicle_type
+description: Road vehicle types (transport)
+elements: vehicle_type.csv

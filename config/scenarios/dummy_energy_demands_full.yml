@@ -141,7 +141,17 @@ provides:
     - seasonal_week
     unit: MW
     dtype: float
-
+  - name: elec_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: EV_Cap
+    dims:
+    - energy_hub
+    unit: MW
+    dtype: float
 variants:
   - name: es_energy_demand_dummy_full
     description: ''
@@ -166,3 +176,5 @@ variants:
       dh_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
       dh_gas_CHP : ../energy_supply/scenarios/energy_demand_full.csv
       dh_hydrogen_fuelcell : ../energy_supply/scenarios/energy_demand_full.csv
+      elec_trans : ../energy_supply/scenarios/energy_demand_full.csv
+      EV_Cap : ../energy_supply/scenarios/ev_cap.csv
