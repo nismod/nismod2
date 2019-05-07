@@ -105,6 +105,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/heat_mode_optimised.csv
+  - name: operation_mode
+    description: Flag to configure central/decentral operation mode
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/op_mode_central.csv
 interventions:
   - ../energy_supply/interventions/full/es_elec_network.csv
   - ../energy_supply/interventions/full/es_gaspipes.csv

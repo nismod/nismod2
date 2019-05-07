@@ -1,4 +1,4 @@
-name: energy_supply_constrained
+name: energy_supply_constrained_multivector
 description: energy_supply model description
 path: models/energy_supply/energy_supply.py
 classname: EnergySupplyWrapper
@@ -165,12 +165,12 @@ parameters:
     dtype: int
     default: ../energy_supply/parameters/op_mode_central.csv
 interventions:
-  - ../energy_supply/interventions/full/es_elec_network.csv
-  - ../energy_supply/interventions/full/es_gaspipes.csv
-  - ../energy_supply/interventions/full/es_gasstorage.csv
-  - ../energy_supply/interventions/full/es_gasterminals.csv
-  - ../energy_supply/interventions/full/es_generators.csv
-  - ../energy_supply/interventions/full/es_heattech.csv
+  - ../energy_supply/interventions/multi_vector/es_elec_network.csv
+  - ../energy_supply/interventions/multi_vector/es_gaspipes.csv
+  - ../energy_supply/interventions/multi_vector/es_gasstorage.csv
+  - ../energy_supply/interventions/multi_vector/es_gasterminals.csv
+  - ../energy_supply/interventions/multi_vector/es_generators.csv
+  - ../energy_supply/interventions/multi_vector/es_heattech.csv
 outputs:
   - name: tran_gas_fired
     dims:

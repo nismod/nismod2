@@ -67,9 +67,12 @@ class EnergySupplyWrapper(SectorModel):
         heat_technology_mode = int(data.get_parameter('heat_mode').as_ndarray())
         self.logger.debug('Parameter heat mode: %s', heat_technology_mode)
 
+        operation_mode = int(data.get_parameter('operation_mode').as_ndarray())
+        self.logger.debug('Parameter operation mode: %s', operation_mode)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode, conn)
+            write_flags(heat_technology_mode,operation_mode, conn)
 
         conn.close()
 
@@ -473,15 +476,20 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode, conn):
+def write_flags(heat_mode,operation_mode,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
+        
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('heat_mode', heat_mode))
-
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('central_decentral_mode', operation_mode))
+            
 
 def retire_generator(plants):
     conn = establish_connection()

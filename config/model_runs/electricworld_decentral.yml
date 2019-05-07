@@ -1,4 +1,4 @@
-name: electricworld
+name: electricworld_decentral
 stamp: ''
 description: ''
 sos_model: energy_sd_constrained_electric
@@ -12,7 +12,7 @@ narratives:
   load_shedding:
   - high_cost
   operation_mode:
-  - central
+  - decentral
   smart_meter_p:
   - electric_world
   t_base_heating:

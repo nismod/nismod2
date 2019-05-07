@@ -1,4 +1,4 @@
-name: energy_sd_constrained
+name: energy_sd_constrained_electric
 description: A full version of the energy demand - energy supply system-of-systems
   model in constrained heat technology mode
 sector_models:
@@ -8,7 +8,7 @@ sector_models:
   - convert_intervals_ed_to_es_constrained
   - convert_units_ed_to_es_constrained
   - remap_gas
-  - energy_supply_constrained
+  - energy_supply_constrained_electric
 scenarios:
   - fuel_price
   - gva
@@ -401,81 +401,81 @@ model_dependencies:
   # remap gas nodes to energy supply
   - source: remap_gas
     source_output: gasload
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: gasload
   # from unit conversion to energy supply
   - source: convert_units_ed_to_es_constrained
     source_output: gasload_non_heat_com
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: gasload_non_heat_com
   - source: convert_units_ed_to_es_constrained
     source_output: gasload_non_heat_res
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: gasload_non_heat_res
   - source: convert_units_ed_to_es_constrained
     source_output: building_biomass_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_biomass_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: building_elec_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_elec_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: building_gas_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_gas_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: building_heatpump
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_heatpump
   - source: convert_units_ed_to_es_constrained
     source_output: building_hydrogen_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_hydrogen_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: building_hydrogen_heatpump
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_hydrogen_heatpump
   - source: convert_units_ed_to_es_constrained
     source_output: building_oil_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: building_oil_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: dh_biomass_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: dh_biomass_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: dh_elec_boiler
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: dh_elec_boiler
   - source: convert_units_ed_to_es_constrained
     source_output: dh_gas_CHP
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: dh_gas_CHP
   - source: convert_units_ed_to_es_constrained
     source_output: dh_hydrogen_fuelcell
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: dh_hydrogen_fuelcell
   - source: convert_units_ed_to_es_constrained
     source_output: elecload
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: elecload
   - source: convert_units_ed_to_es_constrained
     source_output: elecload_non_heat_com
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: elecload_non_heat_com
   - source: convert_units_ed_to_es_constrained
     source_output: elecload_non_heat_res
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: elecload_non_heat_res
   - source: convert_units_ed_to_es_constrained
     source_output: hydrogen_non_heat_eh
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: hydrogen_non_heat_eh
 scenario_dependencies:
   - source: fuel_price
     source_output: energy_supply_price
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: fuel_price
   - source: gva
     source_output: gva_per_head
@@ -499,19 +499,19 @@ scenario_dependencies:
     sink_input: t_max
   - source: dummy_weather_inputs_full
     source_output: wind_speed_eh
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: wind_speed_eh
   - source: dummy_weather_inputs_full
     source_output: wind_speed_bus
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: wind_speed_bus
   - source: dummy_weather_inputs_full
     source_output: insolation_eh
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: insolation_eh
   - source: dummy_weather_inputs_full
     source_output: insolation_bus
-    sink: energy_supply_constrained
+    sink: energy_supply_constrained_electric
     sink_input: insolation_bus
 narratives:
   - name: load_shedding
@@ -529,7 +529,7 @@ narratives:
   - name: operation_mode
     description: operation mode for energy supply system
     provides:
-      energy_supply_constrained:
+      energy_supply_constrained_electric:
       - operation_mode
     variants:
       - name: decentral

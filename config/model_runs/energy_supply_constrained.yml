@@ -3,6 +3,8 @@ name: energy_supply_constrained
 narratives:
   load_shedding:
   - high_cost
+  operation_mode:
+  - central
 scenarios:
   fuel_price: baseline
   dummy_energy_demands_full: es_energy_demand_dummy_full
