@@ -153,8 +153,9 @@ pip install networkx matplotlib numpy ipywidgets
 # Install pyscopg2 (required by some run.py wrappers)
 pip install psycopg2-binary pytest
 
-# Install SFTP library to access NISMOD FTP
-pip install pysftp
+# Install aws cli and boto3 library to access Amazon S3
+pip install --upgrade awscli
+pip install --upgrade boto3
 
 # Further requirements for provision python scripts
 pip install requests pandas
