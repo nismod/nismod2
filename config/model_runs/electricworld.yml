@@ -1,7 +1,7 @@
 name: electricworld
 stamp: ''
 description: ''
-sos_model: energy_sd_constrained_electric
+sos_model: energy_sd_constrained
 scenarios:
   fuel_price: es_prices_electric_world
   gva: gva_high
@@ -30,6 +30,7 @@ strategies:
   - type: pre-specified-planning
     description: 'electric world'
     filename: ../energy_supply/strategies/electric_world.csv
+    model_name: energy_supply_constrained
 timesteps:
   - 2015
   - 2030

@@ -1,7 +1,7 @@
 name: electricworld_decentral
 stamp: ''
 description: ''
-sos_model: energy_sd_constrained_electric
+sos_model: energy_sd_constrained
 scenarios:
   fuel_price: es_prices_electric_world
   gva: gva_high
