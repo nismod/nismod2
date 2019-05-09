@@ -194,8 +194,8 @@ done
 bash -x $base_path/provision/get_data_scenarios.sh $base_path
 
 # Digital comms
-bash -x $base_path/provision/get_data_digital_comms.sh $base_path
-bash -x $base_path/provision/install_digital_comms.sh $base_path
+#bash -x $base_path/provision/get_data_digital_comms.sh $base_path
+#bash -x $base_path/provision/install_digital_comms.sh $base_path
 
 # Energy demand
 bash -x $base_path/provision/get_data_energy_demand.sh $base_path
@@ -210,15 +210,15 @@ cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/
 su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
 
 # Transport
-bash -x $base_path/provision/get_data_transport.sh $base_path
-bash -x $base_path/provision/install_transport.sh $base_path
+#bash -x $base_path/provision/get_data_transport.sh $base_path
+#bash -x $base_path/provision/install_transport.sh $base_path
 
 # ET-Module
 bash -x $base_path/provision/get_data_et_module.sh $base_path
 bash -x $base_path/provision/install_et_module.sh $base_path
 
 # Water supply
-bash -x $base_path/provision/install_water_supply.sh $base_path
+#bash -x $base_path/provision/install_water_supply.sh $base_path
 
 
 #

@@ -190,6 +190,78 @@ inputs:
   dtype: float
 # -----------------------------------------------
 outputs:
+- name: service_solid_fuel_boiler_solid_fuel
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: residential_solid_fuel_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: residential_solid_fuel_boiler_solid_fuel
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: industry_solid_fuel_boiler_solid_fuel
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: service_solid_fuel_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: industry_solid_fuel_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: industry_oil_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: residential_oil_boiler_oil
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: industry_oil_boiler_oil
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: residential_oil_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: service_oil_boiler_oil
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float
+- name: service_oil_non_heating
+  unit: GW
+  dims:
+  - lad_uk_2016
+  - hourly
+  dtype: float #NEW FINISHEd
 - name: residential_solid_fuel_boiler_solid_fuel
   unit: GW
   dims:

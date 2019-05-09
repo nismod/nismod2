@@ -207,7 +207,7 @@ class EDWrapper(SectorModel):
             'generic_fuel_switch']
 
         for var_name in variable_names:
-            logging.info("... reading in scenaric values for parameter: '{}'".format(var_name))
+            logging.debug("... reading in scenaric values for parameter: '{}'".format(var_name))
             param_raw_series = data_handle.get_parameter(var_name).as_df()
             df_raw = self._series_to_df(param_raw_series, var_name)
 
@@ -338,11 +338,6 @@ class EDWrapper(SectorModel):
         write_data.write_yaml(non_regional_vars, os.path.join(temp_path, "non_regional_vars.yml"))
         write_data.write_yaml(fuel_disagg, os.path.join(temp_path, "fuel_disagg.yml"))
         write_data.write_yaml(crit_switch_happening, os.path.join(temp_path, "crit_switch_happening.yml"))
-
-        # ------------------------------------------------
-        # Plotting
-        # ------------------------------------------------
-        ##wrapper_model.plots(data, curr_yr, fuel_disagg, config)
 
     def simulate(self, data_handle):
         """Runs the Energy Demand model for one `timestep`
@@ -502,8 +497,6 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Pass results to supply model and smif
         # --------------------------------------------------
-        print("=========")
-        print(sim_obj.supply_results.keys())
         for key_name in self.outputs:
             if key_name in sim_obj.supply_results.keys():
                 logging.info("...writing `{}` to smif".format(key_name))

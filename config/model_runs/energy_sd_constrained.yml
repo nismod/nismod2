@@ -8,12 +8,11 @@ scenarios:
   population: pop_baseline
   temperature: NF1
   dummy_energy_demands_full: es_energy_demand_dummy_full
-narratives:
-  load_shedding:
-  - high_cost
+narratives: {}
 decision_module: ''
 strategies: []
 timesteps:
   - 2015
+  - 2020
   - 2030
   - 2050
