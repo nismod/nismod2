@@ -3,8 +3,35 @@
 """
 import boto3
 import os
+import s3transfer
 import subprocess
 import sys
+import threading
+
+
+class ProgressPercentage(object):
+    """
+    Minimal class for providing progress bar to downloads from AWS S3 bucket
+    """
+    def __init__(self, file_size_bytes, filename):
+        self._filename = filename
+        self._max_prints = 40
+        self._size_mb = file_size_bytes / (1024. * 1024.)
+        self._seen_so_far_mb = 0.
+        self._lock = threading.Lock()
+        self._prints = 0
+
+    def __call__(self, bytes_amount):
+        with self._lock:
+            self._seen_so_far_mb += bytes_amount / (1024. * 1024.)
+            percentage = (self._seen_so_far_mb / self._size_mb) * 100.
+
+            if percentage >= 100. * self._prints / self._max_prints:
+                sys.stdout.write(
+                    "\r%s  %.2f / %.2f Mb  (%.1f%%)" % (self._filename, self._seen_so_far_mb, self._size_mb, percentage)
+                )
+                self._prints += 1
+                sys.stdout.flush()
 
 
 def main(remote_file, local_dir):
@@ -54,6 +81,9 @@ def download(remote_file, local_dir):
 
     # Download data from s3
     try:
+        # Name of the AWS S3 bucket
+        bucket = 'nismod2-data'
+
         # Set environment variables
         os.environ['AWS_CONFIG_FILE'] = s3_ini
         os.environ['AWS_PROFILE'] = 'nismod2-s3'
@@ -61,9 +91,13 @@ def download(remote_file, local_dir):
         # Set local location for downloaded file
         local_file = os.path.join(local_dir, os.path.basename(remote_file))
 
-        # Retrieve file from s3 bucket
-        s3_resource = boto3.resource('s3')
-        s3_resource.Object('nismod2-data', remote_file).download_file(local_file)
+        # Get the file size and set up the callback for download progress
+        file_size = boto3.resource('s3').Object('nismod2-data', remote_file).content_length
+        progress = ProgressPercentage(file_size, 's3://{}'.format(os.path.join(bucket, remote_file)))
+
+        # Transfer file from s3 bucket
+        transfer = s3transfer.S3Transfer(boto3.client('s3'))
+        transfer.download_file('nismod2-data', remote_file, local_file, callback=progress)
 
     # Print message and quit
     except Exception as ex:
