@@ -87,8 +87,32 @@ region = eu-west-2
 output = json
 ```
 
-Contact [Tom Russell](mailto:tom.russell@ouce.ox.ac.uk) or [Craig Robson](mailto:Craig.Robson1@newcastle.ac.uk) 
+Contact [Tom Russell](mailto:tom.russell@ouce.ox.ac.uk) or [Craig Robson](mailto:Craig.Robson1@newcastle.ac.uk)
 to request credentials.
+
+#### Upload data to the NISMOD AWS S3 bucket
+
+This assumes the [`awscli`](https://aws.amazon.com/cli/) command line client is installed and
+you have credentials.
+
+```
+pip install awscli  # install
+aws configure  # configure (this will ask for access key and secret key)
+```
+
+To check contents of the bucket:
+
+```
+aws s3 ls s3://nismod2-data
+```
+
+To upload a zip:
+
+```
+aws s3 cp mydata_v1.1.zip s3://nismod2-data/model_name/mydata_v1.1.zip
+```
+
+Further usage and documentation: [AWS Command Line Interface docs](https://aws.amazon.com/cli/)
 
 
 ### Configure connection details for a Postgres database
