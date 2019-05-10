@@ -8,7 +8,10 @@ scenarios:
   population: pop_baseline
   temperature: NF1
   ev_transport_trips: electricworld
-narratives: {}
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+narratives: 
+  operation_mode:
+  - central
 strategies: []
 timesteps:
   - 2015

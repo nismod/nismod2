@@ -1,4 +1,4 @@
-name: energy_transport
+name: energy_transport-scenario
 description: A full version of the energy-transport system-of-systems model, with energy
   models in constrained heat technology mode.
 sector_models:
@@ -19,6 +19,7 @@ scenarios:
   - population
   - temperature
   - ev_transport_trips
+  - dummy_weather_inputs_full
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -539,4 +540,36 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
-narratives: []
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_eh
+    sink: energy_supply_constrained
+    sink_input: wind_speed_eh
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_bus
+    sink: energy_supply_constrained
+    sink_input: wind_speed_bus
+  - source: dummy_weather_inputs_full
+    source_output: insolation_eh
+    sink: energy_supply_constrained
+    sink_input: insolation_eh
+  - source: dummy_weather_inputs_full
+    source_output: insolation_bus
+    sink: energy_supply_constrained
+    sink_input: insolation_bus
+  
+narratives:
+  - name: operation_mode
+    description: operation mode for energy supply system
+    provides:
+      energy_supply_constrained:
+      - operation_mode
+    variants:
+      - name: decentral
+        decription: decentralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+      - name: central
+        decription: centralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+
