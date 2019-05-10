@@ -1,8 +1,11 @@
 name: energy_demand_constrained
+description: The future demand for energy in the UK
 sector_models:
 - energy_demand_constrained
-narratives: []
-description: The future demand for energy in the UK
+scenarios:
+- gva
+- temperature
+- population
 model_dependencies: []
 scenario_dependencies:
 - sink: energy_demand_constrained
@@ -25,7 +28,4 @@ scenario_dependencies:
   sink_input: t_max
   source: temperature
   source_output: t_max
-scenarios:
-- gva
-- temperature
-- population
+narratives: []

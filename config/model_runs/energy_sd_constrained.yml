@@ -9,12 +9,11 @@ scenarios:
   temperature: NF1
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   dummy_energy_demands_full: es_energy_demand_dummy_full
-narratives:
-  load_shedding:
-  - high_cost
+narratives: {}
 decision_module: ''
 strategies: []
 timesteps:
   - 2015
+  - 2020
   - 2030
   - 2050

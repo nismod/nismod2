@@ -7,7 +7,8 @@ scenarios:
   gva: gva_low
   population: pop_low
   temperature: NF1
-  dummy_weather_inputs_full: es_dummy_weather_inputs_full 
+  dummy_energy_demands_full: es_energy_demand_dummy_full
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
 narratives:
   load_shedding:
   - high_cost
@@ -26,7 +27,7 @@ narratives:
   switches_service:
   - multivector_world
 decision_module: ''
-strategies: 
+strategies:
   - type: pre-specified-planning
     description: 'multi vector world'
     filename: ../energy_supply/strategies/multi_vector.csv
