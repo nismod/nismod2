@@ -2,20 +2,22 @@ name: transport_full
 description: Test model for transport
 sector_models:
   - transport
+  - extract_gb_scenarios
 scenarios:
   - population
   - gva
   - fuel_price
   - link_travel_time
+  - engine_type_fractions
 narratives: []
 scenario_dependencies:
   - source: population
     source_output: population
-    sink: transport
+    sink: extract_gb_scenarios
     sink_input: population
   - source: gva
     source_output: gva_per_head
-    sink: transport
+    sink: extract_gb_scenarios
     sink_input: gva
   - source: fuel_price
     source_output: fuel_price
@@ -29,7 +31,19 @@ scenario_dependencies:
     source_output: link_travel_time
     sink: transport
     sink_input: link_travel_time
+  - source: engine_type_fractions
+    source_output: engine_type_fractions
+    sink: transport
+    sink_input: engine_type_fractions
 model_dependencies:
+  - source: extract_gb_scenarios
+    source_output: population
+    sink: transport
+    sink_input: population
+  - source: extract_gb_scenarios
+    source_output: gva
+    sink: transport
+    sink_input: gva
   - source: transport
     source_output: link_travel_time
     sink: transport

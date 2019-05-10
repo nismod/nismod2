@@ -1,0 +1,3 @@
+name: es_fuel_types
+description: Fuel types used in the energy supply model
+elements: es_fuel_types.csv

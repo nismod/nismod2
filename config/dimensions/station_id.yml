@@ -1,3 +1,0 @@
-name: station_id
-description: Weather stations
-elements: ../energy_demand/dimensions/station_id.csv

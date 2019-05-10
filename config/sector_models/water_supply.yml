@@ -1,0 +1,21 @@
+classname: WaterWrapper
+description: Water supply model
+initial_conditions: []
+inputs: []
+interventions: []
+name: water_supply
+outputs:
+- name: water_supply_reservoir_end_volumes
+  dims:
+  - water_supply_days_into_year
+  - water_supply_reservoirs
+  dtype: float
+  unit: ML
+- name: water_supply_arc_flows
+  dims:
+  - water_supply_days_into_year
+  - water_supply_arcs
+  dtype: float
+  unit: ML/day
+parameters: []
+path: models/water_supply/run.py

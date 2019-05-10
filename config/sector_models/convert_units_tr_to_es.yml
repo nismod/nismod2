@@ -1,0 +1,31 @@
+name: convert_units_tr_to_es
+description: Interval conversion
+path: models/convert.py
+classname: ConvertGWMW
+inputs:
+  - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: kWh
+    dtype: float
+  - name: v2g_g2v_capacity
+    dims:
+      - energy_hub
+    unit: kW
+    dtype: float
+outputs:
+  - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: v2g_g2v_capacity
+    dims:
+      - energy_hub
+    unit: MW
+    dtype: float
+parameters: []
+interventions: []
+initial_conditions: []

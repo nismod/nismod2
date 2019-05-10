@@ -52,7 +52,7 @@ TMP=$base_path/tmp
 mkdir -p $MODEL_DIR
 mkdir -p $TMP
 
-python $base_path/provision/get_data.py releases/energy_supply/$FILENAME $TMP
+python $base_path/provision/get_data.py energy_supply/$FILENAME $TMP
 
 rm -rf $MODEL_DIR/energy_supply
 rm -rf $MODEL_DIR/energy_supply_$model_version
@@ -68,4 +68,4 @@ PGUSER=$user \
 PGPORT=$port \
 PGDATABASE=$dbname \
     python $MODEL_DIR/energy_supply/run_migrations.py \
-    -r $DATA_DIR/database_minimal $MIGRATIONS_DIR
+    -r $DATA_DIR/database_full $MIGRATIONS_DIR

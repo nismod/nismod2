@@ -1,14 +1,15 @@
 name: energy_demand_unconstrained
-description: Run energy demand for baseline population scenario
 stamp: '2017-11-07T14:15:00+00:00'
+description: Run energy demand for baseline population scenario
+sos_model: energy_demand_unconstrained
+scenarios:
+  population: pop_baseline
+  gva: gva_baseline
+  temperature: NF1
+narratives: {}
+decision_module: ''
+strategies: {}
 timesteps:
 - 2015
 - 2030
 - 2050
-sos_model: energy_demand_unconstrained
-decision_module: ''
-scenarios:
-  population: pop_low
-  gva: gva_baseline
-narratives: {}
-strategies: {}

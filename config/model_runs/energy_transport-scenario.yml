@@ -1,0 +1,16 @@
+name: energy_transport-scenario
+stamp: '2019-04-23'
+description: 'Test model run for energy (supply-demand constrained) and et_module with transport energy demand scenario'
+sos_model: energy_transport-scenario
+scenarios:
+  fuel_price: baseline
+  gva: gva_baseline
+  population: pop_baseline
+  temperature: NF1
+  ev_transport_trips: electricworld
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050

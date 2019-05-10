@@ -1,0 +1,225 @@
+name: convert_intervals_ed_to_es_constrained
+description: Performs a spatial aggregation of the energy demand data assuming a uniform spatial distribution
+path: models/convert.py
+classname: ConvertHourlyToSeasonalWeek
+initial_conditions: []
+inputs:
+  - name: building_biomass_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_elec_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_gas_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_heatpump
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_hydrogen_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_hydrogen_heatpump
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: building_oil_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: dh_biomass_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: dh_elec_boiler
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: dh_gas_CHP
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: dh_hydrogen_fuelcell
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: elecload
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: elecload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: elecload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: gasload
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: gasload_non_heat_com
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: gasload_non_heat_res
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+  - name: hydrogen_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    unit: GW
+    dtype: float
+interventions: []
+outputs:
+  - name: building_biomass_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_elec_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_gas_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_heatpump
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_hydrogen_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_hydrogen_heatpump
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: building_oil_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: dh_biomass_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: dh_elec_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: dh_gas_CHP
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: dh_hydrogen_fuelcell
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: elecload
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: elecload_non_heat_com
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: elecload_non_heat_res
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: gasload
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: gasload_non_heat_com
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: gasload_non_heat_res
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+  - name: hydrogen_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: GW
+    dtype: float
+parameters: []

@@ -18,5 +18,15 @@ variants:
   - name: gva_baseline
     description: Baseline gva for the UK
     data:
-      gva_per_head: ../energy_demand/scenarios/MISTRAL_pop_gva/data/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
-      gva_per_sector: ../energy_demand/scenarios/MISTRAL_pop_gva/data/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
+      gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
+      gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
+  - name: gva_high
+    description: High gva for the UK
+    data:
+      gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+  - name: gva_low
+    description: Low gva for the UK
+    data:
+      gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv

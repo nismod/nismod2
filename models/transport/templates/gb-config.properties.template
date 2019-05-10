@@ -1,0 +1,269 @@
+# Full GB model
+
+################
+# TIME HORIZON #
+################
+
+# Base year is the year of input origin-destination matrices (passenger and freight).
+baseYear = 2015
+baseYearFreight = 2006
+
+###############
+# INPUT FILES #
+###############
+
+# Shapefiles
+zonesUrl = file://$relative_path/data/shapefiles/zones.shp
+networkUrl = file://$relative_path/data/shapefiles/network.shp
+networkUrlFixedEdgeIDs = file://$relative_path/data/shapefiles/fullNetworkWithEdgeIDs.shp
+nodesUrl = file://$relative_path/data/shapefiles/nodes.shp
+AADFurl = file://$relative_path/data/shapefiles/AADFdirected2015matched.shp
+temproZonesUrl = file://$relative_path/data/shapefiles/tempro2.shp
+
+# base year OD matrices (passenger and freight)
+baseYearODMatrixFile = $relative_path/data/csvfiles/ladFromTempro198ODMWithMinor4PlusArc.csv
+baseYearFreightMatrixFile = $relative_path/data/csvfiles/freightMatrixAfterIteration400NoTimeUpdate.csv
+temproODMatrixFile = $relative_path/data/csvfiles/temproMatrixListBased198WithMinor4PlusArc.csv
+
+# demand model data (baseYear to maxPredictedYear)
+populationFile = $relative_path/input/population.csv
+GVAFile = $relative_path/input/gva.csv
+
+# finer zones data and nearest neighbour mapping (for origin and destination node choice within lad)
+areaCodeFileName = $relative_path/data/csvfiles/population_OA_GB.csv
+areaCodeNearestNodeFile = $relative_path/data/csvfiles/nearest_node_OA_GB.csv
+workplaceZoneFileName = $relative_path/data/csvfiles/workplacePopulationFakeSC.csv
+workplaceZoneNearestNodeFile = $relative_path/data/csvfiles/nearest_node_WZ_GB_fakeSC.csv
+freightZoneToLADfile = $relative_path/data/csvfiles/freightZoneToLAD.csv
+freightZoneNearestNodeFile = $relative_path/data/csvfiles/freightZoneToNearestNode.csv
+
+# time of day distribution
+timeOfDayDistributionFile = $relative_path/data/csvfiles/timeOfDayDistribution.csv
+timeOfDayDistributionFreightFile = $relative_path/data/csvfiles/timeOfDayDistributionFreight.csv
+
+# fraction of AVs compared to regular cars (baseYear to maxPredictedYear)
+autonomousVehiclesFile = $relative_path/data/csvfiles/autonomousVehiclesFractions.csv
+
+# engine type fractions (baseYear to maxPredictedYear)
+engineTypeFractionsFile = $relative_path/input/engineTypeFractions.csv
+
+# pre-generated routes
+passengerRoutesFile = $relative_path/data/routes/passengerRoutes.dat
+freightRoutesFile = $relative_path/data/routes/freightRoutesTop5NodesMax3Routes.dat.gz
+temproRoutesFile = $relative_path/data/routes/mergedLadTop5NMax3RTempro200knDistanceBased.dat.gz
+
+# cross-sectoral inputs (baseYear to maxPredictedYear)
+energyUnitCostsFile = $relative_path/input/energyUnitCosts.csv
+
+# base fuel consumption rates
+baseFuelConsumptionRatesFile = $relative_path/data/csvfiles/baseFuelConsumptionRates.csv
+
+# relative fuel efficiency
+relativeFuelEfficiencyFile = $relative_path/data/csvfiles/relativeFuelEfficiency.csv
+
+# vehicle to PCU conversion
+vehicleTypeToPCUFile = $relative_path/data/csvfiles/vehicleTypeToPCU.csv
+
+# unit CO2 emissions
+unitCO2EmissionsFile = $relative_path/data/csvfiles/unitCO2Emissions.csv
+
+# default link travel time per time of day (optional)
+defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimesAfterIteration198.csv
+
+#################################
+# INTERVENTIONS AND DISRUPTIONS #
+#################################
+
+# interventions
+$intervention_files
+
+# disruptions
+#roadDisruptionFile = $relative_path/data/disruptions/roadDisruption.properties
+
+################
+# OUTPUT FILES #
+################
+
+# output folder
+outputFolder = $relative_path/output/
+
+# predicted demand for passenger vehicles
+predictedODMatrixFile = predictedODMatrix.csv
+
+# predicted demand for freight vehicles
+predictedFreightMatrixFile = predictedFreightMatrix.csv
+
+# assignment results (link-based)
+assignmentResultsFile = assignmentResults.csv
+
+# travel times (link-based)
+linkTravelTimesFile = linkTravelTimes.csv
+
+# time skim matrix (lad2lad) for passenger vehicles
+timeSkimMatrixFile = timeSkimMatrix.csv
+
+# cost skim matrix (lad2lad) for passenger vehicles
+costSkimMatrixFile = costSkimMatrix.csv
+
+# time skim matrix for freight vehicles
+timeSkimMatrixFreightFile = timeSkimMatrixFreight.csv
+
+# cost skim matrix for freight vehicles
+costSkimMatrixFreightFile = costSkimMatrixFreight.csv
+
+# zonal vehicle kilometres (lad)
+vehicleKilometresFile = vehicleKilometres.csv
+
+# cross-sectoral outputs (lad)
+energyConsumptionsFile = energyConsumptions.csv
+
+#CO2 emissions
+totalCO2EmissionsFile = totalCO2Emissions.csv
+
+# trips with routes
+tripsFile = trips.txt
+
+# zonal temporal trip start for electric vehicles
+zonalTemporalEVTripStartsFile = zonalTemporalEVTripStarts.csv
+
+# zonal temporal trip start for electric vehicles
+zonalTemporalEVTripElectricityFile = zonalTemporalEVTripElectricity.csv
+
+# output network with capacity utilisation
+outputNetworkFile = outputNetwork.shp
+
+###########################
+# DEMAND MODEL PARAMETERS #
+###########################
+
+# true means that all years between fromYear and predictedYear will be predicted (otherwise only predictedYear)
+FLAG_PREDICT_INTERMEDIATE_YEARS = false
+
+# scales the demand from baseYearFreight to baseYear
+FREIGHT_SCALING_FACTOR = 0.84
+
+# averages link travel time with the time from previous iterations (1.0 = overwrite with new)
+LINK_TRAVEL_TIME_AVERAGING_WEIGHT = $link_travel_time_averaging_weight
+
+# how many times to repeat the same assignment to obtain average times
+ASSIGNMENT_ITERATIONS = $assignment_iterations
+
+# how many times to iterate between flow prediction and flow assignment
+PREDICTION_ITERATIONS = $prediction_iterations
+
+# elasticities
+elasticitiesFile = $relative_path/input/elasticities.csv
+elasticitiesFreightFile = $relative_path/input/elasticitiesFreight.csv
+
+#################################
+# NETWORK ASSIGNMENT PARAMETERS #
+#################################
+
+# assignment fraction (to assign a fraction of flows with later results expansion to 1.0)
+ASSIGNMENT_FRACTION = 1.0
+
+# speeds in kph
+FREE_FLOW_SPEED_M_ROAD = 115.7923
+FREE_FLOW_SPEED_A_ROAD = 90.203731
+AVERAGE_SPEED_FERRY = 20.0
+AVERAGE_ACCESS_EGRESS_SPEED_CAR = 48.0
+AVERAGE_ACCESS_EGRESS_SPEED_FREIGHT = 48.0
+
+# maximum capacities in PCU per lane per hour
+MAXIMUM_CAPACITY_M_ROAD = 2330
+MAXIMUM_CAPACITY_A_ROAD = 1380
+
+# number of lanes per direction (for differnet types of road class and form of way)
+NUMBER_OF_LANES_A_ROAD_SC = 1
+NUMBER_OF_LANES_A_ROAD_DC = 2
+NUMBER_OF_LANES_A_ROAD_CDC = 2
+NUMBER_OF_LANES_A_ROAD_SR = 1
+NUMBER_OF_LANES_A_ROAD_R = 1
+NUMBER_OF_LANES_M_ROAD_DC = 3
+NUMBER_OF_LANES_M_ROAD_CDC = 3
+NUMBER_OF_LANES_M_ROAD_SR = 1
+
+#BPR function parameters
+ALPHA = 0.15
+BETA_M_ROAD = 5.55
+BETA_A_ROAD = 4
+
+# intersection delay in min
+AVERAGE_INTERSECTION_DELAY = 0.8
+
+# access/egress tempro distance scaling factor
+ACCESS_EGRESS_DISTANCE_SCALING_FACTOR = 0.8
+
+# access/egress LAD distance scaling factor
+ACCESS_EGRESS_LAD_DISTANCE_SCALING_FACTOR = 0.8
+
+# how many top nodes (based on gravitated population size) to considers as trip origin/destination
+INTERZONAL_TOP_NODES = 5
+
+# true means that origin and destination nodes can be the same
+FLAG_INTRAZONAL_ASSIGNMENT_REPLACEMENT = false
+
+# if there is no pre-generated route set for a node pair, try finding a route with aStar
+FLAG_ASTAR_IF_EMPTY_ROUTE_SET = false
+
+# exponent that manipulates probabilites for the node choice (0 -> equal probability, 1 -> probability from population, inf -> maximum)
+NODES_PROBABILITY_WEIGHTING = 0.0
+NODES_PROBABILITY_WEIGHTING_FREIGHT = 0.0
+
+# route-choice parameters
+TIME = -1.5
+LENGTH = -1.0
+COST = -3.6
+INTERSECTIONS = -1.0
+
+# use route-choice model (true) or routing with A-Star (false)
+USE_ROUTE_CHOICE_MODEL = $use_route_choice_model
+
+#Assignment type can be: 'lad', 'tempro', or 'combined'
+ASSIGNMENT_TYPE = combined
+
+# maximum inter-zonal distance (in metres) for 'combined' tempro/lad assignment type
+DISTANCE_THRESHOLD = 200000.0
+
+# include access/egress into the calculations of outputs.
+FLAG_INCLUDE_ACCESS_EGRESS = true
+
+# volume to flow factor for GEH statistic (converts daily vehicle volume to hourly flow)
+#VOLUME_TO_FLOW_FACTOR = 0.04167
+VOLUME_TO_FLOW_FACTOR = 0.1046
+
+# minimum trip length for minor road trips (in km)
+MINIMUM_MINOR_TRIP_LENGTH = 0.4
+
+# maxmimum trip length factor for minor road trips (extends maximum distance)
+MAXIMUM_MINOR_TRIP_FACTOR = 1.1
+
+###################################
+# ROUTE-SET GENERATION PARAMETERS #
+###################################
+
+# maximum number of routes for a node pair
+ROUTE_LIMIT = 3
+# number of trials for the random link elimination method
+GENERATION_LIMIT = 10
+# initial size of a route (for more efficient memory use)
+INITIAL_ROUTE_CAPACITY = 10
+# initial route set generator outer capacity (for more efficient memory use)
+INITIAL_OUTER_CAPACITY = 18000
+# initial route set generator outer capacity (for more efficient memory use)
+INITIAL_INNER_CAPACITY = 2000
+# maximum edge ID in the road network (enables use of array structures)
+MAXIMUM_EDGE_ID = 200000
+# maximum node ID in the road network (enables use of array structures)
+MAXIMUM_NODE_ID = 13415
+# maximum tempro zone ID (enables use of array structures)
+MAXIMUM_TEMPRO_ZONE_ID = 7700
+# maximum LAD zone ID (enables use of array structures)
+MAXIMUM_LAD_ZONE_ID = 380
+
+####################
+# OTHER PARAMETERS #
+####################
+
+# seed of the pseudo-random number generator
+SEED = 1234

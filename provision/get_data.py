@@ -1,23 +1,51 @@
 #!/usr/bin/env python
 """Download data
 """
-import configparser
+import boto3
 import os
+import s3transfer
 import subprocess
 import sys
+import threading
 
-import pysftp
+
+class ProgressPercentage(object):
+    """
+    Minimal class for providing progress bar to downloads from AWS S3 bucket
+    """
+    def __init__(self, file_size_bytes, filename):
+        self._filename = filename
+        self._max_prints = 40
+        self._size_mb = file_size_bytes / (1024. * 1024.)
+        self._seen_so_far_mb = 0.
+        self._lock = threading.Lock()
+        self._prints = 0
+
+    def __call__(self, bytes_amount):
+        with self._lock:
+            self._seen_so_far_mb += bytes_amount / (1024. * 1024.)
+            percentage = (self._seen_so_far_mb / self._size_mb) * 100.
+
+            if percentage >= 100. * self._prints / self._max_prints:
+                sys.stdout.write(
+                    "\r%s  %.2f / %.2f Mb  (%.1f%%)" % (self._filename, self._seen_so_far_mb, self._size_mb, percentage)
+                )
+                self._prints += 1
+                sys.stdout.flush()
+
 
 def main(remote_file, local_dir):
     """Download a remote file to a local directory, unzipping if necessary
 
-    Uses FTP_USERNAME, FTP_PASSWORD, FTP_HOST environment variables
-    Or falls back to a `ftp.ini` config file saved next to this script:
+    Uses credentials from `s3.ini` config file saved next to this script, which
+    must contain your personal access key and secret key. Users are expected to
+    have copied `template.s3.ini` and replaced the placeholder values.
 
-        [ftp-config]
-        ftp_host=<host>
-        ftp_username=<username>
-        ftp_password=<password>
+        [profile nismod2-s3]
+        aws_access_key_id = <your-access-key-id>
+        aws_secret_access_key = <your-secret-access-key>
+        region = eu-west-2
+        output = json
 
     """
     local_file = os.path.join(local_dir, os.path.basename(remote_file))
@@ -33,45 +61,59 @@ def main(remote_file, local_dir):
 def download(remote_file, local_dir):
     """Download a remote file to a local directory
     """
-    # Read connection details
-    if 'FTP_USERNAME' in os.environ and 'FTP_PASSWORD' in os.environ and \
-            'FTP_HOST' in os.environ:
-        ftp_username = os.environ['FTP_USERNAME']
-        ftp_password = os.environ['FTP_PASSWORD']
-        ftp_host = os.environ['FTP_HOST']
-    else:
-        parser = configparser.ConfigParser()
-        parser.read(os.path.join(os.path.dirname(__file__), 'ftp.ini'))
-        ftp_username = parser['ftp-config']['ftp_username']
-        ftp_password = parser['ftp-config']['ftp_password']
-        ftp_host = parser['ftp-config']['ftp_host']
+    s3_ini = os.path.join(os.path.realpath(os.path.dirname(__file__)), 's3.ini')
+    if not os.path.isfile(s3_ini):
+        red = '\033[0;31m'
+        nc = '\033[0m'  # No Color
+        message = """\
+{red}No AWS config file found, expected at:
+    {s3_ini}{nc}
+{red}Do you have s3 access credentials?{nc}
+{red}Try copying provision/template.s3.ini to provision/s3.ini and add credentials there.{nc}""".format(
+            red=red,
+            nc=nc,
+            s3_ini=s3_ini
+        )
+        print(message)
+        sys.exit()
 
+    # Ensure the local_dir exists
+    print("Creating directory", local_dir)
+    os.makedirs(local_dir, exist_ok=True)
 
+    # Download data from s3
     try:
-        os.mkdir(local_dir)
-        print("Creating directory", local_dir)
-    except FileExistsError:
-        pass
+        # Name of the AWS S3 bucket
+        bucket = 'nismod2-data'
 
-    # Download data from server
-    try:
-        with pysftp.Connection(ftp_host, username=ftp_username, password=ftp_password) as conn:
-            with pysftp.cd(local_dir):
-                conn.get(remote_file)
+        # Set environment variables
+        os.environ['AWS_CONFIG_FILE'] = s3_ini
+        os.environ['AWS_PROFILE'] = 'nismod2-s3'
+
+        # Set local location for downloaded file
+        local_file = os.path.join(local_dir, os.path.basename(remote_file))
+
+        # Get the file size and set up the callback for download progress
+        file_size = boto3.resource('s3').Object('nismod2-data', remote_file).content_length
+        progress = ProgressPercentage(file_size, 's3://{}'.format(os.path.join(bucket, remote_file)))
+
+        # Transfer file from s3 bucket
+        transfer = s3transfer.S3Transfer(boto3.client('s3'))
+        transfer.download_file('nismod2-data', remote_file, local_file, callback=progress)
+        print("\nDone", flush=True)  # newline after progress
+
     # Print message and quit
     except Exception as ex:
-        RED='\033[0;31m'
-        NC='\033[0m' # No Color
+        red = '\033[0;31m'
+        nc = '\033[0m'  # No Color
         msg = """\
-{RED}Unable to download {remote_file} from {ftp_username}@{ftp_host}.{NC}
-{RED}Make sure that the server is responsive, ftp environment vars are set{NC}
-{RED}or the credentials in provision/ftp.ini are correct.{NC}
+{red}Unable to download {remote_file} from nismod2-data s3 bucket.{nc}
+{red}Make sure s3.ini file contains the correct credentials and that{nc}
+{red}the requested file exists in the s3 bucket.{nc}
         """.format(
-            RED=RED,
-            NC=NC,
-            remote_file=remote_file,
-            ftp_username=ftp_username,
-            ftp_host=ftp_host
+            red=red,
+            nc=nc,
+            remote_file=remote_file
         )
         print(msg)
         raise ex

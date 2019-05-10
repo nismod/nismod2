@@ -7,7 +7,12 @@ scenarios:
   gva: gva_baseline
   fuel_price: baseline
   link_travel_time: default
+  engine_type_fractions: test
 narratives: {}
 decision_module: []
-strategies: {}
+strategies:
+  - type: pre-specified-planning
+    description: test interventions
+    filename: transport_test.csv
+    model_name: transport_southampton
 stamp: ''

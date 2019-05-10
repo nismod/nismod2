@@ -1,0 +1,12 @@
+name,description
+ICE_PETROL,Petrol internal combustion engine
+ICE_DIESEL,Diesel internal combustion engine
+ICE_LPG,Liquid Petroleum Gas internal combustion engine
+ICE_H2,Hydrogen internal combustion engine
+ICE_CNG,Compressed Natural Gas internal combustion engine
+HEV_PETROL,Hybrid petrol-electric vehicle
+HEV_DIESEL,Hybrid diesel-electric vehicle
+FCEV_H2,
+PHEV_PETROL,Plug-in hybrid petrol-electric vehicle
+PHEV_DIESEL,Plug-in hybrid diesel-electric vehicle
+BEV,Battery electric vehicle
