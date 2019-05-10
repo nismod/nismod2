@@ -134,6 +134,7 @@ ENV/
 
 # Provisioning config files
 provision/s3.ini
+provision/ftp.ini
 provision/dbconfig.ini
 models/*/*.ini
 
