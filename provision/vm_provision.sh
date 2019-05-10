@@ -153,8 +153,9 @@ pip install networkx matplotlib numpy ipywidgets
 # Install pyscopg2 (required by some run.py wrappers)
 pip install psycopg2-binary pytest
 
-# Install SFTP library to access NISMOD FTP
-pip install pysftp
+# Install aws cli and boto3 library to access Amazon S3
+pip install --upgrade awscli
+pip install --upgrade boto3
 
 # Further requirements for provision python scripts
 pip install requests pandas
@@ -190,6 +191,9 @@ do
     su vagrant -c "ssh-keyscan $host >> /home/vagrant/.ssh/known_hosts"
 done
 
+# Get scenarios
+bash -x $base_path/provision/get_data_scenarios.sh $base_path
+
 # Digital comms
 bash -x $base_path/provision/get_data_digital_comms.sh $base_path
 bash -x $base_path/provision/install_digital_comms.sh $base_path
@@ -214,9 +218,12 @@ bash -x $base_path/provision/install_transport.sh $base_path
 bash -x $base_path/provision/get_data_et_module.sh $base_path
 bash -x $base_path/provision/install_et_module.sh $base_path
 
-# Get scenarios
-bash -x $base_path/provision/get_data_scenarios.sh $base_path
+# Water supply
+bash -x $base_path/provision/get_data_water_supply.sh $base_path
+bash -x $base_path/provision/install_water_supply.sh $base_path
 
+
+#
 # User config
 #
 

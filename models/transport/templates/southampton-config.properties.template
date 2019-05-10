@@ -1,3 +1,5 @@
+# Southampton+ model
+
 ################
 # TIME HORIZON #
 ################
@@ -6,15 +8,6 @@
 baseYear = 2015
 baseYearFreight = 2006
 
-# Maximum year for which demand can be predicted (all required inputs need to be up to and including this year).
-maxPredictedYear = 2025
-
-# The year used as the basis for demand prediction (must be >= baseYear).
-fromYear = $previous_timestep
-
-# The year for which the demand is predicted (must be <= maxPredictedYear).
-predictedYear = $current_timestep
-
 ###############
 # INPUT FILES #
 ###############
@@ -22,25 +15,25 @@ predictedYear = $current_timestep
 # Shapefiles
 zonesUrl = file://$relative_path/data/shapefiles/zones.shp
 networkUrl = file://$relative_path/data/shapefiles/network.shp
-networkUrlFixedEdgeIDs = file://$relative_path/data/shapefiles/fullNetworkWithEdgeIDs.shp
+networkUrlFixedEdgeIDs = file://$relative_path/data/shapefiles/testOutputNetwork.shp
 nodesUrl = file://$relative_path/data/shapefiles/nodes.shp
-AADFurl = file://$relative_path/data/shapefiles/AADFdirected2015matched.shp
-temproZonesUrl = file://$relative_path/data/shapefiles/tempro2.shp
+AADFurl = file://$relative_path/data/shapefiles/AADFdirected.shp
+temproZonesUrl = file://$relative_path/data/shapefiles/tempro.shp
 
 # base year OD matrices (passenger and freight)
-baseYearODMatrixFile = $relative_path/data/csvfiles/ladFromTempro198ODMWithMinor4.csv
-baseYearFreightMatrixFile = $relative_path/data/csvfiles/freightMatrixAfterIteration400NoTimeUpdate.csv
-temproODMatrixFile = $relative_path/data/csvfiles/temproMatrixListBased198WithMinor4.csv
+baseYearODMatrixFile = $relative_path/data/csvfiles/passengerODM.csv
+baseYearFreightMatrixFile = $relative_path/data/csvfiles/freightMatrix.csv
+temproODMatrixFile = $relative_path/data/csvfiles/temproODM.csv
 
 # demand model data (baseYear to maxPredictedYear)
 populationFile = $relative_path/input/population.csv
 GVAFile = $relative_path/input/gva.csv
 
 # finer zones data and nearest neighbour mapping (for origin and destination node choice within lad)
-areaCodeFileName = $relative_path/data/csvfiles/population_OA_GB.csv
-areaCodeNearestNodeFile = $relative_path/data/csvfiles/nearest_node_OA_GB.csv
-workplaceZoneFileName = $relative_path/data/csvfiles/workplacePopulationFakeSC.csv
-workplaceZoneNearestNodeFile = $relative_path/data/csvfiles/nearest_node_WZ_GB_fakeSC.csv
+areaCodeFileName = $relative_path/data/csvfiles/nomisPopulation.csv
+areaCodeNearestNodeFile = $relative_path/data/csvfiles/areaCodeToNearestNode.csv
+workplaceZoneFileName = $relative_path/data/csvfiles/workplacePopulation.csv
+workplaceZoneNearestNodeFile = $relative_path/data/csvfiles/workplaceZoneToNearestNode.csv
 freightZoneToLADfile = $relative_path/data/csvfiles/freightZoneToLAD.csv
 freightZoneNearestNodeFile = $relative_path/data/csvfiles/freightZoneToNearestNode.csv
 
@@ -52,12 +45,12 @@ timeOfDayDistributionFreightFile = $relative_path/data/csvfiles/timeOfDayDistrib
 autonomousVehiclesFile = $relative_path/data/csvfiles/autonomousVehiclesFractions.csv
 
 # engine type fractions (baseYear to maxPredictedYear)
-engineTypeFractionsFile = $relative_path/data/csvfiles/engineTypeFractions.csv
+engineTypeFractionsFile = $relative_path/input/engineTypeFractions.csv
 
 # pre-generated routes
-passengerRoutesFile = $relative_path/data/routes/passengerRoutes.dat
-freightRoutesFile = $relative_path/data/routes/freightRoutesTop5NodesMax3Routes.dat.gz
-temproRoutesFile = $relative_path/data/routes/mergedLadTop5NMax3RTempro200knDistanceBased.dat.gz
+passengerRoutesFile = $relative_path/data/routes/passengerRoutes.dat.gz
+freightRoutesFile = $relative_path/data/routes/freightRoutes.dat.gz
+temproRoutesFile = $relative_path/data/routes/passengerRoutes.dat.gz
 
 # cross-sectoral inputs (baseYear to maxPredictedYear)
 energyUnitCostsFile = $relative_path/input/energyUnitCosts.csv
@@ -75,25 +68,21 @@ vehicleTypeToPCUFile = $relative_path/data/csvfiles/vehicleTypeToPCU.csv
 unitCO2EmissionsFile = $relative_path/data/csvfiles/unitCO2Emissions.csv
 
 # default link travel time per time of day (optional)
-#defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimesAfterIteration198-4decimals.csv
-defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimesAfterIteration198.csv
+defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimes.csv
 
 #################################
 # INTERVENTIONS AND DISRUPTIONS #
 #################################
 
 # interventions
-#interventionFile1 = $relative_path/data/interventions/roadExpansion.properties
-#interventionFile2 = $relative_path/data/interventions/roadDevelopment.properties
-# interventionFile3 = $relative_path/data/interventions/congestionCharging.properties
-# interventionFile4 = $relative_path/data/interventions/congestionCharging2.properties
+$intervention_files
 
 # disruptions
 #roadDisruptionFile = $relative_path/data/disruptions/roadDisruption.properties
 
-###############
+################
 # OUTPUT FILES #
-###############
+################
 
 # output folder
 outputFolder = $relative_path/output/
@@ -154,13 +143,13 @@ FLAG_PREDICT_INTERMEDIATE_YEARS = false
 FREIGHT_SCALING_FACTOR = 0.84
 
 # averages link travel time with the time from previous iterations (1.0 = overwrite with new)
-LINK_TRAVEL_TIME_AVERAGING_WEIGHT = 1.0
+LINK_TRAVEL_TIME_AVERAGING_WEIGHT = $link_travel_time_averaging_weight
 
 # how many times to repeat the same assignment to obtain average times
-ASSIGNMENT_ITERATIONS = 1
+ASSIGNMENT_ITERATIONS = $assignment_iterations
 
 # how many times to iterate between flow prediction and flow assignment
-PREDICTION_ITERATIONS = 1
+PREDICTION_ITERATIONS = $prediction_iterations
 
 # elasticities
 elasticitiesFile = $relative_path/input/elasticities.csv
@@ -228,7 +217,7 @@ COST = -3.6
 INTERSECTIONS = -1.0
 
 # use route-choice model (true) or routing with A-Star (false)
-USE_ROUTE_CHOICE_MODEL = true
+USE_ROUTE_CHOICE_MODEL = $use_route_choice_model
 
 #Assignment type can be: 'lad', 'tempro', or 'combined'
 ASSIGNMENT_TYPE = combined

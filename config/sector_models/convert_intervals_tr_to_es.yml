@@ -1,0 +1,21 @@
+name: convert_intervals_tr_to_es
+description: Interval conversion
+path: models/convert.py
+classname: ConvertHourlyToSeasonalWeek
+inputs:
+  - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - annual_day_hours
+    unit: kWh
+    dtype: float
+outputs:
+  - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: kWh
+    dtype: float
+parameters: []
+interventions: []
+initial_conditions: []

@@ -1,38 +1,38 @@
-classname: ETWrapper
-description: Derives energy demand and V2G capacity from transport EV results
-initial_conditions: []
-inputs:
-- name: ev_electricity
-  description: Electricity demand of electric vehicles
-  dims:
-  - lad_gb_2016
-  - hourly_day
-  unit: kWh
-  dtype: float
-- description: Trip count of electric vehicles
-  dims:
-  - lad_gb_2016
-  - hourly_day
-  dtype: float
-  name: ev_trips
-  unit: '1'
-interventions: []
 name: et_module
-outputs:
-- name: v2g_g2v_capacity
-  dims:
-  - lad_gb_2016
-  dtype: float
-  unit: kW
-parameters:
-- default: ../et_module/parameters/ev_scheduling_default.csv
-  description: Year until future load profile assignment is fully realised
-  dtype: float
-  name: yr_until_changed_lp
-  units: 1
-- default: ../et_module/parameters/ev_scheduling_default.csv
-  description: EV charging regime
-  dtype: float
-  name: load_profile_charging_regime
-  units: 1
+description: Derives energy demand and V2G capacity from transport EV results
 path: models/et_module/run.py
+classname: ETWrapper
+inputs:
+  - name: ev_electricity
+    description: Electricity demand of electric vehicles
+    dims:
+      - lad_gb_2016
+      - annual_day_hours
+    unit: kWh
+    dtype: float
+  - name: ev_trips
+    description: Trip count of electric vehicles
+    dims:
+      - lad_gb_2016
+      - annual_day_hours
+    dtype: int
+    unit: trips
+outputs:
+  - name: v2g_g2v_capacity
+    dims:
+      - lad_gb_2016
+    dtype: float
+    unit: kW
+parameters:
+  - default: ../et_module/parameters/ev_scheduling_default.csv
+    description: Year until future load profile assignment is fully realised
+    dtype: float
+    name: yr_until_changed_lp
+    units: 1
+  - default: ../et_module/parameters/ev_scheduling_default.csv
+    description: EV charging regime
+    dtype: float
+    name: load_profile_charging_regime
+    units: 1
+interventions: []
+initial_conditions: []

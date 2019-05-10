@@ -9,6 +9,7 @@ sector_models:
   - convert_units_ed_to_es_constrained
   - remap_gas
   - energy_supply_constrained
+  - dummy_energy_demands_full
 scenarios:
   - fuel_price
   - gva
@@ -513,6 +514,14 @@ scenario_dependencies:
     source_output: insolation_bus
     sink: energy_supply_constrained
     sink_input: insolation_bus
+  - source: dummy_energy_demands_full
+    source_output: elec_trans
+    sink: energy_supply_constrained
+    sink_input: elec_trans
+  - source: dummy_energy_demands_full
+    source_output: EV_Cap
+    sink: energy_supply_constrained
+    sink_input: EV_Cap
 narratives:
   - name: load_shedding
     description: Costs of shedding load

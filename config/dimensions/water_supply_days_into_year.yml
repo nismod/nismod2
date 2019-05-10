@@ -1,0 +1,3 @@
+name: water_supply_days_into_year
+description: Days into year, 1, ..., 365
+elements: water_supply/days_into_year.csv

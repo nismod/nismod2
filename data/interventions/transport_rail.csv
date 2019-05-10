@@ -1,0 +1,4 @@
+name,type,technical_lifetime_value,technical_lifetime_units,NLC,mode,station,naPTANname,easting,northing,yearUsage,dayUsage,runDays,LADcode,LADname,area
+winslowRailStation,NewRailStation,100,y,500000,NRAIL,Winslow,N/A,476600,228300,100000,275.4820937,363,E07000004,Aylesbury Vale,SE
+newForestStation,NewRailStation,100,y,500001,NRAIL,New Forest Station,N/A,433392,110147,129164,355.8236915,363,E07000091,New Forest,SE
+newSouthamptonStation,NewRailStation,100,y,500000,NRAIL,New Southampton,N/A,440066,115347,129164,355.8236915,363,E06000045,Southampton,SE

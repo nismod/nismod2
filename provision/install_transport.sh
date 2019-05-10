@@ -10,10 +10,11 @@ source <(grep = <(grep -A3 "\[transport\]" $base_path/provision/config.ini))
 FILENAME=transport_$model_version.zip
 TMP=$base_path/tmp
 mkdir -p $TMP
-python $base_path/provision/get_data.py releases/transport/$FILENAME $TMP
+python $base_path/provision/get_data.py transport/$FILENAME $TMP
 
 # Install model jar to local dir
 MODEL_DIR=$base_path/install
 mkdir -p $MODEL_DIR
 rm -rf $MODEL_DIR/transport
 unzip $TMP/$FILENAME -d $MODEL_DIR
+mv $MODEL_DIR/transport* $MODEL_DIR/transport

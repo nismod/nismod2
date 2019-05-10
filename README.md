@@ -36,7 +36,7 @@ on a desktop, server or cluster:
    - Java (for transport)
    - PostgreSQL and ODBC (for energy supply)
 1. Configure:
-   - connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - connection details for the NISMOD AWS S3 bucket `s3://nismod2-data` (copy `template.s3.ini` to `s3.ini` and edit)
    - connection details for a Postgres database (copy `template.dbconfig.ini` to
      `dbconfig.ini` and edit for your database)
 1. Install models (run `provision/install_*` scripts)
@@ -46,7 +46,7 @@ Or set up a virtual machine for testing:
 
 1. Check that you have VirtualBox and Vagrant installed
 1. Configure:
-   - connection details for the NISMOD FTP (copy `template.ftp.ini` to `ftp.ini` and edit)
+   - connection details for the NISMOD AWS S3 bucket (copy `template.s3.ini` to `s3.ini` and edit)
    - connection details for a Postgres database (copy `template.dbconfig.ini` to
      `dbconfig.ini`)
    - FICO XPRESS license (copy `template.xpauth.xpr` or your own license to `xpauth.xpr`)
@@ -74,17 +74,22 @@ git checkout master  # to make sure you’re on the master branch
 git pull             # pull changes from Github to your local machine
 ```
 
-### Configure connection details for the NISMOD FTP
+### Configure connection details for the NISMOD AWS S3 bucket
 
-Within the NISMOD folder, copy `provision/template.ftp.ini` to `provision/ftp.ini` and add your
-credentials to connect to the NISMOD FTP server:
+Within the NISMOD folder, copy `provision/template.s3.ini` to `provision/s3.ini` and add your
+credentials to access the NISMOD AWS S3 bucket:
 
 ```
-[ftp-config]
-ftp_host=sage-itrc.ncl.ac.uk
-ftp_username=username
-ftp_password=password
+[profile nismod2-s3]
+aws_access_key_id = <your-access-key-id>
+aws_secret_access_key = <your-secret-access-key>
+region = eu-west-2
+output = json
 ```
+
+Contact [Tom Russell](mailto:tom.russell@ouce.ox.ac.uk) or [Craig Robson](mailto:Craig.Robson1@newcastle.ac.uk) 
+to request credentials.
+
 
 ### Configure connection details for a Postgres database
 
@@ -191,18 +196,7 @@ sudo apt update && sudo apt install \
 
 ### Get data
 
-Add the NISMOD FTP server to your known hosts:
-
-```bash
-# Check NISMOD FTP host
-ssh-keyscan sage-itrc.ncl.ac.uk
-# output should match:
-# sage-itrc.ncl.ac.uk ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/TVt0ajA0VAM97SA1+ZM6j6W43Mnysnl1SOwUB7e8YYBwAKvOdO4GJx5EBytYK1gcwcG8VK2uo81OomkkLX+M67GiaDJi9ziF0YclroVaYfrMqgBvjK7NM5Ae1ahLThNzFsIVNHnHeuCe4l2/d7Z2jJHo7ruD3cPpersJD3CiW4pI992VKtifnc4We9ZM/Ol263TP6PktMQBdNRpsec/3qh80//+Ftz4g0zbc/Zyo/R5SxzMLSMaBmZZ2WTDRPRVMGRQbqllRRkJCrLt9ngs3A6TGga95dbvGnjZWQZalnxbRUVsZNQQ9jYljLRXpS/f3I5+PuO+yiMD/FOBPLvtJ
-# add to known hosts
-ssh-keyscan sage-itrc.ncl.ac.uk >> ~/.ssh/known_hosts
-```
-
-Install `pysftp`: `pip install pysftp`.
+Install `boto3`: `pip install boto3`.
 
 Run each of the `provision/get_data_*` scripts:
 
@@ -211,6 +205,7 @@ bash ./provision/get_data_digital_comms.sh .
 bash ./provision/get_data_energy_demand.sh .
 bash ./provision/get_data_energy_supply.sh .
 bash ./provision/get_data_transport.sh .
+bash ./provision/get_data_water_supply.sh .
 ```
 
 ### Install models
@@ -222,6 +217,7 @@ bash ./provision/install_digital_comms.sh .
 bash ./provision/install_energy_demand.sh .
 bash ./provision/install_energy_supply.sh . ./path/to/xpress_install_dir
 bash ./provision/install_transport.sh .
+bash ./provision/install_water_supply.sh .
 ```
 
 Run post-install scripts:
@@ -229,6 +225,8 @@ Run post-install scripts:
 ```bash
 energy_demand setup -f ./models/energy_demand/wrapperconfig.ini
 ```
+
+Note that `install_water_supply.sh` clones a repository that is currently private: setting up the water supply model may require requesting access to the repository.
 
 
 ## Running NISMOD on a virtual machine
@@ -265,7 +263,7 @@ vagrant up
 
 This will download a virtual machine image, install all the packages and
 software which are required to test and run NISMOD onto that virtual machine
-and download the data and model releases from the FTP.
+and download the data and model releases from the AWS S3 bucket.
 
 Once it has run, you should be able to:
 

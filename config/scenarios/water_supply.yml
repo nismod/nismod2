@@ -1,0 +1,14 @@
+name: water_supply
+description: Daily water supply
+provides:
+  - name: water_supply_arcs
+    description: ''
+    dims:
+    - water_supply_arcs
+    dtype: float
+    unit: DontKnow
+variants:
+  - name: water_supply_baseline
+    description: Water supply
+    data:
+      something: tbc

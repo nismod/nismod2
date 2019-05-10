@@ -4,7 +4,7 @@ provides:
   - name: electricity
     description: ''
     dims:
-    - lad_uk_2016
+    - lad_gb_2016
     dtype: float
     unit: GWh
 variants:
