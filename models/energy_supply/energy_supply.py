@@ -144,10 +144,7 @@ class EnergySupplyWrapper(SectorModel):
         build_generator(generators, current_timestep)
         self.logger.debug('Building %s heattech interventions', len(heattech))
         build_heattech(heattech, current_timestep)
-        #self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
-        #build_distributed(dist_eh, current_timestep)
-        #self.logger.debug('Building %s transmission connected distributed generators', len(dist_tran))
-        #build_distributed(dist_tran, current_timestep)
+
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -482,14 +479,14 @@ def write_flags(heat_mode,operation_mode,conn):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
-        
+
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('heat_mode', heat_mode))
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('central_decentral_mode', operation_mode))
-            
+
 
 def retire_generator(plants):
     conn = establish_connection()
@@ -673,14 +670,14 @@ def get_distributed_tran(location, year):
     conn.close()
     return mapping
 
-'''
 def build_distributed(plants, current_timestep):
-    #Writes a list of interventions into the WindPVData_* table
+    """Write a list of interventions into the WindPVData_* table
 
-    #Arguments
-    #---------
-    #plants : list
-    
+    Arguments
+    ---------
+    plants : list
+    """
+
     conn = establish_connection()
     cur = conn.cursor()
 
@@ -740,7 +737,6 @@ def build_distributed(plants, current_timestep):
     # Close communication with the database
     cur.close()
     conn.close()
-'''
 
 def delete_from(table_name):
     conn = establish_connection()
