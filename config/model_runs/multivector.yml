@@ -8,9 +8,12 @@ scenarios:
   population: pop_low
   temperature: NF1
   dummy_energy_demands_full: es_energy_demand_dummy_full
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
 narratives:
   load_shedding:
   - high_cost
+  operation_mode:
+  - central
   smart_meter_p:
   - multivector_world
   t_base_heating:
@@ -24,7 +27,10 @@ narratives:
   switches_service:
   - multivector_world
 decision_module: ''
-strategies: {}
+strategies:
+  - type: pre-specified-planning
+    description: 'multi vector world'
+    filename: ../energy_supply/strategies/multi_vector.csv
 timesteps:
   - 2015
   - 2030

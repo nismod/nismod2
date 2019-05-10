@@ -1,36 +1,35 @@
-name: electricworld
+name: multivector_decentral
 stamp: ''
 description: ''
 sos_model: energy_sd_constrained
 scenarios:
-  fuel_price: es_prices_electric_world
-  gva: gva_high
-  population: pop_high
+  fuel_price: es_prices_multivector_world
+  gva: gva_low
+  population: pop_low
   temperature: NF1
   dummy_weather_inputs_full: es_dummy_weather_inputs_full 
 narratives:
   load_shedding:
   - high_cost
   operation_mode:
-  - central
+  - decentral
   smart_meter_p:
-  - electric_world
+  - multivector_world
   t_base_heating:
-  - electric_world
+  - multivector_world
   f_eff_achieved:
-  - electric_world
+  - multivector_world
   generic_enduse_change:
-  - electric_world
+  - multivector_world
   generic_fuel_switch:
-  - electric_world
+  - multivector_world
   switches_service:
-  - electric_world
+  - multivector_world
 decision_module: ''
-strategies:
+strategies: 
   - type: pre-specified-planning
-    description: 'electric world'
-    filename: ../energy_supply/strategies/electric_world.csv
-    model_name: energy_supply_constrained
+    description: 'multi vector world'
+    filename: ../energy_supply/strategies/multi_vector.csv
 timesteps:
   - 2015
   - 2030
