@@ -132,7 +132,8 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# Provisioning config file
+# Provisioning config files
+provision/s3.ini
 provision/ftp.ini
 provision/dbconfig.ini
 models/*/*.ini
