@@ -7,9 +7,12 @@ scenarios:
   gva: gva_high
   population: pop_high
   temperature: NF1
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full 
 narratives:
   load_shedding:
   - high_cost
+  operation_mode:
+  - central
   smart_meter_p:
   - electric_world
   t_base_heating:
@@ -23,7 +26,11 @@ narratives:
   switches_service:
   - electric_world
 decision_module: ''
-strategies: {}
+strategies:
+  - type: pre-specified-planning
+    description: 'electric world'
+    filename: ../energy_supply/strategies/electric_world.csv
+    model_name: energy_supply_constrained
 timesteps:
   - 2015
   - 2030

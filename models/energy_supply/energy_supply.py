@@ -67,9 +67,12 @@ class EnergySupplyWrapper(SectorModel):
         heat_technology_mode = int(data.get_parameter('heat_mode').as_ndarray())
         self.logger.debug('Parameter heat mode: %s', heat_technology_mode)
 
+        operation_mode = int(data.get_parameter('operation_mode').as_ndarray())
+        self.logger.debug('Parameter operation mode: %s', operation_mode)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode, conn)
+            write_flags(heat_technology_mode,operation_mode, conn)
 
         conn.close()
 
@@ -141,11 +144,7 @@ class EnergySupplyWrapper(SectorModel):
         build_generator(generators, current_timestep)
         self.logger.debug('Building %s heattech interventions', len(heattech))
         build_heattech(heattech, current_timestep)
-        self.logger.debug('Building %s eh connected distributed generators', len(dist_eh))
-        # build_distributed(dist_eh, current_timestep)
-        self.logger.debug(
-            'Building %s transmission connected distributed generators', len(dist_tran))
-        # build_distributed(dist_tran, current_timestep)
+
         self.logger.debug('Retiring %s generators', len(retirees))
         retire_generator(retirees)
 
@@ -180,6 +179,11 @@ class EnergySupplyWrapper(SectorModel):
             'dh_elec_boiler',
             'dh_gas_CHP',
             'dh_hydrogen_fuelcell',
+            #weather_data
+            'wind_speed_eh',
+            'wind_speed_bus',
+            'insolation_eh',
+            'insolation_bus',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:
@@ -469,14 +473,19 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode, conn):
+def write_flags(heat_mode,operation_mode,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
+
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('heat_mode', heat_mode))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('central_decentral_mode', operation_mode))
 
 
 def retire_generator(plants):
@@ -541,7 +550,13 @@ def build_generator(plants, current_timestep):
                           'chp gas': 13,
                           'pumped_storage': 15,
                           'gas fired generation of ehs': 20,
-                          'dummygenerator': 21}[plant['type'].lower()]
+                          'efw chp of ehs ': 21,
+                          'biomass chp of ehs ': 22,
+                          'h2 fuel cell ': 30,
+                          'wind onshore' : 3,
+                          'wind offshore': 12,
+                          'pv'         : 23 ,
+                          'dummygenerator': 100}[plant['type'].lower()]
         elif isinstance(plant['type'], int):
             plant_type = plant['type']
         else:
@@ -655,14 +670,14 @@ def get_distributed_tran(location, year):
     conn.close()
     return mapping
 
-
 def build_distributed(plants, current_timestep):
-    """Writes a list of interventions into the WindPVData_* table
+    """Write a list of interventions into the WindPVData_* table
 
     Arguments
     ---------
     plants : list
     """
+
     conn = establish_connection()
     cur = conn.cursor()
 
@@ -671,7 +686,7 @@ def build_distributed(plants, current_timestep):
                        'onshore': 0,
                        'pv': 0,
                        'table_name': ''}
-                   for x in range(1, 3)}
+                   for x in range(1, 30)}
 
     for plant in plants:
         location = int(plant['location'])
