@@ -66,14 +66,16 @@ def download(remote_file, local_dir):
         red = '\033[0;31m'
         nc = '\033[0m'  # No Color
         message = """\
-        {red}No AWS config file {s3_ini} found.{nc}
-        {red}Do you have s3 access credentials? Have you copied template.s3.ini?{nc}""".format(
+{red}No AWS config file found, expected at:
+    {s3_ini}{nc}
+{red}Do you have s3 access credentials?{nc}
+{red}Try copying provision/template.s3.ini to provision/s3.ini and add credentials there.{nc}""".format(
             red=red,
             nc=nc,
             s3_ini=s3_ini
         )
         print(message)
-        raise Exception
+        sys.exit()
 
     # Ensure the local_dir exists
     print("Creating directory", local_dir)
@@ -98,6 +100,7 @@ def download(remote_file, local_dir):
         # Transfer file from s3 bucket
         transfer = s3transfer.S3Transfer(boto3.client('s3'))
         transfer.download_file('nismod2-data', remote_file, local_file, callback=progress)
+        print("\nDone", flush=True)  # newline after progress
 
     # Print message and quit
     except Exception as ex:
