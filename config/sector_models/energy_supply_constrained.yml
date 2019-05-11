@@ -561,3 +561,105 @@ outputs:
     - seasonal_week
     unit: mcm
     dtype: float
+  - name: gas_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: gas_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand_heat
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_storage
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowin
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowout
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float

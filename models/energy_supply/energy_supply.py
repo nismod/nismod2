@@ -184,11 +184,13 @@ class EnergySupplyWrapper(SectorModel):
             'wind_speed_bus',
             'insolation_eh',
             'insolation_bus',
+            #transport
+            'elec_trans',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:
                 self._load_input_2d(data, input_)
-
+        
     def _load_input_2d(self, data_handle, name):
         data = data_handle.get_data(name)
         self.logger.debug("Input %s: %s", name, data)
@@ -1116,3 +1118,4 @@ def write_input_timestep(input_data, parameter_name, year,
     # Close communication with the database
     cur.close()
     conn.close()
+ 
