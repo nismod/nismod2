@@ -215,7 +215,7 @@ class BaseTransportWrapper(SectorModel):
 
         data.to_csv(
             os.path.join(self._input_dir, 'engineTypeFractions.csv'), index=False,
-            float_format='%f')
+            float_format='%.15f')
 
 
     def _get_engine_fractions(self, data_handle, timestep):
