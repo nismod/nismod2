@@ -23,6 +23,7 @@ scenarios:
   - link_travel_time
   - engine_type_fractions
   - dummy_weather_inputs_full
+  - biomass_waste_to_energy
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -599,6 +600,14 @@ scenario_dependencies:
     source_output: insolation_bus
     sink: energy_supply_constrained
     sink_input: insolation_bus
+  - source: biomass_waste_to_energy
+    source_output: biomass_feedstock
+    sink: energy_supply_constrained
+    sink_input: biomass_feedstock
+  - source: biomass_waste_to_energy
+    source_output: municipal_waste
+    sink: energy_supply_constrained
+    sink_input: municipal_waste 
 narratives: 
   - name: operation_mode
     description: operation mode for energy supply system

@@ -5,14 +5,12 @@ provides:
     description: 'biomass feedstock available in energy hub regions'
     dims:
     - energy_hub
-    - seasons
     dtype: float
     unit: kg
   - name: municipal_waste
     description: 'biomass feedstock available in energy hub regions'
     dims:
     - energy_hub
-    - seasons
     dtype: float
     unit: kg
 
@@ -20,6 +18,6 @@ variants:
   - name: es_biomass_waste_to_energy
     description: ''
     data:
-      biomass_feedstock: ../energy_supply/scenarios/biomass_waste_energy_seasonal.csv
-      municipal_waste: ../energy_supply/scenarios/biomass_waste_energy_seosonal.csv
+      biomass_feedstock: ../energy_supply/scenarios/biomass_waste_energy_annual.csv
+      municipal_waste: ../energy_supply/scenarios/biomass_waste_energy_annual.csv
 

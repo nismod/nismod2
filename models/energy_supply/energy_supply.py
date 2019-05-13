@@ -157,9 +157,10 @@ class EnergySupplyWrapper(SectorModel):
         write_prices(fuel_prices, data.current_timestep)
 
         # inputs with just region
-        param_name = 'EV_Cap'
-        param_data = data.get_data(param_name)
-        write_input_annual(param_data, param_name, data.current_timestep)
+        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste']
+        for param_name in param_name_annual :
+            param_data = data.get_data(param_name)
+            write_input_annual(param_data, param_name, data.current_timestep)
 
         inputs_with_region_and_interval = [
             # both modes

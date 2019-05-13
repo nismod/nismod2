@@ -16,6 +16,7 @@ scenarios:
   - temperature
   - dummy_weather_inputs_full
   - dummy_energy_demands_full
+  - biomass_waste_to_energy
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -522,6 +523,14 @@ scenario_dependencies:
     source_output: EV_Cap
     sink: energy_supply_constrained
     sink_input: EV_Cap
+  - source: biomass_waste_to_energy
+    source_output: biomass_feedstock
+    sink: energy_supply_constrained
+    sink_input: biomass_feedstock
+  - source: biomass_waste_to_energy
+    source_output: municipal_waste
+    sink: energy_supply_constrained
+    sink_input: municipal_waste   
 narratives:
   - name: load_shedding
     description: Costs of shedding load

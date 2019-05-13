@@ -154,6 +154,16 @@ inputs:
       - seasonal_week
     unit: W/m2
     dtype: float
+  - name: biomass_feedstock
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: municipal_waste
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
