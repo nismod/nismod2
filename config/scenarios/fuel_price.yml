@@ -28,7 +28,7 @@ variants:
     data:
       fuel_price: transport_fuel_price.csv
       fuel_price_electricity: transport_fuel_price_electricity.csv
-      energy_supply_price: prices/prices_electric_world.csv
+      energy_supply_price: prices/prices__electric_world.csv
   - name: es_prices_multivector_world
     description: electric world scenario fuel price projections
     data:
