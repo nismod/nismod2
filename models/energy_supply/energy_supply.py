@@ -1152,4 +1152,5 @@ def write_input_annual(data, parameter_name, timestep):
                 sql,
                 (timestep, region_id, parameter_name, value)
             )
+    conn.commit()
     conn.close()
