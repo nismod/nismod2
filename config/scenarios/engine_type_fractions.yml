@@ -16,3 +16,11 @@ variants:
     description: test scenario
     data:
       engine_type_fractions: engine_type_fractions_test.csv
+  - name: electricworld
+    description: Electric world energy scenario
+    data:
+      engine_type_fractions: engine_type_fractions_ew.csv
+  - name: multivector
+    description: Multi-vector energy scenario
+    data:
+      engine_type_fractions: engine_type_fractions_mve.csv
