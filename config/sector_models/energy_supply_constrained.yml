@@ -663,3 +663,9 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: eh_tran_e_export
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
