@@ -9,13 +9,13 @@ sector_models:
   - convert_units_ed_to_es_constrained
   - remap_gas
   - energy_supply_constrained
-  - dummy_energy_demands_full
 scenarios:
   - fuel_price
   - gva
   - population
   - temperature
   - dummy_weather_inputs_full
+  - dummy_energy_demands_full
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
