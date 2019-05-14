@@ -3,8 +3,7 @@ description: Baseline transport model run for testing
 sos_model: transport_full
 timesteps: [2015, 2020]
 scenarios:
-  population: pop_baseline
-  gva: gva_baseline
+  socio-economic: itrc_baseline16
   fuel_price: baseline
   link_travel_time: default
   engine_type_fractions: baseline
