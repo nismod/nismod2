@@ -2,15 +2,36 @@ name: socio-economic
 description: Spatial scenarios for dwellings, floor area, employment, population, GVA
 provides:
   - name: dwellings
-    description: Project dwelling count by LAD
+    description: Dwelling count (treated as equivalent to number of households)
     dims:
       - lad_uk_2016
     dtype: int
     unit: count
   - name: floor_area
+    description: Total floor area (residential/non)
+    dims:
+      - lad_uk_2016
+      - residential_or_non
+    dtype: float
+    unit: meter**2
   - name: employment
+    description: Employment
+    dims:
+      - lad_uk_2016
+    dtype: int
+    unit: person
   - name: productivity
+    description: Productivity (GVA per person in employment)
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: GBP/person
   - name: gva
+    description: Regional GVA
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: GBP
   - name: gva_per_head
     description: Regional GVA per capita
     dims:
