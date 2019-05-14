@@ -1,0 +1,46 @@
+name: socio-economic
+description: Spatial scenarios for dwellings, floor area, employment, population, GVA
+provides:
+  - name: dwellings
+  - name: floor_area
+  - name: employment
+  - name: productivity
+  - name: gva
+  - name: gva_per_head
+    description: Regional GVA per capita
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: GBP
+  - name: gva_per_sector
+    description: GVA per industrial sector
+    dims:
+      - lad_uk_2016
+      - sectors
+    dtype: float
+    unit: GBP
+  - name: population
+    description: Total population
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: people
+variants:
+  - name: itrc_baseline16
+    description: Baseline population for the UK
+    data:
+      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
+      gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
+      gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
+  - name: itrc_high-dcc
+    description: High population for the UK
+    data:
+      population: population/pop-d_econ-c_fuel-c/population__lad.csv
+      gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+  - name: itrc_low-fcc
+    description: Low population for the UK
+    data:
+      population: population/pop-f_econ-c_fuel-c/population__lad.csv
+      gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
