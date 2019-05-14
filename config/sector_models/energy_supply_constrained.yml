@@ -573,85 +573,85 @@ outputs:
     dtype: float
   - name: gas_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: electricity_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: biomass_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float  
   - name: hydrogen_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: waste_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: solidfuel_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: oil_demand
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gas_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: electricity_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: biomass_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float  
   - name: hydrogen_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: waste_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: solidfuel_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: oil_demand_heat
     dims:
-    - national
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
