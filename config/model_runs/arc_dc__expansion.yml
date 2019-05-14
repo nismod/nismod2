@@ -1,0 +1,13 @@
+name: arc_dc__expansion
+stamp: '2019-05-14'
+description: Arc Digital Expansion
+sos_model: digital_comms_fixed_only
+scenarios:
+  adoption: fttp_baseline_adoption
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050

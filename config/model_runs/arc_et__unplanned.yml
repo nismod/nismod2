@@ -1,0 +1,17 @@
+name: arc_et__unplanned
+stamp: '2019-05-14'
+description: Arc Energy-Transport Unplanned
+sos_model: energy_transport
+scenarios:
+  fuel_price: baseline
+  gva: TODO
+  population: TODO
+  temperature: NF1
+  ev_transport_trips: TODO
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050
