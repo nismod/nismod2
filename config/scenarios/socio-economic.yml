@@ -2,6 +2,11 @@ name: socio-economic
 description: Spatial scenarios for dwellings, floor area, employment, population, GVA
 provides:
   - name: dwellings
+    description: Project dwelling count by LAD
+    dims:
+      - lad_uk_2016
+    dtype: int
+    unit: count
   - name: floor_area
   - name: employment
   - name: productivity
@@ -27,20 +32,79 @@ provides:
     unit: people
 variants:
   - name: itrc_baseline16
-    description: Baseline population for the UK
+    description: Baseline scenario used in ITRC NNA analysis
     data:
-      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      productivity: not_provided
+      gva: not_provided
       gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
       gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
+      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
   - name: itrc_high-dcc
-    description: High population for the UK
+    description: High scenario used in ITRC analysis
     data:
-      population: population/pop-d_econ-c_fuel-c/population__lad.csv
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      productivity: not_provided
+      gva: not_provided
       gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+      population: population/pop-d_econ-c_fuel-c/population__lad.csv
   - name: itrc_low-fcc
-    description: Low population for the UK
+    description: Low scenario used in ITRC analysis
     data:
-      population: population/pop-f_econ-c_fuel-c/population__lad.csv
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      productivity: not_provided
+      gva: not_provided
       gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+      population: population/pop-f_econ-c_fuel-c/population__lad.csv
+  - name: arc_baseline
+    description: Baseline scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: dwellings/baseline.csv
+      floor_area: TODO
+      employment: TODO
+      productivity: TODO
+      gva: TODO
+      gva_per_head: TODO
+      gva_per_sector: TODO
+      population: TODO
+  - name: arc_unplanned
+    description: Unplanned scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: dwellings/unplanned.csv
+      floor_area: TODO
+      employment: TODO
+      productivity: TODO
+      gva: TODO
+      gva_per_head: TODO
+      gva_per_sector: TODO
+      population: TODO
+  - name: arc_expansion
+    description: Expansion scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: dwellings/expansion.csv
+      floor_area: TODO
+      employment: TODO
+      productivity: TODO
+      gva: TODO
+      gva_per_head: TODO
+      gva_per_sector: TODO
+      population: TODO
+  - name: arc_new-cities
+    description: New cities scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: dwellings/settlements.csv
+      floor_area: TODO
+      employment: TODO
+      productivity: TODO
+      gva: TODO
+      gva_per_head: TODO
+      gva_per_sector: TODO
+      population: TODO
