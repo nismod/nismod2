@@ -4,18 +4,17 @@ sector_models:
   - transport
   - extract_gb_scenarios
 scenarios:
-  - population
-  - gva
+  - socio-economic
   - fuel_price
   - link_travel_time
   - engine_type_fractions
 narratives: []
 scenario_dependencies:
-  - source: population
+  - source: socio-economic
     source_output: population
     sink: extract_gb_scenarios
     sink_input: population
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_head
     sink: extract_gb_scenarios
     sink_input: gva

@@ -3,8 +3,7 @@ stamp: ''
 description: Run energy demand for baseline population scenario
 sos_model: energy_demand_constrained
 scenarios:
-  gva: gva_baseline
-  population: pop_baseline
+  socio-economic: itrc_baseline16
   temperature: NF1
 narratives: {}
 decision_module: ''

@@ -11,8 +11,7 @@ sector_models:
   - energy_supply_optimised
 scenarios:
   - fuel_price
-  - gva
-  - population
+  - socio-economic
   - temperature
 model_dependencies:
   # from energy demand to aggregation
@@ -196,15 +195,15 @@ scenario_dependencies:
     source_output: energy_supply_price
     sink: energy_supply_optimised
     sink_input: fuel_price
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_head
     sink: energy_demand_unconstrained
     sink_input: gva_per_head
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_sector
     sink: energy_demand_unconstrained
     sink_input: gva_per_sector
-  - source: population
+  - source: socio-economic
     source_output: population
     sink: energy_demand_unconstrained
     sink_input: population

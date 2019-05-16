@@ -4,8 +4,7 @@ description: ''
 sos_model: energy_sd_optimised
 scenarios:
   fuel_price: baseline
-  gva: gva_baseline
-  population: pop_baseline
+  socio-economic: itrc_baseline16
   temperature: NF1
 narratives: {}
 decision_module: ''

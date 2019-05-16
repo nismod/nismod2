@@ -17,11 +17,11 @@ sector_models:
   - energy_supply_constrained
 scenarios:
   - fuel_price
-  - gva
-  - population
+  - socio-economic
   - temperature
   - link_travel_time
   - engine_type_fractions
+  - dummy_weather_inputs_full
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -546,15 +546,15 @@ scenario_dependencies:
     source_output: energy_supply_price
     sink: energy_supply_constrained
     sink_input: fuel_price
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_head
     sink: energy_demand_constrained
     sink_input: gva_per_head
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_sector
     sink: energy_demand_constrained
     sink_input: gva_per_sector
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_head
     sink: extract_gb_scenarios
     sink_input: gva
@@ -566,11 +566,11 @@ scenario_dependencies:
     source_output: engine_type_fractions
     sink: transport
     sink_input: engine_type_fractions
-  - source: population
+  - source: socio-economic
     source_output: population
     sink: energy_demand_constrained
     sink_input: population
-  - source: population
+  - source: socio-economic
     source_output: population
     sink: extract_gb_scenarios
     sink_input: population
@@ -582,4 +582,20 @@ scenario_dependencies:
     source_output: t_max
     sink: energy_demand_constrained
     sink_input: t_max
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_eh
+    sink: energy_supply_constrained
+    sink_input: wind_speed_eh
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_bus
+    sink: energy_supply_constrained
+    sink_input: wind_speed_bus
+  - source: dummy_weather_inputs_full
+    source_output: insolation_eh
+    sink: energy_supply_constrained
+    sink_input: insolation_eh
+  - source: dummy_weather_inputs_full
+    source_output: insolation_bus
+    sink: energy_supply_constrained
+    sink_input: insolation_bus
 narratives: []

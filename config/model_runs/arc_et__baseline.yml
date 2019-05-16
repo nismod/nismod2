@@ -1,16 +1,19 @@
-name: energy_transport
-stamp: '2019-04-23'
-description: 'Test model run for energy (supply-demand constrained) and transport'
+name: arc_et__baseline
+stamp: '2019-05-14'
+description: Arc Energy-Transport baseline
 sos_model: energy_transport
 scenarios:
   fuel_price: baseline
-  socio-economic: itrc_baseline16
+  socio-economic: arc_baseline
   temperature: NF1
+  ev_transport_trips: TODO
   link_travel_time: default
   engine_type_fractions: baseline
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
 narratives: {}
 strategies: []
 timesteps:
   - 2015
+  - 2020
   - 2030
   - 2050

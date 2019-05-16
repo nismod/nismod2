@@ -1,0 +1,11 @@
+name: arc_ws__new-cities
+stamp: '2019-05-14'
+description: Arc Water Supply New Cities
+sos_model: water_supply_only
+scenarios: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050
