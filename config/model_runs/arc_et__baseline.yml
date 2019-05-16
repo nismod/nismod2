@@ -4,8 +4,7 @@ description: Arc Energy-Transport baseline
 sos_model: energy_transport
 scenarios:
   fuel_price: baseline
-  gva: TODO
-  population: TODO
+  socio-economic: baseline
   temperature: NF1
   ev_transport_trips: TODO
 narratives: {}

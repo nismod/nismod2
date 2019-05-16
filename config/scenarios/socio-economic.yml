@@ -20,12 +20,6 @@ provides:
       - lad_uk_2016
     dtype: int
     unit: person
-  - name: productivity
-    description: Productivity (GVA per person in employment)
-    dims:
-      - lad_uk_2016
-    dtype: float
-    unit: GBP/person
   - name: gva
     description: Regional GVA
     dims:
@@ -58,7 +52,6 @@ variants:
       dwellings: not_provided
       floor_area: not_provided
       employment: not_provided
-      productivity: not_provided
       gva: not_provided
       gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
       gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
@@ -69,7 +62,6 @@ variants:
       dwellings: not_provided
       floor_area: not_provided
       employment: not_provided
-      productivity: not_provided
       gva: not_provided
       gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
@@ -80,7 +72,6 @@ variants:
       dwellings: not_provided
       floor_area: not_provided
       employment: not_provided
-      productivity: not_provided
       gva: not_provided
       gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
@@ -88,44 +79,40 @@ variants:
   - name: arc_baseline
     description: Baseline scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: dwellings/baseline.csv
-      floor_area: TODO
-      employment: TODO
-      productivity: TODO
-      gva: TODO
-      gva_per_head: TODO
-      gva_per_sector: TODO
-      population: TODO
+      dwellings: socio-economic/arc_dwellings__baseline.csv
+      floor_area: socio-economic/arc_floor_area__baseline.csv
+      employment: socio-economic/arc_gva_employment__baseline.csv
+      gva: socio-economic/arc_gva_employment__baseline.csv
+      gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__baseline.csv
+      population: socio-economic/arc_population__baseline.csv
   - name: arc_unplanned
     description: Unplanned scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: dwellings/unplanned.csv
-      floor_area: TODO
-      employment: TODO
-      productivity: TODO
-      gva: TODO
-      gva_per_head: TODO
-      gva_per_sector: TODO
-      population: TODO
-  - name: arc_expansion
-    description: Expansion scenario for Cam-MK-Ox Arc analysis
-    data:
-      dwellings: dwellings/expansion.csv
-      floor_area: TODO
-      employment: TODO
-      productivity: TODO
-      gva: TODO
-      gva_per_head: TODO
-      gva_per_sector: TODO
-      population: TODO
+      dwellings: socio-economic/arc_dwellings__0-unplanned.csv
+      floor_area: socio-economic/arc_floor_area__0-unplanned.csv
+      employment: socio-economic/arc_gva_employment__0-unplanned.csv
+      gva: socio-economic/arc_gva_employment__0-unplanned.csv
+      gva_per_head: socio-economic/arc_gva_per_head__0-unplanned.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__0-unplanned.csv
+      population: socio-economic/arc_population__0-unplanned.csv
   - name: arc_new-cities
     description: New cities scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: dwellings/settlements.csv
-      floor_area: TODO
-      employment: TODO
-      productivity: TODO
-      gva: TODO
-      gva_per_head: TODO
-      gva_per_sector: TODO
-      population: TODO
+      dwellings: socio-economic/arc_dwellings__1-new-cities.csv
+      floor_area: socio-economic/arc_floor_area__1-new-cities.csv
+      employment: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva_per_head: socio-economic/arc_gva_per_head__1-new-cities.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__1-new-cities.csv
+      population: socio-economic/arc_population__1-new-cities.csv
+  - name: arc_expansion
+    description: Expansion of current major cities scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: socio-economic/arc_dwellings__2-expansion.csv
+      floor_area: socio-economic/arc_floor_area__2-expansion.csv
+      employment: socio-economic/arc_gva_employment__2-expansion.csv
+      gva: socio-economic/arc_gva_employment__2-expansion.csv
+      gva_per_head: socio-economic/arc_gva_per_head__2-expansion.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__2-expansion.csv
+      population: socio-economic/arc_population__2-expansion.csv

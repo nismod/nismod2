@@ -4,8 +4,7 @@ description: Arc Energy-Transport New Cities
 sos_model: energy_transport
 scenarios:
   fuel_price: baseline
-  gva: TODO
-  population: TODO
+  socio-economic: arc_new-cities
   temperature: NF1
   ev_transport_trips: TODO
 narratives: {}
