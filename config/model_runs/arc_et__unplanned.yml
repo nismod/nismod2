@@ -7,6 +7,9 @@ scenarios:
   socio-economic: arc_unplanned
   temperature: NF1
   ev_transport_trips: TODO
+  link_travel_time: default
+  engine_type_fractions: baseline
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
 narratives: {}
 strategies: []
 timesteps:
