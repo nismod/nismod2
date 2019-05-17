@@ -4,8 +4,7 @@ description: ''
 sos_model: energy_sd_constrained
 scenarios:
   fuel_price: es_prices_electric_world
-  gva: gva_high
-  population: pop_high
+  socio-economic: itrc_high-dcc
   temperature: NF1
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   dummy_energy_demands_full: es_energy_demand_dummy_full

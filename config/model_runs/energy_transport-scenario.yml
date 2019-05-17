@@ -4,8 +4,7 @@ description: 'Test model run for energy (supply-demand constrained) and et_modul
 sos_model: energy_transport-scenario
 scenarios:
   fuel_price: baseline
-  gva: gva_baseline
-  population: pop_baseline
+  socio-economic: itrc_baseline16
   temperature: NF1
   ev_transport_trips: electricworld
   dummy_weather_inputs_full: es_dummy_weather_inputs_full

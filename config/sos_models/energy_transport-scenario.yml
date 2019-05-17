@@ -15,8 +15,7 @@ sector_models:
   - energy_supply_constrained
 scenarios:
   - fuel_price
-  - gva
-  - population
+  - socio-economic
   - temperature
   - ev_transport_trips
   - dummy_weather_inputs_full
@@ -521,15 +520,15 @@ scenario_dependencies:
     source_output: energy_supply_price
     sink: energy_supply_constrained
     sink_input: fuel_price
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_head
     sink: energy_demand_constrained
     sink_input: gva_per_head
-  - source: gva
+  - source: socio-economic
     source_output: gva_per_sector
     sink: energy_demand_constrained
     sink_input: gva_per_sector
-  - source: population
+  - source: socio-economic
     source_output: population
     sink: energy_demand_constrained
     sink_input: population

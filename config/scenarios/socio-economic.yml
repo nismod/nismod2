@@ -1,0 +1,118 @@
+name: socio-economic
+description: Spatial scenarios for dwellings, floor area, employment, population, GVA
+provides:
+  - name: dwellings
+    description: Dwelling count (treated as equivalent to number of households)
+    dims:
+      - lad_uk_2016
+    dtype: int
+    unit: count
+  - name: floor_area
+    description: Total floor area (residential/non)
+    dims:
+      - lad_uk_2016
+      - residential_or_non
+    dtype: float
+    unit: meter**2
+  - name: employment
+    description: Employment
+    dims:
+      - lad_uk_2016
+    dtype: int
+    unit: person
+  - name: gva
+    description: Regional GVA
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: GBP
+  - name: gva_per_head
+    description: Regional GVA per capita
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: GBP
+  - name: gva_per_sector
+    description: GVA per industrial sector
+    dims:
+      - lad_uk_2016
+      - sectors
+    dtype: float
+    unit: GBP
+  - name: population
+    description: Total population
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: people
+variants:
+  - name: itrc_baseline16
+    description: Baseline scenario used in ITRC NNA analysis
+    data:
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      gva: not_provided
+      gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
+      gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
+      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
+  - name: itrc_high-dcc
+    description: High scenario used in ITRC analysis
+    data:
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      gva: not_provided
+      gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+      population: population/pop-d_econ-c_fuel-c/population__lad.csv
+  - name: itrc_low-fcc
+    description: Low scenario used in ITRC analysis
+    data:
+      dwellings: not_provided
+      floor_area: not_provided
+      employment: not_provided
+      gva: not_provided
+      gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
+      gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
+      population: population/pop-f_econ-c_fuel-c/population__lad.csv
+  - name: arc_baseline
+    description: Baseline scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: socio-economic/arc_dwellings__baseline.csv
+      floor_area: socio-economic/arc_floor_area__baseline.csv
+      employment: socio-economic/arc_gva_employment__baseline.csv
+      gva: socio-economic/arc_gva_employment__baseline.csv
+      gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__baseline.csv
+      population: socio-economic/arc_population__baseline.csv
+  - name: arc_unplanned
+    description: Unplanned scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: socio-economic/arc_dwellings__0-unplanned.csv
+      floor_area: socio-economic/arc_floor_area__0-unplanned.csv
+      employment: socio-economic/arc_gva_employment__0-unplanned.csv
+      gva: socio-economic/arc_gva_employment__0-unplanned.csv
+      gva_per_head: socio-economic/arc_gva_per_head__0-unplanned.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__0-unplanned.csv
+      population: socio-economic/arc_population__0-unplanned.csv
+  - name: arc_new-cities
+    description: New cities scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: socio-economic/arc_dwellings__1-new-cities.csv
+      floor_area: socio-economic/arc_floor_area__1-new-cities.csv
+      employment: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva_per_head: socio-economic/arc_gva_per_head__1-new-cities.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__1-new-cities.csv
+      population: socio-economic/arc_population__1-new-cities.csv
+  - name: arc_expansion
+    description: Expansion of current major cities scenario for Cam-MK-Ox Arc analysis
+    data:
+      dwellings: socio-economic/arc_dwellings__2-expansion.csv
+      floor_area: socio-economic/arc_floor_area__2-expansion.csv
+      employment: socio-economic/arc_gva_employment__2-expansion.csv
+      gva: socio-economic/arc_gva_employment__2-expansion.csv
+      gva_per_head: socio-economic/arc_gva_per_head__2-expansion.csv
+      gva_per_sector: socio-economic/arc_gva_per_sector__2-expansion.csv
+      population: socio-economic/arc_population__2-expansion.csv

@@ -4,10 +4,9 @@ description: ''
 sos_model: energy_sd_constrained
 scenarios:
   fuel_price: es_prices_multivector_world
-  gva: gva_low
-  population: pop_low
+  socio-economic: itrc_low-fcc
   temperature: NF1
-  dummy_weather_inputs_full: es_dummy_weather_inputs_full 
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
   dummy_energy_demands_full: es_energy_demand_dummy_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
 narratives:
@@ -28,7 +27,7 @@ narratives:
   switches_service:
   - multivector_world
 decision_module: ''
-strategies: 
+strategies:
   - type: pre-specified-planning
     description: 'multi vector world'
     filename: ../energy_supply/strategies/multi_vector.csv
