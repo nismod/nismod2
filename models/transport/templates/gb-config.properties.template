@@ -70,6 +70,17 @@ unitCO2EmissionsFile = $relative_path/data/csvfiles/unitCO2Emissions.csv
 # default link travel time per time of day (optional)
 defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimesAfterIteration198.csv
 
+#base year passenger rail demand
+baseYearRailStationUsageFile = $relative_path/data/csvfiles/baseYearRailUsage.csv
+#rail station journey fares file
+railStationJourneyFaresFile =  $relative_path/data/csvfiles/railStationJourneyFares.csv
+#rail station generalised journey times file
+railStationGeneralisedJourneyTimesFile = $relative_path/data/csvfiles/railStationGeneralisedJourneyTimes.csv
+#car zonal journey costs file
+carZonalJourneyCostsFile = $relative_path/data/csvfiles/carZonalJourneyCosts.csv
+#rail trip rates file
+railTripRatesFile = $relative_path/data/csvfiles/railTripRates.csv
+
 #################################
 # INTERVENTIONS AND DISRUPTIONS #
 #################################
@@ -132,6 +143,12 @@ zonalTemporalEVTripElectricityFile = zonalTemporalEVTripElectricity.csv
 # output network with capacity utilisation
 outputNetworkFile = outputNetwork.shp
 
+# predicted rail station demand
+predictedRailDemandFile = predictedRailDemand.csv
+
+# zonal rail station demand
+zonalRailDemandFile = zonalRailDemand.csv
+
 ###########################
 # DEMAND MODEL PARAMETERS #
 ###########################
@@ -154,6 +171,15 @@ PREDICTION_ITERATIONS = $prediction_iterations
 # elasticities
 elasticitiesFile = $relative_path/input/elasticities.csv
 elasticitiesFreightFile = $relative_path/input/elasticitiesFreight.csv
+elasticitiesRailFile = $relative_path/data/csvfiles/elasticitiesRail.csv
+
+#if true, car travel costs calculated from the output of the road model ('costSkimMatrixFile')
+#if false, use car travel costs provided as an input ('carZonalJourneyCostsFile')
+FLAG_USE_CAR_COST_FROM_ROAD_MODEL = false
+
+#true means that all years between fromYear and predictedYear will be predicted (otherwise only predictedYear)
+#needs to be true if new rail stations are built in any year
+FLAG_PREDICT_INTERMEDIATE_YEARS_RAIL = false
 
 #################################
 # NETWORK ASSIGNMENT PARAMETERS #

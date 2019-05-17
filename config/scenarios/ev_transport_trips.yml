@@ -31,3 +31,18 @@ variants:
     data:
       electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv.csv
       electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv.csv
+  - name: arc_baseline
+    description: Baseline/NO transport run
+    data:
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__baseline.csv
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__baseline.csv
+  - name: arc_new-cities
+    description: scenario1/B1 transport run
+    data:
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__1-new-cities.csv
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__1-new-cities.csv
+  - name: arc_expansion
+    description: scenario2/B1 transport run
+    data:
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__2-expansion.csv
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__2-expansion.csv

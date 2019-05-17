@@ -1,0 +1,23 @@
+name: arc_ets__baseline
+stamp: '2019-05-14'
+description: Arc Energy-Transport baseline
+sos_model: energy_transport-scenario
+scenarios:
+  fuel_price: baseline
+  socio-economic: arc_baseline
+  temperature: NF1
+  ev_transport_trips: arc_baseline
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+narratives:
+  operation_mode:
+  - central
+strategies:
+  - type: pre-specified-planning
+    description: 'electric world development, default centralised operation'
+    filename: ../energy_supply/strategies/electric_world.csv
+    model_name: energy_supply_constrained
+timesteps:
+  - 2015
+  - 2030
+  - 2050

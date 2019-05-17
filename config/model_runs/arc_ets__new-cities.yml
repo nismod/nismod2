@@ -1,0 +1,23 @@
+name: arc_ets__new-cities
+stamp: '2019-05-14'
+description: Arc Energy-Transport New Cities
+sos_model: energy_transport-scenario
+scenarios:
+  fuel_price: baseline
+  socio-economic: arc_new-cities
+  temperature: NF1
+  ev_transport_trips: arc_new-cities
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+narratives:
+  operation_mode:
+  - central
+strategies:
+  - type: pre-specified-planning
+    description: 'A multi-vector world, but default centralised operation'
+    filename: ../energy_supply/strategies/multi_vector.csv
+    model_name: energy_supply_constrained
+timesteps:
+  - 2015
+  - 2030
+  - 2050
