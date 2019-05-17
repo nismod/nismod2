@@ -19,6 +19,5 @@ strategies:
     model_name: energy_supply_constrained
 timesteps:
   - 2015
-  - 2020
   - 2030
   - 2050
