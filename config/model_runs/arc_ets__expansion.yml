@@ -1,0 +1,24 @@
+name: arc_ets__expansion
+stamp: '2019-05-14'
+description: Arc Energy-Transport Expansion
+sos_model: energy_transport-scenario
+scenarios:
+  fuel_price: baseline
+  socio-economic: arc_expansion
+  temperature: NF1
+  ev_transport_trips: arc_expansion
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+narratives:
+  operation_mode:
+  - decentral
+strategies:
+  - type: pre-specified-planning
+    description: 'electric world development, decentral operation allowing expansion'
+    filename: ../energy_supply/strategies/electric_world.csv
+    model_name: energy_supply_constrained
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050

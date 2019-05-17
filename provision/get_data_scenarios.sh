@@ -22,3 +22,8 @@ python $base_path/provision/get_data.py $remote_data $local_path
 source <(grep = <(grep -A3 "\[socio-economic\]" $base_path/provision/config.ini))
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path
+
+# EV transport trips
+source <(grep = <(grep -A3 "\[ev_transport_trips\]" $base_path/provision/config.ini))
+local_path=$base_path/$local_dir
+python $base_path/provision/get_data.py $remote_data $local_path
