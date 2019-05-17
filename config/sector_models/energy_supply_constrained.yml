@@ -154,6 +154,16 @@ inputs:
       - seasonal_week
     unit: W/m2
     dtype: float
+  - name: biomass_feedstock
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: municipal_waste
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
@@ -560,4 +570,112 @@ outputs:
     - energy_hub
     - seasonal_week
     unit: mcm
+    dtype: float
+  - name: gas_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: gas_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_storage
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowin
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowout
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_tran_e_export
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
     dtype: float

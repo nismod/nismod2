@@ -156,6 +156,12 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug('Input price: %s', fuel_prices)
         write_prices(fuel_prices, data.current_timestep)
 
+        # inputs with just region
+        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste']
+        for param_name in param_name_annual :
+            param_data = data.get_data(param_name)
+            write_input_annual(param_data, param_name, data.current_timestep)
+
         inputs_with_region_and_interval = [
             # both modes
             'elecload',
@@ -184,6 +190,8 @@ class EnergySupplyWrapper(SectorModel):
             'wind_speed_bus',
             'insolation_eh',
             'insolation_bus',
+            #transport
+            'elec_trans',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:
@@ -224,7 +232,6 @@ class EnergySupplyWrapper(SectorModel):
         conn.close()
 
         self.logger.debug("Energy supplyWrapper produced outputs in %s", now)
-
 
     def set_results(self, data_handle, conn, name):
         """Pass results from database to data handle
@@ -670,6 +677,7 @@ def get_distributed_tran(location, year):
     conn.close()
     return mapping
 
+
 def build_distributed(plants, current_timestep):
     """Write a list of interventions into the WindPVData_* table
 
@@ -738,6 +746,7 @@ def build_distributed(plants, current_timestep):
     cur.close()
     conn.close()
 
+
 def delete_from(table_name):
     conn = establish_connection()
     cur = conn.cursor()
@@ -750,6 +759,7 @@ def delete_from(table_name):
     # Close communication with the database
     cur.close()
     conn.close()
+
 
 def build_gas_stores(gas_stores, current_timestep):
     """Set up the initial system from a list of interventions
@@ -806,6 +816,7 @@ def build_gas_stores(gas_stores, current_timestep):
     # Close communication with the database
     cur.close()
     conn.close()
+
 
 def build_gas_terminals(gas_terminals, current_timestep):
     """Set up the initial system from a list of interventions
@@ -865,6 +876,7 @@ def build_gas_terminals(gas_terminals, current_timestep):
     cur.close()
     conn.close()
 
+
 def build_pipes(pipes, current_timestep):
     """Set up the initial system from a list of interventions
 
@@ -921,6 +933,7 @@ def build_pipes(pipes, current_timestep):
     cur.close()
     conn.close()
 
+
 def build_heattech(heat_techs, current_timestep):
     """Set up system from list of interventions
 
@@ -972,6 +985,7 @@ def build_heattech(heat_techs, current_timestep):
     cur.close()
     conn.close()
 
+
 def build_lines(lines, current_timestep):
     """Set up the initial system from a list of interventions
 
@@ -1021,6 +1035,7 @@ def build_lines(lines, current_timestep):
     cur.close()
     conn.close()
 
+
 def get_region_mapping(input_parameter_name):
     """Return a dict of database ids from region ids
 
@@ -1047,8 +1062,8 @@ def get_region_mapping(input_parameter_name):
 
     return dict(mapping)
 
-def write_input_timestep(input_data, parameter_name, year,
-                         region_names, interval_names):
+
+def write_input_timestep(input_data, parameter_name, year, region_names, interval_names):
     """Writes input data into database table
 
     Uses the index of the numpy array as a reference to interval and region definitions
@@ -1115,4 +1130,28 @@ def write_input_timestep(input_data, parameter_name, year,
 
     # Close communication with the database
     cur.close()
+    conn.close()
+
+
+def write_input_annual(data, parameter_name, timestep):
+    assert len(data.dims) == 1, "Expected a single dimension for %s, got %s" % (
+        parameter_name, data.dims)
+    region_dim_name = data.dims[0]
+
+    conn = establish_connection()
+    with conn.cursor() as cur:
+        cur.execute(
+            'DELETE FROM input_annual WHERE parameter=%s AND year=%s;',
+            (parameter_name, timestep)
+        )
+        sql = """INSERT INTO
+            input_annual (year, region_id, parameter, value)
+            VALUES (%s, %s, %s, %s)
+            """
+        for (region_id, ), value in data.as_df().itertuples():
+            cur.execute(
+                sql,
+                (timestep, region_id, parameter_name, value)
+            )
+    conn.commit()
     conn.close()

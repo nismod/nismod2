@@ -8,7 +8,11 @@ scenarios:
   temperature: NF1
   link_travel_time: default
   engine_type_fractions: baseline
-narratives: {}
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+narratives: 
+  operation_mode:
+  - central
 strategies: []
 timesteps:
   - 2015

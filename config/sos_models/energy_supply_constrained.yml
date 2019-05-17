@@ -127,6 +127,14 @@ scenario_dependencies:
   source_output: EV_Cap
   sink: energy_supply_constrained
   sink_input: EV_Cap
+- source: biomass_waste_to_energy
+  source_output: biomass_feedstock
+  sink: energy_supply_constrained
+  sink_input: biomass_feedstock
+- source: biomass_waste_to_energy
+  source_output: municipal_waste
+  sink: energy_supply_constrained
+  sink_input: municipal_waste    
 description: Contains only energy supply wrapper with full data and full energy demand
   scenarios
 sector_models:
@@ -136,3 +144,4 @@ scenarios:
 - fuel_price
 - dummy_energy_demands_full
 - dummy_weather_inputs_full
+- biomass_waste_to_energy
