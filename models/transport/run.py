@@ -149,14 +149,11 @@ class BaseTransportWrapper(SectorModel):
         current_population['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
-            base_population['year'] = data_handle.base_timestep
-
             previous_population = data_handle.get_data("population").as_df().reset_index()
             previous_population['year'] = data_handle.previous_timestep
 
             population = pd.concat(
-                [base_population, previous_population, current_population]
+                [previous_population, current_population]
             )
         else:
             population = current_population
@@ -176,14 +173,11 @@ class BaseTransportWrapper(SectorModel):
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            base_gva = data_handle.get_base_timestep_data("gva").as_df().reset_index()
-            base_gva['year'] = data_handle.base_timestep
-
             previous_gva = data_handle.get_previous_timestep_data("gva").as_df().reset_index()
             previous_gva['year'] = data_handle.previous_timestep
 
             gva = pd.concat(
-                [base_gva, previous_gva, current_gva]
+                [previous_gva, current_gva]
             )
         else:
             gva = current_gva
