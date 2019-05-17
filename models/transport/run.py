@@ -145,18 +145,21 @@ class BaseTransportWrapper(SectorModel):
         self._set_engine_fractions(data_handle)
 
     def _set_population(self, data_handle):
-        base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
-        base_population['year'] = data_handle.base_timestep
+        current_population = data_handle.get_data("population").as_df().reset_index()
+        current_population['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            current_population = data_handle.get_data("population").as_df().reset_index()
-            current_population['year'] = data_handle.current_timestep
+            base_population = data_handle.get_base_timestep_data("population").as_df().reset_index()
+            base_population['year'] = data_handle.base_timestep
+
+            previous_population = data_handle.get_data("population").as_df().reset_index()
+            previous_population['year'] = data_handle.previous_timestep
 
             population = pd.concat(
-                [base_population, current_population]
+                [base_population, previous_population, current_population]
             )
         else:
-            population = base_population
+            population = current_population
 
         population.population = population.population.astype(int)
         # use region dimension name (could change) for columns
@@ -169,17 +172,18 @@ class BaseTransportWrapper(SectorModel):
         population.to_csv(population_filepath)
 
     def _set_gva(self, data_handle):
-        current_da = data_handle.get_data("gva")
-        current_gva = current_da.as_df().reset_index()
+        current_gva = data_handle.get_data("gva").as_df().reset_index()
         current_gva['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            base_da = data_handle.get_base_timestep_data("gva")
-            base_gva = base_da.as_df().reset_index()
+            base_gva = data_handle.get_base_timestep_data("gva").as_df().reset_index()
             base_gva['year'] = data_handle.base_timestep
 
+            previous_gva = data_handle.get_previous_timestep_data("gva").as_df().reset_index()
+            previous_gva['year'] = data_handle.previous_timestep
+
             gva = pd.concat(
-                [base_gva, current_gva]
+                [base_gva, previous_gva, current_gva]
             )
         else:
             gva = current_gva
