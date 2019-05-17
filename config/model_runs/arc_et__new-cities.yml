@@ -10,8 +10,15 @@ scenarios:
   link_travel_time: default
   engine_type_fractions: baseline
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
-narratives: {}
-strategies: []
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+narratives:
+  operation_mode:
+  - central
+strategies: 
+  - type: pre-specified-planning
+    description: 'A multi-vector world, but default centralised operation'
+    filename: ../energy_supply/strategies/multi_vector.csv
+    model_name: energy_supply_constrained
 timesteps:
   - 2015
   - 2020
