@@ -159,6 +159,12 @@ parameters:
   dtype: float
 # -----------------------------------------------
 inputs:
+- name: floor_area
+  unit: meter**2
+  dims:
+  - lad_uk_2016
+  - residential_or_non
+  dtype: float
 - name: t_min
   unit: Degree Celcius
   dims:
