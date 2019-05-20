@@ -1,0 +1,12 @@
+name: arc_etmod-only__new-cities
+stamp: '2019-05-14'
+description: Arc Energy-Transport New Cities
+sos_model: et_module
+scenarios:
+  ev_transport_trips: arc_new-cities
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
