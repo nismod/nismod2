@@ -148,3 +148,7 @@ provision/cache/*
 # Water supply
 models/water_supply/nodal
 models/water_supply/exe
+
+# Ignore images
+*.png 
+*.jpg
