@@ -49,30 +49,30 @@ variants:
   - name: itrc_baseline16
     description: Baseline scenario used in ITRC NNA analysis
     data:
-      dwellings: not_provided
-      floor_area: not_provided
-      employment: not_provided
-      gva: not_provided
+      dwellings: socio-economic/arc_dwellings__baseline.csv
+      floor_area: socio-economic/arc_floor_area__baseline.csv
+      employment: socio-economic/arc_gva_employment__baseline.csv
+      gva: socio-economic/arc_gva_employment__baseline.csv
       gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
       gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
       population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
   - name: itrc_high-dcc
     description: High scenario used in ITRC analysis
     data:
-      dwellings: not_provided
-      floor_area: not_provided
-      employment: not_provided
-      gva: not_provided
+      dwellings: socio-economic/arc_dwellings__baseline.csv
+      floor_area: socio-economic/arc_floor_area__baseline.csv
+      employment: socio-economic/arc_gva_employment__baseline.csv
+      gva: socio-economic/arc_gva_employment__baseline.csv
       gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
       population: population/pop-d_econ-c_fuel-c/population__lad.csv
   - name: itrc_low-fcc
     description: Low scenario used in ITRC analysis
     data:
-      dwellings: not_provided
-      floor_area: not_provided
-      employment: not_provided
-      gva: not_provided
+      dwellings: socio-economic/arc_dwellings__baseline.csv
+      floor_area: socio-economic/arc_floor_area__baseline.csv
+      employment: socio-economic/arc_gva_employment__baseline.csv
+      gva: socio-economic/arc_gva_employment__baseline.csv
       gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
       population: population/pop-f_econ-c_fuel-c/population__lad.csv

@@ -474,6 +474,10 @@ model_dependencies:
     sink: energy_supply_constrained
     sink_input: hydrogen_non_heat_eh
 scenario_dependencies:
+  - sink: energy_demand_constrained
+    sink_input: floor_area
+    source: socio-economic
+    source_output: floor_area
   - source: fuel_price
     source_output: energy_supply_price
     sink: energy_supply_constrained

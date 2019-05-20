@@ -275,10 +275,18 @@ class EDWrapper(SectorModel):
         # ------------------------------------------------
         data['scenario_data'] = defaultdict(dict)
         data['scenario_data']['gva_industry'] = defaultdict(dict)
+        data['scenario_data']['floor_area'] = defaultdict(dict)
 
         pop_array_by = data_handle.get_base_timestep_data('population')
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head')
         data['regions'] = pop_array_by.spec.dim_coords(region_set_name).ids
+
+        # Floor area and service building count inputs (not from virtual dwelling stock)
+        floor_area_curr = data_handle.get_base_timestep_data('floor_area').as_ndarray()
+        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
+        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
+        data['service_building_count'] = {}
+        data['service_building_count'][curr_yr] = []
 
         data['scenario_data']['population'][curr_yr] = self._assign_array_to_dict(pop_array_by.as_ndarray(), data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = self._assign_array_to_dict(gva_array_by.as_ndarray(), data['regions'])
@@ -301,6 +309,8 @@ class EDWrapper(SectorModel):
 
         # Update variables
         data['assumptions'].update('strategy_vars', strategy_vars)
+        data['assumptions'].update("rs_regions_without_floorarea", {}) #TODO
+        data['assumptions'].update("ss_regions_without_floorarea", {})  #TODO
 
         technologies = general_assumptions.update_technology_assumption(
             data['assumptions'].technologies,
@@ -382,6 +392,8 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         data['scenario_data'] = defaultdict(dict)
         data['scenario_data']['gva_industry'] = defaultdict(dict)
+        data['scenario_data']['rs_floorarea'] = defaultdict(dict)
+        data['scenario_data']['ss_floorarea'] = defaultdict(dict)
 
         pop_array_by = data_handle.get_base_timestep_data('population')
         gva_array_by = data_handle.get_base_timestep_data('gva_per_head').as_ndarray()
@@ -393,6 +405,15 @@ class EDWrapper(SectorModel):
         data['scenario_data']['gva_per_head'][base_yr] = self._assign_array_to_dict(gva_array_by, data['regions'])
         data['scenario_data']['gva_industry'][base_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
+        floor_area_base = data_handle.get_base_timestep_data('floor_area').as_ndarray()
+        data['scenario_data']['rs_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 0], data['regions'])
+        data['scenario_data']['ss_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 1], data['regions'])
+
+        floor_area_curr = data_handle.get_data('floor_area').as_ndarray()
+
+        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
+        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
+    
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------

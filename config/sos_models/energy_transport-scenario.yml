@@ -504,6 +504,10 @@ model_dependencies:
     sink: energy_supply_constrained
     sink_input: elec_trans
 scenario_dependencies:
+  - sink: energy_demand_constrained
+    sink_input: floor_area
+    source: socio-economic
+    source_output: floor_area
   - source: ev_transport_trips
     source_output: electric_vehicle_electricity_consumption
     sink: convert_regions_tr_to_es
