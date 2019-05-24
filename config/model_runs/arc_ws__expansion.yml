@@ -3,7 +3,9 @@ stamp: '2019-05-14'
 description: Arc Water Supply Expansion
 sos_model: water_supply_only
 scenarios: {}
-narratives: {}
+narratives:
+  virtual_dw_stock:
+  - load_in_directly
 strategies: []
 timesteps:
   - 2015

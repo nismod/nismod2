@@ -5,6 +5,11 @@ classname: EDWrapper
 initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
+- description: Dwelling stock type or read in floor area directly
+  default: ../energy_demand/parameters/virtual_dw_stock.csv
+  name: virtual_dw_stock
+  unit: ''
+  dtype: float
 - description: Mode of model
   default: ../energy_demand/parameters/mode_constrained.csv
   name: mode

@@ -54,6 +54,19 @@ class EDWrapper(SectorModel):
             mode_out = False
         return mode_out
 
+    def _get_virtual_dw_stock(self, data_handle):
+        """Get virtual dwellig stock criteria ( if floor area is read in directly or not)
+        """
+        param_raw_series = data_handle.get_parameter('virtual_dw_stock').as_df()
+        df_raw = self._series_to_df(param_raw_series, 'virtual_dw_stock')
+        mode = int(df_raw['virtual_dw_stock'][0])
+
+        if mode == 1:
+            mode_out = True
+        if mode == 0:
+            mode_out = False
+        return mode_out
+
     def _get_working_dir(self):
         """Get path
         """
@@ -238,6 +251,9 @@ class EDWrapper(SectorModel):
         # Replace constrained | unconstrained mode from narrative
         mode = self._get_mode(data_handle)
         config['CRITERIA']['mode_constrained'] = mode
+
+        virtual_building_stock_criteria = mode = self._get_virtual_dw_stock(data_handle)
+        config['CRITERIA']['virtual_building_stock_criteria'] = virtual_building_stock_criteria
 
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)

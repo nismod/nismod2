@@ -4,7 +4,9 @@ description: Arc Digital Expansion
 sos_model: digital_comms_fixed_only
 scenarios:
   adoption: fttp_baseline_adoption
-narratives: {}
+narratives:
+  virtual_dw_stock:
+  - load_in_directly
 strategies: []
 timesteps:
   - 2015

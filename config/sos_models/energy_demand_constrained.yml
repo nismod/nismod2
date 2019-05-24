@@ -31,4 +31,15 @@ scenario_dependencies:
   sink_input: t_max
   source: temperature
   source_output: t_max
-narratives: []
+narratives: 
+  - name: virtual_dw_stock
+    description: Virutal dwelling stock mode
+    variants:
+      - name: load_in_directly
+        description: Loads in floor area directly
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_false.csv      
+      - name: virtual_stock
+        description: Creates virtual stock
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_true.csv     
