@@ -9,7 +9,7 @@ parameters:
   default: ../energy_demand/parameters/virtual_dw_stock.csv
   name: virtual_dw_stock
   unit: ''
-  dtype: float
+  dtype: bool
 - description: Mode of model
   default: ../energy_demand/parameters/mode_constrained.csv
   name: mode

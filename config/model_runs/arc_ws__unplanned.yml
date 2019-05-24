@@ -3,9 +3,7 @@ stamp: '2019-05-14'
 description: Arc Water Supply Unplanned
 sos_model: water_supply_only
 scenarios: {}
-narratives:
-  virtual_dw_stock:
-  - load_in_directly
+narratives: {}
 strategies: []
 timesteps:
   - 2015
