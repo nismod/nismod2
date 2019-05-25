@@ -552,6 +552,7 @@ def build_generator(plants, current_timestep):
                           'hydro': 5,
                           'oil': 6,
                           'ocgt (flexible generation)': 7,
+                          'gas ccs' : 8,
                           'biomass': 10,
                           'interconnector': 11,
                           'chp gas': 13,

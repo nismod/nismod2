@@ -679,3 +679,15 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: e_uc
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_gas_ccs
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float  
