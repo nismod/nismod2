@@ -157,7 +157,7 @@ class EnergySupplyWrapper(SectorModel):
         write_prices(fuel_prices, data.current_timestep)
 
         # inputs with just region
-        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste']
+        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste','elec_int']
         for param_name in param_name_annual :
             param_data = data.get_data(param_name)
             write_input_annual(param_data, param_name, data.current_timestep)
@@ -614,6 +614,24 @@ def build_generator(plants, current_timestep):
                     current_timestep,
                     float(plant['build_year']) + lifetime,
                     plant['sys_layer']
+                    )
+
+        elif plant_type == 11:
+
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "BusNum",
+                    "MinPower", "MaxPower", "Year", "Retire", "SysLayer","Inter_conn")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer'],
+                    plant['to_location']
                     )
 
         else:

@@ -164,6 +164,11 @@ inputs:
     - energy_hub
     unit: kg
     dtype: float
+  - name: elec_int
+    dims:
+    - elec_intercon_countries
+    unit: £/MW
+    dtype: float
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
@@ -235,7 +240,13 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: tran_interconnector
+  - name: tran_int_import
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_int_export
     dims:
     - bus_bars
     - seasonal_week
