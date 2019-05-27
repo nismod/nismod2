@@ -9,6 +9,7 @@ scenarios:
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   ev_transport_trips: electricworld
   biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices : average_annual_prices
 narratives:
   load_shedding:
   - high_cost
