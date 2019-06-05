@@ -1,0 +1,12 @@
+name: arc_etmod-only__expansion
+stamp: '2019-05-14'
+description: Arc Energy-Transport Expansion
+sos_model: et_module
+scenarios:
+  ev_transport_trips: arc_expansion
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
