@@ -165,7 +165,7 @@ outputs:
 # Parameters-----------------------------------------------
 parameters:
 - description: Dwelling stock type or read in floor area directly
-  default: ../energy_demand/parameters/virtual_dw_stock.csv
+  default: .../../data/energy_demand/narratives/virtual_stock_true.csv
   name: virtual_dw_stock
   unit: ''
   dtype: float
