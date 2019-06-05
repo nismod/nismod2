@@ -27,11 +27,12 @@ user_defined_weather_by = 2015
 [CRITERIA]
 cluster_calc = False
 mode_constrained = True
+virtual_building_stock_criteria = True # If floor area is read, this should be False
 write_out_national = False
 reg_selection = False
 MSOA_crit = False
 reg_selection_csv_name = msoa_regions_ed.csv
-spatial_calibration = False
+spatial_calibration = True
 write_txt_additional_results = True
 validation_criteria = True
 plot_crit = False
