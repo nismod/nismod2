@@ -12,6 +12,8 @@ scenarios:
 narratives:
   operation_mode:
   - central
+  virtual_dw_stock:
+  - load_in_directly
 strategies:
   - type: pre-specified-planning
     description: 'A multi-vector world, but default centralised operation'

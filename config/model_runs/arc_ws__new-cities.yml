@@ -3,6 +3,7 @@ stamp: '2019-05-14'
 description: Arc Water Supply New Cities
 sos_model: water_supply_only
 scenarios: {}
+narratives: {}
 strategies: []
 timesteps:
   - 2015

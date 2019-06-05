@@ -14,6 +14,8 @@ scenarios:
 narratives: 
   operation_mode:
   - central
+  virtual_dw_stock:
+  - load_in_directly
 strategies: 
   - type: pre-specified-planning
     description: 'electric world development, default centralised operation'

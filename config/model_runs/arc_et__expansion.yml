@@ -14,6 +14,8 @@ scenarios:
 narratives: 
   operation_mode:
   - decentral
+  virtual_dw_stock:
+  - load_in_directly
 strategies:
   - type: pre-specified-planning
     description: 'electric world development, decentral operation allowing expansion'
