@@ -190,6 +190,12 @@ outputs:
     - seasonal_week
     unit: mcm
     dtype: float
+  - name: gas_shale
+    dims:
+    - national
+    - seasonal_week
+    unit: mcm
+    dtype: float
   - name: gas_storage_level
     dims:
     - energy_hub
