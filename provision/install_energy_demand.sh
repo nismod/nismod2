@@ -27,7 +27,8 @@ user_defined_weather_by = 2015
 [CRITERIA]
 cluster_calc = False
 mode_constrained = True
-virtual_building_stock_criteria = True # If floor area is read, this should be False
+# If floor area is read from a scenario, virtual_building_stock_criteria should be False
+virtual_building_stock_criteria = True
 write_out_national = False
 reg_selection = False
 MSOA_crit = False
