@@ -1,0 +1,50 @@
+name: rail_southampton
+description: Test model for rail
+sector_models:
+  - rail_southampton
+  - extract_southampton_scenarios
+scenarios:
+  - socio-economic
+  - fuel_price
+  - link_travel_time
+  - engine_type_fractions
+narratives: []
+scenario_dependencies:
+  - source: socio-economic
+    source_output: population
+    sink: extract_southampton_scenarios
+    sink_input: population
+  - source: socio-economic
+    source_output: gva_per_head
+    sink: extract_southampton_scenarios
+    sink_input: gva
+  - source: fuel_price
+    source_output: fuel_price
+    sink: transport_southampton
+    sink_input: fuel_price
+  - source: fuel_price
+    source_output: fuel_price_electricity
+    sink: transport_southampton
+    sink_input: fuel_price_electricity
+  - source: link_travel_time
+    source_output: link_travel_time
+    sink: transport_southampton
+    sink_input: link_travel_time
+  - source: engine_type_fractions
+    source_output: engine_type_fractions
+    sink: transport_southampton
+    sink_input: engine_type_fractions
+model_dependencies:
+  - source: extract_southampton_scenarios
+    source_output: population
+    sink: transport_southampton
+    sink_input: population
+  - source: extract_southampton_scenarios
+    source_output: gva
+    sink: transport_southampton
+    sink_input: gva
+  - source: transport_southampton
+    source_output: link_travel_time
+    sink: transport_southampton
+    sink_input: link_travel_time
+    timestep: PREVIOUS  # dependency on own outputs from previous timestep

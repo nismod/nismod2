@@ -1,0 +1,17 @@
+name: rail_southampton_test
+description: Small baseline rail model run for testing
+sos_model: transport_southampton
+timesteps: [2015, 2020]
+scenarios:
+  socio-economic: itrc_baseline16
+  fuel_price: baseline
+  link_travel_time: default
+  engine_type_fractions: test
+narratives: {}
+decision_module: []
+strategies:
+  - type: pre-specified-planning
+    description: test interventions
+    filename: transport_test.csv
+    model_name: rail_southampton
+stamp: ''
