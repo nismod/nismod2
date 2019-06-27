@@ -1,6 +1,6 @@
 name: rail_southampton_test
 description: Small baseline rail model run for testing
-sos_model: transport_southampton
+sos_model: rail_southampton
 timesteps: [2015, 2020]
 scenarios:
   socio-economic: itrc_baseline16
