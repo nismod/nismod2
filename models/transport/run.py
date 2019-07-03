@@ -96,17 +96,19 @@ class BaseTransportWrapper(SectorModel):
             self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
-            arguments.append('-b')
-            try:
-                self.logger.debug(arguments)
-                output = check_output(arguments)
-                self.logger.info(output.decode("utf-8"))
-            except CalledProcessError as ex:
-                self.logger.error(ex.output.decode("utf-8"))
-                self.logger.exception("Transport model failed %s", ex)
-                raise ex
+            # arguments.append('-b')
+            # try:
+            #     self.logger.debug(arguments)
+            #     output = check_output(arguments)
+            #     self.logger.info(output.decode("utf-8"))
+            # except CalledProcessError as ex:
+            #     self.logger.error(ex.output.decode("utf-8"))
+            #     self.logger.exception("Transport model failed %s", ex)
+            #     raise ex
+            pass
         else:
-            for switch  in ['-road', '-rail']:
+            #for switch  in ['-road', '-rail']:
+            for switch  in ['-rail']:
                 tspt_model_arguments = arguments + [
                     switch,
                     str(data_handle.current_timestep),
