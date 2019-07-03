@@ -1,0 +1,12 @@
+name: water_demand_only
+description: Future water demand for UK
+sector_models: # Select 1 or more of the sector models
+- water_demand
+scenarios: []    # Select 0 or more of the scenario sets
+narratives: []
+scenario_dependencies:
+- source: water_demand_populations
+  source_output: population
+  sink: water_demand
+  sink_input: population
+model_dependencies: []
