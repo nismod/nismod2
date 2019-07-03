@@ -88,6 +88,7 @@ class BaseTransportWrapper(SectorModel):
 
         self.logger.info("FROM run.py: Running transport model")
         arguments = ['java'] + self._optional_args + [
+            '-XX:MaxHeapSize=10g',
             '-cp',
             path_to_jar,
             'nismod.transport.App',
@@ -96,21 +97,29 @@ class BaseTransportWrapper(SectorModel):
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
             arguments.append('-b')
+            try:
+                self.logger.debug(arguments)
+                output = check_output(arguments)
+                self.logger.info(output.decode("utf-8"))
+            except CalledProcessError as ex:
+                self.logger.error(ex.output.decode("utf-8"))
+                self.logger.exception("Transport model failed %s", ex)
+                raise ex
         else:
-            arguments.extend([
-                '-road',
-                str(data_handle.current_timestep),
-                str(data_handle.previous_timestep)
-            ])
-
-        try:
-            self.logger.debug(arguments)
-            output = check_output(arguments)
-            self.logger.info(output.decode("utf-8"))
-        except CalledProcessError as ex:
-            self.logger.error(ex.output.decode("utf-8"))
-            self.logger.exception("Transport model failed %s", ex)
-            raise ex
+            for switch  in ['-road', '-rail']:
+                tspt_model_arguments = arguments + [
+                    switch,
+                    str(data_handle.current_timestep),
+                    str(data_handle.previous_timestep)
+                ]
+                try:
+                    self.logger.debug(tspt_model_arguments)
+                    output = check_output(tspt_model_arguments)
+                    self.logger.info(output.decode("utf-8"))
+                except CalledProcessError as ex:
+                    self.logger.error(ex.output.decode("utf-8"))
+                    self.logger.exception("Transport model failed %s", ex)
+                    raise ex
 
     def _input_dimension_names(self, input_name, dimension_name):
         return self.inputs[input_name].dim_coords(dimension_name).ids
@@ -251,6 +260,7 @@ class BaseTransportWrapper(SectorModel):
 
         intervention_files = []
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
+            print(intervention)
             fname = self._write_intervention(intervention)
             intervention_files.append("interventionFile{} = {}".format(i, fname))
 
