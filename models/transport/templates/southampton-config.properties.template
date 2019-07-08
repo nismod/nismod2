@@ -75,7 +75,7 @@ defaultLinkTravelTimeFile = $relative_path/data/csvfiles/linkTravelTimes.csv
 ######################
 
 #base year passenger rail demand
-baseYearRailStationUsageFile = $relative_path/data/csvfiles/baseYearRailUsage.csv
+baseYearRailStationUsageFile = $relative_path/data/csvfiles/baseYearRailUsageFastTrack.csv
 #rail station journey fares file
 railStationJourneyFaresFile =  $relative_path/data/csvfiles/railStationJourneyFares.csv
 #rail station generalised journey times file
