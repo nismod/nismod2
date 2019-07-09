@@ -1,6 +1,6 @@
 name: transport_southampton
 description: Transport model for Southampton and neighbouring LADs
-path: ./models/transport/run.py
+path: ./models/transport/run_rail_only.py
 classname: SouthamptonTransportWrapper
 inputs:
   - name: population
