@@ -8,7 +8,7 @@ scenarios:
 narratives: []
 model_dependencies: []
 scenario_dependencies:
-- sink: energy_demand_constrained
+- sink: energy_demand_unconstrained
   sink_input: floor_area
   source: socio-economic
   source_output: floor_area
