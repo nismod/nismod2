@@ -23,6 +23,7 @@ scenarios:
   - engine_type_fractions
   - dummy_weather_inputs_full
   - biomass_waste_to_energy
+  - elec_interconnector_prices
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -611,6 +612,10 @@ scenario_dependencies:
     source_output: municipal_waste
     sink: energy_supply_constrained
     sink_input: municipal_waste
+  - source: elec_interconnector_prices
+    source_output: elec_int
+    sink: energy_supply_constrained
+    sink_input: elec_int
 narratives:
   - name: operation_mode
     description: operation mode for energy supply system

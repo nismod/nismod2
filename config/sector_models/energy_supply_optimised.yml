@@ -89,6 +89,32 @@ inputs:
       - seasonal_week
     unit: W/m2
     dtype: float
+  - name: EV_Cap
+    dims:
+    - energy_hub
+    unit: MW
+    dtype: float
+  - name: elec_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: biomass_feedstock
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: municipal_waste
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: elec_int
+    dims:
+    - elec_intercon_countries
+    unit: £/MW
+    dtype: float  
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
@@ -117,6 +143,18 @@ interventions:
   - ../energy_supply/interventions/full/es_gasterminals.csv
   - ../energy_supply/interventions/full/es_generators.csv
   - ../energy_supply/interventions/full/es_heattech.csv
+  - ../energy_supply/interventions/electric_world/es_elec_network.csv
+  - ../energy_supply/interventions/electric_world/es_gaspipes.csv
+  - ../energy_supply/interventions/electric_world/es_gasstorage.csv
+  - ../energy_supply/interventions/electric_world/es_gasterminals.csv
+  - ../energy_supply/interventions/electric_world/es_generators.csv
+  - ../energy_supply/interventions/electric_world/es_heattech.csv
+  - ../energy_supply/interventions/multi_vector/es_elec_network.csv
+  - ../energy_supply/interventions/multi_vector/es_gaspipes.csv
+  - ../energy_supply/interventions/multi_vector/es_gasstorage.csv
+  - ../energy_supply/interventions/multi_vector/es_gasterminals.csv
+  - ../energy_supply/interventions/multi_vector/es_generators.csv
+  - ../energy_supply/interventions/multi_vector/es_heattech.csv
 outputs:
   - name: tran_gas_fired
     dims:
@@ -148,7 +186,13 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: tran_interconnector
+  - name: tran_int_import
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_int_export
     dims:
     - bus_bars
     - seasonal_week
@@ -185,6 +229,12 @@ outputs:
     unit: mcm
     dtype: float
   - name: gas_interconnector
+    dims:
+    - national
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: gas_shale
     dims:
     - national
     - seasonal_week
@@ -484,3 +534,123 @@ outputs:
     - seasonal_week
     unit: mcm
     dtype: float
+  - name: gas_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: gas_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_storage
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowin
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowout
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_tran_e_export
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: e_uc
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_gas_ccs
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float 

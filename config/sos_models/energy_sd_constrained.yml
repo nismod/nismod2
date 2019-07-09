@@ -16,6 +16,7 @@ scenarios:
   - dummy_weather_inputs_full
   - dummy_energy_demands_full
   - biomass_waste_to_energy
+  - elec_interconnector_prices
 model_dependencies:
   # from energy demand to aggregation
   - source: energy_demand_constrained
@@ -534,6 +535,10 @@ scenario_dependencies:
     source_output: municipal_waste
     sink: energy_supply_constrained
     sink_input: municipal_waste
+  - source: elec_interconnector_prices
+    source_output: elec_int
+    sink: energy_supply_constrained
+    sink_input: elec_int
 narratives:
   - name: load_shedding
     description: Costs of shedding load

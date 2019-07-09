@@ -1,7 +1,7 @@
-name: energy_transport-scenario
+name: energy_transport-scenario-unconstrained
 stamp: '2019-04-23'
-description: 'Test model run for energy (supply-demand constrained) and et_module with transport energy demand scenario'
-sos_model: energy_transport-scenario
+description: 'Test model run for energy (supply-demand unconstrained) and et_module with transport energy demand scenario'
+sos_model: energy_transport-scenario-unconstrained
 scenarios:
   fuel_price: baseline
   socio-economic: itrc_baseline16

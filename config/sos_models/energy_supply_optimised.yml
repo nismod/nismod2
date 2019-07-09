@@ -1,18 +1,42 @@
 name: energy_supply_optimised
+description: Contains only energy supply wrapper with full data and full energy demand
+  scenarios
+sector_models:
+- energy_supply_optimised
+model_dependencies: []
+scenarios:
+- fuel_price
+- dummy_energy_demands_full
+- dummy_weather_inputs_full
+- biomass_waste_to_energy
+- elec_interconnector_prices
 narratives:
-- variants:
-  - data:
-      LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
-      LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
-    description: very high cost load shedding
-    name: high_cost
-  sos_model: energy_supply_only
-  description: Costs of shedding load
-  name: load_shedding
-  provides:
-    energy_supply_optimised:
-    - LoadShed_elec
-    - LoadShed_gas
+  - name: load_shedding
+    description: Costs of shedding load
+    provides:
+      energy_supply_optimised:
+      - LoadShed_elec
+      - LoadShed_gas
+    variants:
+      - name: high_cost
+        description: very high cost load shedding
+        data:
+          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+  - name: operation_mode
+    description: operation mode for energy supply system
+    provides:
+      energy_supply_optimised:
+      - operation_mode
+    variants:
+      - name: decentral
+        decription: decentralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+      - name: central
+        decription: centralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
 scenario_dependencies:
 - source: fuel_price
   source_output: energy_supply_price
@@ -56,26 +80,37 @@ scenario_dependencies:
   sink_input: heatload_com
 - source: dummy_weather_inputs_full
   source_output: wind_speed_eh
-  sink: energy_supply_constrained
+  sink: energy_supply_optimised
   sink_input: wind_speed_eh
 - source: dummy_weather_inputs_full
   source_output: wind_speed_bus
-  sink: energy_supply_constrained
+  sink: energy_supply_optimised
   sink_input: wind_speed_bus
 - source: dummy_weather_inputs_full
   source_output: insolation_eh
-  sink: energy_supply_constrained
+  sink: energy_supply_optimised
   sink_input: insolation_eh
 - source: dummy_weather_inputs_full
   source_output: insolation_bus
-  sink: energy_supply_constrained
+  sink: energy_supply_optimised
   sink_input: insolation_bus
-description: Contains only energy supply wrapper with full data and full energy demand
-  scenarios
-sector_models:
-- energy_supply_optimised
-model_dependencies: []
-scenarios:
-- fuel_price
-- dummy_energy_demands_full
-- dummy_weather_inputs_full
+- source: dummy_energy_demands_full
+  source_output: elec_trans
+  sink: energy_supply_optimised
+  sink_input: elec_trans
+- source: dummy_energy_demands_full
+  source_output: EV_Cap
+  sink: energy_supply_optimised
+  sink_input: EV_Cap
+- source: biomass_waste_to_energy
+  source_output: biomass_feedstock
+  sink: energy_supply_optimised
+  sink_input: biomass_feedstock
+- source: biomass_waste_to_energy
+  source_output: municipal_waste
+  sink: energy_supply_optimised
+  sink_input: municipal_waste
+- source: elec_interconnector_prices
+  source_output: elec_int
+  sink: energy_supply_optimised
+  sink_input: elec_int 

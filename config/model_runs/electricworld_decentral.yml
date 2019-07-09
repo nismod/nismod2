@@ -1,14 +1,15 @@
 name: electricworld_decentral
 stamp: ''
 description: ''
-sos_model: energy_sd_constrained
+sos_model: energy_transport-scenario
 scenarios:
   fuel_price: es_prices_electric_world
   socio-economic: itrc_high-dcc
   temperature: NF1
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
-  dummy_energy_demands_full: es_energy_demand_dummy_full
+  ev_transport_trips: electricworld
   biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices : average_annual_prices
 narratives:
   load_shedding:
   - high_cost
@@ -31,6 +32,7 @@ strategies:
   - type: pre-specified-planning
     description: 'electric world'
     filename: ../energy_supply/strategies/electric_world.csv
+    model_name: energy_supply_constrained
 timesteps:
   - 2015
   - 2030

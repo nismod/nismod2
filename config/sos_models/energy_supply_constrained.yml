@@ -1,4 +1,15 @@
 name: energy_supply_constrained
+description: Contains only energy supply wrapper with full data and full energy demand
+  scenarios
+sector_models:
+- energy_supply_constrained
+model_dependencies: []
+scenarios:
+- fuel_price
+- dummy_energy_demands_full
+- dummy_weather_inputs_full
+- biomass_waste_to_energy
+- elec_interconnector_prices
 narratives:
   - name: load_shedding
     description: Costs of shedding load
@@ -134,14 +145,9 @@ scenario_dependencies:
 - source: biomass_waste_to_energy
   source_output: municipal_waste
   sink: energy_supply_constrained
-  sink_input: municipal_waste    
-description: Contains only energy supply wrapper with full data and full energy demand
-  scenarios
-sector_models:
-- energy_supply_constrained
-model_dependencies: []
-scenarios:
-- fuel_price
-- dummy_energy_demands_full
-- dummy_weather_inputs_full
-- biomass_waste_to_energy
+  sink_input: municipal_waste
+- source: elec_interconnector_prices
+  source_output: elec_int
+  sink: energy_supply_constrained
+  sink_input: elec_int   
+
