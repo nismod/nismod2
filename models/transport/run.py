@@ -96,7 +96,7 @@ class BaseTransportWrapper(SectorModel):
             self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
-            arguments.append('-b')
+            base_arguments.append('-b')
             try:
                 self.logger.debug(base_arguments)
                 output = check_output(base_arguments)
@@ -259,9 +259,17 @@ class BaseTransportWrapper(SectorModel):
             config = Template(template_fh.read())
 
         intervention_files = []
+        # Must be able to identify rail model interventions
+        # the key in the config.properties must be railInterventionsFileX instead of
+        # interventionsFilesX
+        # Next line must contain all possible types of rail interventions
+        rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
-            intervention_files.append("interventionFile{} = {}".format(i, fname))
+            if intervention['type'] in rail_interventions_types:
+                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+            else:
+                intervention_files.append("interventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,

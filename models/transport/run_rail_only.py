@@ -75,8 +75,8 @@ class BaseTransportWrapper(SectorModel):
         self._set_parameters(data)
         self._set_inputs(data)
         self._set_properties(data)
-        self._run_model_subprocess(data)
-        self._set_outputs(data)
+#        self._run_model_subprocess(data)
+#        self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -144,7 +144,6 @@ class BaseTransportWrapper(SectorModel):
 
     def _set_population(self, data_handle):
         current_population = data_handle.get_data("population").as_df().reset_index()
-        print(current_population)
         current_population['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
@@ -201,9 +200,13 @@ class BaseTransportWrapper(SectorModel):
             config = Template(template_fh.read())
 
         intervention_files = []
+        rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
-            intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+            if intervention['type'] in rail_interventions_types:
+                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+            else:
+                intervention_files.append("interventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
