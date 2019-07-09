@@ -222,6 +222,9 @@ bash -x $base_path/provision/install_et_module.sh $base_path
 bash -x $base_path/provision/get_data_water_supply.sh $base_path
 bash -x $base_path/provision/install_water_supply.sh $base_path
 
+# Water demand
+bash -x $base_path/provision/install_water_demand.sh $base_path
+
 
 #
 # User config

@@ -242,6 +242,7 @@ bash ./provision/install_energy_demand.sh .
 bash ./provision/install_energy_supply.sh . ./path/to/xpress_install_dir
 bash ./provision/install_transport.sh .
 bash ./provision/install_water_supply.sh .
+bash ./provision/install_water_demand.sh .
 ```
 
 Run post-install scripts:

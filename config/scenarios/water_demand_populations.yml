@@ -1,0 +1,14 @@
+name: water_demand_populations
+description: Population numbers for water demand
+provides:
+  - name: population
+    description: Population of GB
+    dims:
+    - water_demand_population_areas
+    dtype: int
+    unit: people
+variants:
+  - name: actual
+    description: Population of GB
+    data:
+      population: water_demand/population.csv
