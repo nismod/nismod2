@@ -87,7 +87,7 @@ class BaseTransportWrapper(SectorModel):
         path_to_jar = self._jar_path
 
         self.logger.info("FROM run.py: Running transport model")
-        arguments = ['java'] + self._optional_args + [
+        base_arguments = ['java'] + self._optional_args + [
             '-XX:MaxHeapSize=10g',
             '-cp',
             path_to_jar,
@@ -96,20 +96,18 @@ class BaseTransportWrapper(SectorModel):
             self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
-            # arguments.append('-b')
-            # try:
-            #     self.logger.debug(arguments)
-            #     output = check_output(arguments)
-            #     self.logger.info(output.decode("utf-8"))
-            # except CalledProcessError as ex:
-            #     self.logger.error(ex.output.decode("utf-8"))
-            #     self.logger.exception("Transport model failed %s", ex)
-            #     raise ex
-            pass
+            arguments.append('-b')
+            try:
+                self.logger.debug(base_arguments)
+                output = check_output(base_arguments)
+                self.logger.info(output.decode("utf-8"))
+            except CalledProcessError as ex:
+                self.logger.error(ex.output.decode("utf-8"))
+                self.logger.exception("Transport model failed %s", ex)
+                raise ex
         else:
-            #for switch  in ['-road', '-rail']:
-            for switch  in ['-rail']:
-                tspt_model_arguments = arguments + [
+            for switch in ['-road', '-rail']:
+                tspt_model_arguments = base_arguments + [
                     switch,
                     str(data_handle.current_timestep),
                     str(data_handle.previous_timestep)
@@ -262,7 +260,6 @@ class BaseTransportWrapper(SectorModel):
 
         intervention_files = []
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
-            print(intervention)
             fname = self._write_intervention(intervention)
             intervention_files.append("interventionFile{} = {}".format(i, fname))
 
@@ -302,6 +299,7 @@ class BaseTransportWrapper(SectorModel):
                 self._working_dir, 'data', 'csvfiles', cccp_filename
             )
 
+        print('Now writing {}'.format(path))
         with open(path, 'w') as file_handle:
             for key, value in intervention.items():
                 file_handle.write("{} = {}\n".format(key, value))
