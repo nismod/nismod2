@@ -209,6 +209,12 @@ interventions:
   - ../energy_supply/interventions/multi_vector/es_gasterminals.csv
   - ../energy_supply/interventions/multi_vector/es_generators.csv
   - ../energy_supply/interventions/multi_vector/es_heattech.csv
+  - ../energy_supply/interventions/net_zero/es_elec_network.csv
+  - ../energy_supply/interventions/net_zero/es_gaspipes.csv
+  - ../energy_supply/interventions/net_zero/es_gasstorage.csv
+  - ../energy_supply/interventions/net_zero/es_gasterminals.csv
+  - ../energy_supply/interventions/net_zero/es_generators.csv
+  - ../energy_supply/interventions/net_zero/es_heattech.csv
 outputs:
   - name: tran_gas_fired
     dims:
@@ -707,4 +713,40 @@ outputs:
     - bus_bars
     - seasonal_week
     unit: MW
-    dtype: float  
+    dtype: float
+  - name: tran_oil
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oil
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_hp
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_gb
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_resistive_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oilboiler_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
