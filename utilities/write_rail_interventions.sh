@@ -6,11 +6,11 @@ if [ -f $inputFile ]; then
     rm -i $outputInterventionFile
 fi
 first_columns=name,type,technical_lifetime_value,techinal_lifetime_units,
-echo $first_columns$(head -1 $inputFile) > $outputInterventionFile
+echo $first_columns$(head -1 $inputFile | cut -d, -f1-6,9-12) > $outputInterventionFile
 
 nbLines=$(wc -l $inputFile | cut -d' ' -f1)
 for line in $(tail -$(($nbLines-1)) $inputFile)
 do
     name=new$(echo $line | cut -d, -f3)
-    echo $name,NewRailStation,100,y,$line >> $outputInterventionFile
+    echo $name,NewRailStation,100,y,$(echo $line | cut -d, -f1-6,9-12) >> $outputInterventionFile
 done
