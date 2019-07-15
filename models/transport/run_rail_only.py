@@ -272,16 +272,8 @@ class BaseTransportWrapper(SectorModel):
         dataarray = DataArray.from_df(spec, dataframe)
         return dataarray.data
 
-
-class TransportWrapper(BaseTransportWrapper):
-    """Wrap the transport model, in 'full' configuration
+class SouthamptonRailTransportWrapper(BaseTransportWrapper):
+    """Wrap the rail model, in 'southampton' configuration
     """
-    _config_filename = 'run_config_full.ini'
-    _template_filename = 'gb-config.properties.template'
-
-
-class SouthamptonTransportWrapper(BaseTransportWrapper):
-    """Wrap the transport model, in 'southampton' configuration
-    """
-    _config_filename = 'run_config_southampton.ini'
-    _template_filename = 'southampton-config.properties.template'
+    _config_filename = 'run_config_rail_southampton.ini'
+    _template_filename = 'rail_southampton-config.properties.template'
