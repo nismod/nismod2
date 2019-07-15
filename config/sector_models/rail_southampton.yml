@@ -1,6 +1,6 @@
 name: rail_southampton
 description: Transport rail model for Southampton and neighbouring LADs
-path: ./models/transport/run_rail.py
+path: ./models/transport/run_rail_only.py
 classname: SouthamptonRailTransportWrapper
 inputs:
   - name: population
@@ -12,12 +12,6 @@ inputs:
     dims:
       - lad_southampton
     unit: GBP
-    dtype: float
-outputs:
-  - name: predicted_rail_demand
-    dims:
-      - stations
-    unit: l
     dtype: float
 parameters:
   - name: POPULATION_ETA
