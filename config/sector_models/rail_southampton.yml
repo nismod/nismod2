@@ -13,6 +13,13 @@ inputs:
       - lad_southampton
     unit: GBP
     dtype: float
+outputs:
+  - name: energy_consumption
+    dims:
+      - annual_day
+      - transport_fuel_type
+    unit: l
+    dtype: float
 parameters:
   - name: POPULATION_ETA
     description: Population elasticity for passenger demand

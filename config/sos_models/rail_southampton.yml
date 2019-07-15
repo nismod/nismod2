@@ -18,9 +18,9 @@ scenario_dependencies:
 model_dependencies:
   - source: extract_southampton_scenarios
     source_output: population
-    sink: transport_southampton
+    sink: rail_southampton
     sink_input: population
   - source: extract_southampton_scenarios
     source_output: gva
-    sink: transport_southampton
+    sink: rail_southampton
     sink_input: gva

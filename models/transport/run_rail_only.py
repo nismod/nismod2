@@ -124,8 +124,6 @@ class BaseTransportWrapper(SectorModel):
         variables = ['POPULATION', 'GVA', 'TIME', 'COST']
         types = {
             'ETA': os.path.join(input_dir, 'elasticities.csv'),
-            'FREIGHT_ETA': os.path.join(
-                input_dir, 'elasticitiesFreight.csv')
         }
         for suffix, filename in types.items():
             with open(filename, 'w') as file_handle:
@@ -211,14 +209,10 @@ class BaseTransportWrapper(SectorModel):
         config_str = config.substitute({
             'relative_path': working_dir_path,
             'intervention_files': '\n'.join(intervention_files),
-            'link_travel_time_averaging_weight': \
-                float(data_handle.get_parameter('link_travel_time_averaging_weight').data),
-            'assignment_iterations': \
-                int(data_handle.get_parameter('assignment_iterations').data),
-            'prediction_iterations': \
-                int(data_handle.get_parameter('prediction_iterations').data),
-            'use_route_choice_model': \
-                bool(data_handle.get_parameter('use_route_choice_model').data),
+            'use_car_cost_from_road_model': \
+                bool(data_handle.get_parameter('use_car_cost_from_road_model').data),
+            'predict_intermediate_rail_years': \
+                bool(data_handle.get_parameter('predict_intermediate_rail_years').data),
         })
 
         with open(self._config_path, 'w') as template_fh:
