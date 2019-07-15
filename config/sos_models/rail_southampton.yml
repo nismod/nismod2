@@ -1,0 +1,26 @@
+name: rail_southampton
+description: Test model for transport
+sector_models:
+  - rail_southampton
+  - extract_southampton_scenarios
+scenarios:
+  - socio-economic
+narratives: []
+scenario_dependencies:
+  - source: socio-economic
+    source_output: population
+    sink: extract_southampton_scenarios
+    sink_input: population
+  - source: socio-economic
+    source_output: gva_per_head
+    sink: extract_southampton_scenarios
+    sink_input: gva
+model_dependencies:
+  - source: extract_southampton_scenarios
+    source_output: population
+    sink: transport_southampton
+    sink_input: population
+  - source: extract_southampton_scenarios
+    source_output: gva
+    sink: transport_southampton
+    sink_input: gva
