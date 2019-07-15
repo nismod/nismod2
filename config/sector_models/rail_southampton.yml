@@ -28,12 +28,18 @@ parameters:
     description: Population elasticity for passenger demand
     dtype: float
     default: default_rail_elasticities.csv
-  - name: base_year_rail_usage
+  - name: BaseYearYearUsage
     dims:
-      - rail_stations
+      - NLC_southampton
     description:
     dtype: float
-    default: default_base_year_rail_usage_southampton.csv
+    default: default_base_year_rail_demand_southampton.csv
+  - name: BaseYearDayUsage
+    dims:
+      - NLC_southampton
+    description:
+    dtype: float
+    default: default_base_year_rail_demand_southampton.csv
   - name: use_car_cost_from_road_model
     description: Whether to use output of road model for car costs
     dtype: bool
