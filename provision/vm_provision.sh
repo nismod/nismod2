@@ -204,11 +204,11 @@ bash -x $base_path/provision/install_energy_demand.sh $base_path
 energy_demand setup -f $base_path/models/energy_demand/wrapperconfig.ini
 
 # Energy supply
-bash -x $base_path/provision/get_data_energy_supply.sh $base_path $XPRESS_DIR
+bash -x $base_path/provision/get_data_energy_supply.sh $base_path
 # use default dbconfig if no other provided
 cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/dbconfig.ini
 # run install as vagrant to set up ODBC connection
-su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
+su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path $XPRESS_DIR"
 
 # Transport
 bash -x $base_path/provision/get_data_transport.sh $base_path
