@@ -59,7 +59,7 @@ class WaterWrapper(SectorModel):
 
         # This is the nodal file which is generated from various static data files
         nodal_file = self.prepare_nodal(nodal_dir, now)
-        assert(os.path.isfile(nodal_file))        
+        assert(os.path.isfile(nodal_file))
 
         subprocess.call([
             wathnet,
@@ -128,11 +128,20 @@ class WaterWrapper(SectorModel):
         borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
         assert (os.path.isfile(borehole_file)), "Expected to find water supply borehole data at {}".format(borehole_file)
 
+        public_file = os.path.join(nodal_dir, 'WRZ_DI_DO.csv')
+        assert (os.path.isfile(public_file)), "Expected to find water supply public data at {}".format(public_file)
+
         nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
         assert (os.path.isfile(nonpublic_file)), "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
 
         missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
         assert (os.path.isfile(missing_data_file)), "Expected to find water supply missing data at {}".format(missing_data_file)
+
+        demand_profiles_file = os.path.join(nodal_dir, '2019_June_06_Demand_Profiles.csv')
+        assert (os.path.isfile(demand_profiles_file)), "Expected to find water supply missing data at {}".format(demand_profiles_file)
+
+        dynatop_file = os.path.join(nodal_dir, 'master_dynatop_points.csv')
+        assert (os.path.isfile(dynatop_file)), "Expected to find water supply missing data at {}".format(dynatop_file)
 
         output_file = os.path.join(nodal_dir, 'wathnet.nodal')
 
@@ -141,9 +150,12 @@ class WaterWrapper(SectorModel):
             '--FlowFile', flow_file,
             '--DemandFile', demand_file,
             '--CatchmentFile', catchment_file,
-            '--BoerholeForcingFile', borehole_file,
+            '--BoreholeForcingFile', borehole_file,
+            '--PublicFile', public_file,
             '--NonpublicFile', nonpublic_file,
             '--MissingDataFile', missing_data_file,
+            '--DemandProfilesFile', demand_profiles_file,
+            '--DynatopFile', dynatop_file,
             '--OutputFile', output_file,
             '--Year', str(year_now),
         ])
