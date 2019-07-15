@@ -21,22 +21,19 @@ outputs:
     unit: l
     dtype: float
 parameters:
-  - name: POPULATION_ETA
+  - name: elasticities
+    dims:
+      - variables
+      - area
     description: Population elasticity for passenger demand
     dtype: float
     default: default_rail_elasticities.csv
-  - name: GVA_ETA
-    description: GVA elasticity for passenger demand
+  - name: base_year_rail_usage
+    dims:
+      - rail_stations
+    description:
     dtype: float
-    default: default_rail_elasticities.csv
-  - name: TIME_ETA
-    description: Time elasticity for passenger demand
-    dtype: float
-    default: default_rail_elasticities.csv
-  - name: COST_ETA
-    description: Cost elasticity for passenger demand
-    dtype: float
-    default: default_rail_elasticities.csv
+    default: default_base_year_rail_usage_southampton.csv
   - name: use_car_cost_from_road_model
     description: Whether to use output of road model for car costs
     dtype: bool

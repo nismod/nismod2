@@ -1,0 +1,3 @@
+name: variables
+description: Variable for rail demand model
+elements: variables.csv
