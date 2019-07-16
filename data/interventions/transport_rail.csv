@@ -1,4 +1,4 @@
-NLC_southampton,name,type,technical_lifetime_value,techinal_lifetime_units,Mode,Station,NaPTANname,Easting,Northing,RunDays,LADcode,LADname,Area
+NLC_southampton,name,type,technical_lifetime_value,technical_lifetime_units,Mode,Station,NaPTANname,Easting,Northing,RunDays,LADcode,LADname,Area
 5906,newAshurst_New_Forest,NewRailStation,100,y,NRAIL,Ashurst_New_Forest,Ashurst_New_Forest_Rail_Station,433392,110147,363,E07000091,New_Forest,SE
 5890,newBeaulieu_Road,NewRailStation,100,y,NRAIL,Beaulieu_Road,Beaulieu_Road_Rail_Station,434957,106287,363,E07000091,New_Forest,SE
 5945,newBitterne,NewRailStation,100,y,NRAIL,Bitterne,Bitterne_Rail_Station,443890,113380,363,E06000045,Southampton,SE

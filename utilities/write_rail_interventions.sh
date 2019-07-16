@@ -5,7 +5,7 @@ outputInterventionFile=$2
 if [ -f $inputFile ]; then
     rm -i $outputInterventionFile
 fi
-first_columns=NLC_southampton,name,type,technical_lifetime_value,techinal_lifetime_units,
+first_columns=NLC_southampton,name,type,technical_lifetime_value,technical_lifetime_units,
 echo $first_columns$(head -1 $inputFile | cut -d, -f2-6,9-12) > $outputInterventionFile
 
 nbLines=$(wc -l $inputFile | cut -d' ' -f1)
