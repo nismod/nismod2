@@ -4,9 +4,7 @@ sos_model: rail_southampton
 timesteps: [2015, 2020]
 scenarios:
   socio-economic: itrc_baseline16
-  fuel_price: baseline
-  link_travel_time: default
-  engine_type_fractions: test
+  station_usage: baseline
 narratives: {}
 decision_module: []
 strategies:

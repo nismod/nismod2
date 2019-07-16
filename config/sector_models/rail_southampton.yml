@@ -13,6 +13,16 @@ inputs:
       - lad_southampton
     unit: GBP
     dtype: float
+  - name: day_usage
+    dims:
+      - stations_NLC
+    unit: ppl
+    dtype: float
+  - name: year_usage
+    dims:
+      - stations_NLC
+    unit: ppl
+    dtype: float
 outputs:
   - name: energy_consumption
     dims:
@@ -28,18 +38,6 @@ parameters:
     description: Population elasticity for passenger demand
     dtype: float
     default: default_rail_elasticities.csv
-  - name: BaseYearYearUsage
-    dims:
-      - NLC_southampton
-    description:
-    dtype: float
-    default: default_base_year_rail_demand_southampton.csv
-  - name: BaseYearDayUsage
-    dims:
-      - NLC_southampton
-    description:
-    dtype: float
-    default: default_base_year_rail_demand_southampton.csv
   - name: use_car_cost_from_road_model
     description: Whether to use output of road model for car costs
     dtype: bool
@@ -50,4 +48,5 @@ parameters:
     default: default_rail_flags.csv
 interventions:
   - transport_rail.csv
-initial_conditions: []
+initial_conditions:
+  - base_year_railstations.csv

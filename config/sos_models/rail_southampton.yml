@@ -5,6 +5,7 @@ sector_models:
   - extract_southampton_scenarios
 scenarios:
   - socio-economic
+  - station_usage
 narratives: []
 scenario_dependencies:
   - source: socio-economic
@@ -15,6 +16,14 @@ scenario_dependencies:
     source_output: gva_per_head
     sink: extract_southampton_scenarios
     sink_input: gva
+  - source: station_usage
+    source_output: day_usage
+    sink: rail_southampton
+    sink_input: day_usage
+  - source: station_usage
+    source_output: year_usage
+    sink: rail_southampton
+    sink_input: year_usage
 model_dependencies:
   - source: extract_southampton_scenarios
     source_output: population
