@@ -5,8 +5,16 @@ sector_models: # Select 1 or more of the sector models
 scenarios: []    # Select 0 or more of the scenario sets
 narratives: []
 scenario_dependencies:
-- source: water_demand_populations
+- source: water_demand_predicted
   source_output: population
   sink: water_demand
   sink_input: population
+- source: water_demand_predicted
+  source_output: constant_water_demand
+  sink: water_demand
+  sink_input: constant_water_demand
+- source: water_demand_predicted
+  source_output: per_capita_water_demand
+  sink: water_demand
+  sink_input: per_capita_water_demand
 model_dependencies: []
