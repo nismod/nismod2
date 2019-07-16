@@ -120,18 +120,18 @@ class BaseTransportWrapper(SectorModel):
         """
         input_dir = self._input_dir
         
-        key = 'BaseYearYearUsage'
-        year_usage = data_handle.get_parameter(key).as_df().reset_index()
-        year_usage = year_usage.set_index(['NLC_southampton'])
+        # key = 'BaseYearYearUsage'
+        # year_usage = data_handle.get_parameter(key).as_df().reset_index()
+        # year_usage = year_usage.set_index(['NLC_southampton'])
 
-        key = 'BaseYearDayUsage'
-        day_usage = data_handle.get_parameter(key).as_df().reset_index()
-        day_usage = day_usage.set_index(['NLC_southampton'])
+        # key = 'BaseYearDayUsage'
+        # day_usage = data_handle.get_parameter(key).as_df().reset_index()
+        # day_usage = day_usage.set_index(['NLC_southampton'])
         
-        path = './data/interventions/transport_rail.csv'
-        df = pd.read_csv(path, index_col=0).loc[:,'Mode':]
-        result = pd.concat([year_usage, day_usage, df], axis=1, join_axes=[year_usage.index])
-        result.to_csv(os.path.join(input_dir,'baseYearRailUsageFastTrack.csv'))
+        # path = './data/interventions/transport_rail.csv'
+        # df = pd.read_csv(path, index_col=0).loc[:,'Mode':]
+        # result = pd.concat([year_usage, day_usage, df], axis=1, join_axes=[year_usage.index])
+        # result.to_csv(os.path.join(input_dir,'baseYearRailUsageFastTrack.csv'))
 
         key = 'elasticities'
         elasticities = data_handle.get_parameter(key).as_df()
@@ -196,19 +196,26 @@ class BaseTransportWrapper(SectorModel):
         working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
         path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
 
+
+        
         # read config as a Template for easy substitution of values
         with open(path_to_config_template) as template_fh:
             config = Template(template_fh.read())
 
         intervention_files = []
         rail_interventions_types = ['NewRailStation']
-        for i, intervention in enumerate(data_handle.get_current_interventions().values()):
-            fname = self._write_intervention(intervention)
-            print(fname)
-            if intervention['type'] in rail_interventions_types:
-                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
-            else:
-                intervention_files.append("interventionFile{} = {}".format(i, fname))
+        if data_handle.current_timestep == data_handle.base_timestep:
+            current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
+            current_day_usage = current_day_usage.set_index(['stations_NLC'])
+            current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
+            current_year_usage = current_year_usage.set_index(['stations_NLC'])
+            for i, intervention in enumerate(data_handle.get_current_interventions().values()):
+                fname = self._write_intervention(intervention, current_day_usage,
+                                                 current_year_usage)
+                if intervention['type'] in rail_interventions_types:
+                    intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+                else:
+                    intervention_files.append("interventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
@@ -222,7 +229,7 @@ class BaseTransportWrapper(SectorModel):
         with open(self._config_path, 'w') as template_fh:
             template_fh.write(config_str)
 
-    def _write_intervention(self, intervention):
+    def _write_intervention(self, intervention, current_day_usage, current_year_usage):
         """Write a single intervention file, returning the full path
         """
         path = os.path.normpath(os.path.abspath(os.path.join(
@@ -235,7 +242,10 @@ class BaseTransportWrapper(SectorModel):
         del intervention['build_year']
         del intervention['technical_lifetime']
 
-        print(intervention)
+        # add day and year usage
+        intervention['dayUsage'] = current_day_usage.loc[intervention['NLC']].values[0]
+        intervention['yearUsage'] = current_year_usage.loc[intervention['NLC']].values[0]
+
         # fix up path to congestion charging pricing details file
         if 'congestionChargingPricing' in intervention:
             cccp_filename = intervention['congestionChargingPricing']
