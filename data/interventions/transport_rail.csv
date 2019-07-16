@@ -1,4 +1,4 @@
-NLC_southampton,name,type,technical_lifetime_value,technical_lifetime_units,Mode,Station,NaPTANname,Easting,Northing,RunDays,LADcode,LADname,Area
+NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
 5906,newAshurst_New_Forest,NewRailStation,100,y,NRAIL,Ashurst_New_Forest,Ashurst_New_Forest_Rail_Station,433392,110147,363,E07000091,New_Forest,SE
 5890,newBeaulieu_Road,NewRailStation,100,y,NRAIL,Beaulieu_Road,Beaulieu_Road_Rail_Station,434957,106287,363,E07000091,New_Forest,SE
 5945,newBitterne,NewRailStation,100,y,NRAIL,Bitterne,Bitterne_Rail_Station,443890,113380,363,E06000045,Southampton,SE
@@ -25,12 +25,12 @@ NLC_southampton,name,type,technical_lifetime_value,technical_lifetime_units,Mode
 5933,newSwaythling,NewRailStation,100,y,NRAIL,Swaythling,Swaythling_Rail_Station,443910,115930,363,E06000045,Southampton,SE
 5921,newTotton,NewRailStation,100,y,NRAIL,Totton,Totton_Rail_Station,436480,113285,363,E07000091,New_Forest,SE
 5925,newWoolston,NewRailStation,100,y,NRAIL,Woolston,Woolston_Rail_Station,443904,111234,363,E06000045,Southampton,SE
-5504,newLake,NewRailStation,100,y,NRAIL,Lake,Lake_(Isle_of_Wight)_Rail_Station,459038,83308,363,E06000046,Isle_of_Wight,SE
-5543,newRyde_St.John's_Road,NewRailStation,100,y,NRAIL,Ryde_St.John's_Road,Ryde_St_Johns_Road_Rail_Station,459631,91977,363,E06000046,Isle_of_Wight,SE
-5909,newMillbrook_(Hampshire),NewRailStation,100,y,NRAIL,Millbrook_(Hampshire),Millbrook_(Hants)_Rail_Station,439900,112600,363,E06000045,Southampton,SE
-5912,newRedbridge,NewRailStation,100,y,NRAIL,Redbridge,Redbridge_(Hants)_Rail_Station,437340,113520,363,E06000045,Southampton,SE
+5504,newLake,NewRailStation,100,y,NRAIL,Lake,Lake_Isle_of_Wight_Rail_Station,459038,83308,363,E06000046,Isle_of_Wight,SE
+5543,newRyde_St.Johns_Road,NewRailStation,100,y,NRAIL,Ryde_St.John's_Road,Ryde_St_Johns_Road_Rail_Station,459631,91977,363,E06000046,Isle_of_Wight,SE
+5909,newMillbrook_Hampshire,NewRailStation,100,y,NRAIL,Millbrook_Hampshire,Millbrook_Hants_Rail_Station,439900,112600,363,E06000045,Southampton,SE
+5912,newRedbridge,NewRailStation,100,y,NRAIL,Redbridge,Redbridge_Hants_Rail_Station,437340,113520,363,E06000045,Southampton,SE
 5914,newSt.Denys,NewRailStation,100,y,NRAIL,St.Denys,St_Denys_Rail_Station,443130,113815,363,E06000045,Southampton,SE
-5922,newSouthampton_Airport_(Parkway),NewRailStation,100,y,NRAIL,Southampton_Airport_(Parkway),Southampton_Airport_Parkway_Rail_Station,444836,117013,363,E07000086,Eastleigh,SE
+5922,newSouthampton_Airport_Parkway,NewRailStation,100,y,NRAIL,Southampton_Airport_Parkway,Southampton_Airport_Parkway_Rail_Station,444836,117013,363,E07000086,Eastleigh,SE
 500000,winslowRailStation,NewRailStation,100,y,NRAIL,Winslow,N/A,476600,228300,363,E07000004,Aylesbury Vale,SE
 500001,newForestStation,NewRailStation,100,y,NRAIL,New Forest Station,N/A,433392,110147,363,E07000091,New Forest,SE
 500000,newSouthamptonStation,NewRailStation,100,y,NRAIL,New Southampton,N/A,440066,115347,363,E06000045,Southampton,SE
