@@ -1,0 +1,19 @@
+name: station_usage
+description: Station usage (rail demand) for rail model
+provides:
+  - name: day_usage
+    dims:
+      - stations_NLC
+    dtype: float
+    unit: ppl
+  - name: year_usage
+    dims:
+      - stations_NLC
+    dtype: float
+    unit: ppl
+variants:
+  - name: baseline
+    description: Baseline rail demand prediction
+    data:
+      day_usage: rail_day_usage.csv
+      year_usage: rail_year_usage.csv
