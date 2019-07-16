@@ -75,7 +75,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_parameters(data)
         self._set_inputs(data)
         self._set_properties(data)
-#        self._run_model_subprocess(data)
+        self._run_model_subprocess(data)
 #        self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
@@ -119,20 +119,23 @@ class BaseTransportWrapper(SectorModel):
         """Read model parameters from data handle and set up config files
         """
         input_dir = self._input_dir
+        
+        key = 'BaseYearYearUsage'
+        year_usage = data_handle.get_parameter(key).as_df().reset_index()
+        year_usage = year_usage.set_index(['NLC_southampton'])
 
-        # Elasticities for passenger and freight demand
-        variables = ['POPULATION', 'GVA', 'TIME', 'COST']
-        types = {
-            'ETA': os.path.join(input_dir, 'elasticities.csv'),
-        }
-        for suffix, filename in types.items():
-            with open(filename, 'w') as file_handle:
-                writer = csv.writer(file_handle)
-                writer.writerow(('variable', 'elasticity'))
-                for variable in variables:
-                    key = "{}_{}".format(variable, suffix)
-                    value = float(data_handle.get_parameter(key).as_ndarray())
-                    writer.writerow((variable, value))
+        key = 'BaseYearDayUsage'
+        day_usage = data_handle.get_parameter(key).as_df().reset_index()
+        day_usage = day_usage.set_index(['NLC_southampton'])
+        
+        path = './data/interventions/transport_rail.csv'
+        df = pd.read_csv(path, index_col=0).loc[:,'Mode':]
+        result = pd.concat([year_usage, day_usage, df], axis=1, join_axes=[year_usage.index])
+        result.to_csv(os.path.join(input_dir,'baseYearRailUsageFastTrack.csv'))
+
+        key = 'elasticities'
+        elasticities = data_handle.get_parameter(key).as_df()
+        elasticities.to_csv(os.path.join(input_dir,'elasticitiesRail.csv'))
 
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
@@ -201,6 +204,7 @@ class BaseTransportWrapper(SectorModel):
         rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
+            print(fname)
             if intervention['type'] in rail_interventions_types:
                 intervention_files.append("railInterventionFile{} = {}".format(i, fname))
             else:
@@ -231,6 +235,7 @@ class BaseTransportWrapper(SectorModel):
         del intervention['build_year']
         del intervention['technical_lifetime']
 
+        print(intervention)
         # fix up path to congestion charging pricing details file
         if 'congestionChargingPricing' in intervention:
             cccp_filename = intervention['congestionChargingPricing']
