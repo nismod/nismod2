@@ -8,7 +8,7 @@ provides:
     unit: £
   - name: rail_journey_times
     dims:
-      - stations_NLC
+      - stations_NLC_generalised
     dtype: float
     unit: h
 variants:

@@ -30,7 +30,7 @@ inputs:
     dtype: float
   - name: rail_journey_times
     dims:
-      - stations_NLC
+      - stations_NLC_generalised
     unit: h
     dtype: float
 outputs:
