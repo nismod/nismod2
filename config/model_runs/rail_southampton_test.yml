@@ -5,6 +5,7 @@ timesteps: [2015, 2020]
 scenarios:
   socio-economic: itrc_baseline16
   station_usage: baseline
+  rail_journey_times_fares: baseline
 narratives: {}
 decision_module: []
 strategies:

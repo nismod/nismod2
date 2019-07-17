@@ -23,6 +23,16 @@ inputs:
       - stations_NLC
     unit: ppl
     dtype: float
+  - name: rail_journey_fares
+    dims:
+      - stations_NLC
+    unit: £
+    dtype: float
+  - name: rail_journey_times
+    dims:
+      - stations_NLC
+    unit: h
+    dtype: float
 outputs:
   - name: energy_consumption
     dims:

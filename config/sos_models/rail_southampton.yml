@@ -6,6 +6,7 @@ sector_models:
 scenarios:
   - socio-economic
   - station_usage
+  - rail_journey_times_fares
 narratives: []
 scenario_dependencies:
   - source: socio-economic
@@ -24,6 +25,14 @@ scenario_dependencies:
     source_output: year_usage
     sink: rail_southampton
     sink_input: year_usage
+  - source: rail_journey_times_fares
+    source_output: rail_journey_fares
+    sink: rail_southampton
+    sink_input: rail_journey_fares
+  - source: rail_journey_times_fares
+    source_output: rail_journey_times
+    sink: rail_southampton
+    sink_input: rail_journey_times
 model_dependencies:
   - source: extract_southampton_scenarios
     source_output: population
