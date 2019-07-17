@@ -72,11 +72,11 @@ class BaseTransportWrapper(SectorModel):
             pass
 
         self._current_timestep = data.current_timestep
-        self._set_parameters(data)
+        #        self._set_parameters(data)
         self._set_inputs(data)
-        self._set_properties(data)
-#        self._run_model_subprocess(data)
-#        self._set_outputs(data)
+        #        self._set_properties(data)
+        #        self._run_model_subprocess(data)
+        #        self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -140,11 +140,49 @@ class BaseTransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        # self._set_population(data_handle)
-        self._set_gva(data_handle)
-#        self._set_journey_fares(data_handle)
-#        self._set_journey_times(data_handle)
+        self._set_1D_input(data_handle, 'population', 'population.csv', dtype=int)
+        self._set_1D_input(data_handle, 'gva', 'gva.csv')
+        self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
+        self._set_1D_input(data_handle, 'rail_journey_times',
+                           'railStationGeneralisedJourneyTimes.csv')
 
+        #self._set_population(data_handle)
+#        self._set_gva(data_handle)
+        #        self._set_journey_fares(data_handle)
+        #        self._set_journey_times(data_handle)
+        
+    def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
+        """Get one dimensional model input from data handle and write to input file
+        Arguments
+        ---------
+        data_handle: smif.data_layer.DataHandle
+        input_name
+        filename: str
+        dtype: type [optional]
+        """
+
+        current_input = data_handle.get_data(input_name).as_df().reset_index()
+        current_input['year'] = data_handle.current_timestep
+
+        if data_handle.current_timestep != data_handle.base_timestep:
+            previous_input = data_handle.get_data(input_name).as_df().reset_index()
+            previous_input['year'] = data_handle.previous_timestep
+
+            input_df = pd.concat(
+                [previous_input, current_input]
+            )
+        else:
+            input_df = current_input
+        if dtype:
+            input_df.loc[:,input_name] = input_df.loc[:,input_name].astype(dtype)
+        colname = self.inputs[input_name].dims[0]
+        input_df = input_df.pivot(
+            index='year', columns=colname, values=input_name
+        )
+        input_filepath = os.path.join(
+            self._input_dir, filename)
+        input_df.to_csv(input_filepath)
+            
     def _set_population(self, data_handle):
         current_population = data_handle.get_data("population").as_df().reset_index()
         current_population['year'] = data_handle.current_timestep
@@ -159,7 +197,7 @@ class BaseTransportWrapper(SectorModel):
         else:
             population = current_population
 
-        population.population = population.population.astype(int)
+        #population.population = population.population.astype(int)
         # use region dimension name (could change) for columns
         colname = self.inputs['population'].dims[0]
         population = population.pivot(
