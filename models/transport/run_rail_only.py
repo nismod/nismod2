@@ -211,81 +211,12 @@ class BaseTransportWrapper(SectorModel):
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
             
-    def _set_population(self, data_handle):
-        current_population = data_handle.get_data("population").as_df().reset_index()
-        current_population['year'] = data_handle.current_timestep
-
-        if data_handle.current_timestep != data_handle.base_timestep:
-            previous_population = data_handle.get_data("population").as_df().reset_index()
-            previous_population['year'] = data_handle.previous_timestep
-
-            population = pd.concat(
-                [previous_population, current_population]
-            )
-        else:
-            population = current_population
-
-        #population.population = population.population.astype(int)
-        # use region dimension name (could change) for columns
-        colname = self.inputs['population'].dims[0]
-        population = population.pivot(
-            index='year', columns=colname, values='population'
-        )
-        population_filepath = os.path.join(
-            self._input_dir, 'population.csv')
-        population.to_csv(population_filepath)
-
-    def _set_gva(self, data_handle):
-        current_gva = data_handle.get_data("gva").as_df().reset_index()
-        current_gva['year'] = data_handle.current_timestep
-        if data_handle.current_timestep != data_handle.base_timestep:
-            previous_gva = data_handle.get_previous_timestep_data("gva").as_df().reset_index()
-            previous_gva['year'] = data_handle.previous_timestep
-
-            gva = pd.concat(
-                [previous_gva, current_gva]
-            )
-        else:
-            gva = current_gva
-
-        # use region dimension name (could change) for columns
-        colname = self.inputs['gva'].dims[0]
-        gva = gva.pivot(
-            index='year', columns=colname, values='gva'
-        )
-        gva_filepath = os.path.join(self._input_dir, 'gva.csv')
-        gva.to_csv(gva_filepath)
-
-    def _set_journey_fares(self, data_handle):
-        current_journey_fares = data_handle.get_data("rail_journey_fares").as_df().reset_index()
-        current_journey_fares['year'] = data_handle.current_timestep
-        if data_handle.current_timestep != data_handle.base_timestep:
-            previous_journey_fares = \
-            data_handle.get_previous_timestep_data("rail_journey_fares").as_df().reset_index()
-            previous_journey_fares['year'] = data_handle.previous_timestep
-
-            journey_fares = pd.concat(
-                [previous_journey_fares, current_journey_fares]
-            )
-        else:
-            journey_fares = current_journey_fares
-        
-        # use region dimension name (could change) for columns
-        colname = self.inputs['rail_journey_fares'].dims[0]
-        journey_fares = journey_fares.pivot(
-            index='year', columns=colname, values='rail_journey_fares'
-        )
-        journey_fares_filepath = os.path.join(self._input_dir, 'railStationJourneyFares.csv')
-        journey_fares.to_csv(journey_fares_filepath)
-    
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
         """
         working_dir = self._working_dir
         working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
         path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
-
-
         
         # read config as a Template for easy substitution of values
         with open(path_to_config_template) as template_fh:
