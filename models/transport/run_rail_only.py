@@ -146,12 +146,9 @@ class BaseTransportWrapper(SectorModel):
         self._set_1D_input(data_handle, 'rail_journey_times',
                            'railStationGeneralisedJourneyTimes.csv')
         self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
-
-        #self._set_population(data_handle)
-#        self._set_gva(data_handle)
-        #        self._set_journey_fares(data_handle)
-        #        self._set_journey_times(data_handle)
         
+        self._set_scalar_input(data_handle, 'rail_trip_rates', 'railTripRates.csv')
+
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
         """Get one dimensional model input from data handle and write to input file
         Arguments
@@ -180,6 +177,36 @@ class BaseTransportWrapper(SectorModel):
         input_df = input_df.pivot(
             index='year', columns=colname, values=input_name
         )
+        input_filepath = os.path.join(
+            self._input_dir, filename)
+        input_df.to_csv(input_filepath)
+
+    def _set_scalar_input(self, data_handle, input_name, filename,dtype=None):
+        """Get one dimensional model input from data handle and write to input file
+        Arguments
+        ---------
+        data_handle: smif.data_layer.DataHandle
+        input_name
+        filename: str
+        dtype: type [optional]
+        """
+
+        current_input = data_handle.get_data(input_name).as_df()
+        current_input['year'] = data_handle.current_timestep
+        current_input = current_input.set_index(['year'])
+
+        if data_handle.current_timestep != data_handle.base_timestep:
+            previous_input = data_handle.get_data(input_name).as_df()
+            previous_input['year'] = data_handle.previous_timestep
+            previous_input = previous_input.set_index(['year'])
+            input_df = pd.concat(
+                [previous_input, current_input]
+            )
+        else:
+            input_df = current_input
+        if dtype:
+            input_df.loc[:,input_name] = input_df.loc[:,input_name].astype(dtype)
+
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
