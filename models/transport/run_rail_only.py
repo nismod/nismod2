@@ -75,7 +75,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_parameters(data)
         self._set_inputs(data)
         self._set_properties(data)
-        self._run_model_subprocess(data)
+#        self._run_model_subprocess(data)
 #        self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
@@ -140,8 +140,10 @@ class BaseTransportWrapper(SectorModel):
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
         """
-        self._set_population(data_handle)
+        # self._set_population(data_handle)
         self._set_gva(data_handle)
+#        self._set_journey_fares(data_handle)
+#        self._set_journey_times(data_handle)
 
     def _set_population(self, data_handle):
         current_population = data_handle.get_data("population").as_df().reset_index()
@@ -170,7 +172,6 @@ class BaseTransportWrapper(SectorModel):
     def _set_gva(self, data_handle):
         current_gva = data_handle.get_data("gva").as_df().reset_index()
         current_gva['year'] = data_handle.current_timestep
-
         if data_handle.current_timestep != data_handle.base_timestep:
             previous_gva = data_handle.get_previous_timestep_data("gva").as_df().reset_index()
             previous_gva['year'] = data_handle.previous_timestep
@@ -189,6 +190,28 @@ class BaseTransportWrapper(SectorModel):
         gva_filepath = os.path.join(self._input_dir, 'gva.csv')
         gva.to_csv(gva_filepath)
 
+    def _set_journey_fares(self, data_handle):
+        current_journey_fares = data_handle.get_data("rail_journey_fares").as_df().reset_index()
+        current_journey_fares['year'] = data_handle.current_timestep
+        if data_handle.current_timestep != data_handle.base_timestep:
+            previous_journey_fares = \
+            data_handle.get_previous_timestep_data("rail_journey_fares").as_df().reset_index()
+            previous_journey_fares['year'] = data_handle.previous_timestep
+
+            journey_fares = pd.concat(
+                [previous_journey_fares, current_journey_fares]
+            )
+        else:
+            journey_fares = current_journey_fares
+        
+        # use region dimension name (could change) for columns
+        colname = self.inputs['rail_journey_fares'].dims[0]
+        journey_fares = journey_fares.pivot(
+            index='year', columns=colname, values='rail_journey_fares'
+        )
+        journey_fares_filepath = os.path.join(self._input_dir, 'railStationJourneyFares.csv')
+        journey_fares.to_csv(journey_fares_filepath)
+    
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
         """
