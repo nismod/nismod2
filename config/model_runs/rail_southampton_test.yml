@@ -6,6 +6,7 @@ scenarios:
   socio-economic: itrc_baseline16
   station_usage: baseline
   rail_journey_times_fares: baseline
+  car_zonal_journey_costs: baseline
 narratives: {}
 decision_module: []
 strategies:

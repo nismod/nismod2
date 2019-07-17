@@ -33,6 +33,11 @@ inputs:
       - stations_NLC_generalised
     unit: h
     dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_southampton
+    unit: £
+    dtype: float
 outputs:
   - name: energy_consumption
     dims:

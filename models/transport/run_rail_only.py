@@ -145,6 +145,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
         self._set_1D_input(data_handle, 'rail_journey_times',
                            'railStationGeneralisedJourneyTimes.csv')
+        self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
 
         #self._set_population(data_handle)
 #        self._set_gva(data_handle)
