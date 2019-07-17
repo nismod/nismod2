@@ -37,6 +37,10 @@ scenario_dependencies:
     source_output: car_zonal_journey_costs
     sink: rail_southampton
     sink_input: car_zonal_journey_costs
+  - source: rail_trip_rates
+    source_output: rail_trip_rates
+    sink: rail_southampton
+    sink_input: rail_trip_rates
 model_dependencies:
   - source: extract_southampton_scenarios
     source_output: population

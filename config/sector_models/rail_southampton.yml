@@ -38,6 +38,8 @@ inputs:
       - lad_southampton
     unit: £
     dtype: float
+  - name: rail_trip_rates
+    dtype: float
 outputs:
   - name: energy_consumption
     dims:
