@@ -72,11 +72,11 @@ class BaseTransportWrapper(SectorModel):
             pass
 
         self._current_timestep = data.current_timestep
-        self._set_parameters(data)
-        self._set_inputs(data)
+        #self._set_parameters(data)
+        #self._set_inputs(data)
         self._set_properties(data)
-        self._run_model_subprocess(data)
-        self._set_outputs(data)
+        #self._run_model_subprocess(data)
+        #self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -171,7 +171,7 @@ class BaseTransportWrapper(SectorModel):
         Arguments
         ---------
         data_handle: smif.data_layer.DataHandle
-        input_name
+        input_name: str
         filename: str
         dtype: type [optional]
         """
@@ -209,12 +209,15 @@ class BaseTransportWrapper(SectorModel):
 
         intervention_files = []
         rail_interventions_types = ['NewRailStation']
+        # Currently there is no usage data available for 2020
         if data_handle.current_timestep == data_handle.base_timestep:
             current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
             current_day_usage = current_day_usage.set_index(['stations_NLC'])
             current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
             current_year_usage = current_year_usage.set_index(['stations_NLC'])
-            for i, intervention in enumerate(data_handle.get_current_interventions().values()):
+
+            interventions = self._filter_interventions_before_byear(data_handle)
+            for i, intervention in enumerate(interventions):
                 fname = self._write_intervention(intervention, current_day_usage,
                                                  current_year_usage)
                 if intervention['type'] in rail_interventions_types:
@@ -234,6 +237,23 @@ class BaseTransportWrapper(SectorModel):
         with open(self._config_path, 'w') as template_fh:
             template_fh.write(config_str)
 
+    def _filter_interventions_before_byear(self, data_handle):
+        """Returns a list of interventions, containing *only* interventions
+        occuring strictly after the base year.
+        In other words, it filters out initial conditions
+        Arguments:
+        ---------
+        data_handle: smif.data_layer.DataHandle
+        Returns:
+        --------
+        interventions: list[dict]
+        """
+        interventions = []
+        for i, intervention in enumerate(data_handle.get_current_interventions().values()):
+            if intervention['build_year'] >= data_handle.base_timestep:
+                interventions.append(intervention)
+        return interventions
+    
     def _write_intervention(self, intervention, current_day_usage, current_year_usage):
         """Write a single intervention file, returning the full path
         """
