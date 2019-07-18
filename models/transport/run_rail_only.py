@@ -72,10 +72,10 @@ class BaseTransportWrapper(SectorModel):
             pass
 
         self._current_timestep = data.current_timestep
-        #        self._set_parameters(data)
-        #self._set_inputs(data)
-        #        self._set_properties(data)
-        #        self._run_model_subprocess(data)
+        self._set_parameters(data)
+        self._set_inputs(data)
+        self._set_properties(data)
+        self._run_model_subprocess(data)
         self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
@@ -118,24 +118,9 @@ class BaseTransportWrapper(SectorModel):
     def _set_parameters(self, data_handle):
         """Read model parameters from data handle and set up config files
         """
-        input_dir = self._input_dir
-        
-        # key = 'BaseYearYearUsage'
-        # year_usage = data_handle.get_parameter(key).as_df().reset_index()
-        # year_usage = year_usage.set_index(['NLC_southampton'])
-
-        # key = 'BaseYearDayUsage'
-        # day_usage = data_handle.get_parameter(key).as_df().reset_index()
-        # day_usage = day_usage.set_index(['NLC_southampton'])
-        
-        # path = './data/interventions/transport_rail.csv'
-        # df = pd.read_csv(path, index_col=0).loc[:,'Mode':]
-        # result = pd.concat([year_usage, day_usage, df], axis=1, join_axes=[year_usage.index])
-        # result.to_csv(os.path.join(input_dir,'baseYearRailUsageFastTrack.csv'))
-
-        key = 'elasticities'
-        elasticities = data_handle.get_parameter(key).as_df()
-        elasticities.to_csv(os.path.join(input_dir,'elasticitiesRail.csv'))
+        # Set elasticities for rail model
+        elasticities = data_handle.get_parameter('elasticities').as_df()
+        elasticities.to_csv(os.path.join(self._input_dir,'elasticitiesRail.csv'))
 
     def _set_inputs(self, data_handle):
         """Get model inputs from data handle and write to input files
