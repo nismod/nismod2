@@ -17,15 +17,15 @@ populationFile = $relative_path/input/population.csv
 GVAFile = $relative_path/input/gva.csv
 
 #base year passenger rail demand
-baseYearRailStationUsageFile = $relative_path/data/csvfiles/baseYearRailUsageFastTrack.csv
+baseYearRailStationUsageFile = $relative_path/input/baseYearRailDemand.csv
 #rail station journey fares file
-railStationJourneyFaresFile =  $relative_path/data/csvfiles/railStationJourneyFares.csv
+railStationJourneyFaresFile =  $relative_path/input/railStationJourneyFares.csv
 #rail station generalised journey times file
-railStationGeneralisedJourneyTimesFile = $relative_path/data/csvfiles/railStationGeneralisedJourneyTimes.csv
+railStationGeneralisedJourneyTimesFile = $relative_path/input/railStationGeneralisedJourneyTimes.csv
 #car zonal journey costs file
-carZonalJourneyCostsFile = $relative_path/data/csvfiles/carZonalJourneyCosts.csv
+carZonalJourneyCostsFile = $relative_path/input/carZonalJourneyCosts.csv
 #rail trip rates file
-railTripRatesFile = $relative_path/data/csvfiles/railTripRates.csv
+railTripRatesFile = $relative_path/input/railTripRates.csv
 
 #################################
 # INTERVENTIONS AND DISRUPTIONS #

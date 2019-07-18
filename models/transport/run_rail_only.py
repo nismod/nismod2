@@ -134,13 +134,15 @@ class BaseTransportWrapper(SectorModel):
         self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
         
         self._set_scalar_input(data_handle, 'rail_trip_rates', 'railTripRates.csv')
+        if data_handle.current_timestep == data_handle.base_timestep:
+            self._set_base_year_demand(data_handle)
 
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
         """Get one dimensional model input from data handle and write to input file
         Arguments
         ---------
         data_handle: smif.data_layer.DataHandle
-        input_name
+        input_name: str
         filename: str
         dtype: type [optional]
         """
@@ -198,7 +200,36 @@ class BaseTransportWrapper(SectorModel):
         input_df.to_csv(input_filepath)
 
     def _set_base_year_demand(self, data_handle):
-        interventions = self._filter_interventions
+        """Write base year rail demand based on initial conditions.
+        Arguments:
+        ----------
+        data_handle: smif.data_layer.DataHandle
+        """
+        # filter interventions to only get initial conditions
+        # (build_year < base_year)
+        interventions = self._filter_interventions(data_handle, future=False)
+        # build dataframe and drop data that does not go into the
+        # base year rail demand input file
+        df = pd.DataFrame.from_dict(interventions)
+        df = df.rename(columns={'NLC': 'stations_NLC'}).set_index('stations_NLC')
+        cols_to_drop = ['technical_lifetime_units',
+                        'technical_lifetime', 'name', 'type', 'build_year']
+        df = df.drop(cols_to_drop, axis=1)
+
+        # Get day and year usage from data_handle
+        # (provided by station_usage scenario)
+        current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
+        current_day_usage = current_day_usage.set_index(['stations_NLC'])
+        current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
+        current_year_usage = current_year_usage.set_index(['stations_NLC'])
+
+        # current_day_usage also contains potential future rail stations
+        # so must concat dataframes according to index of df that only contains old
+        # stations
+        df = pd.concat([df, current_day_usage, current_year_usage], axis=1, join_axes=[df.index])
+
+        # Write base year rail demand csv file
+        df.to_csv(os.path.join(self._input_dir, 'baseYearRailDemand.csv'))
 
             
     def _set_properties(self, data_handle):
