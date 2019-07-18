@@ -73,10 +73,10 @@ class BaseTransportWrapper(SectorModel):
 
         self._current_timestep = data.current_timestep
         #        self._set_parameters(data)
-        self._set_inputs(data)
+        #self._set_inputs(data)
         #        self._set_properties(data)
         #        self._run_model_subprocess(data)
-        #        self._set_outputs(data)
+        self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -181,8 +181,8 @@ class BaseTransportWrapper(SectorModel):
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
 
-    def _set_scalar_input(self, data_handle, input_name, filename,dtype=None):
-        """Get one dimensional model input from data handle and write to input file
+    def _set_scalar_input(self, data_handle, input_name, filename, dtype=None):
+        """Get scalar model input from data handle and write to input file
         Arguments
         ---------
         data_handle: smif.data_layer.DataHandle
@@ -280,8 +280,65 @@ class BaseTransportWrapper(SectorModel):
         return path
 
     def _set_outputs(self, data_handle):
-        pass
+        if data_handle.current_timestep != data_handle.base_timestep:
+            cols = {
+                'NLC': 'stations_NLC',
+                'YearUsage': 'year_stations_usage'
+            }
+            self._set_1D_output(data_handle, 'year_stations_usage',
+                                          'predictedRailDemand.csv', cols)
+            cols = {
+                'NLC': 'stations_NLC',
+                'DayUsage': 'day_stations_usage'
+            }
+            self._set_1D_output(data_handle, 'day_stations_usage',
+                                          'predictedRailDemand.csv', cols)
+            cols = {
+                'LADcode': 'lad_southampton',
+                'yearTotal': 'total_year_zonal_rail_demand'
+            }
+            self._set_1D_output(data_handle, 'total_year_zonal_rail_demand',
+                                          'zonalRailDemand.csv', cols)
+            cols = {
+                'LADcode': 'lad_southampton',
+                'yearAvg': 'avg_year_zonal_rail_demand'
+            }
+            self._set_1D_output(data_handle, 'avg_year_zonal_rail_demand',
+                                          'zonalRailDemand.csv', cols)
+            cols = {
+                'LADcode': 'lad_southampton',
+                'dayTotal': 'total_day_zonal_rail_demand'
+            }
+            self._set_1D_output(data_handle, 'total_day_zonal_rail_demand',
+                                          'zonalRailDemand.csv', cols)
+            cols = {
+                'LADcode': 'lad_southampton',
+                'dayAvg': 'avg_day_zonal_rail_demand'
+            }
+            self._set_1D_output(data_handle, 'avg_day_zonal_rail_demand',
+                                          'zonalRailDemand.csv', cols)
 
+    def _set_1D_output(self, data_handle, output_name, filename, cols):
+        """Get one dimensional model input from data handle and write to input file
+        Arguments
+        ---------
+        data_handle: smif.data_layer.DataHandle
+        output_name
+        filename: str
+        cols: dict - Labels of the columns to keep. 
+                     Keys are label in the ouput file.
+                     Values are label in data_handle.
+        """
+        filename = self._output_file_path(filename)
+        df = pd.read_csv(
+            filename
+            ).drop(
+                'year', axis=1
+            )
+        df = df.loc[:,cols.keys()].rename(columns=cols)
+        numpy_array = self._df_to_ndarray(output_name, df)
+        data_handle.set_results(output_name, numpy_array)
+        
     def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
         return pd.read_csv(
             filename
