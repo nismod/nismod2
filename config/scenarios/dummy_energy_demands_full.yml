@@ -228,3 +228,17 @@ variants:
       dh_hydrogen_fuelcell : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
       elec_trans : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
       EV_Cap : ../energy_supply/scenarios/MV/MV_ev_cap.csv
+  - name: es_energy_demand_dummy_optimised
+    description: ''
+    data:
+      elecload: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      gasload: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full_gasload.csv
+      residential_heatload: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      residential_gas_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      residential_electricity_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      service_heatload: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      service_gas_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      service_electricity_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      hydrogen_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      elec_trans : ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      EV_Cap : ../energy_supply/scenarios/Heat_Strategy/HS_ev_cap.csv
