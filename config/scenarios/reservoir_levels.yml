@@ -1,0 +1,14 @@
+name: reservoir_levels
+description: Initial reservoir levels for 2020
+provides:
+  - name: reservoir_levels
+    description: Reservoir levels
+    dims:
+    - water_supply_reservoirs
+    dtype: float
+    unit: Ml
+variants:
+  - name: predicted
+    description: Predicted reservoir levels
+    data:
+      reservoir_levels: water_supply/reservoir_levels.csv

@@ -7,10 +7,20 @@ inputs:
   - water_resource_zones
   dtype: float
   unit: Ml/day
+- name: reservoir_levels
+  dims:
+  - water_supply_reservoirs
+  dtype: float
+  unit: Ml
 interventions: []
 name: water_supply
 outputs:
-- name: water_supply_reservoir_daily_volumes
+- name: reservoir_levels  # This is the end-of-year volumes that go into next timestep
+  dims:
+    - water_supply_reservoirs
+  dtype: float
+  unit: Ml
+- name: water_supply_reservoir_daily_volumes  # Daily volumes output from wathnet
   dims:
   - water_supply_days_into_year
   - water_supply_reservoirs
