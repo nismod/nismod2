@@ -150,7 +150,7 @@ class BaseTransportWrapper(SectorModel):
         current_input['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            previous_input = data_handle.get_data(input_name).as_df().reset_index()
+            previous_input = data_handle.get_previous_timestep_data(input_name).as_df().reset_index()
             previous_input['year'] = data_handle.previous_timestep
 
             input_df = pd.concat(
