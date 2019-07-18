@@ -230,7 +230,25 @@ class BaseTransportWrapper(SectorModel):
         # current_day_usage also contains potential future rail stations
         # so must concat dataframes according to index of df that only contains old
         # stations
-        df = pd.concat([df, current_day_usage, current_year_usage], axis=1, join_axes=[df.index])
+        df = pd.concat([df, baseyear_day_usage, baseyear_year_usage], axis=1,
+                       join_axes=[df.index])
+
+        # rename columns to meet rail model's expectations
+        columns_names = {
+            'mode': 'Mode',
+            'station': 'Station',
+            'naPTANname': 'NaPTANname',
+            'easting': 'Easting',
+            'northing': 'Northing',
+            'year_usage': 'YearUsage',
+            'day_usage': 'DayUsage',
+            'runDays': 'RunDays',
+            'LADcode': 'LADcode',
+            'LADname': 'LADname',
+            'area': 'Area',
+        }
+        df = df.rename(columns=columns_names)
+        df.index.names = ['NLC']
 
         # Write base year rail demand csv file
         df.to_csv(os.path.join(self._input_dir, 'baseYearRailDemand.csv'))
