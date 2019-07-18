@@ -134,8 +134,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
         
         self._set_scalar_input(data_handle, 'rail_trip_rates', 'railTripRates.csv')
-        if data_handle.current_timestep == data_handle.base_timestep:
-            self._set_base_year_demand(data_handle)
+        self._set_base_year_demand(data_handle)
 
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
         """Get one dimensional model input from data handle and write to input file
@@ -218,10 +217,15 @@ class BaseTransportWrapper(SectorModel):
 
         # Get day and year usage from data_handle
         # (provided by station_usage scenario)
-        current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
-        current_day_usage = current_day_usage.set_index(['stations_NLC'])
-        current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
-        current_year_usage = current_year_usage.set_index(['stations_NLC'])
+        baseyear_day_usage = data_handle.get_data("day_usage",
+                                                  timestep=data_handle.base_timestep)
+        baseyear_day_usage = baseyear_day_usage.as_df().reset_index()
+        baseyear_day_usage = baseyear_day_usage.set_index(['stations_NLC'])
+
+        baseyear_year_usage = data_handle.get_data("year_usage",
+                                                   timestep=data_handle.base_timestep)
+        baseyear_year_usage = baseyear_year_usage.as_df().reset_index()
+        baseyear_year_usage = baseyear_year_usage.set_index(['stations_NLC'])
 
         # current_day_usage also contains potential future rail stations
         # so must concat dataframes according to index of df that only contains old
