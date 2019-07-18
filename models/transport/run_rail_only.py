@@ -132,8 +132,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_1D_input(data_handle, 'rail_journey_times',
                            'railStationGeneralisedJourneyTimes.csv')
         self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
-        
-        self._set_scalar_input(data_handle, 'rail_trip_rates', 'railTripRates.csv')
+        self._set_trip_rates(data_handle)
         self._set_base_year_demand(data_handle)
 
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
@@ -168,32 +167,30 @@ class BaseTransportWrapper(SectorModel):
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
 
-    def _set_scalar_input(self, data_handle, input_name, filename, dtype=None):
-        """Get scalar model input from data handle and write to input file
+    def _set_trip_rates(self, data):
+        """Get trip rates input from data handle and write to input file
         Arguments
         ---------
         data_handle: smif.data_layer.DataHandle
         input_name: str
         filename: str
-        dtype: type [optional]
         """
+        input_name = 'rail_trip_rates'
+        filename = 'railTripRates.csv'
+        # Get trip rate for current year
+        input_df = data.get_data(input_name).as_df()
+        input_df['year'] = data.current_timestep
+        input_df = input_df.set_index(['year'])
 
-        current_input = data_handle.get_data(input_name).as_df()
-        current_input['year'] = data_handle.current_timestep
-        current_input = current_input.set_index(['year'])
-
-        if data_handle.current_timestep != data_handle.base_timestep:
-            previous_input = data_handle.get_data(input_name).as_df()
-            previous_input['year'] = data_handle.previous_timestep
+        # The rail model requires data from base year to current year
+        # Loop from year before current year to base year and concat dataframes
+        for timestep in range(data.base_timestep,data.current_timestep)[::-1]:
+            previous_input = data.get_data(input_name, timestep=timestep).as_df()
+            previous_input['year'] = timestep
             previous_input = previous_input.set_index(['year'])
             input_df = pd.concat(
-                [previous_input, current_input]
+                [previous_input, input_df]
             )
-        else:
-            input_df = current_input
-        if dtype:
-            input_df.loc[:,input_name] = input_df.loc[:,input_name].astype(dtype)
-
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
