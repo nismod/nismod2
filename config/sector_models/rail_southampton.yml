@@ -41,11 +41,35 @@ inputs:
   - name: rail_trip_rates
     dtype: float
 outputs:
-  - name: energy_consumption
+  - name: year_stations_usage
     dims:
-      - annual_day
-      - transport_fuel_type
-    unit: l
+      - stations_NLC
+    unit: ppl
+    dtype: float
+  - name: day_stations_usage
+    dims:
+      - stations_NLC
+    unit: ppl
+    dtype: float
+  - name: total_year_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: avg_year_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: total_day_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: avg_day_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
     dtype: float
 parameters:
   - name: elasticities
