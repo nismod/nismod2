@@ -1,9 +1,10 @@
-name: water_demand_only
-description: Future water demand for UK
-sector_models: # Select 1 or more of the sector models
+name: water_supply_demand
+description: Future water supply and demand for UK
+sector_models:
+- water_supply
 - water_demand
 scenarios:
-- water_demand_predicted
+- water_demand_predicted  # Needed for input for water demand
 narratives: []
 scenario_dependencies:
 - source: water_demand_predicted
@@ -18,4 +19,8 @@ scenario_dependencies:
   source_output: per_capita_water_demand
   sink: water_demand
   sink_input: per_capita_water_demand
-model_dependencies: []
+model_dependencies:
+- source: water_demand
+  source_output: water_demand
+  sink: water_supply
+  sink_input: water_demand

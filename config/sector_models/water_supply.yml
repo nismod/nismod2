@@ -1,7 +1,12 @@
 classname: WaterWrapper
 description: Water supply model
 initial_conditions: []
-inputs: []
+inputs:
+- name: water_demand
+  dims:
+  - water_resource_zones
+  dtype: float
+  unit: Ml/day
 interventions: []
 name: water_supply
 outputs:

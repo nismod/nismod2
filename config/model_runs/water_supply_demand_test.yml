@@ -1,0 +1,11 @@
+description: 'Test model run for water supply and demand models'
+name: water_supply_demand_test
+narratives: {}
+scenarios:
+  water_demand_predicted: predicted  # Needed for input for water demand
+sos_model: water_supply_demand
+stamp: '2019-03-01T00:00:00.000Z'
+timesteps:
+- 2020
+- 2021
+strategies: []

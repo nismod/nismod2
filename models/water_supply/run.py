@@ -42,13 +42,13 @@ class WaterWrapper(SectorModel):
 
         Arguments
         ---------
-        data_handle : dict
-            A dictionary containing all parameters and model inputs defined in
+        data_handle: smif.data_layer.DataHandle
+            A data structure containing all parameters and model inputs defined in
             the smif configuration by name
 
         """
 
-        now = data_handle.current_timestep
+        now = 1999  # Hack, as some data still only exists for old years. # data_handle.current_timestep
 
         model_dir = os.path.dirname(os.path.realpath(__file__))
         exe_dir = os.path.join(model_dir, 'exe')
@@ -66,7 +66,7 @@ class WaterWrapper(SectorModel):
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # This is the nodal file which is generated from various static data files
-        nodal_file = self.prepare_nodal(nodal_dir, now)
+        nodal_file = self.prepare_nodal(data_handle, nodal_dir, now)
         assert(os.path.isfile(nodal_file))
 
         subprocess.call([
@@ -78,7 +78,7 @@ class WaterWrapper(SectorModel):
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
         # and with (for instance) '_arcFlow.csv' added.
-        #   e.g. `modified_model_arcFlow.csv`        
+        #   e.g. `modified_model_arcFlow.csv`
         arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
         assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
 
@@ -102,15 +102,18 @@ class WaterWrapper(SectorModel):
         data_handle.set_results('water_supply_arc_flows', arc_flows_df.values)
         data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_df.values)
 
-    @staticmethod
-    def prepare_nodal(nodal_dir, year_now):
+    def prepare_nodal(self, data_handle, nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.
 
         Arguments
         ---------
+        data_handle: smif.data_layer.DataHandle
+            A data structure containing all parameters and model inputs defined in
+            the smif configuration by name
+
         nodal_dir : str
             Path to the directory containing the necessary files for preparing the nodal file.
-        
+
         year_now: int
             The year to be simulated
 
@@ -138,6 +141,7 @@ class WaterWrapper(SectorModel):
 
         public_file = os.path.join(nodal_dir, 'WRZ_DI_DO.csv')
         assert (os.path.isfile(public_file)), "Expected to find water supply public data at {}".format(public_file)
+        public_file = self.inject_new_demands(public_file, data_handle.get_data('water_demand'))
 
         nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
         assert (os.path.isfile(nonpublic_file)), "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
@@ -216,3 +220,54 @@ class WaterWrapper(SectorModel):
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
+
+    @staticmethod
+    def inject_new_demands(public_file, demand_data):
+        """Injects the water demand data calculated by the water demand model into the public file.
+
+        Arguments
+        ---------
+        public_file : str
+            Path to the public file ('WRZ_DI_DO.csv')
+
+        demand_data: smif.data_layer.DataArray
+            The demand data to inject into the public file
+        """
+
+        assert public_file.endswith('.csv'), "Expected public file to be a csv file"
+
+        new_file = public_file + ".NEW_DEMANDS"
+
+        # Read the existing CSV using Pandas, and as a sanity check assert it is written
+        # back out identically (to ensure nothing has gone wrong reading the file)
+        public_df = pd.read_csv(
+            public_file,
+            sep=',',
+        )
+
+        coord_names_from_smif = np.array([x['name'] for x in demand_data.dim_coords('water_resource_zones').elements])
+        coord_names_in_csv = np.array(public_df['WRZ Name'])
+
+        if len(coord_names_from_smif) != len(coord_names_in_csv):
+            raise ValueError(
+                'Expected the calculated water demand from water demand model to have to have the same coordinates as'
+                ' the "WRZ Name" column in the public file (WRZ_DI_DO.csv). But, they have different lengths ({} and'
+                ' {})'.format(len(coord_names_from_smif), len(coord_names_in_csv))
+            )
+
+        for x, y in zip(coord_names_from_smif, coord_names_in_csv):
+            if x != y and 'Nottinghamshire' not in x:  # hack, as Nottinghamshire.1 and Nottinghamshire.2 from smif
+                raise ValueError(
+                    'Expected the calculated water demand from water demand model to have to have the same coordinates'
+                    ' as the "WRZ Name" column in the public file (WRZ_DI_DO.csv). Instead, found non-matching'
+                    ' coordinates ({} <=> {})'.format(x, y)
+                )
+
+        # Inject the new demand data, and create a new CSV file
+        public_df['Distribution Input'] = demand_data.data
+        assert np.array_equal(demand_data.data, public_df['Distribution Input'])
+
+        public_df.to_csv(path_or_buf=new_file, sep=',', header=True, index=False)
+        assert os.path.isfile(new_file)
+
+        return new_file
