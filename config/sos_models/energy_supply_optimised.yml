@@ -37,6 +37,24 @@ narratives:
         decription: centralised operating mode
         data:
           operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+  - name: heat_supply_strategy
+    description: heat supply strategy for operation
+    provides:
+      energy_supply_optimised:
+      - heat_supply_strategy
+    variants:
+      - name: full_electric
+        decription: full electric heating
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_fullelectric.csv
+      - name: heat_networks
+        decription: heat network domination for heating
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_heatnetworks.csv
+      - name: green_gas
+        decription: green gas mixture for heat supply
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas.csv
 scenario_dependencies:
 - source: fuel_price
   source_output: energy_supply_price
