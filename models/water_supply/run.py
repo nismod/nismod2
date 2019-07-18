@@ -100,7 +100,7 @@ class WaterWrapper(SectorModel):
         )
 
         data_handle.set_results('water_supply_arc_flows', arc_flows_df.values)
-        data_handle.set_results('water_supply_reservoir_end_volumes', res_vols_df.values)
+        data_handle.set_results('water_supply_reservoir_daily_volumes', res_vols_df.values)
 
     def prepare_nodal(self, data_handle, nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.

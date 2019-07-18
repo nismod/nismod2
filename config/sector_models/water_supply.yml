@@ -10,7 +10,7 @@ inputs:
 interventions: []
 name: water_supply
 outputs:
-- name: water_supply_reservoir_end_volumes
+- name: water_supply_reservoir_daily_volumes
   dims:
   - water_supply_days_into_year
   - water_supply_reservoirs
