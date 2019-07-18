@@ -580,19 +580,19 @@ outputs:
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2_qs
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2storage_level
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: gas_demand
     dims:
@@ -745,6 +745,18 @@ outputs:
     unit: MW
     dtype: float
   - name: eh_oilboiler_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_smr
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_electrolysis
     dims:
     - energy_hub
     - seasonal_week
