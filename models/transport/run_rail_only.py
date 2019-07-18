@@ -247,7 +247,9 @@ class BaseTransportWrapper(SectorModel):
             'LADname': 'LADname',
             'area': 'Area',
         }
-        df = df.rename(columns=columns_names)
+        cols = ['Mode','Station','NaPTANname','Easting','Northing','YearUsage',
+                'DayUsage','RunDays','LADcode','LADname','Area']
+        df = df.rename(columns=columns_names)[cols]
         df.index.names = ['NLC']
 
         # Write base year rail demand csv file
