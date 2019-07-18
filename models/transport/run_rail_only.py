@@ -195,6 +195,10 @@ class BaseTransportWrapper(SectorModel):
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
+
+    def _set_base_year_demand(self, data_handle):
+        interventions = self._filter_interventions
+
             
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
@@ -216,7 +220,7 @@ class BaseTransportWrapper(SectorModel):
             current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
             current_year_usage = current_year_usage.set_index(['stations_NLC'])
 
-            interventions = self._filter_interventions_before_byear(data_handle)
+            interventions = self._filter_interventions(data_handle)
             for i, intervention in enumerate(interventions):
                 fname = self._write_intervention(intervention, current_day_usage,
                                                  current_year_usage)
@@ -237,7 +241,7 @@ class BaseTransportWrapper(SectorModel):
         with open(self._config_path, 'w') as template_fh:
             template_fh.write(config_str)
 
-    def _filter_interventions_before_byear(self, data_handle, future=True):
+    def _filter_interventions(self, data_handle, future=True):
         """Returns a list of interventions, containing *only* interventions
         occuring {strictly before} or after the base year.
         Default is to keep interventions occuring after the base year.
