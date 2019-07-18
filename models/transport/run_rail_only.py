@@ -72,11 +72,12 @@ class BaseTransportWrapper(SectorModel):
             pass
 
         self._current_timestep = data.current_timestep
-        #self._set_parameters(data)
-        #self._set_inputs(data)
+        self._set_parameters(data)
+        self._set_inputs(data)
         self._set_properties(data)
-        #self._run_model_subprocess(data)
-        #self._set_outputs(data)
+        self._run_model_subprocess(data)
+        if self._current_timestep != data.base_timestep:
+            self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
@@ -295,7 +296,6 @@ class BaseTransportWrapper(SectorModel):
         return path
 
     def _set_outputs(self, data_handle):
-        if data_handle.current_timestep != data_handle.base_timestep:
             cols = {
                 'NLC': 'stations_NLC',
                 'YearUsage': 'year_stations_usage'
