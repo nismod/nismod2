@@ -27,7 +27,15 @@ class WaterWrapper(SectorModel):
         -----
         `self.user_data` allows to pass data from before_model_run to main model
         """
-        pass
+
+        timesteps = data_handle.timesteps
+        consecutive_timesteps = tuple(range(timesteps[0], 1 + timesteps[-1]))
+
+        if timesteps != consecutive_timesteps:
+            raise ValueError(
+                'Water supply requires timesteps to be consecutive years.'
+                ' Instead, timesteps are: {}'.format(timesteps)
+            )
 
     def simulate(self, data_handle):
         """Runs the water supply model.
