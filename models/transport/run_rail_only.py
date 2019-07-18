@@ -76,7 +76,7 @@ class BaseTransportWrapper(SectorModel):
         self._set_inputs(data)
         self._set_properties(data)
         self._run_model_subprocess(data)
-        if self._current_timestep != data.base_timestep:
+        if self._current_timestep > data.base_timestep:
             self._set_outputs(data)
 
     def _run_model_subprocess(self, data_handle):
