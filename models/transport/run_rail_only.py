@@ -259,7 +259,7 @@ class BaseTransportWrapper(SectorModel):
             if(future):
                 if intervention['build_year'] >= data_handle.base_timestep:
                     interventions.append(intervention)
-                else:
+            else:
                     if intervention['build_year'] < data_handle.base_timestep:
                         interventions.append(intervention)
         return interventions
