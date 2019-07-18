@@ -237,21 +237,27 @@ class BaseTransportWrapper(SectorModel):
         with open(self._config_path, 'w') as template_fh:
             template_fh.write(config_str)
 
-    def _filter_interventions_before_byear(self, data_handle):
+    def _filter_interventions_before_byear(self, data_handle, future=True):
         """Returns a list of interventions, containing *only* interventions
-        occuring strictly after the base year.
-        In other words, it filters out initial conditions
+        occuring {strictly before} or after the base year.
+        Default is to keep interventions occuring after the base year.
+        (In other words, it filters out initial conditions)
         Arguments:
         ---------
         data_handle: smif.data_layer.DataHandle
+        future: bool - If True, then select past interventions (initial conditions)
         Returns:
         --------
         interventions: list[dict]
         """
         interventions = []
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
-            if intervention['build_year'] >= data_handle.base_timestep:
-                interventions.append(intervention)
+            if(future):
+                if intervention['build_year'] >= data_handle.base_timestep:
+                    interventions.append(intervention)
+                else:
+                    if intervention['build_year'] < data_handle.base_timestep:
+                        interventions.append(intervention)
         return interventions
     
     def _write_intervention(self, intervention, current_day_usage, current_year_usage):
