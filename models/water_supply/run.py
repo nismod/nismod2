@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from smif.model.sector_model import SectorModel
+from smif.data_layer import DataArray
 
 
 class WaterWrapper(SectorModel):
@@ -79,7 +80,7 @@ class WaterWrapper(SectorModel):
             wathnet,
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
-            '-output=RA',
+            '-output=RAGDS',
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
@@ -87,29 +88,32 @@ class WaterWrapper(SectorModel):
         #   e.g. `modified_model_arcFlow.csv`
         arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
         assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
+        data_handle.set_results(
+            'water_supply_arc_flows',
+            self.extract_wathnet_output(output_file=arc_flows, spec=self.outputs['water_supply_arc_flows'])
+        )
 
         res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols)), "Expected to find water supply reservoir results at {}".format(res_vols)
-
-        arc_flows_df = pd.read_csv(
-            arc_flows,
-            sep=',',
-            skiprows=1,  # Row at top called 'Arc flow'
-            usecols=lambda col: col.lower() not in ['replicate', 'day', 'year'],
+        data_handle.set_results(
+            'water_supply_reservoir_daily_volumes',
+            self.extract_wathnet_output(output_file=res_vols, spec=self.outputs['water_supply_reservoir_daily_volumes'])
         )
 
-        res_vols_df = pd.read_csv(
-            res_vols,
-            sep=',',
-            skiprows=1,  # Row at top called 'Reservoir end volume'
-            usecols=lambda col: col.lower() not in ['replicate', 'day', 'year'],
+        global_vars = sysfile.replace('.wat', '_globalPlotVars_selected.csv')
+        assert (os.path.isfile(global_vars)), "Expected to find water supply global variables at {}".format(global_vars)
+
+        req_demand = sysfile.replace('.wat', '_requestedDemand.csv')
+        assert (os.path.isfile(req_demand)), "Expected to find water supply requested demands at {}".format(req_demand)
+
+        shortfalls = sysfile.replace('.wat', '_demandShortfall.csv')
+        assert (os.path.isfile(shortfalls)), "Expected to find water supply requested demands at {}".format(shortfalls)
+
+        # Last row in reservoir volumes is for day 365, which is an input for the next timestep
+        data_handle.set_results(
+            'reservoir_levels',
+            data_handle.get_results('water_supply_reservoir_daily_volumes').data[-1]
         )
-
-        data_handle.set_results('water_supply_arc_flows', arc_flows_df.values)
-        data_handle.set_results('water_supply_reservoir_daily_volumes', res_vols_df.values)
-
-        # Last row in res_vols data frame is for day 365, which is an input for the next timestep
-        data_handle.set_results('reservoir_levels', res_vols_df.iloc[-1])
 
     def prepare_nodal(self, data_handle, nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.
@@ -280,3 +284,41 @@ class WaterWrapper(SectorModel):
         assert os.path.isfile(new_file)
 
         return new_file
+
+    @staticmethod
+    def extract_wathnet_output(output_file, spec):
+        """Injects the water demand data calculated by the water demand model into the public file.
+
+        Arguments
+        ---------
+        output_file : str
+            Path to the output file
+        spec : smif.metadata.Spec
+            The expected spec for verifying integrity of output
+
+        Returns
+        =======
+        data : numpy.ndarray
+            The data from the output file
+        """
+
+        # Read the output file and melt it on the column "Day"
+        output_df = pd.read_csv(
+            output_file,
+            sep=',',
+            skiprows=1,  # All wathnet output contains a single row of description
+            usecols=lambda col: col.lower() not in ['replicate', 'year'],
+        ).melt(id_vars=['Day'])
+
+        # Rename the columns to match the spec object
+        output_df.rename(
+            inplace=True,
+            columns={
+                'Day': spec.dims[0],
+                'variable': spec.dims[1],
+                'value': spec.name,
+            }
+        )
+
+        # Returning via DataArray.from_df will check that the data matches the spec as expected
+        return DataArray.from_df(spec=spec, dataframe=output_df).data
