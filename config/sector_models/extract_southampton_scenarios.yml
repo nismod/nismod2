@@ -18,6 +18,21 @@ inputs:
       - lad_gb_2016
     dtype: float
     unit: £
+  - name: rail_journey_fares
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: £
+  - name: day_usage
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: people
+  - name: year_usage
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: people
 outputs:
   - name: population
     dims:
@@ -34,6 +49,21 @@ outputs:
       - lad_southampton
     dtype: float
     unit: £
+  - name: rail_journey_fares
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: £
+  - name: day_usage
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: people
+  - name: year_usage
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: people
 parameters: []
 interventions: []
 initial_conditions: []

@@ -3,12 +3,12 @@ description: Journey times and fares for transport rail model
 provides:
   - name: rail_journey_fares
     dims:
-      - stations_NLC
+      - NLC_gb
     dtype: float
     unit: £
   - name: rail_journey_times
     dims:
-      - stations_NLC_generalised
+      - NLC_southampton_generalised
     dtype: float
     unit: h
 variants:

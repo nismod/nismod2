@@ -207,7 +207,7 @@ class BaseTransportWrapper(SectorModel):
         # build dataframe and drop data that does not go into the
         # base year rail demand input file
         df = pd.DataFrame.from_dict(interventions)
-        df = df.rename(columns={'NLC': 'stations_NLC'}).set_index('stations_NLC')
+        df = df.rename(columns={'NLC': 'NLC_southampton'}).set_index('NLC_southampton')
         cols_to_drop = ['technical_lifetime_units',
                         'technical_lifetime', 'name', 'type', 'build_year']
         df = df.drop(cols_to_drop, axis=1)
@@ -217,12 +217,12 @@ class BaseTransportWrapper(SectorModel):
         baseyear_day_usage = data_handle.get_data("day_usage",
                                                   timestep=data_handle.base_timestep)
         baseyear_day_usage = baseyear_day_usage.as_df().reset_index()
-        baseyear_day_usage = baseyear_day_usage.set_index(['stations_NLC'])
+        baseyear_day_usage = baseyear_day_usage.set_index(['NLC_southampton'])
 
         baseyear_year_usage = data_handle.get_data("year_usage",
                                                    timestep=data_handle.base_timestep)
         baseyear_year_usage = baseyear_year_usage.as_df().reset_index()
-        baseyear_year_usage = baseyear_year_usage.set_index(['stations_NLC'])
+        baseyear_year_usage = baseyear_year_usage.set_index(['NLC_southampton'])
 
         # current_day_usage also contains potential future rail stations
         # so must concat dataframes according to index of df that only contains old
@@ -269,9 +269,9 @@ class BaseTransportWrapper(SectorModel):
         # Currently there is no usage data available for 2020
         if data_handle.current_timestep == data_handle.base_timestep:
             current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
-            current_day_usage = current_day_usage.set_index(['stations_NLC'])
+            current_day_usage = current_day_usage.set_index(['NLC_southampton'])
             current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
-            current_year_usage = current_year_usage.set_index(['stations_NLC'])
+            current_year_usage = current_year_usage.set_index(['NLC_southampton'])
 
             interventions = self._filter_interventions(data_handle)
             for i, intervention in enumerate(interventions):
@@ -349,13 +349,13 @@ class BaseTransportWrapper(SectorModel):
 
     def _set_outputs(self, data_handle):
             cols = {
-                'NLC': 'stations_NLC',
+                'NLC': 'NLC_southampton',
                 'YearUsage': 'year_stations_usage'
             }
             self._set_1D_output(data_handle, 'year_stations_usage',
                                           'predictedRailDemand.csv', cols)
             cols = {
-                'NLC': 'stations_NLC',
+                'NLC': 'NLC_southampton',
                 'DayUsage': 'day_stations_usage'
             }
             self._set_1D_output(data_handle, 'day_stations_usage',

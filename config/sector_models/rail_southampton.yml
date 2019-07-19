@@ -15,22 +15,22 @@ inputs:
     dtype: float
   - name: day_usage
     dims:
-      - stations_NLC
-    unit: ppl
+      - NLC_southampton
+    unit: people
     dtype: float
   - name: year_usage
     dims:
-      - stations_NLC
-    unit: ppl
+      - NLC_southampton
+    unit: people
     dtype: float
   - name: rail_journey_fares
     dims:
-      - stations_NLC
+      - NLC_southampton
     unit: £
     dtype: float
   - name: rail_journey_times
     dims:
-      - stations_NLC_generalised
+      - NLC_southampton_generalised
     unit: h
     dtype: float
   - name: car_zonal_journey_costs
@@ -43,12 +43,12 @@ inputs:
 outputs:
   - name: year_stations_usage
     dims:
-      - stations_NLC
+      - NLC_southampton
     unit: ppl
     dtype: float
   - name: day_stations_usage
     dims:
-      - stations_NLC
+      - NLC_southampton
     unit: ppl
     dtype: float
   - name: total_year_zonal_rail_demand

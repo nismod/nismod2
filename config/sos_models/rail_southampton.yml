@@ -8,6 +8,7 @@ scenarios:
   - station_usage
   - rail_journey_times_fares
   - car_zonal_journey_costs
+  - rail_trip_rates
 narratives: []
 scenario_dependencies:
   - source: socio-economic
@@ -20,15 +21,15 @@ scenario_dependencies:
     sink_input: gva
   - source: station_usage
     source_output: day_usage
-    sink: rail_southampton
+    sink: extract_southampton_scenarios
     sink_input: day_usage
   - source: station_usage
     source_output: year_usage
-    sink: rail_southampton
+    sink: extract_southampton_scenarios
     sink_input: year_usage
   - source: rail_journey_times_fares
     source_output: rail_journey_fares
-    sink: rail_southampton
+    sink: extract_southampton_scenarios
     sink_input: rail_journey_fares
   - source: rail_journey_times_fares
     source_output: rail_journey_times
@@ -55,3 +56,15 @@ model_dependencies:
     source_output: car_zonal_journey_costs
     sink: rail_southampton
     sink_input: car_zonal_journey_costs
+  - source: extract_southampton_scenarios
+    source_output: rail_journey_fares
+    sink: rail_southampton
+    sink_input: rail_journey_fares
+  - source: extract_southampton_scenarios
+    source_output: day_usage
+    sink: rail_southampton
+    sink_input: day_usage
+  - source: extract_southampton_scenarios
+    source_output: year_usage
+    sink: rail_southampton
+    sink_input: year_usage
