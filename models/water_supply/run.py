@@ -56,8 +56,6 @@ class WaterWrapper(SectorModel):
         else:
             reservoir_levels = data_handle.get_previous_timestep_data('reservoir_levels')
 
-        print(reservoir_levels)
-
         model_dir = os.path.dirname(os.path.realpath(__file__))
         exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
@@ -110,8 +108,8 @@ class WaterWrapper(SectorModel):
         data_handle.set_results('water_supply_arc_flows', arc_flows_df.values)
         data_handle.set_results('water_supply_reservoir_daily_volumes', res_vols_df.values)
 
-        # HACK.  this should be vals for day 365 of res_vols_df
-        data_handle.set_results('reservoir_levels', np.ones((84, )))
+        # Last row in res_vols data frame is for day 365, which is an input for the next timestep
+        data_handle.set_results('reservoir_levels', res_vols_df.iloc[-1])
 
     def prepare_nodal(self, data_handle, nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.
