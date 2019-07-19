@@ -3,36 +3,32 @@
 # Expect NISMOD dir as first argument
 base_path=$1
 
-# Read remote_data, local_dir from config.ini
-source <(grep = <(grep -A4 "\[water-supply\]" $base_path/provision/config.ini))
+# Define required directories and ensure they exist
+model_dir=${base_path}/models/water_supply
+repo_dir=${model_dir}/repo
+nodal_dir=${model_dir}/nodal
+exe_dir=${model_dir}/exe
 
-# Locations for the git repo (temporary) and the nodal-related files
-repo_dir=$local_dir/repo
-nodal_dir=$local_dir/nodal
-exe_dir=$local_dir/exe
-dim_dir=$dim_dir
+mkdir -p ${repo_dir}
+mkdir -p ${nodal_dir}
+mkdir -p ${exe_dir}
 
 # Clone repo and copy necessary files to the model directory
-mkdir -p $repo_dir
-git clone git@github.com:nismod/water_supply.git $repo_dir || exit "$?"
-pushd $repo_dir
-    git checkout $model_version
+git clone git@github.com:nismod/water_supply.git ${repo_dir} || exit "$?"
+pushd ${repo_dir}
+    # Pin the model at a specific commit
+    git checkout 02eca9f81e0bbd2ffdb7f4963e70da8163c24646
 popd
 
-mkdir -p $exe_dir
-cp $repo_dir/wathnet/w5_console.exe $exe_dir
-cp $repo_dir/models/National_Model.wat $exe_dir
+# Move the files necessary for execution
+mv ${repo_dir}/wathnet/w5_console.exe ${exe_dir}
+mv ${repo_dir}/models/National_Model.wat ${exe_dir}
 
 # Seems to be necessary to add execution to the wathnet exe
-chmod +x $exe_dir/w5_console.exe
+chmod +x ${exe_dir}/w5_console.exe
 
-# Copy files needed for creating nodal file. This will be superseded by data being fed directly.
-mkdir -p $nodal_dir
-cp $local_dir/repo/scripts/preprocessing/prepare_nodal.py $nodal_dir
-
-# Copy data dimensions
-mkdir -p $dim_dir
-cp $repo_dir/data_dimensions/* $dim_dir
+# Move the prepare_nodal script
+mv ${repo_dir}/scripts/preprocessing/prepare_nodal.py ${nodal_dir}
 
 # Clean up the cloned repo
-rm -rf $repo_dir
+rm -rf ${repo_dir}

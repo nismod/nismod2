@@ -174,7 +174,7 @@ class WaterWrapper(SectorModel):
         missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
         assert (os.path.isfile(missing_data_file)), "Expected to find water supply missing data at {}".format(missing_data_file)
 
-        demand_profiles_file = os.path.join(nodal_dir, '2019_June_06_Demand_Profiles.csv')
+        demand_profiles_file = os.path.join(nodal_dir, 'Demand_Profiles.csv')
         assert (os.path.isfile(demand_profiles_file)), "Expected to find water supply missing data at {}".format(demand_profiles_file)
 
         dynatop_file = os.path.join(nodal_dir, 'master_dynatop_points.csv')
