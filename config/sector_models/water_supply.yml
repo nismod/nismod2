@@ -38,5 +38,17 @@ outputs:
   - water_supply_global_variable_names
   dtype: float
   unit: Unknown/possibly variable
+- name: water_supply_requested_demand
+  dims:
+  - water_supply_days_into_year
+  - water_supply_demand_nodes
+  dtype: float
+  unit: Ml
+- name: water_supply_shortfall
+  dims:
+  - water_supply_days_into_year
+  - water_supply_demand_nodes
+  dtype: float
+  unit: Ml
 parameters: []
 path: models/water_supply/run.py

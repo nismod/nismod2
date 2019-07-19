@@ -109,9 +109,17 @@ class WaterWrapper(SectorModel):
 
         req_demand = sysfile.replace('.wat', '_requestedDemand.csv')
         assert (os.path.isfile(req_demand)), "Expected to find water supply requested demands at {}".format(req_demand)
+        data_handle.set_results(
+            'water_supply_requested_demand',
+            self.extract_wathnet_output(output_file=req_demand, spec=self.outputs['water_supply_requested_demand'])
+        )
 
         shortfalls = sysfile.replace('.wat', '_demandShortfall.csv')
         assert (os.path.isfile(shortfalls)), "Expected to find water supply requested demands at {}".format(shortfalls)
+        data_handle.set_results(
+            'water_supply_shortfall',
+            self.extract_wathnet_output(output_file=shortfalls, spec=self.outputs['water_supply_shortfall'])
+        )
 
         # Last row in reservoir volumes is for day 365, which is an input for the next timestep
         data_handle.set_results(
