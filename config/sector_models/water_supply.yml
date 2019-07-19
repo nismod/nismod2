@@ -32,5 +32,11 @@ outputs:
   - water_supply_arcs
   dtype: float
   unit: ML/day
+- name: water_supply_global_variables
+  dims:
+  - water_supply_days_into_year
+  - water_supply_global_variable_names
+  dtype: float
+  unit: Unknown/possibly variable
 parameters: []
 path: models/water_supply/run.py

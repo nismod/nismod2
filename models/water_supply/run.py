@@ -102,6 +102,10 @@ class WaterWrapper(SectorModel):
 
         global_vars = sysfile.replace('.wat', '_globalPlotVars_selected.csv')
         assert (os.path.isfile(global_vars)), "Expected to find water supply global variables at {}".format(global_vars)
+        data_handle.set_results(
+            'water_supply_global_variables',
+            self.extract_wathnet_output(output_file=global_vars, spec=self.outputs['water_supply_global_variables'])
+        )
 
         req_demand = sysfile.replace('.wat', '_requestedDemand.csv')
         assert (os.path.isfile(req_demand)), "Expected to find water supply requested demands at {}".format(req_demand)
