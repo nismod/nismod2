@@ -3,7 +3,7 @@ description: car zonal journey costs
 provides:
   - name: car_zonal_journey_costs
     dims:
-      - lad_southampton
+      - lad_gb_2016
     dtype: float
     unit: £
 variants:

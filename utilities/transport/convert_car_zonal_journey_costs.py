@@ -25,7 +25,7 @@ def main(input_filename, output_filename):
     ).rename(
         columns={
             'year': 'timestep',
-            'variable': 'lad_southampton',
+            'variable': 'lad_uk_2016',
             'value': 'car_zonal_journey_costs',
         }
     )
@@ -41,7 +41,7 @@ def main(input_filename, output_filename):
     df_out.to_csv(output_filename, index=False)
 
 if __name__ == '__main__':
-    INPUT_FILENAME = '../data/transport/southampton/data/csvfiles/carZonalJourneyCosts.csv'
+    INPUT_FILENAME = '../data/transport/TR_data_full/full/data/csvfiles/carZonalJourneyCosts.csv'
     OUTPUT_FILENAME = '../data/scenarios/rail_car_zonal_journey_costs.csv'
 
     try:

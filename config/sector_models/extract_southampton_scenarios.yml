@@ -13,6 +13,11 @@ inputs:
       - lad_uk_2016
     unit: GBP
     dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_gb_2016
+    dtype: float
+    unit: £
 outputs:
   - name: population
     dims:
@@ -24,6 +29,11 @@ outputs:
       - lad_southampton
     unit: GBP
     dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_southampton
+    dtype: float
+    unit: £
 parameters: []
 interventions: []
 initial_conditions: []
