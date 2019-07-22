@@ -14,7 +14,7 @@ do
     # Several interventions can have the same name, but different MODE (TUBE, NRAIL..)
     # disambiguating by adding the mode name to the intervention name
     mode=$(echo $line | cut -d, -f2)
-    name=new$(echo $line | cut -d, -f3)
+    name=new$(echo $line | cut -d, -f3)_$mode
     NLCvalue=$(echo $line | cut -d, -f1)
-    echo $NLCvalue,${name}_$mode,NewRailStation,100,y,$(echo $line | cut -d, -f2-6,9-12) >> $outputInterventionFile
+    echo $NLCvalue,${name},NewRailStation,100,y,$(echo $line | cut -d, -f2-6,9-12) >> $outputInterventionFile
 done
