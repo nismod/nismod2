@@ -1,4 +1,4 @@
-NLC,name,type,technical_lifetime_value,technical_lifetime_units,Mode,Station,NaPTANname,Easting,Northing,RunDays,LADcode,LADname,Area
+NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
 375,newEnerglyn_&_Churchill_Park_NRAIL,NewRailStation,100,y,NRAIL,Energlyn_&_Churchill_Park,Energlyn_&_Churchill_Park_Rail_Station,314957,187866,363,W06000018,Caerphilly,OTHER
 500,newActon_Town_TUBE,NewRailStation,100,y,TUBE,Acton_Town,Acton_Town_Underground_Station,519446,179637,364,E09000009,Ealing,LT
 501,newBarbican_TUBE,NewRailStation,100,y,TUBE,Barbican,Barbican_Underground_Station,532060,181865,364,E09000001,City_of_London,LT
