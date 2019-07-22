@@ -46,6 +46,7 @@ class AggregateEnergyConstrained(SectorModel):
             'building_biomass_boiler': [
                 'residential_biomass_boiler_biomass',
                 'service_biomass_boiler_biomass',
+                'industry_biomass_boiler_biomass',
             ],
             'building_elec_boiler': [
                 'residential_electricity_boiler_electricity',
@@ -70,6 +71,7 @@ class AggregateEnergyConstrained(SectorModel):
             'building_oil_boiler': [
                 'residential_oil_boiler_oil',
                 'service_oil_boiler_oil',
+                'industry_oil_boiler_oil',
             ],
             'dh_biomass_boiler': [
                 'residential_biomass_district_heating_biomass',
@@ -109,6 +111,21 @@ class AggregateEnergyConstrained(SectorModel):
                 'industry_hydrogen_boiler_hydrogen',
                 'industry_hydrogen_heat_pumps_hydrogen',
                 'industry_hydrogen_non_heating',
+            ],
+            'oil_non_heat_eh': [
+                'residential_oil_non_heating',
+                'service_oil_non_heating',
+                'industry_oil_non_heating',
+            ],
+            'building_solidfuel_boiler': [
+                'residential_solid_fuel_boiler_solid_fuel',
+                'service_solid_fuel_boiler_solid_fuel',
+                'industry_solid_fuel_boiler_solid_fuel',
+            ],
+            'solid_fuel_non_heat_eh': [
+                'residential_solid_fuel_non_heating',
+                'service_solid_fuel_non_heating',
+                'industry_solid_fuel_non_heating',
             ]
         }
 

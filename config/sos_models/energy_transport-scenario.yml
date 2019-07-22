@@ -28,6 +28,18 @@ model_dependencies:
     sink: aggregate_energy_constrained
     sink_input: industry_biomass_district_heating_biomass
   - source: energy_demand_constrained
+    source_output: industry_biomass_boiler_biomass
+    sink: aggregate_energy_constrained
+    sink_input: industry_biomass_boiler_biomass
+  - source: energy_demand_constrained
+    source_output: industry_oil_boiler_oil
+    sink: aggregate_energy_constrained
+    sink_input: industry_oil_boiler_oil
+  - source: energy_demand_constrained
+    source_output: industry_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_oil_non_heating
+  - source: energy_demand_constrained
     source_output: industry_electricity_boiler_electricity
     sink: aggregate_energy_constrained
     sink_input: industry_electricity_boiler_electricity
@@ -128,6 +140,10 @@ model_dependencies:
     sink: aggregate_energy_constrained
     sink_input: residential_oil_boiler_oil
   - source: energy_demand_constrained
+    source_output: residential_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: residential_oil_non_heating
+  - source: energy_demand_constrained
     source_output: service_biomass_boiler_biomass
     sink: aggregate_energy_constrained
     sink_input: service_biomass_boiler_biomass
@@ -179,6 +195,34 @@ model_dependencies:
     source_output: service_oil_boiler_oil
     sink: aggregate_energy_constrained
     sink_input: service_oil_boiler_oil
+  - source: energy_demand_constrained
+    source_output: service_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: service_oil_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: residential_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: residential_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: service_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: service_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: industry_solid_fuel_boiler_solid_fuel
+  - source: energy_demand_constrained
+    source_output: residential_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: residential_solid_fuel_boiler_solid_fuel
+  - source: energy_demand_constrained
+    source_output: service_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: service_solid_fuel_boiler_solid_fuel
   # from energy demand to region conversion
   - source: energy_demand_constrained
     source_output: residential_electricity_non_heating
@@ -253,6 +297,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_regions_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from region conversion to interval conversion
   - source: convert_regions_ed_to_es_constrained
     source_output: elecload_non_heat_res
@@ -326,6 +382,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_intervals_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from interval conversion to unit conversion
   - source: convert_intervals_ed_to_es_constrained
     source_output: elecload_non_heat_res
@@ -399,6 +467,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_units_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_units_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_units_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_units_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from unit conversion to remap gas nodes
   - source: convert_units_ed_to_es_constrained
     source_output: gasload
@@ -478,6 +558,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: energy_supply_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: energy_supply_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: energy_supply_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: energy_supply_constrained
+    sink_input: building_solidfuel_boiler
   # from et_module to region conv to unit conv to energy supply
   - source: et_module
     source_output: v2g_g2v_capacity

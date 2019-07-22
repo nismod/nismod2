@@ -5,6 +5,24 @@ classname: EnergySupplyWrapper
 initial_conditions:
   - ../energy_supply/initial_conditions/historical_interventions.csv
 inputs:
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: building_solidfuel_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
   - name: elecload
     dims:
     - energy_hub
