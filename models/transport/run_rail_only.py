@@ -246,6 +246,7 @@ class BaseTransportWrapper(SectorModel):
             'LADname': 'LADname',
             'area': 'Area',
         }
+        #Re-order columns
         cols = ['Mode','Station','NaPTANname','Easting','Northing','YearUsage',
                 'DayUsage','RunDays','LADcode','LADname','Area']
         df = df.rename(columns=columns_names)[cols]
@@ -267,21 +268,13 @@ class BaseTransportWrapper(SectorModel):
 
         intervention_files = []
         rail_interventions_types = ['NewRailStation']
-        # Currently there is no usage data available for 2020
-        if data_handle.current_timestep == data_handle.base_timestep:
-            current_day_usage = data_handle.get_data("day_usage").as_df().reset_index()
-            current_day_usage = current_day_usage.set_index(['NLC_southampton'])
-            current_year_usage = data_handle.get_data("year_usage").as_df().reset_index()
-            current_year_usage = current_year_usage.set_index(['NLC_southampton'])
-
-            interventions = self._filter_interventions(data_handle)
-            for i, intervention in enumerate(interventions):
-                fname = self._write_intervention(intervention, current_day_usage,
-                                                 current_year_usage)
-                if intervention['type'] in rail_interventions_types:
-                    intervention_files.append("railInterventionFile{} = {}".format(i, fname))
-                else:
-                    intervention_files.append("interventionFile{} = {}".format(i, fname))
+        interventions = self._filter_interventions(data_handle)
+        for i, intervention in enumerate(interventions):
+            fname = self._write_rail_intervention(intervention, data_handle)
+            if intervention['type'] in rail_interventions_types:
+                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+            else:
+                intervention_files.append("interventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
@@ -318,11 +311,22 @@ class BaseTransportWrapper(SectorModel):
                         interventions.append(intervention)
         return interventions
     
-    def _write_intervention(self, intervention, current_day_usage, current_year_usage):
+    def _write_rail_intervention(self, intervention, data_handle):
         """Write a single intervention file, returning the full path
         """
         path = os.path.normpath(os.path.abspath(os.path.join(
             self._input_dir, "{}.properties".format(intervention['name']))))
+
+        # add day and year usage
+        build_year=intervention['build_year']
+        # day usage
+        day_usage = data_handle.get_data("day_usage", timestep=build_year).as_df().reset_index()
+        day_usage = day_usage.set_index(['NLC_southampton'])
+        intervention['dayUsage'] = day_usage.loc[intervention['NLC']].values[0]
+        # year usage
+        year_usage = data_handle.get_data("year_usage", timestep=build_year).as_df().reset_index()
+        year_usage = year_usage.set_index(['NLC_southampton'])
+        intervention['yearUsage'] = year_usage.loc[intervention['NLC']].values[0]
 
         # compute start/end year from smif intervention keys
         intervention['startYear'] = intervention['build_year']
@@ -330,17 +334,6 @@ class BaseTransportWrapper(SectorModel):
             intervention['technical_lifetime']['value']
         del intervention['build_year']
         del intervention['technical_lifetime']
-
-        # add day and year usage
-        intervention['dayUsage'] = current_day_usage.loc[intervention['NLC']].values[0]
-        intervention['yearUsage'] = current_year_usage.loc[intervention['NLC']].values[0]
-
-        # fix up path to congestion charging pricing details file
-        if 'congestionChargingPricing' in intervention:
-            cccp_filename = intervention['congestionChargingPricing']
-            intervention['congestionChargingPricing'] = os.path.join(
-                self._working_dir, 'data', 'csvfiles', cccp_filename
-            )
 
         with open(path, 'w') as file_handle:
             for key, value in intervention.items():
