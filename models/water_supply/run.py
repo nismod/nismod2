@@ -1,6 +1,7 @@
 """Water supply model
 """
 import os
+import re
 import subprocess
 import sys
 
@@ -65,11 +66,16 @@ class WaterWrapper(SectorModel):
         wathnet = os.path.join(exe_dir, 'w5_console.exe')
         assert(os.path.isfile(wathnet)), "Expected to find water supply WATHNET executable at {}".format(wathnet)
 
-        # This is the national model file, which must be edited to specify which days are simulated
+        # This is the national model file, which must be edited in various ways:
         sysfile = os.path.join(exe_dir, 'National_Model.wat')
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
+        # Inject the current simulation period (current timestep)
         sysfile = self.inject_simulation_days(sysfile, now)
+        assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
+
+        # Inject the reservoir levels from the previous timestep
+        sysfile = self.inject_reservoir_levels(sysfile, reservoir_levels)
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # This is the nodal file which is generated from various static data files
@@ -245,6 +251,81 @@ class WaterWrapper(SectorModel):
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
+
+    @staticmethod
+    def inject_reservoir_levels(sysfile, reservoir_levels):
+        """Injects the current year into the sysfile so that the current year is simulated.
+
+        Arguments
+        ---------
+        sysfile : str
+            Path to the sysfile ('National_Model.wat')
+
+        reservoir_levels: smif.data_layer.DataArray
+            The reservoir levels to inject into the sysfile
+        """
+
+        res_names = np.array([x['name'] for x in reservoir_levels.dim_coords('water_supply_reservoirs').elements])
+        res_vols = reservoir_levels.data
+
+        with open(sysfile, 'r') as my_f:
+            line = ''
+            while '! Node data' not in line:
+                line = my_f.readline()
+
+            node_data_lines = [line]
+
+            while '!--------------------------------------------------------' not in line:
+                line = my_f.readline()
+                node_data_lines.append(line.strip())
+
+        node_data = '\n'.join(node_data_lines)
+
+        node_num_dict = {}
+
+        for res_name in res_names:
+
+            # We're looking for <node_num> <res name>\n <node_type>
+            # where <node_type> is always 1 for reservoirs
+            regex_string = r'\n(\d+)\s+{}\s+1\s+'.format(re.escape(res_name))
+            m = re.search(regex_string, node_data)
+
+            assert m is not None, 'Expected to find a match for {} in {}'.format(regex_string, sysfile)
+
+            node_num_dict[res_name] = m.group(1)
+
+        with open(sysfile, 'r') as my_f:
+            original_file = my_f.read()
+
+        # A string not in the original file, for keeping track of successful substitutions
+        sentinel = r'#~@@~#'
+        assert sentinel not in original_file
+
+        for res_name, res_vol in zip(res_names, res_vols):
+
+            regex_pattern = r'(\n\s+{}\s+{}\s+1.*\n.*\n.*9999999\s+\d+\s+)\d+'.format(
+                node_num_dict[res_name], re.escape(res_name)
+            )
+
+            original_file = re.sub(
+                pattern=regex_pattern,
+                repl=r'\g<1>{}{}'.format(int(res_vol), sentinel),
+                string=original_file,
+                count=1
+            )
+
+        occurrences = original_file.count(sentinel)
+        assert occurrences == len(res_names), \
+            'Only {}/{} reservoir levels were replaced. Something went wrong!'.format(occurrences, len(res_names))
+
+        original_file = original_file.replace(sentinel, '')
+
+        new_filename = sysfile.replace('.wat', '_with_res_vols.wat')
+
+        with open(new_filename, 'w') as my_f:
+            my_f.write(original_file)
+
+        return new_filename
 
     @staticmethod
     def inject_new_demands(public_file, demand_data):
