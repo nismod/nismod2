@@ -174,6 +174,8 @@ class EnergySupplyWrapper(SectorModel):
             'gasload_non_heat_com',
             'elecload_non_heat_com',
             'hydrogenload_non_heat_eh',
+            'oil_non_heat_eh',
+            'solid_fuel_non_heat_eh',
             # optimised mode only
             'heatload_res',
             'heatload_com',
@@ -184,6 +186,7 @@ class EnergySupplyWrapper(SectorModel):
             'building_gas_boiler',
             'building_hydrogen_boiler',
             'building_oil_boiler',
+            'building_solidfuel_boiler',
             'dh_biomass_boiler',
             'dh_elec_boiler',
             'dh_gas_CHP',
