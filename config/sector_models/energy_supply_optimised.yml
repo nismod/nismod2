@@ -59,6 +59,18 @@ inputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
   - name: fuel_price
     dims:
       - seasons

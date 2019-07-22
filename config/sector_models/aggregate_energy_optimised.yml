@@ -34,6 +34,42 @@ inputs:
       - hourly
     dtype: float
     unit: GW
+  - name: residential_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
 interventions: []
 outputs:
   - name: hydrogen_non_heat_eh
@@ -43,6 +79,18 @@ outputs:
     dtype: float
     unit: GW
   - name: heatload_com
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: oil_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
     dims:
       - lad_uk_2016
       - hourly

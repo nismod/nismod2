@@ -146,6 +146,16 @@ class AggregateEnergyOptimised(SectorModel):
                 'service_hydrogen',
                 'industry_hydrogen'
             ],
+            'oil_non_heat_eh': [
+                'residential_oil',
+                'service_oil',
+                'industry_oil'
+            ],
+            'solid_fuel_non_heat_eh': [
+                'residential_solid_fuel',
+                'service_solid_fuel',
+                'industry_solid_fuel'
+            ],
             'heatload_com': [
                 'service_heat',
                 'industry_heat'
