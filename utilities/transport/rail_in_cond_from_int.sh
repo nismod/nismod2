@@ -1,5 +1,5 @@
 # Generate initial conditions file from base year rail usage file
-# Usage : bash rail_in_cond_from_int.sh
+# Usage : bash rail_in_cond_from_int.sh [input] [output]
 # Input: base year rail usage file
 
 # NLC,Mode,Station,...,LADcode,LADname,Area
@@ -14,8 +14,9 @@
 # newActon_Town_TUBE, 1975
 # ...
 
-path_baseYearRailUsage=../../data/transport/gb/data/csvfiles/baseYearRailUsage.csv
-path_initial_conditions=../../data/initial_conditions/base_year_railstations.csv
+path_baseYearRailUsage=${1:-../../data/transport/gb/data/csvfiles/baseYearRailUsage.csv}
+path_initial_conditions=${2:-../../data/initial_conditions/base_year_railstations.csv}
+
 if [ -f "$path_initial_conditions" ] ; then
     rm -i $path_initial_conditions
 fi

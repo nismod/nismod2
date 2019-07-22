@@ -90,4 +90,4 @@ parameters:
 interventions:
   - transport_rail.csv
 initial_conditions:
-  - base_year_railstations.csv
+  - base_year_railstations_soton.csv
