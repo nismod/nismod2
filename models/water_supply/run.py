@@ -133,7 +133,8 @@ class WaterWrapper(SectorModel):
             data_handle.get_results('water_supply_reservoir_daily_volumes').data[-1]
         )
 
-    def prepare_nodal(self, data_handle, nodal_dir, year_now):
+    @staticmethod
+    def prepare_nodal(data_handle, nodal_dir, year_now):
         """Generates the nodal file necessary for the Wathnet model run.
 
         Arguments
@@ -172,7 +173,7 @@ class WaterWrapper(SectorModel):
 
         public_file = os.path.join(nodal_dir, 'WRZ_DI_DO.csv')
         assert (os.path.isfile(public_file)), "Expected to find water supply public data at {}".format(public_file)
-        public_file = self.inject_new_demands(public_file, data_handle.get_data('water_demand'))
+        public_file = WaterWrapper.inject_new_demands(public_file, data_handle.get_data('water_demand'))
 
         nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
         assert (os.path.isfile(nonpublic_file)), "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
@@ -263,50 +264,35 @@ class WaterWrapper(SectorModel):
 
         reservoir_levels: smif.data_layer.DataArray
             The reservoir levels to inject into the sysfile
+
+        Returns
+        =======
+        sysfile : str
+            The name of the new wathnet sysfile
         """
 
         res_names = np.array([x['name'] for x in reservoir_levels.dim_coords('water_supply_reservoirs').elements])
         res_vols = reservoir_levels.data
 
-        with open(sysfile, 'r') as my_f:
-            line = ''
-            while '! Node data' not in line:
-                line = my_f.readline()
-
-            node_data_lines = [line]
-
-            while '!--------------------------------------------------------' not in line:
-                line = my_f.readline()
-                node_data_lines.append(line.strip())
-
-        node_data = '\n'.join(node_data_lines)
-
-        node_num_dict = {}
-
-        for res_name in res_names:
-
-            # We're looking for <node_num> <res name>\n <node_type>
-            # where <node_type> is always 1 for reservoirs
-            regex_string = r'\n(\d+)\s+{}\s+1\s+'.format(re.escape(res_name))
-            m = re.search(regex_string, node_data)
-
-            assert m is not None, 'Expected to find a match for {} in {}'.format(regex_string, sysfile)
-
-            node_num_dict[res_name] = m.group(1)
+        node_num_dict = WaterWrapper.get_reservoir_node_numbers(sysfile, res_names)
 
         with open(sysfile, 'r') as my_f:
             original_file = my_f.read()
 
-        # A string not in the original file, for keeping track of successful substitutions
+        # A string not in the original file, for keeping track of the number of successful substitutions
         sentinel = r'#~@@~#'
         assert sentinel not in original_file
 
+        # Perform the required substitutions
         for res_name, res_vol in zip(res_names, res_vols):
 
+            # Pattern (<...>)\d+ where the group (<...>) matches based on the node number and reservoir name
+            # and the \d+ is the number that is to be replaced by the substitution
             regex_pattern = r'(\n\s+{}\s+{}\s+1.*\n.*\n.*9999999\s+\d+\s+)\d+'.format(
                 node_num_dict[res_name], re.escape(res_name)
             )
 
+            # Keep the first group (\g<1>) unchanged, then add the correct volume and the sentinel
             original_file = re.sub(
                 pattern=regex_pattern,
                 repl=r'\g<1>{}{}'.format(int(res_vol), sentinel),
@@ -314,18 +300,67 @@ class WaterWrapper(SectorModel):
                 count=1
             )
 
-        occurrences = original_file.count(sentinel)
-        assert occurrences == len(res_names), \
-            'Only {}/{} reservoir levels were replaced. Something went wrong!'.format(occurrences, len(res_names))
+        # The number of occurrences of the sentinel should equal the number of reservoirs.
+        # If not, at least one replacement did not occur as expected.
+        num_sentinels = original_file.count(sentinel)
+        assert num_sentinels == len(res_names), \
+            'Only {}/{} reservoir levels were replaced. Something went wrong!'.format(num_sentinels, len(res_names))
 
-        original_file = original_file.replace(sentinel, '')
-
+        # Finally, write out a new file, removing the sentinels
         new_filename = sysfile.replace('.wat', '_with_res_vols.wat')
 
         with open(new_filename, 'w') as my_f:
-            my_f.write(original_file)
+            my_f.write(original_file.replace(sentinel, ''))
 
         return new_filename
+
+    @staticmethod
+    def get_reservoir_node_numbers(sysfile, reservoir_names):
+        """Identifies node numbers corresponding to reservoir names from the wathnet sysfile.
+
+        Arguments
+        ---------
+        sysfile : str
+            Path to the sysfile ('National_Model.wat')
+
+        reservoir_names: List[str]
+            List of reservoir names
+
+        Returns
+        =======
+        node_num_dict : dict
+            Mapping from reservoir name to integer node number
+        """
+
+        # For efficiency, we pull out the relevant part of the sysfile,
+        # between '! Node data' and '!-------------------------------'
+        with open(sysfile, 'r') as my_file:
+            line = ''
+            while '! Node data' not in line:
+                line = my_file.readline()
+
+            node_data_lines = [line]
+
+            while '!--------------------------------------------------------' not in line:
+                line = my_file.readline()
+                node_data_lines.append(line.strip())
+
+        node_data = '\n'.join(node_data_lines)
+
+        # Populate the dictionary mapping reservoir name to node number
+        node_num_dict = {}
+        for res_name in reservoir_names:
+
+            # We're looking for <node_num> <res name>\n <node_type>
+            # where <node_type> is always 1 for reservoirs
+            regex_pattern = r'\n(\d+)\s+{}\s+1\s+'.format(re.escape(res_name))
+            m = re.search(regex_pattern, node_data)
+
+            assert m is not None, 'Expected to find a match for {} in {}'.format(regex_pattern, sysfile)
+
+            node_num_dict[res_name] = m.group(1)
+
+        return node_num_dict
 
     @staticmethod
     def inject_new_demands(public_file, demand_data):
