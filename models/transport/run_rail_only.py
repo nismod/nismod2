@@ -207,22 +207,24 @@ class BaseTransportWrapper(SectorModel):
         # build dataframe and drop data that does not go into the
         # base year rail demand input file
         df = pd.DataFrame.from_dict(interventions)
-        df = df.rename(columns={'NLC': 'NLC_southampton'}).set_index('NLC_southampton')
+        df = df.rename(columns={'NLC': 'NLC_gb'}).set_index('NLC_gb')
+        df.index.names = ['NLC']
         cols_to_drop = ['technical_lifetime_units',
                         'technical_lifetime', 'name', 'type', 'build_year']
         df = df.drop(cols_to_drop, axis=1)
-
         # Get day and year usage from data_handle
         # (provided by station_usage scenario)
         baseyear_day_usage = data_handle.get_data("day_usage",
                                                   timestep=data_handle.base_timestep)
         baseyear_day_usage = baseyear_day_usage.as_df().reset_index()
         baseyear_day_usage = baseyear_day_usage.set_index(['NLC_southampton'])
+        baseyear_day_usage.index.names = ['NLC']
 
         baseyear_year_usage = data_handle.get_data("year_usage",
                                                    timestep=data_handle.base_timestep)
         baseyear_year_usage = baseyear_year_usage.as_df().reset_index()
         baseyear_year_usage = baseyear_year_usage.set_index(['NLC_southampton'])
+        baseyear_year_usage.index.names = ['NLC']
 
         # current_day_usage also contains potential future rail stations
         # so must concat dataframes according to index of df that only contains old
@@ -247,7 +249,6 @@ class BaseTransportWrapper(SectorModel):
         cols = ['Mode','Station','NaPTANname','Easting','Northing','YearUsage',
                 'DayUsage','RunDays','LADcode','LADname','Area']
         df = df.rename(columns=columns_names)[cols]
-        df.index.names = ['NLC']
 
         # Write base year rail demand csv file
         df.to_csv(os.path.join(self._input_dir, 'baseYearRailDemand.csv'))
