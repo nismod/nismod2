@@ -218,6 +218,11 @@ class WaterWrapper(SectorModel):
         
         year_now: int
             The year to be simulated
+
+        Returns
+        =======
+        sysfile : str
+            The name of the new wathnet sysfile
         """
 
         modified_sysfile = os.path.join(os.path.dirname(sysfile), 'modified_model.wat')
@@ -255,7 +260,7 @@ class WaterWrapper(SectorModel):
 
     @staticmethod
     def inject_reservoir_levels(sysfile, reservoir_levels):
-        """Injects the current year into the sysfile so that the current year is simulated.
+        """Injects reservoir levels passed in through the smif data handle to the Wathnet sysfile.
 
         Arguments
         ---------
@@ -373,11 +378,16 @@ class WaterWrapper(SectorModel):
 
         demand_data: smif.data_layer.DataArray
             The demand data to inject into the public file
+
+        Returns
+        =======
+        new_public_file : str
+            The name of the new public demands file
         """
 
         assert public_file.endswith('.csv'), "Expected public file to be a csv file"
 
-        new_file = public_file + ".NEW_DEMANDS"
+        new_public_file = public_file + ".NEW_DEMANDS"
 
         # Read the existing CSV using Pandas, and as a sanity check assert it is written
         # back out identically (to ensure nothing has gone wrong reading the file)
@@ -408,14 +418,14 @@ class WaterWrapper(SectorModel):
         public_df['Distribution Input'] = demand_data.data
         assert np.array_equal(demand_data.data, public_df['Distribution Input'])
 
-        public_df.to_csv(path_or_buf=new_file, sep=',', header=True, index=False)
-        assert os.path.isfile(new_file)
+        public_df.to_csv(path_or_buf=new_public_file, sep=',', header=True, index=False)
+        assert os.path.isfile(new_public_file)
 
-        return new_file
+        return new_public_file
 
     @staticmethod
     def extract_wathnet_output(output_file, spec):
-        """Injects the water demand data calculated by the water demand model into the public file.
+        """Given a Wathnet output file, extracts the data smif is expecting, verifying the spec matches.
 
         Arguments
         ---------
