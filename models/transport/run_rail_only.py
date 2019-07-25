@@ -429,19 +429,6 @@ class BaseTransportWrapper(SectorModel):
         numpy_array = self._df_to_ndarray(output_name, df)
         data_handle.set_results(output_name, numpy_array)
         
-    def _melt_output(self, name, filename, dims, csv_id_vars, csv_melt_var):
-        return pd.read_csv(
-            filename
-        ).drop(
-            'year', axis=1  # ignore the year output, assume it's always current timestep
-        ).melt(
-            id_vars=csv_id_vars,
-            var_name=csv_melt_var,
-            value_name=name
-        ).rename(
-            dims, axis=1
-        )
-
     def _df_to_ndarray(self, output_name, dataframe):
         spec = self.outputs[output_name]
         dataframe.set_index(spec.dims, inplace=True)
