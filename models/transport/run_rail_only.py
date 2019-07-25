@@ -453,3 +453,9 @@ class SouthamptonRailTransportWrapper(BaseTransportWrapper):
     """
     _config_filename = 'run_config_rail_southampton.ini'
     _template_filename = 'rail_southampton-config.properties.template'
+
+class RailTransportWrapper(BaseTransportWrapper):
+    """Wrap the rail model, in 'southampton' configuration
+    """
+    _config_filename = 'run_config_full.ini'
+    _template_filename = 'rail-config.properties.template'
