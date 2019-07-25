@@ -214,16 +214,17 @@ class BaseTransportWrapper(SectorModel):
         df = df.drop(cols_to_drop, axis=1)
         # Get day and year usage from data_handle
         # (provided by station_usage scenario)
+        NLC_dim = self.inputs['day_usage'].dims[0] # Name of NLC dimension in smif
         baseyear_day_usage = data_handle.get_data("day_usage",
                                                   timestep=data_handle.base_timestep)
         baseyear_day_usage = baseyear_day_usage.as_df().reset_index()
-        baseyear_day_usage = baseyear_day_usage.set_index(['NLC_southampton'])
+        baseyear_day_usage = baseyear_day_usage.set_index([NLC_dim])
         baseyear_day_usage.index.names = ['NLC']
 
         baseyear_year_usage = data_handle.get_data("year_usage",
                                                    timestep=data_handle.base_timestep)
         baseyear_year_usage = baseyear_year_usage.as_df().reset_index()
-        baseyear_year_usage = baseyear_year_usage.set_index(['NLC_southampton'])
+        baseyear_year_usage = baseyear_year_usage.set_index([NLC_dim])
         baseyear_year_usage.index.names = ['NLC']
 
         # current_day_usage also contains potential future rail stations
@@ -319,13 +320,14 @@ class BaseTransportWrapper(SectorModel):
 
         # add day and year usage
         build_year=intervention['build_year']
+        NLC_dim = self.inputs['day_usage'].dims[0] # Name of NLC dimension in smif
         # day usage
         day_usage = data_handle.get_data("day_usage", timestep=build_year).as_df().reset_index()
-        day_usage = day_usage.set_index(['NLC_southampton'])
+        day_usage = day_usage.set_index([NLC_dim])
         intervention['dayUsage'] = day_usage.loc[intervention['NLC']].values[0]
         # year usage
         year_usage = data_handle.get_data("year_usage", timestep=build_year).as_df().reset_index()
-        year_usage = year_usage.set_index(['NLC_southampton'])
+        year_usage = year_usage.set_index([NLC_dim])
         intervention['yearUsage'] = year_usage.loc[intervention['NLC']].values[0]
 
         # compute start/end year from smif intervention keys
@@ -342,42 +344,46 @@ class BaseTransportWrapper(SectorModel):
         return path
 
     def _set_outputs(self, data_handle):
-            cols = {
-                'NLC': 'NLC_southampton',
-                'YearUsage': 'year_stations_usage'
-            }
-            self._set_1D_output(data_handle, 'year_stations_usage',
-                                          'predictedRailDemand.csv', cols)
-            cols = {
-                'NLC': 'NLC_southampton',
-                'DayUsage': 'day_stations_usage'
-            }
-            self._set_1D_output(data_handle, 'day_stations_usage',
-                                          'predictedRailDemand.csv', cols)
-            cols = {
-                'LADcode': 'lad_southampton',
-                'yearTotal': 'total_year_zonal_rail_demand'
-            }
-            self._set_1D_output(data_handle, 'total_year_zonal_rail_demand',
-                                          'zonalRailDemand.csv', cols)
-            cols = {
-                'LADcode': 'lad_southampton',
-                'yearAvg': 'avg_year_zonal_rail_demand'
-            }
-            self._set_1D_output(data_handle, 'avg_year_zonal_rail_demand',
-                                          'zonalRailDemand.csv', cols)
-            cols = {
-                'LADcode': 'lad_southampton',
-                'dayTotal': 'total_day_zonal_rail_demand'
-            }
-            self._set_1D_output(data_handle, 'total_day_zonal_rail_demand',
-                                          'zonalRailDemand.csv', cols)
-            cols = {
-                'LADcode': 'lad_southampton',
-                'dayAvg': 'avg_day_zonal_rail_demand'
-            }
-            self._set_1D_output(data_handle, 'avg_day_zonal_rail_demand',
-                                          'zonalRailDemand.csv', cols)
+        # Name of NLC dimension in smif
+        NLC_dim = self.inputs['day_usage'].dims[0]
+        # Name of LAD dimension in smif
+        lad_dim = self.inputs['population'].dims[0]
+        cols = {
+            'NLC': NLC_dim,
+            'YearUsage': 'year_stations_usage'
+        }
+        self._set_1D_output(data_handle, 'year_stations_usage',
+                            'predictedRailDemand.csv', cols)
+        cols = {
+            'NLC': NLC_dim,
+            'DayUsage': 'day_stations_usage'
+        }
+        self._set_1D_output(data_handle, 'day_stations_usage',
+                            'predictedRailDemand.csv', cols)
+        cols = {
+            'LADcode': lad_dim,
+            'yearTotal': 'total_year_zonal_rail_demand'
+        }
+        self._set_1D_output(data_handle, 'total_year_zonal_rail_demand',
+                            'zonalRailDemand.csv', cols)
+        cols = {
+            'LADcode': lad_dim,
+            'yearAvg': 'avg_year_zonal_rail_demand'
+        }
+        self._set_1D_output(data_handle, 'avg_year_zonal_rail_demand',
+                            'zonalRailDemand.csv', cols)
+        cols = {
+            'LADcode': lad_dim,
+            'dayTotal': 'total_day_zonal_rail_demand'
+        }
+        self._set_1D_output(data_handle, 'total_day_zonal_rail_demand',
+                            'zonalRailDemand.csv', cols)
+        cols = {
+            'LADcode': lad_dim,
+            'dayAvg': 'avg_day_zonal_rail_demand'
+        }
+        self._set_1D_output(data_handle, 'avg_day_zonal_rail_demand',
+                            'zonalRailDemand.csv', cols)
 
     def _set_1D_output(self, data_handle, output_name, filename, cols):
         """Get one dimensional model input from data handle and write to input file
