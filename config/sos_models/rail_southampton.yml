@@ -6,7 +6,7 @@ sector_models:
 scenarios:
   - socio-economic
   - station_usage
-  - rail_journey_times_fares
+  - rail_journey_times_fares_soton
   - car_zonal_journey_costs
   - rail_trip_rates
 narratives: []
@@ -27,11 +27,11 @@ scenario_dependencies:
     source_output: year_usage
     sink: extract_southampton_scenarios
     sink_input: year_usage
-  - source: rail_journey_times_fares
+  - source: rail_journey_times_fares_soton
     source_output: rail_journey_fares
     sink: extract_southampton_scenarios
     sink_input: rail_journey_fares
-  - source: rail_journey_times_fares
+  - source: rail_journey_times_fares_soton
     source_output: rail_journey_times
     sink: rail_southampton
     sink_input: rail_journey_times

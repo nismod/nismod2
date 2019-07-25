@@ -1,4 +1,4 @@
-name: rail_journey_times_fares
+name: rail_journey_times_fares_soton
 description: Journey times and fares for transport rail model
 provides:
   - name: rail_journey_fares
@@ -8,7 +8,7 @@ provides:
     unit: £
   - name: rail_journey_times
     dims:
-      - NLC_gb
+      - NLC_southampton_generalised
     dtype: float
     unit: h
 variants:
@@ -16,4 +16,4 @@ variants:
     description: Journey times and fares for transport rail model
     data:
       rail_journey_fares:  rail_station_journey_fares.csv
-      rail_journey_times: rail_station_journey_times.csv
+      rail_journey_times: rail_station_generalised_journey_times_soton.csv

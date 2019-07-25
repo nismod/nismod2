@@ -5,7 +5,7 @@ timesteps: [2015, 2020]
 scenarios:
   socio-economic: itrc_baseline16
   station_usage: baseline
-  rail_journey_times_fares: baseline
+  rail_journey_times_fares_soton: baseline
   car_zonal_journey_costs: baseline
   rail_trip_rates: baseline
 narratives: {}
