@@ -3055,3 +3055,4 @@ NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naP
 300092,newWythenshawe_Town_Centre_LRAIL,NewRailStation,100,y,LRAIL,Wythenshawe_Town_Centre,Wythenshawe_Town_Centre_(Manchester_Metrolink),382552,387050,364,E08000003,Manchester,PTE
 500001,newForestStation_NRAIL,NewRailStation,100,y,NRAIL,New Forest Station,N/A,433392,110147,363,E07000091,New Forest,SE
 500000,newSouthamptonStation_NRAIL,NewRailStation,100,y,NRAIL,New Southampton,N/A,440066,115347,363,E06000045,Southampton,SE
+500000,newWinslowRailStation_NRAIL,NewRailStation,100,y,NRAIL,New Winslow,N/A,476600,228300,363,E07000004,Aylesbury Vale,SE
