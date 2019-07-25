@@ -11,14 +11,6 @@ def main(input_filename, output_filename):
     # Could use glob to find similarly-named engineTypeFraction*.csv
     df_in = pd.read_csv(input_filename)
 
-    # df_in.head()
-    #    year vehicle  ICE_PETROL  ICE_DIESEL  ...  PHEV_PETROL  PHEV_DIESEL       BEV
-    # 0  2015     CAR    0.612000    0.377800  ...     0.000500     0.000308  0.000813
-    # 1  2016     CAR    0.594514    0.367006  ...     0.013749     0.008465  0.003647
-    # 2  2017     CAR    0.577029    0.356211  ...     0.026997     0.016622  0.006481
-    # 3  2018     CAR    0.559543    0.345417  ...     0.040246     0.024779  0.009315
-    # 4  2019     CAR    0.542057    0.334623  ...     0.053494     0.032936  0.012149
-
     # Melt to tidy format
     df_out = df_in.melt(
         id_vars=['year']
@@ -29,14 +21,6 @@ def main(input_filename, output_filename):
             'value': 'rail_journey_fares',
         }
     )
-
-    # df_out.head()
-    #    timestep vehicle engine_type  engine_type_fractions
-    # 0      2015     CAR  ICE_PETROL               0.612000
-    # 1      2016     CAR  ICE_PETROL               0.594514
-    # 2      2017     CAR  ICE_PETROL               0.577029
-    # 3      2018     CAR  ICE_PETROL               0.559543
-    # 4      2019     CAR  ICE_PETROL               0.542057
 
     df_out.to_csv(output_filename, index=False)
 
