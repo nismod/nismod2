@@ -53,24 +53,20 @@ model_dependencies:
     source_output: gva
     sink: rail_southampton
     sink_input: gva
-    timestep: PREVIOUS
   - source: extract_southampton_scenarios
     source_output: car_zonal_journey_costs
     sink: rail_southampton
     sink_input: car_zonal_journey_costs
-    timestep: PREVIOUS
   - source: extract_southampton_scenarios
     source_output: rail_journey_fares
     sink: rail_southampton
     sink_input: rail_journey_fares
-    timestep: PREVIOUS
   - source: extract_southampton_scenarios
     source_output: day_usage
     sink: rail_southampton
     sink_input: day_usage
-    timestep: PREVIOUS
   - source: extract_southampton_scenarios
     source_output: year_usage
     sink: rail_southampton
     sink_input: year_usage
-    timestep: PREVIOUS
+
