@@ -135,7 +135,10 @@ class WaterWrapper(SectorModel):
 
     @staticmethod
     def prepare_nodal(data_handle, nodal_dir, year_now):
-        """Generates the nodal file necessary for the Wathnet model run.
+        """Generates the nodal file necessary for the Wathnet model run. The script to prepare the nodal file requires
+        a number of csv files as parameters. Some of these data come via the data_handle as either parameters or
+        scenario data, and some are installed with the water_supply model. Those that come via the data_handle must be
+        reformatted into a square format expected by the prepare_nodal script.
 
         Arguments
         ---------
@@ -155,9 +158,55 @@ class WaterWrapper(SectorModel):
             The path to the generated nodal file
         """
 
-        # Check necessary files exist
+        # Find the prepare nodal script
         prepare_nodal = os.path.join(nodal_dir, 'prepare_nodal.py')
         assert (os.path.isfile(prepare_nodal)), "Expected to find prepare_nodal script at {}".format(prepare_nodal)
+
+        #######################################
+        # Data from data handle as parameters #
+        #######################################
+
+        # The nonpublic water demand
+        nonpublic_df = data_handle.get_parameter('nonpublic_water_demand').as_df().reset_index().pivot(
+            index='water_supply/cams_names',
+            columns='water_supply/nonpublic_use_codes',
+            values='nonpublic_water_demand'
+        ).reset_index()
+
+        nonpublic_df.rename(
+            inplace=True,
+            columns={
+                'water_supply/cams_names': 'cams_name',
+            }
+        )
+
+        nonpublic_file = os.path.join(nodal_dir, 'nonpublic_water_demand.csv')
+        nonpublic_df.to_csv(nonpublic_file, index=False)
+        assert os.path.isfile(nonpublic_file),\
+            "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
+
+        # The demand profiles
+        demand_df = data_handle.get_parameter('demand_profiles').as_df().reset_index().pivot(
+            index='water_supply_days_into_year',
+            columns='water_supply/demand_profile_zones',
+            values='demand_profiles'
+        ).reset_index()
+
+        demand_df.rename(
+            inplace=True,
+            columns={
+                'water_supply_days_into_year': 'Day',
+            }
+        )
+
+        demand_profiles_file = os.path.join(nodal_dir, 'demand_profiles.csv')
+        demand_df.to_csv(demand_profiles_file, index=False)
+        assert os.path.isfile(demand_profiles_file),\
+            "Expected to find water supply missing data at {}".format(demand_profiles_file)
+
+        ##########################################
+        # Data from data handle as scenario data #
+        ##########################################
 
         flow_file = os.path.join(nodal_dir, 'National_WRSM_NatModel_logNSE_obs_11018_1.txt')
         assert (os.path.isfile(flow_file)), "Expected to find water supply flows file at {}".format(flow_file)
@@ -165,28 +214,34 @@ class WaterWrapper(SectorModel):
         demand_file = os.path.join(nodal_dir, '001_daily.csv')
         assert (os.path.isfile(demand_file)), "Expected to find water supply demand file at {}".format(demand_file)
 
-        catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
-        assert (os.path.isfile(catchment_file)), "Expected to find water supply catchment file at {}".format(catchment_file)
-
         borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
         assert (os.path.isfile(borehole_file)), "Expected to find water supply borehole data at {}".format(borehole_file)
 
-        public_file = os.path.join(nodal_dir, 'WRZ_DI_DO.csv')
-        assert (os.path.isfile(public_file)), "Expected to find water supply public data at {}".format(public_file)
-        public_file = WaterWrapper.inject_new_demands(public_file, data_handle.get_data('water_demand'))
+        ####################################
+        # Data installed with water_supply #
+        ####################################
 
-        nonpublic_file = os.path.join(nodal_dir, 'cams_mean_daily_returns.csv')
-        assert (os.path.isfile(nonpublic_file)), "Expected to find water supply nonpublic data at {}".format(nonpublic_file)
+        catchment_file = os.path.join(nodal_dir, 'CatchmentIndex.csv')
+        assert (os.path.isfile(catchment_file)),\
+            "Expected to find water supply catchment file at {}".format(catchment_file)
 
         missing_data_file = os.path.join(nodal_dir, 'missing_data.csv')
-        assert (os.path.isfile(missing_data_file)), "Expected to find water supply missing data at {}".format(missing_data_file)
+        assert (os.path.isfile(missing_data_file)),\
+            "Expected to find water supply missing data at {}".format(missing_data_file)
 
-        demand_profiles_file = os.path.join(nodal_dir, 'Demand_Profiles.csv')
-        assert (os.path.isfile(demand_profiles_file)), "Expected to find water supply missing data at {}".format(demand_profiles_file)
+        public_file = os.path.join(nodal_dir, 'WRZ_DI_DO.csv')
+        assert (os.path.isfile(public_file)),\
+            "Expected to find water supply public data at {}".format(public_file)
+        public_file = WaterWrapper.inject_new_demands(public_file, data_handle.get_data('water_demand'))
 
         dynatop_file = os.path.join(nodal_dir, 'master_dynatop_points.csv')
-        assert (os.path.isfile(dynatop_file)), "Expected to find water supply missing data at {}".format(dynatop_file)
+        assert (os.path.isfile(dynatop_file)),\
+            "Expected to find water supply missing data at {}".format(dynatop_file)
 
+        ###################################
+        # Generate the wathnet nodal file #
+        ###################################
+        exit(0)
         output_file = os.path.join(nodal_dir, 'wathnet.nodal')
 
         subprocess.call([
