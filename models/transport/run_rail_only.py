@@ -147,6 +147,11 @@ class BaseTransportWrapper(SectorModel):
 
         current_input = data_handle.get_data(input_name).as_df().reset_index()
         current_input['year'] = data_handle.current_timestep
+        #   lad_southampton     population  year
+        # 0       E06000045  245280.036690  2015
+        # 1       E07000086  140288.654932  2015
+        # 2       E07000091  130489.400749  2015
+        # 3       E06000046  180185.495562  2015
 
         if data_handle.current_timestep != data_handle.base_timestep:
             previous_input = data_handle.get_previous_timestep_data(input_name).as_df().reset_index()
@@ -157,12 +162,36 @@ class BaseTransportWrapper(SectorModel):
             )
         else:
             input_df = current_input
+
         if dtype:
             input_df.loc[:,input_name] = input_df.loc[:,input_name].astype(dtype)
+
+        # Now reshaping the dataframe for the corresponding CSV file to be readable
+        # by the rail model.
+        # For example
+
+        #       lad_southampton  population  year
+        # 0       E06000045      245280  2015
+        # 1       E07000086      140288  2015
+        # 2       E07000091      130489  2015
+        # 3       E06000046      180185  2015
+        # 0       E06000045      252308  2020
+        # 1       E07000086      142705  2020
+        # 2       E07000091      136404  2020
+        # 3       E06000046      185906  2020
+
+        # to
+
+        #       lad_southampton  E06000045  E06000046  E07000086  E07000091
+        # year
+        # 2015                245280     180185     140288     130489
+        # 2020                252308     185906     142705     136404
+
         colname = self.inputs[input_name].dims[0]
         input_df = input_df.pivot(
             index='year', columns=colname, values=input_name
         )
+        # Write CSV input file for rail model
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
@@ -172,8 +201,6 @@ class BaseTransportWrapper(SectorModel):
         Arguments
         ---------
         data_handle: smif.data_layer.DataHandle
-        input_name: str
-        filename: str
         """
         input_name = 'rail_trip_rates'
         filename = 'railTripRates.csv'
@@ -247,9 +274,8 @@ class BaseTransportWrapper(SectorModel):
             'LADname': 'LADname',
             'area': 'Area',
         }
-        #Re-order columns
-        cols = ['Mode','Station','NaPTANname','Easting','Northing','YearUsage',
-                'DayUsage','RunDays','LADcode','LADname','Area']
+        cols = ['Mode', 'Station', 'NaPTANname', 'Easting', 'Northing',
+                'YearUsage', 'DayUsage', 'RunDays', 'LADcode', 'LADname', 'Area']
         df = df.rename(columns=columns_names)[cols]
 
         # Write base year rail demand csv file
