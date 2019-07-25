@@ -294,14 +294,11 @@ class BaseTransportWrapper(SectorModel):
             config = Template(template_fh.read())
 
         intervention_files = []
-        rail_interventions_types = ['NewRailStation']
+        # Discard initial conditions if current year is the base year
         interventions = self._filter_interventions(data_handle)
         for i, intervention in enumerate(interventions):
             fname = self._write_rail_intervention(intervention, data_handle)
-            if intervention['type'] in rail_interventions_types:
-                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
-            else:
-                intervention_files.append("interventionFile{} = {}".format(i, fname))
+            intervention_files.append("railInterventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
