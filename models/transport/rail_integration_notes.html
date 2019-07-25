@@ -1,0 +1,1791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-07-25 Thu 17:12 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rail model integration in NISMOD2 using the <code>smif</code> framework</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Thibault Lestang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Rail model integration in NISMOD2 using the <code>smif</code> framework</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org799bb83">1. Introduction</a></li>
+<li><a href="#org5f25e20">2. transport model config file</a></li>
+<li><a href="#org304d3b9">3. Dimensions</a></li>
+<li><a href="#org250dc6c">4. Parameters</a>
+<ul>
+<li><a href="#org66e52e9">4.1. Elasticities</a></li>
+<li><a href="#orge095aa0">4.2. Rail model flags</a></li>
+</ul>
+</li>
+<li><a href="#org358baa3">5. Input data</a>
+<ul>
+<li><a href="#org637c6da">5.1. Population and G.V.A.</a>
+<ul>
+<li><a href="#orge5519ce">5.1.1. Data</a></li>
+<li><a href="#orgbca2424">5.1.2. Integration in smif</a></li>
+</ul>
+</li>
+<li><a href="#org23d3fa9">5.2. Car Zonal Journey Costs</a>
+<ul>
+<li><a href="#orgf9b4caa">5.2.1. Data</a></li>
+<li><a href="#org3c0eb72">5.2.2. Integration</a></li>
+</ul>
+</li>
+<li><a href="#orge7a2a25">5.3. Rail journey fares and rail journey times</a>
+<ul>
+<li><a href="#org0653297">5.3.1. Data</a></li>
+<li><a href="#org8b7668e">5.3.2. Integration in smif</a></li>
+<li><a href="#orgc248d70">5.3.3. Hack: Journey times for the Southampton area test case</a></li>
+</ul>
+</li>
+<li><a href="#org1b619a4">5.4. Trip rates</a>
+<ul>
+<li><a href="#org6dd2c47">5.4.1. Data</a></li>
+<li><a href="#org19b4fdf">5.4.2. Integration</a></li>
+</ul>
+</li>
+<li><a href="#orgdbc9a49">5.5. Station usage (yearly and daily)</a></li>
+<li><a href="#orgd37615d">5.6. Base year rail usage</a>
+<ul>
+<li><a href="#org2996ef5">5.6.1. The station usage scenario</a></li>
+<li><a href="#org7376929">5.6.2. Base year rail usage data file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7c412e8">6. Output data</a></li>
+<li><a href="#orgde5b719">7. Interventions</a>
+<ul>
+<li><a href="#orgecfaf11">7.1. Intervention data for smif</a></li>
+<li><a href="#org6f5f11e">7.2. Generating intervention data for smif</a>
+<ul>
+<li><a href="#orgab1db76">7.2.1. Hack: Interventions with the same name</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org481e878">8. The rail model smif wrapper</a>
+<ul>
+<li><a href="#org2596c7c">8.1. Template rail model configuration file</a></li>
+<li><a href="#org35b0eb5">8.2. Rail model parameters</a></li>
+<li><a href="#org1452bf3">8.3. Rail model inputs</a>
+<ul>
+<li><a href="#org2eff7c1">8.3.1. 1D outputs</a></li>
+<li><a href="#orgb61cc56">8.3.2. Trip rate</a></li>
+</ul>
+</li>
+<li><a href="#orga8043a2">8.4. Rail model outputs</a></li>
+<li><a href="#orgfb0bfe6">8.5. Interventions</a></li>
+<li><a href="#orgaae7a83">8.6. Base year rail usage</a>
+<ul>
+<li><a href="#orgeed193d">8.6.1. Hack: Columns in DataFrame must be renamed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org39ab70c">9. Validation</a>
+<ul>
+<li><a href="#org7395c72">9.1. <span class="done CANCELLED">CANCELLED</span> Create several model runs from one year to another</a></li>
+<li><a href="#org2a948fd">9.2. <span class="done CANCELLED">CANCELLED</span> Convert predicted rail demand data into input <code>station_usage</code> data.</a></li>
+<li><a href="#org52ff928">9.3. <span class="done CANCELLED">CANCELLED</span> Automatise validation process</a></li>
+<li><a href="#org4d24015">9.4. <span class="done DONE">DONE</span> <code>extract_gb_scenarios</code> reads station<sub>usage</sub> for future years</a></li>
+<li><a href="#orged727a3">9.5. <span class="done DONE">DONE</span> No data for station usage in 2018</a></li>
+<li><a href="#orge872589">9.6. <span class="todo TODO">TODO</span> Work out the problem with base year demand file for full GB model</a></li>
+<li><a href="#org712995e">9.7. Validation model run</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org799bb83" class="outline-2">
+<h2 id="org799bb83"><span class="section-number-2">1</span> Introduction</h2>
+</div>
+<div id="outline-container-org5f25e20" class="outline-2">
+<h2 id="org5f25e20"><span class="section-number-2">2</span> transport model config file</h2>
+</div>
+<div id="outline-container-org304d3b9" class="outline-2">
+<h2 id="org304d3b9"><span class="section-number-2">3</span> Dimensions</h2>
+</div>
+<div id="outline-container-org250dc6c" class="outline-2">
+<h2 id="org250dc6c"><span class="section-number-2">4</span> Parameters</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The rail model model depends on the following parameters
+</p>
+<ul class="org-ul">
+<li>The elasticities for the rail demand model</li>
+<li>A flag indicating whether to use the output of the road model for car journey costs data</li>
+<li>A flag indicating whether to compute all years between the base year and predicted year</li>
+</ul>
+</div>
+<div id="outline-container-org66e52e9" class="outline-3">
+<h3 id="org66e52e9"><span class="section-number-3">4.1</span> Elasticities</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The rail demand model depends on four variables
+</p>
+<ul class="org-ul">
+<li>Population in origin zone(<code>POPULATION</code>)</li>
+<li>Gross Value Added per head in origin zone (<code>GVA</code>)</li>
+<li>Average travel time between origin and destination zones (<code>TIME</code>)</li>
+<li>Average rail trip cost between origin and destination (<code>COST_RAIL</code>)</li>
+<li>Average car trip cost (fuel) between origin and destination (<code>COST_CAR</code>)</li>
+</ul>
+
+<p>
+Additionally, the value of the elasticity for each variable depends on the area
+</p>
+<ul class="org-ul">
+<li>London Travel card (<code>LT</code>)</li>
+<li>South East (<code>SE</code>)</li>
+<li>Passenger Transport Executives (<code>PTE</code>)</li>
+<li>Other areas (<code>OTHER</code>)</li>
+</ul>
+
+<p>
+The elasticities data was provided by the rail model in a format that is readable with smif,
+provided the definition of two dimensions 
+</p>
+<ul class="org-ul">
+<li><code>variables</code> (Coordinates: <code>POPULATION</code>, <code>GVA</code>, <code>TIME</code>, <code>COST_RAIL</code>, and <code>COST_CAR</code>)</li>
+<li><code>area</code> (Coordinates: <code>LT</code>, <code>SE</code>, <code>PTE</code>, <code>OTHER</code>)</li>
+</ul>
+<p>
+The definition of both dimensions can be found in <code>config/dimensions/</code>.
+</p>
+
+<p>
+From a smif point of view, the 20 elasticities values are described by one unique 
+bi-dimensional parameter <code>elasticities</code>
+</p>
+<pre class="example">
+# Example rail sector model config file
+name: rail
+...
+parameters:
+  - name: elasticities
+    dims:
+      - variables
+      - area
+    description: Elasticities for rail demand model
+    dtype: float
+    default: default_rail_elasticities.csv
+</pre>
+<p>
+Default elasticities values can be found in <code>data/parameters/</code>.
+</p>
+<pre class="example">
+# data/parameters/default_rail_elasticities.csv
+variables,area,elasticities
+POPULATION,LT,1
+POPULATION,SE,1
+...
+GVA,LT,0.55
+GVA,SE,0.55
+GVA,PTE,0.55
+...
+COST_CAR,OTHER,0.12
+</pre>
+</div>
+</div>
+<div id="outline-container-orge095aa0" class="outline-3">
+<h3 id="orge095aa0"><span class="section-number-3">4.2</span> Rail model flags</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+The behaviour of the rail model can be modified by setting the value of two Boolean flags
+in the <code>config.properties</code> file.
+</p>
+<pre class="example">
+# Example config.properties
+...
+FLAG_USE_CAR_COST_FROM_ROAD_MODEL = false
+
+FLAG_PREDICT_INTERMEDIATE_YEARS_RAIL = false
+....
+</pre>
+
+<p>
+Two Boolean parameter are thus defined in the smif configuration of the rail sector model
+</p>
+<pre class="example">
+# Example rail sector model config file
+name: rail
+...
+parameters:
+  - name: use_car_cost_from_road_model
+    description: Whether to use output of road model for car costs
+    dtype: bool
+    default: default_rail_flags.csv
+  - name: predict_intermediate_rail_years
+    description: Whether to predict all years between base year and predicted year
+    dtype: bool
+    default: default_rail_flags.csv
+</pre>
+<p>
+Both default values are contained in one single data file
+</p>
+<pre class="example">
+# data/parameters/default_rail_flags.csv
+use_car_cost_from_road_model,predict_intermediate_rail_years
+False, False
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org358baa3" class="outline-2">
+<h2 id="org358baa3"><span class="section-number-2">5</span> Input data</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org637c6da" class="outline-3">
+<h3 id="org637c6da"><span class="section-number-3">5.1</span> Population and G.V.A.</h3>
+<div class="outline-text-3" id="text-5-1">
+</div>
+<div id="outline-container-orge5519ce" class="outline-4">
+<h4 id="orge5519ce"><span class="section-number-4">5.1.1</span> Data</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<p>
+Population and G.V.A inputs had already been integrated in the smif framework as part of a previous integration work 
+for the road part of the transport model (T. Russell).
+Population and G.V.A are provided by scenarios <code>population</code> and <code>gva</code>, respectively.
+Scenario data for both inputs was already available in <code>data/scenarios/</code>.
+</p>
+
+<p>
+Both population and G.V.A inputs are uni-dimensional, the dimension being 
+the L.A.D. and associtaed coordinates the LAD codes.
+</p>
+
+<p>
+Data thus takes the form 
+</p>
+<pre class="example">
+# data/scenarios/population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
+timestep,lad_uk_2016,population
+2015,E06000001,93192.39038189998
+2015,E06000002,140288.541157
+...
+2016,E06000001,93400.0324534
+2016,E06000002,140300.011773
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgbca2424" class="outline-4">
+<h4 id="orgbca2424"><span class="section-number-4">5.1.2</span> Integration in smif</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<p>
+Population and G.V.A data is provided for the whole United Kingdom, totalling 391 L.A.Ds.
+As a result, input data must be filtered down to either GB LADs or Southampton area LADs.
+</p>
+
+<p>
+This is achieved by introducing an additional sector model
+ <code>extract_southampton_scenarios</code> (or <code>extract_gb_scenarios</code>) that 
+takes the full LAD dimension&#x2013;with 391 coordinates&#x2013; as an input.
+The filter sector model then outputs the reduced data along a reduced dimension
+which coordinates are the codes of the 380 LADs in Great Britain.
+</p>
+<pre class="example">
+# extract_Southampton_scenarios.yml
+name: extract_Southampton_scenarios
+path: ./models/extract.py
+classname: FilterAdaptor
+inputs:
+  - name: gva
+    dims:
+      - lad_uk_2016
+    unit: £
+    dtype: float
+outputs:
+  - name: gva
+    dims:
+      - lad_southampton
+    unit: GBP
+    dtype: float
+</pre>
+<p>
+The output of the filter sector model is then an input for the actual rail model:
+</p>
+<pre class="example">
+name: rail_southampton
+description: Test model for transport
+sector_models:
+  - rail_southampton
+  - extract_southampton_scenarios
+scenarios:
+  - socio-economic # Provides the population data
+narratives: []
+scenario_dependencies:        # Population from socio-economic 
+  - source: socio-economic    # scenario to filter model          
+    source_output: population
+    sink: extract_southampton_scenarios
+    sink_input: population
+...
+model_dependencies:
+  - source: extract_southampton_scenarios  # From filter model to
+    source_output: population              # sector model
+    sink: rail_southampton
+    sink_input: population
+    timestep: PREVIOUS
+...
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org23d3fa9" class="outline-3">
+<h3 id="org23d3fa9"><span class="section-number-3">5.2</span> Car Zonal Journey Costs</h3>
+<div class="outline-text-3" id="text-5-2">
+</div>
+<div id="outline-container-orgf9b4caa" class="outline-4">
+<h4 id="orgf9b4caa"><span class="section-number-4">5.2.1</span> Data</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+Similarly to population and G.V.A., the zonal journey cost is an uni-dimensional input with LADs codes as a dimension.
+Data is provided by the transport model in a single <code>carZonalJourneyCosts.csv</code> file, usually located 
+in <code>data/transport/southampton/data/csvfiles/</code>.
+The file contains one row for each year, and one column per LAD. 
+For instance, for the Southampton area, it shows:
+</p>
+<pre class="example">
+# carZonalJourneyCosts.csv (southampton data)
+year,E06000045,E07000086,E07000091,E06000046
+2015,10.55,12.25,13.35,16.57
+2016,10.55,12.25,13.35,16.57
+...
+</pre>
+<p>
+Such file can be converted in a smif readable scenario data file using the script
+<code>convert_car_zonal_journey_costs.py</code> located in <code>utilities/transport/</code>.
+Be sure to indicate the correct dimension name for the column name, for instance
+<code>'lad_southampton'</code> for the Southampton data.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3c0eb72" class="outline-4">
+<h4 id="org3c0eb72"><span class="section-number-4">5.2.2</span> Integration</h4>
+<div class="outline-text-4" id="text-5-2-2">
+<p>
+Journey costs scenario data has been generated using the <code>carZonalJourneyCost.csv</code> file for
+the full GB test.
+Data does not include Northern Ireland and is only provided for the 380 LADs in Great Britain.
+</p>
+
+<p>
+Journey costs input data is therefore filtered down to Southampton LADs for the Southampton test case,
+using the <code>extract_southampton_scenarios</code> filter model as above.
+However for the ful GB test case, input data for the rail model is directly the scenario output.
+</p>
+<pre class="example">
+# config/sector_models/extract_southampton_scenarios.yml
+name: extract_southampton_scenarios
+...
+inputs: 
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_gb_2016
+    dtype: float
+    unit: £
+...
+outputs:
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_southampton
+    dtype: float
+    unit: £
+...
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge7a2a25" class="outline-3">
+<h3 id="orge7a2a25"><span class="section-number-3">5.3</span> Rail journey fares and rail journey times</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+<div id="outline-container-org0653297" class="outline-4">
+<h4 id="org0653297"><span class="section-number-4">5.3.1</span> Data</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<p>
+Both rail journey times and rail journey fares are uni-dimensional inputs, with
+rail stations as a dimension.
+The dimension coordinates (the rails stations indexes) are the <i>National Location Codes</i> (NLCs).
+</p>
+
+<p>
+Journey fares and times are provided for either Great Britain or the Southampton area, 
+in data files <code>railStationJourneyFares.csv</code> and <code>railStationGeneralisedJourneyTimes.csv</code>, 
+respectively.
+Smif-ready scenario data can be generated from these files using scripts 
+<code>convert_rail_station_journey_fares.py</code> and <code>convert_rail_station_journey_fares.py</code>.
+</p>
+
+<p>
+Scenario data has been generated for Great Britain, located in 
+</p>
+<ul class="org-ul">
+<li><code>data/scenarios/rail_station_journey_times.csv</code></li>
+<li><code>data/scenarios/rail_station_journey_fares.csv</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8b7668e" class="outline-4">
+<h4 id="org8b7668e"><span class="section-number-4">5.3.2</span> Integration in smif</h4>
+<div class="outline-text-4" id="text-5-3-2">
+<p>
+Both inputs are provided by a common scenario <code>rail_journey_times_fares</code>:
+</p>
+<pre class="example">
+# config/scenarios/rail_journey_times_fares.yml
+name: rail_journey_times_fares
+description: Journey times and fares for transport rail model
+provides:
+  - name: rail_journey_fares
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: £
+  - name: rail_journey_times
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: h
+variants:
+  - name: baseline
+    description: Journey times and fares for transport rail model
+    data:
+      rail_journey_fares:  rail_station_journey_fares.csv
+      rail_journey_times: rail_station_journey_times.csv
+</pre>
+<p>
+As scenario data files contains data for the stations in Great Britain (dimension <code>NLC_gb</code>),
+scenario outputs feed directly into the rail model inputs.
+However, filtering is necessary for the Southampton test case.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc248d70" class="outline-4">
+<h4 id="orgc248d70"><span class="section-number-4">5.3.3</span> Hack: Journey times for the Southampton area test case</h4>
+<div class="outline-text-4" id="text-5-3-3">
+<p>
+At the moment, the journey times data file provided for the Southampton area contains
+stations that are <b>not present</b> in the file containing data for Great Britain.
+As a result, the data for the Southampton test case cannot be obtained by simple filtering of
+the GB data.
+</p>
+
+<p>
+Therefore, a specific scenario for the Southampton test
+case has be defined: <code>rail_journey_times_fares_soton</code>.
+It ouputs journey times with a dimension that is consistent with the current data file
+for Southampton journey times. 
+The corresponding dimension is called <code>NLC_southampton_generalised</code>.
+In addition, the scenario configuration file points to a specific data file
+</p>
+<ul class="org-ul">
+<li><code>data/scenarios/rail_station_generalised_journey_times_soton.csv</code></li>
+</ul>
+<p>
+The input for journey fares (<code>rail_journey_fares</code>) is not affected and is kept identical to the
+original scenario provided data for Great Britain.
+</p>
+<pre class="example">
+# config/scenarios/rail_journey_times_fares_soton.yml
+name: rail_journey_times_fares_soton 
+provides:
+  - name: rail_journey_fares
+    # Same as GB scenario #
+  - name: rail_journey_times
+    dims:
+      - NLC_southampton_generalised
+    dtype: float
+    unit: h
+...
+</pre>
+<p>
+For the Southamtpon test case, journey fares data is thus filtered down to Southampton stations
+using the filter model, and journey times is directly obtained from the specific scenario.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1b619a4" class="outline-3">
+<h3 id="org1b619a4"><span class="section-number-3">5.4</span> Trip rates</h3>
+<div class="outline-text-3" id="text-5-4">
+</div>
+<div id="outline-container-org6dd2c47" class="outline-4">
+<h4 id="org6dd2c47"><span class="section-number-4">5.4.1</span> Data</h4>
+<div class="outline-text-4" id="text-5-4-1">
+<p>
+The trip rate is a scalar input (no dimension).
+Its value is given in the <code>railTripRates.csv</code> data file, with one column per year.
+This file can thus directly used in <code>smif</code> as scenario data:
+</p>
+<pre class="example">
+# data/transport/southampton/data/csvfiles/railTripRates
+timestep,rail_trip_rates
+2015,1
+2016,1
+...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org19b4fdf" class="outline-4">
+<h4 id="org19b4fdf"><span class="section-number-4">5.4.2</span> Integration</h4>
+<div class="outline-text-4" id="text-5-4-2">
+<p>
+Rail trip rates are provided by a scenario <code>rail_trip_rates</code>.
+Scenario data is already provided by the transport model in the correct format,
+and the <code>railTripRates.csv</code> file was just renamed into 
+</p>
+<ul class="org-ul">
+<li><code>data/scenarios/rail_trip_rates.csv</code></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdbc9a49" class="outline-3">
+<h3 id="orgdbc9a49"><span class="section-number-3">5.5</span> Station usage (yearly and daily)</h3>
+</div>
+
+<div id="outline-container-orgd37615d" class="outline-3">
+<h3 id="orgd37615d"><span class="section-number-3">5.6</span> Base year rail usage</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+<a id="orgc70be79"></a>
+The rail model predicts stations usage for future years, based on the usage (or <i>demand</i>)
+for the base year. 
+</p>
+
+<p>
+The base year demand must therefore be provided as an initial input to the rail model,
+indicating yearly and daily usage for each of rail stations considered in the model run.
+These numbers act as a basis for the computation of station usage for the subsequent simulated years.
+</p>
+
+<p>
+The base year rail demand numbers are provided to the rail model <i>via</i> a csv data file,
+typically called <code>baseYearRailUsage.csv</code>, or <code>baseYearRailDemand.csv</code>.
+This files contains as many rows as there are active rail stations in the base year, as well
+as several columns for various stations properties:
+</p>
+<pre class="example">
+NLC,Mode,Station,NaPTANname,Easting,Northing,YearUsage,DayUsage,RunDays,LADcode,LADname,Area
+375,NRAIL,Energlyn_&amp;_Churchill_Park,Energlyn_&amp;_Churchill_Park_Rail_Station,314957,187866,74206,204.4242424,363,W06000018,Caerphilly,OTHER
+500,TUBE,Acton_Town,Acton_Town_Underground_Station,519446,179637,6235045,17129.24451,364,E09000009,Ealing,LT
+</pre>
+<ul class="org-ul">
+<li><b>Remark</b>: Base year data files provided by the rail model contains white spaces, which makes
+processing the text they contain difficult. 
+As a result white spaces have been replaced by underscores '_' in station names.</li>
+</ul>
+
+<p>
+The main purpose of this file is to provide the base year yearly and daily usage 
+(<code>YearUsage</code> and <code>DayUsage</code>) for the rail model.
+</p>
+</div>
+
+<div id="outline-container-org2996ef5" class="outline-4">
+<h4 id="org2996ef5"><span class="section-number-4">5.6.1</span> The station usage scenario</h4>
+<div class="outline-text-4" id="text-5-6-1">
+<p>
+Base year station usage data is usually provided to the rail model through the base year rail usage file.
+In NISMOD however, station usage data is provided by a smif scenario <code>station_usage</code>.
+This scenario provides both daily and yearly stations usage for the base year.
+<code>station_usage</code> scenario.
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="org1d83905"></a>Data<br />
+<div class="outline-text-5" id="text-5-6-1-1">
+<p>
+Scenario data could be obtained by extracting the daily and yearly usage from 
+the base year rail usage file for each rail station, resulting in two data files
+</p>
+<ul class="org-ul">
+<li><code>data/scenarios/rail_day_usage.csv</code></li>
+<li><code>data/scenarios/rail_year_usage.csv</code></li>
+</ul>
+
+<p>
+This can be achieved, for instance, using the following shell script
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"># Extract base year rail demand from baseYearUsage.csv provided by rail model
+base_year_usage_file=data/transport/gb/data/csvfiles/baseYearRailUsage.csv
+day_usage_file=data/scenarios/rail_day_usage.csv
+if [ -f $day_usage_file ]; then
+    rm -i $day_usage_file
+fi
+
+base_year=2015
+for line in $(cat $base_year_usage_file)
+do
+    echo $base_year,$(echo $line | cut -d, -f1,7) &gt;&gt; $day_usage_file
+done
+# Fix first line with correct column names
+sed -i "1s/.*/timestep,NLC_gb,day_usage/" $day_usage_file
+</pre>
+</div>
+
+<p>
+Both inputs are one-dimensional, whith the station NLCs as coordinates:
+</p>
+<pre class="example">
+# data/scenarios/rail_day_usage.csv
+timestep,NLC_gb,day_usage
+2015,375,204.4242424
+2015,500,17129.24451
+...
+</pre>
+<p>
+Note that, in practice, the station usage scenario data can only contain data for the base year.
+At the moment, only station usage data for the year 2015 is available.
+</p>
+
+<p>
+Station usage data for future years is one of the outputs of the rail model.
+</p>
+</div>
+</li>
+<li><a id="orgdf15a68"></a>Integration<br />
+<div class="outline-text-5" id="text-5-6-1-2">
+<p>
+The <code>station_usage</code> scenario provides both <code>day_usage</code> and <code>year_usage</code> for all stations considered
+in the Great Britain test case. 
+In this case the scenario outputs are inputs of the rail model.
+For the Southamtpon test case, station usage output is filtered down to stations in the Southampton
+area, using the filter model, as already described above.
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org7376929" class="outline-4">
+<h4 id="org7376929"><span class="section-number-4">5.6.2</span> Base year rail usage data file</h4>
+<div class="outline-text-4" id="text-5-6-2">
+<p>
+The base year rail usage file can be constructed by adding daily and yearly usage to the
+data describing rail interventions.
+Station usage for the base year is obtained from the station usage scenario, for each of the 
+stations considered. 
+Station usage numbers are then paired with the corresponding intervention (based on the NLC) to
+build the base year rail usage file.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7c412e8" class="outline-2">
+<h2 id="org7c412e8"><span class="section-number-2">6</span> Output data</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<a id="org99f2060"></a>
+The rail model outputs two csv files 
+</p>
+<ul class="org-ul">
+<li><code>predictedRailDemand.csv</code></li>
+<li><code>zonalRailDemand</code></li>
+</ul>
+
+<p>
+The two files consist of several columns
+</p>
+<ul class="org-ul">
+<li>A first columns indicating the year of the current timestep (predicted year)</li>
+<li>A second column for the dimension:
+<ul class="org-ul">
+<li>Station NLC for <code>predictedRailDemand.csv</code></li>
+<li>LAD code for <code>zonalRailDemand.csv</code></li>
+</ul></li>
+<li>Several columns for different properties, of which only a subset are actual computed output data.</li>
+</ul>
+
+<p>
+From smif, the rail model has 6 uni-dimensional outputs, which value can be found in a unique 
+column of either <code>predictedRailDemand.csv</code> or <code>zonalRailDemand.csv</code>.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">smif output</th>
+<th scope="col" class="org-left">output file</th>
+<th scope="col" class="org-left">column in output file</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>year_stations_usage</code></td>
+<td class="org-left"><code>predictedRailDemand.csv</code></td>
+<td class="org-left"><code>YearUsage</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>day_stations_usage</code></td>
+<td class="org-left"><code>predictedRailDemand.csv</code></td>
+<td class="org-left"><code>DayUsage</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>total_year_zonal_rail_demand</code></td>
+<td class="org-left"><code>zonalRailDemand.csv</code></td>
+<td class="org-left"><code>yearTotal</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>avg_year_zonal_rail_demand</code></td>
+<td class="org-left"><code>zonalRailDemand.csv</code></td>
+<td class="org-left"><code>yearAvg</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>total_day_zonal_rail_demand</code></td>
+<td class="org-left"><code>zonalRailDemand.csv</code></td>
+<td class="org-left"><code>dayTotal</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>avg_day_zonal_rail_demand</code></td>
+<td class="org-left"><code>zonalRailDemand.csv</code></td>
+<td class="org-left"><code>dayTotal</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgde5b719" class="outline-2">
+<h2 id="orgde5b719"><span class="section-number-2">7</span> Interventions</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Interventions for the transport model are described in specific <code>*.properties</code>
+files.
+They indicate the start year, end year, type of intervention..etc
+</p>
+<pre class="example">
+# Example winslowRailStation.properties
+type = NewRailStation
+startYear = 2030
+endYear = 2100
+NLC = 500000
+mode = NRAIL
+station = Winslow
+naPTANname = N/A
+easting = 476600
+northing = 228300
+yearUsage = 100000
+dayUsage = 275.482093664
+runDays = 363
+LADcode = E07000004
+LADname = Aylesbury Vale
+area = SE
+</pre>
+
+<p>
+Interventions for the model run must be listed in the <code>config.properties</code> file.
+<b>Important</b>: Paths to rail model interventions files must be name following the 
+template <code>railInterventionFileX</code> where <code>X</code> is an arbitrary identifier (typical a number).
+</p>
+
+<pre class="example">
+# Example config.properties 
+....
+
+# interventions
+railInterventionFile0 = data/transport/southampton/input/newSouthamptonStation.properties
+railInterventionFile1 = data/transport/southampton/input/myOtherNewStation.properties
+...
+</pre>
+</div>
+
+<div id="outline-container-orgecfaf11" class="outline-3">
+<h3 id="orgecfaf11"><span class="section-number-3">7.1</span> Intervention data for smif</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+Intervention data is generated for <b>every</b> stations considered in the model.
+For every station, the intervention data contains <i>almost</i> the same information required in the 
+intervention <code>*.properties</code> files.
+The intervention data is contained in a csv data file of the type
+</p>
+<pre class="example">
+NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
+375,newEnerglyn_&amp;_Churchill_Park_NRAIL,NewRailStation,100,y,NRAIL,Energlyn_&amp;_Churchill_Park,Energlyn_&amp;_Churchill_Park_Rail_Station,314957,187866,363,W06000018,Caerphilly,OTHER
+500,newActon_Town_TUBE,NewRailStation,100,y,TUBE,Acton_Town,Acton_Town_Underground_Station,519446,179637,364,E09000009,Ealing,LT
+</pre>
+
+<ul class="org-ul">
+<li>Note that this data does <b>not</b> contain yearly and daily usage numbers, which are provided by
+by the <code>station_usage</code>. They are gathered in the smif wrapper and added to the <code>*.properties</code> file
+describing the intervention.</li>
+<li>The intervention data does not contain the start and end year, but instead the 
+<i>lifetime</i> (<code>technical_lifetime_value</code>) of the interventions. 
+This is because, using smif, the start year of interventions are given in the strategies data
+file. See <a href="https://smif.readthedocs.io/en/latest/decisions.html">https://smif.readthedocs.io/en/latest/decisions.html</a> for more information on how
+interventions are handled in smif.</li>
+</ul>
+
+<p>
+In this way, <i>any</i> station listed in the smif intervention file can be built as part of an 
+intervention. 
+The smif wrapper is in charge of writing the <code>*.properties</code> for the stations to be 
+built on the current year, adding the corresponding station usage from the <code>station_usage</code> scenario, 
+as well, as computing the start and end years base on the lifetime of the intervention.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6f5f11e" class="outline-3">
+<h3 id="org6f5f11e"><span class="section-number-3">7.2</span> Generating intervention data for smif</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+The intervention data file used by smif can be generated by extracting the relevant columns from
+the base year rail usage data csv file.
+The resulting file will however only list the stations older than the base year&#x2013;indeed that base
+year usage file dos not list future stations.
+Therefore, any potential future station must be added to the intervention data file.
+</p>
+
+<p>
+Intervention data for older stations can be generated using the following shell script
+</p>
+<ul class="org-ul">
+<li>utilities/transport/write<sub>rail</sub><sub>interventions</sub><sub>from</sub><sub>base</sub><sub>year</sub><sub>data.sh</sub></li>
+</ul>
+<p>
+resulting in 
+</p>
+<pre class="example">
+# data/interventions/transport_rail.csv
+NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
+375,newEnerglyn_&amp;_Churchill_Park_NRAIL,NewRailStation,100,y,NRAIL,Energlyn_&amp;_Churchill_Park,Energlyn_&amp;_Churchill_Park_Rail_Station,314957,187866,363,W06000018,Caerphilly,OTHER
+...
+...
+300092,newWythenshawe_Town_Centre_LRAIL,NewRailStation,100,y,LRAIL,Wythenshawe_Town_Centre,Wythenshawe_Town_Centre_(Manchester_Metrolink),382552,387050,364,E08000003,Manchester,PTE
+</pre>
+<p>
+Potential future stations must be added to this file.
+For instance, in order to build the Winslow rail staion, the corresponfing intervention data is 
+appended
+</p>
+<pre class="example">
+# data/interventions/transport_rail.csv
+NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
+375,newEnerglyn_&amp;_Churchill_Park_NRAIL,NewRailStation,100,y,NRAIL,Energlyn_&amp;_Churchill_Park,Energlyn_&amp;_Churchill_Park_Rail_Station,314957,187866,363,W06000018,Caerphilly,OTHER
+...
+...
+300092,newWythenshawe_Town_Centre_LRAIL,NewRailStation,100,y,LRAIL,Wythenshawe_Town_Centre,Wythenshawe_Town_Centre_(Manchester_Metrolink),382552,387050,364,E08000003,Manchester,PTE
+500000,newWinslowRailStation_NRAIL,NewRailStation,100,y,NRAIL,New Winslow,N/A,476600,228300,363,E07000004,Aylesbury Vale,SE
+</pre>
+</div>
+
+<div id="outline-container-orgab1db76" class="outline-4">
+<h4 id="orgab1db76"><span class="section-number-4">7.2.1</span> Hack: Interventions with the same name</h4>
+<div class="outline-text-4" id="text-7-2-1">
+<ul class="org-ul">
+<li><b>Problem</b>: Several stations can host several transport modes of transport: national rail, local rail, 
+tube (in London..).
+As a result several stations in the base year rail usage file can have the 
+same <code>name</code>, but a different <code>Mode</code>.
+Because of the way intervention data is generated for smif, several interventions can end up with
+the same name, which is not allowed.</li>
+
+<li><b>Workaround</b>: When generating intervention data, the mode is appended to the intervention name.</li>
+</ul>
+<pre class="example">
+# Example
+newSouthamptonStation ----&gt; newSouthamptonStation_NRAIL
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org481e878" class="outline-2">
+<h2 id="org481e878"><span class="section-number-2">8</span> The rail model smif wrapper</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+The main task in integrating a model into the smif framework is to write the corresponding
+wrapper class, derived from the abstract <code>SectorModel</code> class.
+The smif wrapper class is responsible for the pre-processing of model inputs and post-processing
+of model outputs, as well as the actual running of the model iteself.
+</p>
+
+<p>
+For instance, the rail model wrapper is responsible for writing the <code>config.properties</code>
+configuration file required for the rail model to run.
+It is also responsible for generating the input files for car journey costs, journey times and fares,
+population.. etc.
+</p>
+
+<p>
+Most of the rail wrapper methods are implemented in the <code>BaseTransportWrapper</code> class
+that directly inherits from <code>SectorModel</code>.
+</p>
+
+<p>
+Information specific to the test case (full G.B. or Southampton area, for instance)
+is specified in test case specific classes derived from <code>BaseTransportWrapper</code>.
+For example
+</p>
+<div class="org-src-container">
+<pre class="src src-python">class SouthamptonRailTransportWrapper(BaseTransportWrapper):
+    """Wrap the rail model, in 'southampton' configuration
+    """
+    _config_filename = 'run_config_rail_southampton.ini'
+    _template_filename = 'rail_southampton-config.properties.template'
+
+class RailTransportWrapper(BaseTransportWrapper):
+    """Wrap the rail model, in 'southampton' configuration
+    """
+    _config_filename = 'run_config_full.ini'
+    _template_filename = 'rail-config.properties.template'
+</pre>
+</div>
+
+<p>
+The central method in the <code>SectorModel</code> class is <code>simulate</code>, which is executed at every timestep.
+It takes a smif <code>DataHandle</code> object as an argument, which gives access to all the data necessary to
+run the model&#x2013;provided the configuration was done correctly.
+Among other things, the <code>DataHandle</code> gives access to input data from scenarios or other models, 
+model parameters or interventions to be performed in the current timestep.
+</p>
+
+<p>
+The simulate method for the <code>BaseTransportWrapper</code> is as follows
+</p>
+<div class="org-src-container">
+<pre class="src src-python">def simulate(self, data):
+...
+    self._current_timestep = data.current_timestep
+
+    self._set_parameters(data)
+    self._set_inputs(data)
+    self._set_properties(data)
+
+    self._run_model_subprocess(data)
+
+    if self._current_timestep &gt; data.base_timestep:
+	self._set_outputs(data)
+</pre>
+</div>
+<p>
+Methods <code>_set_parameters</code>, <code>_set_inputs</code>, <code>_set_properties</code> are responsible for getting 
+input values, parameters values, current interventions from the <code>DataHandle</code> and writing input files
+to disk for the rail model to read.
+</p>
+</div>
+
+<div id="outline-container-org2596c7c" class="outline-3">
+<h3 id="org2596c7c"><span class="section-number-3">8.1</span> Template rail model configuration file</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Transport wrapper classes write the <code>config.properties</code> file based on a template.
+This template specifies the name of the input, parameter and output files.
+</p>
+
+<p>
+The paths to these files, the values of the boolean parameters as well as the list of interventions
+is set by the smif wrapper in the <code>BaseTransportWrapper._set_properties</code> method.
+Because the names of the data files are specified in the template, it is important that the
+names used in the wrapper classes methods are consitent with the names in the template.
+</p>
+
+<p>
+Templates are located in <code>models/transport/templates/</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org35b0eb5" class="outline-3">
+<h3 id="org35b0eb5"><span class="section-number-3">8.2</span> Rail model parameters</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+Elasticities are processed in the <code>_set_parameters</code> method.
+The values can just be loaded from the data handle and written 
+as such to a CSV file with the correct name provided in the template <code>config.propeties</code> file.
+</p>
+
+<p>
+The two boolean flags <code>FLAG_USE_CAR_COST_FROM_ROAD_MODEL</code> and <code>FLAG_PREDICT_INTERMEDIATE_YEARS_RAIL</code>
+are set in the <code>_set_properties</code> method
+</p>
+<div class="org-src-container">
+<pre class="src src-python">def _set_properties(self, data_handle):
+    ....
+    # read config as a Template for easy substitution of values
+    with open(path_to_config_template) as template_fh:
+	config = Template(template_fh.read())
+
+    config_str = config.substitute({
+	'use_car_cost_from_road_model': \
+	    bool(data_handle.get_parameter('use_car_cost_from_road_model').data),
+	'predict_intermediate_rail_years': \
+	    bool(data_handle.get_parameter('predict_intermediate_rail_years').data),
+	})
+    # Write config file to disk
+    with open(self._config_path, 'w') as template_fh:
+	template_fh.write(config_str)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1452bf3" class="outline-3">
+<h3 id="org1452bf3"><span class="section-number-3">8.3</span> Rail model inputs</h3>
+<div class="outline-text-3" id="text-8-3">
+<p>
+All inputs of the rail model are one-dimensionnal inputs, except from the rail trips rate.
+</p>
+</div>
+<div id="outline-container-org2eff7c1" class="outline-4">
+<h4 id="org2eff7c1"><span class="section-number-4">8.3.1</span> 1D outputs</h4>
+<div class="outline-text-4" id="text-8-3-1">
+<p>
+One dimensionnal inputs are processed using the <code>_set_1D_inputs</code> method defined as follows
+</p>
+<div class="org-src-container">
+<pre class="src src-python">def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
+	"""Get one dimensional model input from data handle and write to input file
+	Arguments
+	---------
+	data_handle: smif.data_layer.DataHandle
+	input_name: str
+	filename: str
+	dtype: type [optional]
+	"""
+</pre>
+</div>
+<p>
+This method loads the data for the input <code>input_name</code> for both the current and previous timestep
+and writes it in one single file <code>filename</code>.
+</p>
+
+<p>
+The type of the data can be specified by providing a <code>dtype</code> argument.
+This for instance the case when processing the <code>population</code> input:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">    def _set_inputs(self, data_handle):
+	"""Get model inputs from data handle and write to input files
+	"""
+	self._set_1D_input(data_handle, 'population', 'population.csv', dtype=int)
+...
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb61cc56" class="outline-4">
+<h4 id="orgb61cc56"><span class="section-number-4">8.3.2</span> Trip rate</h4>
+<div class="outline-text-4" id="text-8-3-2">
+<p>
+In contrast to other inputs, the trip rate is an unidimensionnal input.
+More importantly, the rail model requires trip rate numbers for every year between the base
+year and the predicted year, unlike other inputs like population that are only required at the
+previous predicted year.
+</p>
+
+<p>
+Trip rate input data is processed in a separate method <code>_set_trip_rates</code> 
+</p>
+<div class="org-src-container">
+<pre class="src src-python">def _set_trip_rates(self, data):
+    """Get trip rates input from data handle and write to input file
+    Arguments
+    ---------
+    data_handle: smif.data_layer.DataHandle
+    """
+</pre>
+</div>
+<p>
+This method load trip rate data from the data handle for every year between 
+<code>data.base_timestep</code> and <code>data.current_timestep</code> and concatenate values to 
+build the CSV input file for the rail model to read.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8043a2" class="outline-3">
+<h3 id="orga8043a2"><span class="section-number-3">8.4</span> Rail model outputs</h3>
+<div class="outline-text-3" id="text-8-4">
+<p>
+The rail model wrapper reads the rail model output files <code>predictedRailDemand.csv</code> and <code>zonalRailDemand.csv</code>
+and load the relevant data into the data handle for the corresponding sector model outputs 
+(see section <a href="#org99f2060">6</a>).
+</p>
+
+<p>
+The <code>=BaseTransportWrapper._set_1D_output()</code> is in charge of loading output data from an output file
+to the data handle
+</p>
+<div class="org-src-container">
+<pre class="src src-python">
+def _set_1D_output(self, data_handle, output_name, filename, cols):
+    """Get one dimensional model input from data handle and write to input file
+    Arguments
+    ---------
+    data_handle: smif.data_layer.DataHandle
+    output_name: str
+    filename: str
+    cols: dict - Labels of the columns to keep. 
+		 Keys are label in the ouput file.
+		 Values are label in data_handle.
+    """
+</pre>
+</div>
+<p>
+To each of the rail model outputs (as defined in the sector model configuration file) correspond a unique
+column in one of the output file from the rail model.
+</p>
+
+<p>
+Firstly, the output file <code>filename</code> is read into a DataFrame.
+All columns except the output dimension and the ouput itself are dropped from the DataFrame, and 
+the renaming columns are renamed according the output and dimension names provided by the smif 
+configuration of the rail model
+</p>
+<div class="org-src-container">
+<pre class="src src-python">filename = self._output_file_path(filename)
+df = pd.read_csv(filename)
+df = df.loc[:,cols.keys()].rename(columns=cols)
+</pre>
+</div>
+
+<p>
+The output data is then turned into a numpy array and loaded into the data handle for the corresponding
+output <code>output_name</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfb0bfe6" class="outline-3">
+<h3 id="orgfb0bfe6"><span class="section-number-3">8.5</span> Interventions</h3>
+<div class="outline-text-3" id="text-8-5">
+<p>
+Current rail interventions data is loaded from the data handle in the 
+<code>_set_properties</code> method.
+</p>
+
+<p>
+The method <code>DataHandle.get_current_interventions()</code> returns a dictionary keyed by intervention name.
+It returns all interventions built until the current timestep (included), including initial 
+conditions.
+From the point of view of the rail model, rail stations built before the base year 
+(initial conditions) should not be described by a intervention <code>*.properties</code> file, because they
+are already described in the base year rail usage file.
+</p>
+
+<p>
+The list of current interventions is thus filtered down to interventions built <i>from</i> the base year
+using <code>_filter_interventions</code>. 
+Provided the data handle, this method returns the list of interventions built <i>strictly before</i> (init. conditions)
+of <i>from</i> the base year onwards.
+</p>
+
+<p>
+Each intervention in the list is then written as a <code>*.properties</code> that can be read by the rail model.
+</p>
+<div class="org-src-container">
+<pre class="src src-python">def _set_properties(self, data_handle):
+...
+# Discard initial conditions
+interventions = self._filter_interventions(data_handle)
+for i, intervention in enumerate(interventions):
+    # Write .properties intervention file for the rail model
+    fname = self._write_rail_intervention(intervention, data_handle)
+    # Update list of interventions to be written in config.properties
+    intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+....
+</pre>
+</div>
+<p>
+Eventually the list of interventions is injected in the template <code>config.properties</code> file
+</p>
+<div class="org-src-container">
+<pre class="src src-python"># read config as a Template for easy substitution of values
+with open(path_to_config_template) as template_fh:
+
+    config = Template(template_fh.read())
+    config_str = config.substitute({
+	'intervention_files': '\n'.join(intervention_files),
+	})
+
+    with open(self._config_path, 'w') as template_fh:
+	template_fh.write(config_str)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaae7a83" class="outline-3">
+<h3 id="orgaae7a83"><span class="section-number-3">8.6</span> Base year rail usage</h3>
+<div class="outline-text-3" id="text-8-6">
+<p>
+The smif wrapper is also responsible for writing the base year rail usage file.
+This is achieved by the <code>BaseTransportWrapper</code> method <code>_set_base_year_demand</code>.
+</p>
+
+<p>
+The base year rail usage data can be formed by combining intervention data for stations built 
+before the base year, as well as corresponding daily and yearly station usage from 
+the <code>station_usage</code> scenario.
+</p>
+
+<p>
+Intervention data for stations predating the base year is obtained through 
+</p>
+<div class="org-src-container">
+<pre class="src src-python">interventions = self._filter_interventions(data_handle, future=False)
+</pre>
+</div>
+<p>
+Data is then converted as a Pandas DataFrame, from which columns not appearing in the base year
+rail usage file are dropped:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">base_df = pd.DataFrame.from_dict(interventions)
+base_df = base_df.rename(columns={'NLC': 'NLC_gb'}).set_index('NLC_gb')
+base_df.index.names = ['NLC']
+cols_to_drop = ['technical_lifetime_units',
+		'technical_lifetime', 'name', 'type', 'build_year']
+base_df = base_df.drop(cols_to_drop, axis=1)
+</pre>
+</div>
+
+<p>
+The next step is to gather daily and yearly usage from the <code>station_usage</code> scenario.
+</p>
+<div class="org-src-container">
+<pre class="src src-python">baseyear_day_usage = data_handle.get_data("day_usage",
+						  timestep=data_handle.base_timestep)
+baseyear_year_usage = data_handle.get_data("year_usage",
+						   timestep=data_handle.base_timestep)
+</pre>
+</div>
+<p>
+The base year rail usage file structure can then be obtained by concatenating the three 
+DataFrames
+</p>
+<div class="org-src-container">
+<pre class="src src-python">base_df = pd.concat([base_df, baseyear_day_usage, baseyear_year_usage], axis=1,
+		       join_axes=[df.index])
+#
+</pre>
+</div>
+<ul class="org-ul">
+<li>Note: The <code>station_usage</code> data dimension includes all rail stations, including
+ones to be built as interventions in the future. 
+The <code>base_df</code> only lists stations predating the base year, 
+hence the argument <code>join_axes = [df.index]</code></li>
+</ul>
+</div>
+
+<div id="outline-container-orgeed193d" class="outline-4">
+<h4 id="orgeed193d"><span class="section-number-4">8.6.1</span> Hack: Columns in DataFrame must be renamed</h4>
+<div class="outline-text-4" id="text-8-6-1">
+<p>
+The rail model expects most of the keys in intervention <code>*.properties</code> files to begin with a
+lower case character.
+However the columns in the base year rail usage file must begin with an upper case charater.
+</p>
+
+<p>
+The smif intervention data file (<code>data/interventions/transport_rail.csv</code>) has
+columns names that begin with lower case characters as well: <code>station</code>, <code>area</code>, <code>easting</code>&#x2026; etc.
+</p>
+
+<p>
+The columns in the base year rail usage DataFrame must therefore be renamed prior to writing
+the CSV file
+</p>
+<div class="org-src-container">
+<pre class="src src-python"># rename columns to meet rail model's expectations
+columns_names = {
+    'mode': 'Mode',
+    'station': 'Station',
+    'naPTANname': 'NaPTANname',
+    'easting': 'Easting',
+    ....
+}
+base_df = df.rename(columns=columns_names)
+</pre>
+</div>
+<p>
+The last step is to reorder the columns.
+If the columns are in the wrong order, the rail model will not throw an error, however the
+predicted rail usage data will only contain future stations.
+Only future station data can be read because interventions data have the columns in the correct order.
+In contrast the base year demand file may be read incorrectly.
+</p>
+<div class="org-src-container">
+<pre class="src src-python">cols = ['Mode', 'Station', 'NaPTANname', 'Easting', 'Northing',
+	'YearUsage', 'DayUsage', 'RunDays', 'LADcode', 'LADname', 'Area']
+base_df = base_df[cols]
+</pre>
+</div>
+<p>
+Eventually the base year rail usage input file is written
+</p>
+<div class="org-src-container">
+<pre class="src src-python"># Write base year rail demand csv file
+df.to_csv(os.path.join(self._input_dir, 'baseYearRailDemand.csv'))
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org39ab70c" class="outline-2">
+<h2 id="org39ab70c"><span class="section-number-2">9</span> Validation</h2>
+<div class="outline-text-2" id="text-9">
+</div>
+<div id="outline-container-org7395c72" class="outline-3">
+<h3 id="org7395c72"><span class="section-number-3">9.1</span> <span class="done CANCELLED">CANCELLED</span> Create several model runs from one year to another</h3>
+<div class="outline-text-3" id="text-9-1">
+<p>
+Full-scale (Great Britain) rail model run.
+Intervention: Winslow station in 2018
+Model runs:
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 2015 -&gt; 2017 Winslow station is not built</li>
+<li class="on"><code>[X]</code> 2015 -&gt; 2018 Winslow station is built</li>
+<li class="off"><code>[&#xa0;]</code> 2018 -&gt; 2030</li>
+<li class="off"><code>[&#xa0;]</code> 2030 -&gt; 2050</li>
+
+<li class="on"><code>[X]</code> Duplicate model run <code>rail_full_test.yml</code> into 4 model runs for each experiement.
+<ul class="org-ul">
+<li><code>rail_full_2015_2017.yml</code></li>
+
+<li><code>rail_full_2015_2018.yml</code></li>
+
+<li><code>rail_full_2018_2030.yml</code></li>
+
+<li><code>rail_full_2030_2050.yml</code></li>
+</ul></li>
+<li class="on"><code>[X]</code> <p>
+Change build year in  <code>transport_build_winslow.csv</code> (2015 -&gt; 2018)
+</p>
+<pre class="example">
+name,build_year
+newWinslowRailStation_NRAIL,2018
+</pre></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2a948fd" class="outline-3">
+<h3 id="org2a948fd"><span class="section-number-3">9.2</span> <span class="done CANCELLED">CANCELLED</span> Convert predicted rail demand data into input <code>station_usage</code> data.</h3>
+<div class="outline-text-3" id="text-9-2">
+<p>
+Predicted rail demand has the form
+</p>
+<pre class="example">
+year,NLC,Mode,..,YearUsage,DayUsage,RunDays,LADcode,LADname,Area
+2020,5494,NRAIL,...,126148,347.5151515151515,363,E06000046,Isle_of_Wight,SE
+2020,5504,NRAIL,...,69920,192.61707988980717,363,E06000046,Isle_of_Wight,SE
+2020,5525,NRAIL,...,1811694,4990.892561983471,363,E06000046,Isle_of_Wight,SE
+</pre>
+
+<p>
+station usage scenario data has the form
+</p>
+<pre class="example">
+timestep,NLC_gb,day_usage
+2015,375,204.4242424
+2015,500,17129.24451
+2015,501,30998.56593
+...
+</pre>
+
+<p>
+So columns 1,2 and 7(8) of predicte rail demand give the scenario data for the 
+predicted year
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"># Extracts daily and yearly station usage from output of rail model
+# and append data to station usage scenario data
+# usage: bash extract_predicted_rail_demand.sh year
+
+year=$1
+predicted_dmd_file=./data/transport/gb/output/$year/predictedDemand.csv
+day_usage_file=./data/scenarios/rail_day_usage.csv
+year_usage_file=./data/scenarios/rail_year_usage.csv
+
+if ! [ -f "$day_usage_file" ]; then
+  echo ERROR: Could not find $day_usage_file
+fi
+if ! [ -f "$year_usage_file" ]; then
+  echo ERROR: Could not find $year_usage_file
+fi
+if ! [ -f "$predicted_dmd_file" ]; then
+  echo ERROR: Could not find $predicted_dmd_file
+fi
+
+# First create backup for current station usage data
+cp $day_usage_file ${day_usage_file}.bkp
+cp $year_usage_file ${year_usage_file}.bkp
+
+# Count nb of lines in predicted demand file
+nbLines=$(wc -l $predicted_dmd_file | cut -d' ' -f1)
+
+# Loop through lines excluding the first one
+for line in $(tail -$(($nbLines-1)) $predicted_dmd_file); do
+  echo $line | cut -d, -f1,2,8 &gt;&gt; $year_usage_file
+  echo $line | cut -d, -f1,2,9 &gt;&gt; $day_usage_file
+
+less $year_usage_file
+less $day_usage_file
+
+echo DONE. Backup station usage scenario data is available in
+echo   - ${year_usage_file}.bkp
+echo   - ${day_usage_file}.bkp
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org52ff928" class="outline-3">
+<h3 id="org52ff928"><span class="section-number-3">9.3</span> <span class="done CANCELLED">CANCELLED</span> Automatise validation process</h3>
+</div>
+
+<div id="outline-container-org4d24015" class="outline-3">
+<h3 id="org4d24015"><span class="section-number-3">9.4</span> <span class="done DONE">DONE</span> <code>extract_gb_scenarios</code> reads station<sub>usage</sub> for future years</h3>
+<div class="outline-text-3" id="text-9-4">
+<p>
+Added fake data for years 2018, 2030, 2050
+</p>
+<pre class="example">
+2015,300092,1065.42857
+2015,500000,355.8236915
+2015,500001,355.8236915
+2018,375,0
+2018,500,0
+2018,501,0
+2018,502,0
+2018,503,0
+...
+...
+2018,500001,0
+2030,375,0
+2030,500,0
+2030,501,0
+...
+...
+2030,500001,0
+2050,375,0
+2050,500,0
+2050,501,0
+...
+...
+</pre>
+</div>
+</div>
+<div id="outline-container-orged727a3" class="outline-3">
+<h3 id="orged727a3"><span class="section-number-3">9.5</span> <span class="done DONE">DONE</span> No data for station usage in 2018</h3>
+<div class="outline-text-3" id="text-9-5">
+<p>
+The rail station in Winslow is built in year 2018 for which no data is available in the scenario 
+data.
+Numbers are given in the <code>*.properties</code> intervention file provided in the rail model data
+</p>
+<ul class="org-ul">
+<li><code>data/transport/TR_data_full/full/data/interventions/winslowRailStation.properties</code></li>
+</ul>
+
+<p>
+I am just replaceing the fake 2018 station usage scenario data with the numbers for the 
+correct NLC.
+For instance:
+</p>
+<pre class="example">
+# data/scenarios/rail_day_usage.csv
+...
+2018,300092,0
+2018,500000,0
+2018,500001,0
+...
+</pre>
+<p>
+becomes
+</p>
+<p>
+Same for yearly usage.
+</p>
+</div>
+</div>
+<div id="outline-container-orge872589" class="outline-3">
+<h3 id="orge872589"><span class="section-number-3">9.6</span> <span class="todo TODO">TODO</span> Work out the problem with base year demand file for full GB model</h3>
+</div>
+<div id="outline-container-org712995e" class="outline-3">
+<h3 id="org712995e"><span class="section-number-3">9.7</span> Validation model run</h3>
+<div class="outline-text-3" id="text-9-7">
+<p>
+2015-&gt;2018-&gt;2030-&gt;2050 with (2018,newWinslowRailStation<sub>NRAIL</sub>)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Thibault Lestang</p>
+<p class="date">Created: 2019-07-25 Thu 17:12</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
