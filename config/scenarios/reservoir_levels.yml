@@ -4,7 +4,7 @@ provides:
   - name: reservoir_levels
     description: Reservoir levels
     dims:
-    - water_supply_reservoirs
+    - water_supply/reservoir_names
     dtype: float
     unit: Ml
 variants:

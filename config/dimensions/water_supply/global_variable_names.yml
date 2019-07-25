@@ -1,0 +1,3 @@
+name: global_variables
+description: Names of water supply global variables
+elements: water_supply/global_variable_names.csv

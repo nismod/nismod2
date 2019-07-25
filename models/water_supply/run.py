@@ -187,7 +187,7 @@ class WaterWrapper(SectorModel):
 
         # The demand profiles
         demand_df = data_handle.get_parameter('demand_profiles').as_df().reset_index().pivot(
-            index='water_supply_days_into_year',
+            index='water_supply/days_into_year',
             columns='water_supply/demand_profile_zones',
             values='demand_profiles'
         ).reset_index()
@@ -195,7 +195,7 @@ class WaterWrapper(SectorModel):
         demand_df.rename(
             inplace=True,
             columns={
-                'water_supply_days_into_year': 'Day',
+                'water_supply/days_into_year': 'Day',
             }
         )
 
@@ -241,7 +241,7 @@ class WaterWrapper(SectorModel):
         ###################################
         # Generate the wathnet nodal file #
         ###################################
-        exit(0)
+
         output_file = os.path.join(nodal_dir, 'wathnet.nodal')
 
         subprocess.call([
@@ -331,7 +331,7 @@ class WaterWrapper(SectorModel):
             The name of the new wathnet sysfile
         """
 
-        res_names = np.array([x['name'] for x in reservoir_levels.dim_coords('water_supply_reservoirs').elements])
+        res_names = np.array([x['name'] for x in reservoir_levels.dim_coords('water_supply/reservoir_names').elements])
         res_vols = reservoir_levels.data
 
         node_num_dict = WaterWrapper.get_reservoir_node_numbers(sysfile, res_names)

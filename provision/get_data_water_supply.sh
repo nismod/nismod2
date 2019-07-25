@@ -18,7 +18,7 @@ mkdir -p ${scenario_dir}
 mkdir -p ${parameter_dir}
 
 # Download data
-remote_data=water_supply/water_supply_data_v7.zip
+remote_data=water_supply/water_supply_data_v8.zip
 python ${base_path}/provision/get_data.py ${remote_data} ${download_dir}
 
 # Move all nodal input files
@@ -28,14 +28,14 @@ mv ${download_dir}/installed_data/missing_data.csv ${nodal_dir}
 mv ${download_dir}/installed_data/WRZ_DI_DO.csv ${nodal_dir}
 
 # Move all dimension definitions
+mv ${download_dir}/dimensions/arc_names.csv ${dim_dir}
 mv ${download_dir}/dimensions/cams_names.csv ${dim_dir}
 mv ${download_dir}/dimensions/days_into_year.csv ${dim_dir}
+mv ${download_dir}/dimensions/demand_nodes.csv ${dim_dir}
 mv ${download_dir}/dimensions/demand_profile_zones.csv ${dim_dir}
+mv ${download_dir}/dimensions/global_variable_names.csv ${dim_dir}
 mv ${download_dir}/dimensions/nonpublic_use_codes.csv ${dim_dir}
-mv ${download_dir}/dimensions/water_supply_arcs.csv ${dim_dir}
-mv ${download_dir}/dimensions/water_supply_demand_nodes.csv ${dim_dir}
-mv ${download_dir}/dimensions/water_supply_global_variable_names.csv ${dim_dir}
-mv ${download_dir}/dimensions/water_supply_reservoirs.csv ${dim_dir}
+mv ${download_dir}/dimensions/reservoir_names.csv ${dim_dir}
 
 # Move the scenario data
 mv ${download_dir}/scenarios/001_daily.csv ${nodal_dir} # will eventually be scenario

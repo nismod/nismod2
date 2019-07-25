@@ -9,7 +9,7 @@ inputs:
   unit: Ml/day
 - name: reservoir_levels
   dims:
-  - water_supply_reservoirs
+  - water_supply/reservoir_names
   dtype: float
   unit: Ml
 interventions: []
@@ -17,37 +17,37 @@ name: water_supply
 outputs:
 - name: reservoir_levels  # This is the end-of-year volumes that go into next timestep
   dims:
-    - water_supply_reservoirs
+    - water_supply/reservoir_names
   dtype: float
   unit: Ml
 - name: water_supply_reservoir_daily_volumes  # Daily volumes output from wathnet
   dims:
-  - water_supply_days_into_year
-  - water_supply_reservoirs
+  - water_supply/days_into_year
+  - water_supply/reservoir_names
   dtype: float
   unit: Ml
 - name: water_supply_arc_flows
   dims:
-  - water_supply_days_into_year
-  - water_supply_arcs
+  - water_supply/days_into_year
+  - water_supply/arc_names
   dtype: float
   unit: Ml/day
 - name: water_supply_global_variables
   dims:
-  - water_supply_days_into_year
-  - water_supply_global_variable_names
+  - water_supply/days_into_year
+  - water_supply/global_variable_names
   dtype: float
   unit: Unknown/possibly variable
 - name: water_supply_requested_demand
   dims:
-  - water_supply_days_into_year
-  - water_supply_demand_nodes
+  - water_supply/days_into_year
+  - water_supply/demand_nodes
   dtype: float
   unit: Ml
 - name: water_supply_shortfall
   dims:
-  - water_supply_days_into_year
-  - water_supply_demand_nodes
+  - water_supply/days_into_year
+  - water_supply/demand_nodes
   dtype: float
   unit: Ml
 parameters:
@@ -62,7 +62,7 @@ parameters:
 - name: demand_profiles
   description: Demand profiles required for preparing Wathnet nodal file
   dims:
-  - water_supply_days_into_year
+  - water_supply/days_into_year
   - water_supply/demand_profile_zones
   dtype: float
   unit: None
