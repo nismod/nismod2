@@ -25,13 +25,13 @@ outputs:
   - water_supply_days_into_year
   - water_supply_reservoirs
   dtype: float
-  unit: ML
+  unit: Ml
 - name: water_supply_arc_flows
   dims:
   - water_supply_days_into_year
   - water_supply_arcs
   dtype: float
-  unit: ML/day
+  unit: Ml/day
 - name: water_supply_global_variables
   dims:
   - water_supply_days_into_year
@@ -50,5 +50,21 @@ outputs:
   - water_supply_demand_nodes
   dtype: float
   unit: Ml
-parameters: []
+parameters:
+- name: nonpublic_water_demand
+  description: Nonpublic water demand required for preparing Wathnet nodal file
+  dims:
+  - water_supply/cams_names
+  - water_supply/nonpublic_use_codes
+  dtype: float
+  unit: Ml/day
+  default: water_supply/nonpublic_water_demands.csv
+- name: demand_profiles
+  description: Demand profiles required for preparing Wathnet nodal file
+  dims:
+  - water_supply_days_into_year
+  - water_supply/demand_profile_zones
+  dtype: float
+  unit: None
+  default: water_supply/demand_profiles.csv
 path: models/water_supply/run.py
