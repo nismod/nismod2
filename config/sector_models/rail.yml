@@ -1,0 +1,97 @@
+name: rail
+description: Transport rail model for gb
+path: ./models/transport/run_rail_only.py
+classname: RailTransportWrapper
+inputs:
+  - name: population
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_gb_2016
+    unit: GBP
+    dtype: float
+  - name: day_usage
+    dims:
+      - NLC_gb
+    unit: people
+    dtype: float
+  - name: year_usage
+    dims:
+      - NLC_gb
+    unit: people
+    dtype: float
+  - name: rail_journey_fares
+    dims:
+      - NLC_gb
+    unit: £
+    dtype: float
+  - name: rail_journey_times
+    dims:
+      - NLC_gb
+    unit: h
+    dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_gb_2016
+    unit: £
+    dtype: float
+  - name: rail_trip_rates
+    dtype: float
+outputs:
+  - name: year_stations_usage
+    dims:
+      - NLC_gb
+    unit: people
+    dtype: float
+  - name: day_stations_usage
+    dims:
+      - NLC_gb
+    unit: people
+    dtype: float
+  - name: total_year_zonal_rail_demand
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+  - name: avg_year_zonal_rail_demand
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+  - name: total_day_zonal_rail_demand
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+  - name: avg_day_zonal_rail_demand
+    dims:
+      - lad_gb_2016
+    unit: people
+    dtype: float
+parameters:
+  - name: elasticities
+    dims:
+      - variables
+      - area
+    description: Population elasticity for passenger demand
+    dtype: float
+    default: default_rail_elasticities.csv
+  - name: use_car_cost_from_road_model
+    description: Whether to use output of road model for car costs
+    dtype: bool
+    default: default_rail_flags.csv
+  - name: predict_intermediate_rail_years
+    description: Wether to predict all years between base year and predicted year
+    dtype: bool
+    default: default_rail_flags.csv
+  - name: base_year
+    description: Value of the base year for transport model
+    dtype: int
+    default: default_transport_base_year.csv
+interventions:
+  - transport_rail.csv
+initial_conditions:
+  - base_year_railstations_full.csv

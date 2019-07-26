@@ -1,0 +1,57 @@
+name: rail_full
+description: Test model for transport
+sector_models:
+  - rail
+  - extract_gb_scenarios
+scenarios:
+  - socio-economic
+  - station_usage
+  - rail_journey_times_fares
+  - car_zonal_journey_costs
+  - rail_trip_rates
+narratives: []
+scenario_dependencies:
+  - source: socio-economic
+    source_output: population
+    sink: extract_gb_scenarios
+    sink_input: population
+  - source: socio-economic
+    source_output: gva_per_head
+    sink: extract_gb_scenarios
+    sink_input: gva
+  - source: station_usage
+    source_output: day_usage
+    sink: rail
+    sink_input: day_usage
+  - source: station_usage
+    source_output: year_usage
+    sink: rail
+    sink_input: year_usage
+  - source: rail_journey_times_fares
+    source_output: rail_journey_fares
+    sink: rail
+    sink_input: rail_journey_fares
+  - source: rail_journey_times_fares
+    source_output: rail_journey_times
+    sink: rail
+    sink_input: rail_journey_times
+  - source: car_zonal_journey_costs
+    source_output: car_zonal_journey_costs
+    sink: rail
+    sink_input: car_zonal_journey_costs
+  - source: rail_trip_rates
+    source_output: rail_trip_rates
+    sink: rail
+    sink_input: rail_trip_rates
+model_dependencies:
+  - source: extract_gb_scenarios
+    source_output: population
+    sink: rail
+    sink_input: population
+    timestep: PREVIOUS
+  - source: extract_gb_scenarios
+    source_output: gva
+    sink: rail
+    sink_input: gva
+
+
