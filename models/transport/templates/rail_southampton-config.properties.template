@@ -5,7 +5,7 @@
 ################
 
 # Base year is the year of input origin-destination matrices (passenger and freight).
-baseYear = 2015
+baseYear = $base_year
 baseYearFreight = 2006
 
 ###############
