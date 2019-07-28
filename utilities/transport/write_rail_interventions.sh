@@ -30,7 +30,7 @@ do
     name=new$(echo $line | cut -d, -f3)_$mode
     NLCvalue=$(echo $line | cut -d, -f1)
     baseYearData=$(echo $line | cut -d, -f2-6,9-12)
-    echo $NLCvalue,${name},NewRailStation,100,y,baseYearData >> $outputInterventionFile
+    echo $NLCvalue,${name},NewRailStation,100,y,$baseYearData >> $outputInterventionFile
 done
 echo Intervention data written in $outputInterventionFile
 echo Be sure to add potential future stations to the intervention data file.
