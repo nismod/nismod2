@@ -53,5 +53,15 @@ model_dependencies:
     source_output: gva
     sink: rail
     sink_input: gva
+  - source: rail
+    source_output: year_stations_usage
+    sink: rail
+    sink_input: year_usage
+    timestep: PREVIOUS
+  - source: rail
+    source_output: day_stations_usage
+    sink: rail
+    sink_input: day_usage
+    timestep: PREVIOUS
 
 

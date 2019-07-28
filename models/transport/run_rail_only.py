@@ -72,18 +72,19 @@ class BaseTransportWrapper(SectorModel):
             pass
 
         self._current_timestep = data.current_timestep
-        self._set_parameters(data)
-        self._set_inputs(data)
-        self._set_properties(data)
-        self._run_model_subprocess(data)
         if self._current_timestep > data.base_timestep:
+            self._set_parameters(data)
+            self._set_inputs(data)
+            self._set_properties(data)
+            self._run_model_subprocess(data)
             self._set_outputs(data)
+        else:
+            self._set_base_demand_output(data)
 
     def _run_model_subprocess(self, data_handle):
         """Run the transport model jar and feed log messages
         into the smif loggerlogger
         """
-
         working_dir = self._working_dir
         path_to_jar = self._jar_path
 
@@ -96,22 +97,20 @@ class BaseTransportWrapper(SectorModel):
             '-c',
             self._config_path
         ]
-        if data_handle.current_timestep == data_handle.base_timestep:
-            pass
-        else:
-            tspt_model_arguments = base_arguments + [
-                '-rail',
-                str(data_handle.current_timestep),
-                str(data_handle.previous_timestep)
-            ]
-            try:
-                self.logger.debug(tspt_model_arguments)
-                output = check_output(tspt_model_arguments)
-                self.logger.info(output.decode("utf-8"))
-            except CalledProcessError as ex:
-                self.logger.error(ex.output.decode("utf-8"))
-                self.logger.exception("Transport model failed %s", ex)
-                raise ex
+        
+        tspt_model_arguments = base_arguments + [
+            '-rail',
+            str(data_handle.current_timestep),
+            str(data_handle.previous_timestep)
+        ]
+        try:
+            self.logger.debug(tspt_model_arguments)
+            output = check_output(tspt_model_arguments)
+            self.logger.info(output.decode("utf-8"))
+        except CalledProcessError as ex:
+            self.logger.error(ex.output.decode("utf-8"))
+            self.logger.exception("Transport model failed %s", ex)
+            raise ex
 
     def _input_dimension_names(self, input_name, dimension_name):
         return self.inputs[input_name].dim_coords(dimension_name).ids
@@ -128,12 +127,12 @@ class BaseTransportWrapper(SectorModel):
         """
         self._set_1D_input(data_handle, 'population', 'population.csv', dtype=int)
         self._set_1D_input(data_handle, 'gva', 'gva.csv')
-        self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
-        self._set_1D_input(data_handle, 'rail_journey_times',
-                           'railStationGeneralisedJourneyTimes.csv')
-        self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
-        self._set_trip_rates(data_handle)
-        self._set_base_year_demand(data_handle)
+        # self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
+        # self._set_1D_input(data_handle, 'rail_journey_times',
+        #                    'railStationGeneralisedJourneyTimes.csv')
+        # self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
+        # self._set_trip_rates(data_handle)
+        # self._set_base_year_demand(data_handle)
 
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
         """Get one dimensional model input from data handle and write to input file
@@ -153,15 +152,19 @@ class BaseTransportWrapper(SectorModel):
         # 2       E07000091  130489.400749  2015
         # 3       E06000046  180185.495562  2015
 
-        if data_handle.current_timestep != data_handle.base_timestep:
+        # Get value of base_year for rail model from parameter
+        base_year = int(data_handle.get_parameter('base_year').data)
+        if data_handle.current_timestep == data_handle.base_timestep:
+            previous_input = data_handle.get_data(input_name,
+                                                     timestep=base_year).as_df().reset_index()
+            previous_input['year'] = base_year
+        else:
             previous_input = data_handle.get_previous_timestep_data(input_name).as_df().reset_index()
             previous_input['year'] = data_handle.previous_timestep
 
-            input_df = pd.concat(
-                [previous_input, current_input]
-            )
-        else:
-            input_df = current_input
+        input_df = pd.concat(
+            [previous_input, current_input]
+        )
 
         if dtype:
             input_df.loc[:,input_name] = input_df.loc[:,input_name].astype(dtype)
@@ -218,6 +221,16 @@ class BaseTransportWrapper(SectorModel):
             input_df = pd.concat(
                 [previous_input, input_df]
             )
+
+        # Get trip rate for rail model base year
+        base_year = int(data.get_parameter('base_year').data)
+        previous_input = data.get_data(input_name, timestep=base_year).as_df()
+        previous_input['year'] = base_year
+        previous_input = previous_input.set_index(['year'])
+        input_df = pd.concat(
+                [previous_input, input_df]
+            )
+        
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
@@ -307,6 +320,8 @@ class BaseTransportWrapper(SectorModel):
                 bool(data_handle.get_parameter('use_car_cost_from_road_model').data),
             'predict_intermediate_rail_years': \
                 bool(data_handle.get_parameter('predict_intermediate_rail_years').data),
+            'base_year': \
+                int(data_handle.get_parameter('base_year').data),
         })
 
         with open(self._config_path, 'w') as template_fh:
@@ -371,43 +386,65 @@ class BaseTransportWrapper(SectorModel):
         NLC_dim = self.inputs['day_usage'].dims[0]
         # Name of LAD dimension in smif
         lad_dim = self.inputs['population'].dims[0]
+
         cols = {
             'NLC': NLC_dim,
             'YearUsage': 'year_stations_usage'
         }
         self._set_1D_output(data_handle, 'year_stations_usage',
-                            'predictedRailDemand.csv', cols)
+                            self._output_file_path('predictedRailDemand.csv'), cols)
         cols = {
             'NLC': NLC_dim,
             'DayUsage': 'day_stations_usage'
         }
         self._set_1D_output(data_handle, 'day_stations_usage',
-                            'predictedRailDemand.csv', cols)
+                            self._output_file_path('predictedRailDemand.csv'), cols)
         cols = {
             'LADcode': lad_dim,
             'yearTotal': 'total_year_zonal_rail_demand'
         }
         self._set_1D_output(data_handle, 'total_year_zonal_rail_demand',
-                            'zonalRailDemand.csv', cols)
+                            self._output_file_path('zonalRailDemand.csv'), cols)
         cols = {
             'LADcode': lad_dim,
             'yearAvg': 'avg_year_zonal_rail_demand'
         }
         self._set_1D_output(data_handle, 'avg_year_zonal_rail_demand',
-                            'zonalRailDemand.csv', cols)
+                            self._output_file_path('zonalRailDemand.csv'), cols)
         cols = {
             'LADcode': lad_dim,
             'dayTotal': 'total_day_zonal_rail_demand'
         }
         self._set_1D_output(data_handle, 'total_day_zonal_rail_demand',
-                            'zonalRailDemand.csv', cols)
+                            self._output_file_path('zonalRailDemand.csv'), cols)
         cols = {
             'LADcode': lad_dim,
             'dayAvg': 'avg_day_zonal_rail_demand'
         }
         self._set_1D_output(data_handle, 'avg_day_zonal_rail_demand',
-                            'zonalRailDemand.csv', cols)
+                            self._output_file_path('zonalRailDemand.csv'), cols)
 
+    def _set_base_demand_output(self, data_handle):
+        # Name of NLC dimension in smif
+        NLC_dim = self.inputs['day_usage'].dims[0]
+        # Name of LAD dimension in smif
+        lad_dim = self.inputs['population'].dims[0]
+
+        base_year_demand_file = os.path.join(self._input_dir,
+                                             'baseYearRailDemand.csv')
+        cols = {
+            'NLC': NLC_dim,
+            'YearUsage': 'year_stations_usage'
+        }
+        self._set_1D_output(data_handle, 'year_stations_usage',
+                            base_year_demand_file, cols)
+        cols = {
+            'NLC': NLC_dim,
+            'DayUsage': 'day_stations_usage'
+        }
+        self._set_1D_output(data_handle, 'day_stations_usage',
+                         base_year_demand_file, cols)
+        
     def _set_1D_output(self, data_handle, output_name, filename, cols):
         """Get one dimensional model input from data handle and write to input file
         Arguments
@@ -419,7 +456,6 @@ class BaseTransportWrapper(SectorModel):
                      Keys are label in the ouput file.
                      Values are label in data_handle.
         """
-        filename = self._output_file_path(filename)
         df = pd.read_csv(
             filename
             ).drop(
