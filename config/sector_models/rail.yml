@@ -22,7 +22,7 @@ inputs:
     dims:
       - NLC_gb
     unit: people
-    dtype: float
+    dtype: int
   - name: rail_journey_fares
     dims:
       - NLC_gb
@@ -45,7 +45,7 @@ outputs:
     dims:
       - NLC_gb
     unit: people
-    dtype: float
+    dtype: int
   - name: day_stations_usage
     dims:
       - NLC_gb

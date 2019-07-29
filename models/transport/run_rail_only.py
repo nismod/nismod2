@@ -127,12 +127,12 @@ class BaseTransportWrapper(SectorModel):
         """
         self._set_1D_input(data_handle, 'population', 'population.csv', dtype=int)
         self._set_1D_input(data_handle, 'gva', 'gva.csv')
-        # self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
-        # self._set_1D_input(data_handle, 'rail_journey_times',
-        #                    'railStationGeneralisedJourneyTimes.csv')
-        # self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
-        # self._set_trip_rates(data_handle)
-        # self._set_base_year_demand(data_handle)
+        self._set_1D_input(data_handle, 'rail_journey_fares', 'railStationJourneyFares.csv')
+        self._set_1D_input(data_handle, 'rail_journey_times',
+                           'railStationGeneralisedJourneyTimes.csv')
+        self._set_1D_input(data_handle, 'car_zonal_journey_costs', 'carZonalJourneyCosts.csv')
+        self._set_trip_rates(data_handle)
+        self._set_base_year_demand(data_handle)
 
     def _set_1D_input(self, data_handle, input_name, filename,dtype=None):
         """Get one dimensional model input from data handle and write to input file
@@ -152,15 +152,8 @@ class BaseTransportWrapper(SectorModel):
         # 2       E07000091  130489.400749  2015
         # 3       E06000046  180185.495562  2015
 
-        # Get value of base_year for rail model from parameter
-        base_year = int(data_handle.get_parameter('base_year').data)
-        if data_handle.current_timestep == data_handle.base_timestep:
-            previous_input = data_handle.get_data(input_name,
-                                                     timestep=base_year).as_df().reset_index()
-            previous_input['year'] = base_year
-        else:
-            previous_input = data_handle.get_previous_timestep_data(input_name).as_df().reset_index()
-            previous_input['year'] = data_handle.previous_timestep
+        previous_input = data_handle.get_previous_timestep_data(input_name).as_df().reset_index()
+        previous_input['year'] = data_handle.previous_timestep
 
         input_df = pd.concat(
             [previous_input, current_input]
@@ -222,15 +215,6 @@ class BaseTransportWrapper(SectorModel):
                 [previous_input, input_df]
             )
 
-        # Get trip rate for rail model base year
-        base_year = int(data.get_parameter('base_year').data)
-        previous_input = data.get_data(input_name, timestep=base_year).as_df()
-        previous_input['year'] = base_year
-        previous_input = previous_input.set_index(['year'])
-        input_df = pd.concat(
-                [previous_input, input_df]
-            )
-        
         input_filepath = os.path.join(
             self._input_dir, filename)
         input_df.to_csv(input_filepath)
@@ -272,7 +256,9 @@ class BaseTransportWrapper(SectorModel):
         # stations
         df = pd.concat([df, baseyear_day_usage, baseyear_year_usage], axis=1,
                        join_axes=[df.index])
-
+        # Hack year usage column in baseYearRailDemand.csv should contain integers
+        df.year_usage = df.year_usage.astype(int)
+        print(df)
         # rename columns to meet rail model's expectations
         columns_names = {
             'mode': 'Mode',
@@ -366,7 +352,7 @@ class BaseTransportWrapper(SectorModel):
         # year usage
         year_usage = data_handle.get_data("year_usage", timestep=build_year).as_df().reset_index()
         year_usage = year_usage.set_index([NLC_dim])
-        intervention['yearUsage'] = year_usage.loc[intervention['NLC']].values[0]
+        intervention['yearUsage'] = int(year_usage.loc[intervention['NLC']].values[0])
 
         # compute start/end year from smif intervention keys
         intervention['startYear'] = intervention['build_year']
@@ -456,11 +442,7 @@ class BaseTransportWrapper(SectorModel):
                      Keys are label in the ouput file.
                      Values are label in data_handle.
         """
-        df = pd.read_csv(
-            filename
-            ).drop(
-                'year', axis=1
-            )
+        df = pd.read_csv(filename)
         df = df.loc[:,cols.keys()].rename(columns=cols)
         numpy_array = self._df_to_ndarray(output_name, df)
         data_handle.set_results(output_name, numpy_array)

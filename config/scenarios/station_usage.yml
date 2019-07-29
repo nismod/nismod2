@@ -9,7 +9,7 @@ provides:
   - name: year_usage
     dims:
       - NLC_gb
-    dtype: float
+    dtype: int
     unit: people
 variants:
   - name: baseline
