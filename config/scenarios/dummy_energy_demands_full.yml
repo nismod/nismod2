@@ -151,7 +151,25 @@ provides:
     dims:
     - energy_hub
     unit: MW
+    dtype: float    
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
     dtype: float
+    unit: MW
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: building_solidfuel_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
 variants:
   - name: es_energy_demand_dummy_full
     description: ''
@@ -166,18 +184,21 @@ variants:
       service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
       hydrogen_non_heating: ../energy_supply/scenarios/energy_demand_full.csv
       building_biomass_boiler: ../energy_supply/scenarios/energy_demand_full.csv
-      building_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      building_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
-      building_gas_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      building_hydrogen_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      building_hydrogen_heatpump : ../energy_supply/scenarios/energy_demand_full.csv
-      building_oil_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      dh_biomass_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      dh_elec_boiler : ../energy_supply/scenarios/energy_demand_full.csv
-      dh_gas_CHP : ../energy_supply/scenarios/energy_demand_full.csv
-      dh_hydrogen_fuelcell : ../energy_supply/scenarios/energy_demand_full.csv
-      elec_trans : ../energy_supply/scenarios/energy_demand_full.csv
-      EV_Cap : ../energy_supply/scenarios/ev_cap.csv
+      building_elec_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      building_heatpump: ../energy_supply/scenarios/energy_demand_full.csv
+      building_gas_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      building_hydrogen_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      building_hydrogen_heatpump: ../energy_supply/scenarios/energy_demand_full.csv
+      building_oil_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      dh_biomass_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      dh_elec_boiler: ../energy_supply/scenarios/energy_demand_full.csv
+      dh_gas_CHP: ../energy_supply/scenarios/energy_demand_full.csv
+      dh_hydrogen_fuelcell: ../energy_supply/scenarios/energy_demand_full.csv
+      elec_trans: ../energy_supply/scenarios/energy_demand_full.csv
+      EV_Cap: ../energy_supply/scenarios/ev_cap.csv
+      solid_fuel_non_heat_eh: ../energy_supply/scenarios/energy_demand_full.csv
+      oil_non_heat_eh: ../energy_supply/scenarios/energy_demand_full.csv
+      building_solidfuel_boiler: ../energy_supply/scenarios/energy_demand_full.csv
   - name: electricworld
     description: ''
     data:
@@ -191,18 +212,18 @@ variants:
       service_electricity_non_heating: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
       hydrogen_non_heating: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
       building_biomass_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_elec_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_heatpump : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_gas_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_hydrogen_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_hydrogen_heatpump : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      building_oil_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      dh_biomass_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      dh_elec_boiler : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      dh_gas_CHP : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      dh_hydrogen_fuelcell : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      elec_trans : ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
-      EV_Cap : ../energy_supply/scenarios/EW/EW_ev_cap.csv
+      building_elec_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      building_heatpump: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      building_gas_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      building_hydrogen_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      building_hydrogen_heatpump: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      building_oil_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      dh_biomass_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      dh_elec_boiler: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      dh_gas_CHP: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      dh_hydrogen_fuelcell: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      elec_trans: ../energy_supply/scenarios/EW/EW_energy_demand_full.csv
+      EV_Cap: ../energy_supply/scenarios/EW/EW_ev_cap.csv
   - name: multivector
     description: ''
     data:
@@ -216,18 +237,18 @@ variants:
       service_electricity_non_heating: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
       hydrogen_non_heating: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
       building_biomass_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_elec_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_heatpump : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_gas_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_hydrogen_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_hydrogen_heatpump : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      building_oil_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      dh_biomass_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      dh_elec_boiler : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      dh_gas_CHP : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      dh_hydrogen_fuelcell : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      elec_trans : ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
-      EV_Cap : ../energy_supply/scenarios/MV/MV_ev_cap.csv
+      building_elec_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      building_heatpump: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      building_gas_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      building_hydrogen_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      building_hydrogen_heatpump: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      building_oil_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      dh_biomass_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      dh_elec_boiler: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      dh_gas_CHP: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      dh_hydrogen_fuelcell: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      elec_trans: ../energy_supply/scenarios/MV/MV_energy_demand_full.csv
+      EV_Cap: ../energy_supply/scenarios/MV/MV_ev_cap.csv
   - name: es_energy_demand_dummy_optimised
     description: ''
     data:
@@ -240,5 +261,5 @@ variants:
       service_gas_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
       service_electricity_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
       hydrogen_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
-      elec_trans : ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
-      EV_Cap : ../energy_supply/scenarios/Heat_Strategy/HS_ev_cap.csv
+      elec_trans: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full.csv
+      EV_Cap: ../energy_supply/scenarios/Heat_Strategy/HS_ev_cap.csv

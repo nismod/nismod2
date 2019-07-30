@@ -9,7 +9,7 @@ scenarios:
   ev_transport_trips: arc_expansion
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
-  elec_interconnector_prices : average_annual_prices
+  elec_interconnector_prices: average_annual_prices
 narratives:
   operation_mode:
   - decentral
