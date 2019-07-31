@@ -43,6 +43,30 @@ model_dependencies:
     source_output: industry_heat
     sink: aggregate_energy_optimised
     sink_input: industry_heat
+  - source: energy_demand_unconstrained
+    source_output: industry_oil
+    sink: aggregate_energy_optimised
+    sink_input: industry_oil
+  - source: energy_demand_unconstrained
+    source_output: service_oil
+    sink: aggregate_energy_optimised
+    sink_input: service_oil
+  - source: energy_demand_unconstrained
+    source_output: residential_oil
+    sink: aggregate_energy_optimised
+    sink_input: residential_oil
+  - source: energy_demand_unconstrained
+    source_output: industry_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: industry_solid_fuel
+  - source: energy_demand_unconstrained
+    source_output: service_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: service_solid_fuel
+  - source: energy_demand_unconstrained
+    source_output: residential_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: residential_solid_fuel
   # from energy demand to region conversion
   - source: energy_demand_unconstrained
     source_output: residential_gas
@@ -81,6 +105,14 @@ model_dependencies:
     source_output: heatload_com
     sink: convert_regions_ed_to_es_optimised
     sink_input: heatload_com
+  - source: aggregate_energy_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: aggregate_energy_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
   # from region conversion to interval conversion
   - source: convert_regions_ed_to_es_optimised
     source_output: gasload_non_heat_res
@@ -118,6 +150,14 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_intervals_ed_to_es_optimised
     sink_input: hydrogen_non_heat_eh
+  - source: convert_regions_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_regions_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
   # from interval conversion to unit conversion
   - source: convert_intervals_ed_to_es_optimised
     source_output: gasload_non_heat_res
@@ -155,6 +195,14 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_units_ed_to_es_optimised
     sink_input: hydrogen_non_heat_eh
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
   # from unit conversion to remap gas nodes
   - source: convert_units_ed_to_es_optimised
     source_output: gasload
@@ -198,6 +246,14 @@ model_dependencies:
     source_output: heatload_com
     sink: energy_supply_optimised
     sink_input: heatload_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_units_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: solid_fuel_non_heat_eh
   # from et_module to region conv to unit conv to energy supply
   - source: et_module
     source_output: v2g_g2v_capacity

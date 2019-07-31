@@ -59,6 +59,18 @@ inputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
   - name: fuel_price
     dims:
       - seasons
@@ -136,6 +148,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/op_mode_central.csv
+  - name: heat_supply_strategy
+    description: Flag to configure heat supply strategy in the optimised mode
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/hs_default.csv
 interventions:
   - ../energy_supply/interventions/full/es_elec_network.csv
   - ../energy_supply/interventions/full/es_gaspipes.csv
@@ -155,6 +172,12 @@ interventions:
   - ../energy_supply/interventions/multi_vector/es_gasterminals.csv
   - ../energy_supply/interventions/multi_vector/es_generators.csv
   - ../energy_supply/interventions/multi_vector/es_heattech.csv
+  - ../energy_supply/interventions/net_zero/es_elec_network.csv
+  - ../energy_supply/interventions/net_zero/es_gaspipes.csv
+  - ../energy_supply/interventions/net_zero/es_gasstorage.csv
+  - ../energy_supply/interventions/net_zero/es_gasterminals.csv
+  - ../energy_supply/interventions/net_zero/es_generators.csv
+  - ../energy_supply/interventions/net_zero/es_heattech.csv
 outputs:
   - name: tran_gas_fired
     dims:
@@ -520,19 +543,19 @@ outputs:
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2_qs
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2storage_level
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: gas_demand
     dims:
@@ -653,4 +676,52 @@ outputs:
     - bus_bars
     - seasonal_week
     unit: MW
-    dtype: float 
+    dtype: float
+  - name: tran_oil
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oil
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_hp
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_gb
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_resistive_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oilboiler_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_smr
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_electrolysis
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float

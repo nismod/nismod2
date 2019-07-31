@@ -9,6 +9,7 @@ scenarios:
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   dummy_energy_demands_full: es_energy_demand_dummy_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
 narratives: {}
 decision_module: ''
 strategies: []
