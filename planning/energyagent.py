@@ -105,7 +105,9 @@ class EnergyAgent(RuleBased):
         budget: float
         """
         cheapest_first = []
-        for name, item in self.interventions.items():
+        state = self.get_previous_state(data_handle)
+        for name in self.available_interventions(state):
+            item = self.get_intervention(name)
             try:
                 cap_cost = item['capital_cost']['value']
             except(KeyError):
