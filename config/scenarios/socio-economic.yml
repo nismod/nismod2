@@ -49,90 +49,90 @@ variants:
   - name: itrc_baseline16
     description: Baseline scenario used in ITRC NNA analysis
     data:
-      dwellings: socio-economic/arc_dwellings__baseline.csv
-      floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_employment__baseline.csv
-      gva: socio-economic/arc_gva__baseline.csv
-      gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
-      gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
-      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
+      dwellings: socio-economic/arc_dwellings__baseline
+      floor_area: socio-economic/arc_floor_area__baseline
+      employment: socio-economic/arc_employment__baseline
+      gva: socio-economic/arc_gva__baseline
+      gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad
+      gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors
+      population: population/pop-baseline16_econ-c16_fuel-c16/population__lad
   - name: itrc_high-dcc
     description: High scenario used in ITRC analysis
     data:
-      dwellings: socio-economic/arc_dwellings__baseline.csv
-      floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_employment__baseline.csv
-      gva: socio-economic/arc_gva__baseline.csv
-      gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
-      gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
-      population: population/pop-d_econ-c_fuel-c/population__lad.csv
+      dwellings: socio-economic/arc_dwellings__baseline
+      floor_area: socio-economic/arc_floor_area__baseline
+      employment: socio-economic/arc_employment__baseline
+      gva: socio-economic/arc_gva__baseline
+      gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad
+      gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors
+      population: population/pop-d_econ-c_fuel-c/population__lad
   - name: itrc_low-fcc
     description: Low scenario used in ITRC analysis
     data:
-      dwellings: socio-economic/arc_dwellings__baseline.csv
-      floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_employment__baseline.csv
-      gva: socio-economic/arc_gva__baseline.csv
-      gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
-      gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
-      population: population/pop-f_econ-c_fuel-c/population__lad.csv
+      dwellings: socio-economic/arc_dwellings__baseline
+      floor_area: socio-economic/arc_floor_area__baseline
+      employment: socio-economic/arc_employment__baseline
+      gva: socio-economic/arc_gva__baseline
+      gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad
+      gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors
+      population: population/pop-f_econ-c_fuel-c/population__lad
   - name: arc_baseline
     description: Baseline scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: socio-economic/arc_dwellings__baseline.csv
-      floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_employment__baseline.csv
-      gva: socio-economic/arc_gva__baseline.csv
-      gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
-      gva_per_sector: socio-economic/arc_gva_sector__baseline.csv
-      population: socio-economic/arc_population__baseline.csv
+      dwellings: socio-economic/arc_dwellings__baseline
+      floor_area: socio-economic/arc_floor_area__baseline
+      employment: socio-economic/arc_employment__baseline
+      gva: socio-economic/arc_gva__baseline
+      gva_per_head: socio-economic/arc_gva_per_head__baseline
+      gva_per_sector: socio-economic/arc_gva_sector__baseline
+      population: socio-economic/arc_population__baseline
   - name: arc_unplanned
     description: Unplanned scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: socio-economic/arc_dwellings__0-unplanned.csv
-      floor_area: socio-economic/arc_floor_area__0-unplanned.csv
-      employment: socio-economic/arc_employment__0-unplanned.csv
-      gva: socio-economic/arc_gva__0-unplanned.csv
-      gva_per_head: socio-economic/arc_gva_per_head__0-unplanned.csv
-      gva_per_sector: socio-economic/arc_gva_sector__0-unplanned.csv
-      population: socio-economic/arc_population__0-unplanned.csv
+      dwellings: socio-economic/arc_dwellings__0-unplanned
+      floor_area: socio-economic/arc_floor_area__0-unplanned
+      employment: socio-economic/arc_employment__0-unplanned
+      gva: socio-economic/arc_gva__0-unplanned
+      gva_per_head: socio-economic/arc_gva_per_head__0-unplanned
+      gva_per_sector: socio-economic/arc_gva_sector__0-unplanned
+      population: socio-economic/arc_population__0-unplanned
   - name: arc_new-cities
     description: New cities scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: socio-economic/arc_dwellings__1-new-cities.csv
-      floor_area: socio-economic/arc_floor_area__1-new-cities.csv
-      employment: socio-economic/arc_employment__1-new-cities.csv
-      gva: socio-economic/arc_gva__1-new-cities.csv
-      gva_per_head: socio-economic/arc_gva_per_head__1-new-cities.csv
-      gva_per_sector: socio-economic/arc_gva_sector__1-new-cities.csv
-      population: socio-economic/arc_population__1-new-cities.csv
+      dwellings: socio-economic/arc_dwellings__1-new-cities
+      floor_area: socio-economic/arc_floor_area__1-new-cities
+      employment: socio-economic/arc_employment__1-new-cities
+      gva: socio-economic/arc_gva__1-new-cities
+      gva_per_head: socio-economic/arc_gva_per_head__1-new-cities
+      gva_per_sector: socio-economic/arc_gva_sector__1-new-cities
+      population: socio-economic/arc_population__1-new-cities
   - name: arc_expansion
     description: Expansion of current major cities scenario for Cam-MK-Ox Arc analysis
     data:
-      dwellings: socio-economic/arc_dwellings__2-expansion.csv
-      floor_area: socio-economic/arc_floor_area__2-expansion.csv
-      employment: socio-economic/arc_employment__2-expansion.csv
-      gva: socio-economic/arc_gva__2-expansion.csv
-      gva_per_head: socio-economic/arc_gva_per_head__2-expansion.csv
-      gva_per_sector: socio-economic/arc_gva_sector__2-expansion.csv
-      population: socio-economic/arc_population__2-expansion.csv
+      dwellings: socio-economic/arc_dwellings__2-expansion
+      floor_area: socio-economic/arc_floor_area__2-expansion
+      employment: socio-economic/arc_employment__2-expansion
+      gva: socio-economic/arc_gva__2-expansion
+      gva_per_head: socio-economic/arc_gva_per_head__2-expansion
+      gva_per_sector: socio-economic/arc_gva_sector__2-expansion
+      population: socio-economic/arc_population__2-expansion
   - name: arc_new-cities23
     description: New cities scenario for Cam-MK-Ox Arc analysis with 23K dwelling per year
     data:
-      dwellings: socio-economic/arc_dwellings__3-new-cities23.csv
-      floor_area: socio-economic/arc_floor_area__3-new-cities23.csv
-      employment: socio-economic/arc_gva_employment__1-new-cities.csv
-      gva: socio-economic/arc_gva_employment__1-new-cities.csv
-      gva_per_head: socio-economic/arc_gva_per_head__3-new-cities23.csv
-      gva_per_sector: socio-economic/arc_gva_sector__1-new-cities.csv
-      population: socio-economic/arc_population__3-new-cities23.csv
+      dwellings: socio-economic/arc_dwellings__3-new-cities23
+      floor_area: socio-economic/arc_floor_area__3-new-cities23
+      employment: socio-economic/arc_gva_employment__1-new-cities
+      gva: socio-economic/arc_gva_employment__1-new-cities
+      gva_per_head: socio-economic/arc_gva_per_head__3-new-cities23
+      gva_per_sector: socio-economic/arc_gva_sector__1-new-cities
+      population: socio-economic/arc_population__3-new-cities23
   - name: arc_expansion23
     description: Expansion of current major cities scenario for Cam-MK-Ox Arc analysis with 23K dwelling per year
     data:
-      dwellings: socio-economic/arc_dwellings__4-expansion23.csv
-      floor_area: socio-economic/arc_floor_area__4-expansion23.csv
-      employment: socio-economic/arc_gva_employment__2-expansion.csv
-      gva: socio-economic/arc_gva_employment__2-expansion.csv
-      gva_per_head: socio-economic/arc_gva_per_head__4-expansion23.csv
-      gva_per_sector: socio-economic/arc_gva_sector__2-expansion.csv
-      population: socio-economic/arc_population__4-expansion23.csv
+      dwellings: socio-economic/arc_dwellings__4-expansion23
+      floor_area: socio-economic/arc_floor_area__4-expansion23
+      employment: socio-economic/arc_gva_employment__2-expansion
+      gva: socio-economic/arc_gva_employment__2-expansion
+      gva_per_head: socio-economic/arc_gva_per_head__4-expansion23
+      gva_per_sector: socio-economic/arc_gva_sector__2-expansion
+      population: socio-economic/arc_population__4-expansion23

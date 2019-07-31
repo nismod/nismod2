@@ -11,4 +11,4 @@ variants:
   - name: actual
     description: Population of GB
     data:
-      population: water_demand/population.csv
+      population: water_demand/population

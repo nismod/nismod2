@@ -30,7 +30,7 @@ narratives:
 strategies:
   - type: pre-specified-planning
     description: 'electric world development, decentral operation allowing expansion'
-    filename: ../energy_supply/strategies/electric_world.csv
+    filename: ../energy_supply/strategies/electric_world
     model_name: energy_supply_constrained
 timesteps:
   - 2015

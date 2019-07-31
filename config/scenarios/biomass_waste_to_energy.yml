@@ -18,6 +18,5 @@ variants:
   - name: es_biomass_waste_to_energy
     description: ''
     data:
-      biomass_feedstock: ../energy_supply/scenarios/biomass_waste_energy_annual.csv
-      municipal_waste: ../energy_supply/scenarios/biomass_waste_energy_annual.csv
-
+      biomass_feedstock: ../energy_supply/scenarios/biomass_waste_energy_annual
+      municipal_waste: ../energy_supply/scenarios/biomass_waste_energy_annual
