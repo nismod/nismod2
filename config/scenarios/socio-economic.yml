@@ -51,8 +51,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__baseline.csv
       floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_gva_employment__baseline.csv
-      gva: socio-economic/arc_gva_employment__baseline.csv
+      employment: socio-economic/arc_employment__baseline.csv
+      gva: socio-economic/arc_gva__baseline.csv
       gva_per_head: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad.csv
       gva_per_sector: population/pop-baseline16_econ-c16_fuel-c16/gva_per_head__lad_sectors.csv
       population: population/pop-baseline16_econ-c16_fuel-c16/population__lad.csv
@@ -61,8 +61,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__baseline.csv
       floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_gva_employment__baseline.csv
-      gva: socio-economic/arc_gva_employment__baseline.csv
+      employment: socio-economic/arc_employment__baseline.csv
+      gva: socio-economic/arc_gva__baseline.csv
       gva_per_head: population/pop-d_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-d_econ-c_fuel-c/gva_per_head__lad_sectors.csv
       population: population/pop-d_econ-c_fuel-c/population__lad.csv
@@ -71,8 +71,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__baseline.csv
       floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_gva_employment__baseline.csv
-      gva: socio-economic/arc_gva_employment__baseline.csv
+      employment: socio-economic/arc_employment__baseline.csv
+      gva: socio-economic/arc_gva__baseline.csv
       gva_per_head: population/pop-f_econ-c_fuel-c/gva_per_head__lad.csv
       gva_per_sector: population/pop-f_econ-c_fuel-c/gva_per_head__lad_sectors.csv
       population: population/pop-f_econ-c_fuel-c/population__lad.csv
@@ -81,8 +81,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__baseline.csv
       floor_area: socio-economic/arc_floor_area__baseline.csv
-      employment: socio-economic/arc_gva_employment__baseline.csv
-      gva: socio-economic/arc_gva_employment__baseline.csv
+      employment: socio-economic/arc_employment__baseline.csv
+      gva: socio-economic/arc_gva__baseline.csv
       gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
       gva_per_sector: socio-economic/arc_gva_sector__baseline.csv
       population: socio-economic/arc_population__baseline.csv
@@ -91,8 +91,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__0-unplanned.csv
       floor_area: socio-economic/arc_floor_area__0-unplanned.csv
-      employment: socio-economic/arc_gva_employment__0-unplanned.csv
-      gva: socio-economic/arc_gva_employment__0-unplanned.csv
+      employment: socio-economic/arc_employment__0-unplanned.csv
+      gva: socio-economic/arc_gva__0-unplanned.csv
       gva_per_head: socio-economic/arc_gva_per_head__0-unplanned.csv
       gva_per_sector: socio-economic/arc_gva_sector__0-unplanned.csv
       population: socio-economic/arc_population__0-unplanned.csv
@@ -101,8 +101,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__1-new-cities.csv
       floor_area: socio-economic/arc_floor_area__1-new-cities.csv
-      employment: socio-economic/arc_gva_employment__1-new-cities.csv
-      gva: socio-economic/arc_gva_employment__1-new-cities.csv
+      employment: socio-economic/arc_employment__1-new-cities.csv
+      gva: socio-economic/arc_gva__1-new-cities.csv
       gva_per_head: socio-economic/arc_gva_per_head__1-new-cities.csv
       gva_per_sector: socio-economic/arc_gva_sector__1-new-cities.csv
       population: socio-economic/arc_population__1-new-cities.csv
@@ -111,8 +111,8 @@ variants:
     data:
       dwellings: socio-economic/arc_dwellings__2-expansion.csv
       floor_area: socio-economic/arc_floor_area__2-expansion.csv
-      employment: socio-economic/arc_gva_employment__2-expansion.csv
-      gva: socio-economic/arc_gva_employment__2-expansion.csv
+      employment: socio-economic/arc_employment__2-expansion.csv
+      gva: socio-economic/arc_gva__2-expansion.csv
       gva_per_head: socio-economic/arc_gva_per_head__2-expansion.csv
       gva_per_sector: socio-economic/arc_gva_sector__2-expansion.csv
       population: socio-economic/arc_population__2-expansion.csv
