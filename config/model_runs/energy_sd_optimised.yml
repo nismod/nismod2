@@ -1,7 +1,7 @@
 name: energy_sd_optimised
 stamp: '2018-04-11T12:00:00.000Z'
 description: ''
-sos_model: energy_sd_optimised
+sos_model: energy_sd_optimised_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: itrc_baseline16
