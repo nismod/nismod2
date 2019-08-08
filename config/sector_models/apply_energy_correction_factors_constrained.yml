@@ -1,6 +1,6 @@
 name: apply_energy_correction_factors_constrained
 description: Apply correction factors to energy_demand_constrained outputs
-classname: EnergyCorrectionFactor
+classname: EnergyCorrectionFactor_Constrained
 path: models/energy_correction_factor.py
 interventions: []
 initial_conditions: []

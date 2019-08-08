@@ -3,8 +3,63 @@
 from smif.exception import SmifException
 from smif.model import SectorModel
 
+class EnergyCorrectionFactor_Unconstrained(SectorModel):
+    """Adaptor to apply energy correction factors
+    """
+    def simulate(self, data_handle):
+        """Read inputs, apply factor, write out.
+        """
+        # Conversions to apply
+        # - fuel: gas or electricity
+        # - service: service or technology grouping
+        # - factor: correction factor to apply
+        # - inputs: list of inputs (all have the same factor applied)
+        conversions = [
+            {
+                'fuel': 'electricity',
+                'service': 'non_heating',
+                'factor': 0.9,
+                'inputs': [
+                    'residential_electricity',
+                    'industry_electricity',
+                    'service_electricity'
+                ],
+            },
+            {
+                'fuel': 'gas',
+                'service': 'non_heating',
+                'factor': 0.7,
+                'inputs': [
+                    'residential_gas',
+                    'industry_gas',
+                    'service_gas'
+                ]
+            }
+        ]
 
-class EnergyCorrectionFactor(SectorModel):
+        for conversion in conversions:
+            for input_name in conversion['inputs']:
+                if input_name in self.inputs:
+                    self._check_output_exists(input_name)
+                    data = data_handle.get_data(input_name).as_ndarray()
+                    # divide by factor
+                    results = data / conversion['factor']
+                    data_handle.set_results(input_name, results)
+                else:
+                    self.logger.warning(
+                        "No input found for {}, skipping correction factor".format(input_name))
+
+
+    def _check_output_exists(self, input_name):
+        try:
+            model_output = self.outputs[input_name]
+        except KeyError:
+            msg = "Output '{}' not found to match input '{}' in model '{}'".format(
+                input_name, model_input, self.name)
+            raise SmifException(msg)
+
+
+class EnergyCorrectionFactor_Constrained(SectorModel):
     """Adaptor to apply energy correction factors
     """
     def simulate(self, data_handle):
@@ -53,10 +108,7 @@ class EnergyCorrectionFactor(SectorModel):
                 'inputs': [
                     'residential_electricity_non_heating',
                     'industry_electricity_non_heating',
-                    'service_electricity_non_heating',
-                    'residential_electricity',
-                    'industry_electricity',
-                    'service_electricity'
+                    'service_electricity_non_heating'
                 ],
             },
             {
@@ -86,10 +138,7 @@ class EnergyCorrectionFactor(SectorModel):
                 'inputs': [
                     'residential_gas_non_heating',
                     'industry_gas_non_heating',
-                    'service_gas_non_heating',
-                    'residential_gas',
-                    'industry_gas',
-                    'service_gas'
+                    'service_gas_non_heating'
                 ]
             }
         ]
@@ -105,6 +154,7 @@ class EnergyCorrectionFactor(SectorModel):
                 else:
                     self.logger.warning(
                         "No input found for {}, skipping correction factor".format(input_name))
+
 
     def _check_output_exists(self, input_name):
         try:

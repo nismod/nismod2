@@ -1,6 +1,6 @@
 name: apply_energy_correction_factors_unconstrained
 description: Apply correction factors to energy_demand_unconstrained outputs
-classname: EnergyCorrectionFactor
+classname: EnergyCorrectionFactor_Unconstrained
 path: models/energy_correction_factor.py
 interventions: []
 initial_conditions: []
