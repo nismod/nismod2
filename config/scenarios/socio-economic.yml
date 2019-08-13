@@ -116,3 +116,23 @@ variants:
       gva_per_head: socio-economic/arc_gva_per_head__2-expansion.csv
       gva_per_sector: socio-economic/arc_gva_sector__2-expansion.csv
       population: socio-economic/arc_population__2-expansion.csv
+  - name: arc_new-cities23
+    description: New cities scenario for Cam-MK-Ox Arc analysis with 23K dwelling per year
+    data:
+      dwellings: socio-economic/arc_dwellings__3-new-cities23.csv
+      floor_area: socio-economic/arc_floor_area__3-new-cities23.csv
+      employment: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva: socio-economic/arc_gva_employment__1-new-cities.csv
+      gva_per_head: socio-economic/arc_gva_per_head__3-new-cities23.csv
+      gva_per_sector: socio-economic/arc_gva_sector__1-new-cities.csv
+      population: socio-economic/arc_population__3-new-cities23.csv
+  - name: arc_expansion23
+    description: Expansion of current major cities scenario for Cam-MK-Ox Arc analysis with 23K dwelling per year
+    data:
+      dwellings: socio-economic/arc_dwellings__4-expansion23.csv
+      floor_area: socio-economic/arc_floor_area__4-expansion23.csv
+      employment: socio-economic/arc_gva_employment__2-expansion.csv
+      gva: socio-economic/arc_gva_employment__2-expansion.csv
+      gva_per_head: socio-economic/arc_gva_per_head__4-expansion23.csv
+      gva_per_sector: socio-economic/arc_gva_sector__2-expansion.csv
+      population: socio-economic/arc_population__4-expansion23.csv
