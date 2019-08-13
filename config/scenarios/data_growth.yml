@@ -1,0 +1,20 @@
+name: data_growth
+description: Data growth rate scenarios for mobile
+provides:
+  - name: data_growth
+    dims: []
+    dtype: float
+    unit: GB
+variants:
+  - name: baseline
+    description: Baseline data growth projection
+    data:
+      data_growth: data_growth_baseline.csv
+  - name: low
+    description: Low data growth projection
+    data:
+      data_growth: data_growth_low.csv
+  - name: high
+    description: High data growth projection
+    data:
+      data_growth: data_growth_high.csv
