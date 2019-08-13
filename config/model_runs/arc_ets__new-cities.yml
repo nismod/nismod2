@@ -1,7 +1,7 @@
 name: arc_ets__new-cities
 stamp: '2019-05-14'
 description: Arc Energy-Transport New Cities
-sos_model: energy_transport-scenario
+sos_model: energy_transport-scenario_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: arc_new-cities
