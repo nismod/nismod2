@@ -1,4 +1,4 @@
-name: energy_transport-scenario-unconstrained
+name: energy_transport-scenario-unconstrained_corrected
 description: A full version of the energy-transport system-of-systems model, with energy
   models in unconstrained heat technology mode.
 sector_models:
