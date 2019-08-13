@@ -779,6 +779,17 @@ narratives:
         decription: centralised operating mode
         data:
           operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+  - name: virtual_dw_stock
+    description: Virutal dwelling stock mode
+    variants:
+      - name: load_in_directly
+        description: Loads in floor area directly
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_false.csv      
+      - name: virtual_stock
+        description: Creates virtual stock
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_true.csv
   - name: air_leakage
     description: ''
     provides:
