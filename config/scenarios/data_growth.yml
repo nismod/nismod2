@@ -9,12 +9,12 @@ variants:
   - name: baseline
     description: Baseline data growth projection
     data:
-      data_growth: data_growth_baseline.csv
+      data_growth: data_growth_baseline
   - name: low
     description: Low data growth projection
     data:
-      data_growth: data_growth_low.csv
+      data_growth: data_growth_low
   - name: high
     description: High data growth projection
     data:
-      data_growth: data_growth_high.csv
+      data_growth: data_growth_high
