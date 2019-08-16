@@ -1,9 +1,11 @@
 name: arc_dc__baseline
 stamp: '2019-05-14'
 description: Arc Digital baseline
-sos_model: digital_comms_fixed_only
+sos_model: digital_comms_mobile_network
 scenarios:
   adoption: fttp_baseline_adoption
+  data_growth: baseline
+  socio-economic: arc_baseline
 narratives: {}
 strategies: []
 timesteps:

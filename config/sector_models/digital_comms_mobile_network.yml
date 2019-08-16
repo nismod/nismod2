@@ -1,161 +1,147 @@
-parameters:
-- description: Market share of mobile network operator
-  dims: []
-  default: default_digital_parameters.csv
-  name: market_share
-  dtype: int
-  abs_range:
-  - 0
-  - 100
-  unit: percentage
-- description: Annual budget
-  dims: []
-  default: default_digital_parameters.csv
-  name: annual_budget
-  dtype: int
-  abs_range:
-  - 0
-  - 10000000000
-  unit: GBP
-- description: Service obligation capacity required to be met by 
-  mobile network operator
-  dims: []
-  default: default_digital_parameters.csv
-  name: service_obligation_capacity
-  dtype: int
-  abs_range:
-  - 0
-  - 1000
-  unit: mbps_per_user
-- description: Percentage of daily traffic taking place in the busy hour
-  dims: []
-  default: default_digital_parameters.csv
-  name: busy_hour_traffic_percentage
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: percent
-- description: The percentage of the population over a specific capacity threshold
-  dims: []
-  default: default_digital_parameters.csv
-  name: coverage_threshold
-  dtype: int
-  abs_range:
-  - 0
-  - 1000 
-  unit: mbps_per_user
-- description: The percentage of the population with a smartphone and data access
-  dims: []
-  default: default_digital_parameters.csv
-  name: penetration
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: percent
-- description: Channel bandwidth for the 700MHz frequency band
-  dims: []
-  default: default_digital_parameters.csv
-  name: channel_bandwidth_700
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: MHz
-- description: Channel bandwidth for the 800MHz frequency band
-  dims: []
-  default: default_digital_parameters.csv
-  name: channel_bandwidth_800
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: MHz
-- description: Channel bandwidth for the 1800MHz frequency band
-  dims: []
-  default: default_digital_parameters.csv
-  name: channel_bandwidth_2600
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: MHz
-- description: Channel bandwidth for the 2600MHz frequency band
-  dims: []
-  default: default_digital_parameters.csv
-  name: channel_bandwidth_2600
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: MHz
-  - description: Channel bandwidth for the 3500MHz frequency band
-  dims: []
-  default: default_digital_parameters.csv
-  name: channel_bandwidth_3500
-  dtype: int
-  abs_range:
-  - 0
-  - 100 
-  unit: MHz
-
+name: digital_comms_mobile_network
+classname: DigitalMobileWrapper
+path: models/digital_comms/mobile_run.py
 description: The Cambridge Communications Assessment Model provides analytics for
   decision-makers on (i) capacity-demand and (ii) risk, vulnerability and resilience.
   The fixed, wireless and satellite sectors are currently under development.
-classname: DigitalCommsWrapper
-name: digital_comms_mobile_network
-
+interventions: []
+  # - digital_interventions
+initial_conditions: []
+  # - digital_initial_conditions
 inputs:
-
-- description: Data growth
-  dims:
-  - national
-  name: data_growth
-  dtype: float
-  sug_range:
-  - 0
-  - 50
-  abs_range:
-  - 0
-  - 1000
-  unit: 'percent'
-
-- description: Population growth
-  dims:
-  - postcode_sector
-  name: population_growth
-  dtype: int
-  sug_range:
-  - 0
-  - 100000
-  abs_range:
-  - 0
-  - 1000000
-  unit: 'persons'
-
-
-interventions: 
-  - digital_interventions.csv
-initial_conditions: 
-  - digital_initial_conditions.csv
-
-path: models/digital_comms/run.py
-
-- description: Adoption
-  dims:
-  - national
-  name: adoption
-  dtype: int
-  sug_range:
-  - 0
-  - 100
-  abs_range:
-  - 0
-  - 1000
-  unit: '?'
-
-
-path: models/digital_comms/mobile_run.py
-
-
+  - description: Data growth
+    dims: []
+    name: data_growth
+    dtype: float
+    exp_range:
+      - 0
+      - 50
+    abs_range:
+      - 0
+      - 1000
+    unit: GB
+  - description: Population growth
+    dims:
+      - postcode_sector
+    name: population
+    dtype: int
+    exp_range:
+      - 0
+      - 100000
+    abs_range:
+      - 0
+      - 1000000
+    unit: persons
+  # - description: Adoption
+  #   dims:
+  #     - national
+  #   name: adoption
+  #   dtype: int
+  #   exp_range:
+  #     - 0
+  #     - 100
+  #   abs_range:
+  #     - 0
+  #     - 1000
+  #   unit: percentage
+parameters: []
+  # - description: Market share of mobile network operator
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: market_share
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: percentage
+  # - description: Annual budget
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: annual_budget
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 10000000000
+  #   unit: GBP
+  # - description: Service obligation capacity required to be met by mobile network operator
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: service_obligation_capacity
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 1000
+  #   unit: mbps_per_user
+  # - description: Percentage of daily traffic taking place in the busy hour
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: busy_hour_traffic_percentage
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: percent
+  # - description: The percentage of the population over a specific capacity threshold
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: coverage_threshold
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 1000
+  #   unit: mbps_per_user
+  # - description: The percentage of the population with a smartphone and data access
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: penetration
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: percent
+  # - description: Channel bandwidth for the 700MHz frequency band
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: channel_bandwidth_700
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: MHz
+  # - description: Channel bandwidth for the 800MHz frequency band
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: channel_bandwidth_800
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: MHz
+  # - description: Channel bandwidth for the 1800MHz frequency band
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: channel_bandwidth_2600
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: MHz
+  # - description: Channel bandwidth for the 2600MHz frequency band
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: channel_bandwidth_2600
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: MHz
+  # - description: Channel bandwidth for the 3500MHz frequency band
+  #   dims: []
+  #   default: default_digital_parameters
+  #   name: channel_bandwidth_3500
+  #   dtype: int
+  #   abs_range:
+  #     - 0
+  #     - 100
+  #   unit: MHz
+outputs: []

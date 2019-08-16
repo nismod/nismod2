@@ -45,6 +45,12 @@ provides:
       - lad_uk_2016
     dtype: float
     unit: people
+  - name: population_postcode_sector
+    description: Population by postcode sector
+    dims:
+     - postcode_sector
+    dtype: int
+    unit: persons
 variants:
   - name: itrc_baseline16
     description: Baseline scenario used in ITRC NNA analysis
@@ -86,6 +92,7 @@ variants:
       gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
       gva_per_sector: socio-economic/arc_gva_sector__baseline.csv
       population: socio-economic/arc_population__baseline.csv
+      population_postcode_sector: socio-economic/arc_population_postcode_sector__baseline.csv
   - name: arc_unplanned
     description: Unplanned scenario for Cam-MK-Ox Arc analysis
     data:

@@ -1,0 +1,3 @@
+name: postcode_sector
+description: Postcode Sectors
+elements: postcode_sector.csv
