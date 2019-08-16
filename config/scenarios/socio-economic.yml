@@ -92,7 +92,7 @@ variants:
       gva_per_head: socio-economic/arc_gva_per_head__baseline.csv
       gva_per_sector: socio-economic/arc_gva_sector__baseline.csv
       population: socio-economic/arc_population__baseline.csv
-      population_postcode_sector: socio-economic/arc_population_postcode_sector__baseline.csv
+      population_postcode_sector: ../digital_comms/mobile_model_inputs/pcd_arc_population__baseline
   - name: arc_unplanned
     description: Unplanned scenario for Cam-MK-Ox Arc analysis
     data:
