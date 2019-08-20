@@ -411,26 +411,14 @@ class BaseTransportWrapper(SectorModel):
                             self._output_file_path('zonalRailDemand.csv'), cols)
 
     def _set_base_demand_output(self, data_handle):
-        # Name of NLC dimension in smif
-        NLC_dim = self.inputs['day_usage'].dims[0]
-        # Name of LAD dimension in smif
-        lad_dim = self.inputs['population'].dims[0]
+        """Turn base year station usage parameter into rail model output
+        """
+        baseyear_day_demand = data_handle.get_parameter('base_year_day_demand')
+        data_handle.set_results('day_stations_usage', baseyear_day_demand.data)
 
-        base_year_demand_file = os.path.join(self._input_dir,
-                                             'baseYearRailDemand.csv')
-        cols = {
-            'NLC': NLC_dim,
-            'YearUsage': 'year_stations_usage'
-        }
-        self._set_1D_output(data_handle, 'year_stations_usage',
-                            base_year_demand_file, cols)
-        cols = {
-            'NLC': NLC_dim,
-            'DayUsage': 'day_stations_usage'
-        }
-        self._set_1D_output(data_handle, 'day_stations_usage',
-                         base_year_demand_file, cols)
-        
+        baseyear_year_demand = data_handle.get_parameter('base_year_year_demand')
+        data_handle.set_results('year_stations_usage', baseyear_year_demand.data)
+
     def _set_1D_output(self, data_handle, output_name, filename, cols):
         """Get one dimensional model input from data handle and write to input file
         Arguments
