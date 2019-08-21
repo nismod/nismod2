@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS sector_model_details;
