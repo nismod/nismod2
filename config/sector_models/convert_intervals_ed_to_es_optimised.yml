@@ -58,6 +58,18 @@ inputs:
       - hourly
     unit: GW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
 interventions: []
 outputs:
   - name: gasload_non_heat_res
@@ -114,4 +126,16 @@ outputs:
       - seasonal_week
     unit: GW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: GW
 parameters: []

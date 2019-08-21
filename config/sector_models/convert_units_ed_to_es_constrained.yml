@@ -112,6 +112,24 @@ inputs:
       - seasonal_week
     unit: GW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: GW
+  - name: building_solidfuel_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: GW
 interventions: []
 outputs:
   - name: building_biomass_boiler
@@ -222,4 +240,22 @@ outputs:
       - seasonal_week
     unit: MW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: building_solidfuel_boiler
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
 parameters: []

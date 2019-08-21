@@ -1,22 +1,32 @@
-name: arc_et__expansion
+name: arc_ets__expansion-23K
 stamp: '2019-05-14'
 description: Arc Energy-Transport Expansion
-sos_model: energy_transport
+sos_model: energy_transport-scenario_corrected
 scenarios:
   fuel_price: baseline
-  socio-economic: arc_expansion
+  socio-economic: arc_expansion23
   temperature: NF1
-  ev_transport_trips: TODO
-  link_travel_time: default
-  engine_type_fractions: baseline
+  ev_transport_trips: arc_expansion
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
-narratives: 
+narratives:
   operation_mode:
-  - decentral
+  - central
   virtual_dw_stock:
   - load_in_directly
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
 strategies:
   - type: pre-specified-planning
     description: 'electric world development, decentral operation allowing expansion'
@@ -24,6 +34,5 @@ strategies:
     model_name: energy_supply_constrained
 timesteps:
   - 2015
-  - 2020
   - 2030
   - 2050

@@ -1,0 +1,3 @@
+name: exchanges
+description: Exchanges (Fixed network)
+elements: ../digital_comms/dimensions/exchanges.csv

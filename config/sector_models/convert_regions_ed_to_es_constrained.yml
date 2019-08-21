@@ -113,6 +113,24 @@ inputs:
       - hourly
     dtype: float
     unit: GW
+  - name: oil_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_solidfuel_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
 interventions: []
 outputs:
   - name: building_biomass_boiler
@@ -218,6 +236,24 @@ outputs:
     dtype: float
     unit: GW
   - name: hydrogen_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_solidfuel_boiler
+    dims:
+      - energy_hub
+      - hourly
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
     dims:
       - energy_hub
       - hourly

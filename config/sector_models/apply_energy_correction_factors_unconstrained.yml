@@ -1,0 +1,81 @@
+name: apply_energy_correction_factors_unconstrained
+description: Apply correction factors to energy_demand_unconstrained outputs
+classname: EnergyCorrectionFactor_Unconstrained
+path: models/energy_correction_factor.py
+interventions: []
+initial_conditions: []
+parameters: []
+inputs:
+  - name: residential_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: residential_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: service_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: service_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: industry_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: industry_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+outputs:
+  - name: residential_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: residential_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: service_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: service_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: industry_gas
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float
+  - name: industry_electricity
+    dims:
+    - lad_uk_2016
+    - hourly
+    unit: GW
+    dtype: float

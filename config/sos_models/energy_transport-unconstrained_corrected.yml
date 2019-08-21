@@ -1,13 +1,16 @@
-name: energy_transport-scenario-unconstrained
+name: energy_transport-unconstrained_corrected
 description: A full version of the energy-transport system-of-systems model, with energy
-  models in unconstrained heat technology mode.
+  models in unconstrained/optimised heat technology mode + energy demand correction applied
 sector_models:
   - energy_demand_unconstrained
+  - apply_energy_correction_factors_unconstrained
   - aggregate_energy_optimised
   - convert_regions_ed_to_es_optimised
   - convert_intervals_ed_to_es_optimised
   - convert_units_ed_to_es_optimised
   - remap_gas
+  - extract_gb_scenarios
+  - transport
   - et_module
   - convert_regions_tr_to_es
   - convert_intervals_tr_to_es
@@ -17,11 +20,37 @@ scenarios:
   - fuel_price
   - socio-economic
   - temperature
-  - ev_transport_trips
+  - link_travel_time
+  - engine_type_fractions
   - dummy_weather_inputs_full
   - biomass_waste_to_energy
   - elec_interconnector_prices
 model_dependencies:
+  # from energy demand to apply correction
+  - source: energy_demand_unconstrained
+    source_output: residential_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_gas
+  - source: energy_demand_unconstrained
+    source_output: residential_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_electricity
+  - source: energy_demand_unconstrained
+    source_output: service_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_gas
+  - source: energy_demand_unconstrained
+    source_output: service_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_electricity
+  - source: energy_demand_unconstrained
+    source_output: industry_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_gas
+  - source: energy_demand_unconstrained
+    source_output: industry_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_electricity
   # from energy demand to aggregation
   - source: energy_demand_unconstrained
     source_output: residential_hydrogen
@@ -67,35 +96,36 @@ model_dependencies:
     source_output: residential_solid_fuel
     sink: aggregate_energy_optimised
     sink_input: residential_solid_fuel
-  # from energy demand to region conversion
-  - source: energy_demand_unconstrained
+  # from apply correction to region conversion
+  - source: apply_energy_correction_factors_unconstrained
     source_output: residential_gas
     sink: convert_regions_ed_to_es_optimised
     sink_input: gasload_non_heat_res
-  - source: energy_demand_unconstrained
+  - source: apply_energy_correction_factors_unconstrained
     source_output: residential_electricity
     sink: convert_regions_ed_to_es_optimised
     sink_input: elecload_non_heat_res
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload
+  # from energy demand to region conversion
   - source: energy_demand_unconstrained
     source_output: residential_heat
     sink: convert_regions_ed_to_es_optimised
     sink_input: heatload_res
-  - source: energy_demand_unconstrained
-    source_output: service_gas
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: gasload_non_heat_com
-  - source: energy_demand_unconstrained
-    source_output: service_electricity
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: elecload_non_heat_com
-  - source: energy_demand_unconstrained
-    source_output: industry_gas
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: gasload
-  - source: energy_demand_unconstrained
-    source_output: industry_electricity
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: elecload
   # from aggregation to region conversion
   - source: aggregate_energy_optimised
     source_output: hydrogen_non_heat_eh
@@ -254,6 +284,24 @@ model_dependencies:
     source_output: solid_fuel_non_heat_eh
     sink: energy_supply_optimised
     sink_input: solid_fuel_non_heat_eh
+  # extract for transport
+  - source: extract_gb_scenarios
+    source_output: population
+    sink: transport
+    sink_input: population
+  - source: extract_gb_scenarios
+    source_output: gva
+    sink: transport
+    sink_input: gva
+  # from transport to et_module
+  - source: transport
+    source_output: electric_vehicle_trip_starts
+    sink: et_module
+    sink_input: ev_trips
+  - source: transport
+    source_output: electric_vehicle_electricity_consumption
+    sink: et_module
+    sink_input: ev_electricity
   # from et_module to region conv to unit conv to energy supply
   - source: et_module
     source_output: v2g_g2v_capacity
@@ -268,6 +316,10 @@ model_dependencies:
     sink: energy_supply_optimised
     sink_input: EV_Cap
   # from transport to region conv to interval conv to unit conv to energy supply
+  - source: transport
+    source_output: electric_vehicle_electricity_consumption
+    sink: convert_regions_tr_to_es
+    sink_input: electric_vehicle_electricity_consumption
   - source: convert_regions_tr_to_es
     source_output: electric_vehicle_electricity_consumption
     sink: convert_intervals_tr_to_es
@@ -280,23 +332,25 @@ model_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: energy_supply_optimised
     sink_input: elec_trans
+  # from transport PREVIOUS to transport
+  - source: transport
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+    timestep: PREVIOUS
 scenario_dependencies:
   - sink: energy_demand_unconstrained
     sink_input: floor_area
     source: socio-economic
     source_output: floor_area
-  - source: ev_transport_trips
-    source_output: electric_vehicle_electricity_consumption
-    sink: convert_regions_tr_to_es
-    sink_input: electric_vehicle_electricity_consumption
-  - source: ev_transport_trips
-    source_output: electric_vehicle_trip_starts
-    sink: et_module
-    sink_input: ev_trips
-  - source: ev_transport_trips
-    source_output: electric_vehicle_electricity_consumption
-    sink: et_module
-    sink_input: ev_electricity
+  - source: fuel_price
+    source_output: fuel_price
+    sink: transport
+    sink_input: fuel_price
+  - source: fuel_price
+    source_output: fuel_price_electricity
+    sink: transport
+    sink_input: fuel_price_electricity
   - source: fuel_price
     source_output: energy_supply_price
     sink: energy_supply_optimised
@@ -310,8 +364,24 @@ scenario_dependencies:
     sink: energy_demand_unconstrained
     sink_input: gva_per_sector
   - source: socio-economic
+    source_output: gva_per_head
+    sink: extract_gb_scenarios
+    sink_input: gva
+  - source: link_travel_time
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+  - source: engine_type_fractions
+    source_output: engine_type_fractions
+    sink: transport
+    sink_input: engine_type_fractions
+  - source: socio-economic
     source_output: population
     sink: energy_demand_unconstrained
+    sink_input: population
+  - source: socio-economic
+    source_output: population
+    sink: extract_gb_scenarios
     sink_input: population
   - source: temperature
     source_output: t_min
@@ -571,4 +641,3 @@ narratives:
         description: Multivector assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__multivector_world.csv
-

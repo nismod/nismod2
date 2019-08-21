@@ -1,8 +1,9 @@
-name: energy_transport-scenario-unconstrained
+name: energy_transport-scenario-unconstrained_corrected
 description: A full version of the energy-transport system-of-systems model, with energy
   models in unconstrained heat technology mode.
 sector_models:
   - energy_demand_unconstrained
+  - apply_energy_correction_factors_unconstrained
   - aggregate_energy_optimised
   - convert_regions_ed_to_es_optimised
   - convert_intervals_ed_to_es_optimised
@@ -22,6 +23,31 @@ scenarios:
   - biomass_waste_to_energy
   - elec_interconnector_prices
 model_dependencies:
+  # from energy demand to apply correction
+  - source: energy_demand_unconstrained
+    source_output: residential_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_gas
+  - source: energy_demand_unconstrained
+    source_output: residential_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_electricity
+  - source: energy_demand_unconstrained
+    source_output: service_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_gas
+  - source: energy_demand_unconstrained
+    source_output: service_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_electricity
+  - source: energy_demand_unconstrained
+    source_output: industry_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_gas
+  - source: energy_demand_unconstrained
+    source_output: industry_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_electricity
   # from energy demand to aggregation
   - source: energy_demand_unconstrained
     source_output: residential_hydrogen
@@ -67,35 +93,36 @@ model_dependencies:
     source_output: residential_solid_fuel
     sink: aggregate_energy_optimised
     sink_input: residential_solid_fuel
-  # from energy demand to region conversion
-  - source: energy_demand_unconstrained
+  # from apply correction to region conversion
+  - source: apply_energy_correction_factors_unconstrained
     source_output: residential_gas
     sink: convert_regions_ed_to_es_optimised
     sink_input: gasload_non_heat_res
-  - source: energy_demand_unconstrained
+  - source: apply_energy_correction_factors_unconstrained
     source_output: residential_electricity
     sink: convert_regions_ed_to_es_optimised
     sink_input: elecload_non_heat_res
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload
+  # from energy demand to region conversion
   - source: energy_demand_unconstrained
     source_output: residential_heat
     sink: convert_regions_ed_to_es_optimised
     sink_input: heatload_res
-  - source: energy_demand_unconstrained
-    source_output: service_gas
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: gasload_non_heat_com
-  - source: energy_demand_unconstrained
-    source_output: service_electricity
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: elecload_non_heat_com
-  - source: energy_demand_unconstrained
-    source_output: industry_gas
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: gasload
-  - source: energy_demand_unconstrained
-    source_output: industry_electricity
-    sink: convert_regions_ed_to_es_optimised
-    sink_input: elecload
   # from aggregation to region conversion
   - source: aggregate_energy_optimised
     source_output: hydrogen_non_heat_eh

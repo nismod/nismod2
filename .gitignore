@@ -144,6 +144,8 @@ data/*
 tmp/*
 results/*
 provision/cache/*
+*.bak
+*.bak/*
 
 # Water supply
 models/water_supply/download
