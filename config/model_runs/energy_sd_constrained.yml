@@ -1,7 +1,7 @@
 name: energy_sd_constrained
 stamp: '2018-02-23T12:00:22.154Z'
 description: ''
-sos_model: energy_sd_constrained
+sos_model: energy_sd_constrained_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: itrc_baseline16

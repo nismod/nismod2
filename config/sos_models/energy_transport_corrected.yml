@@ -1,8 +1,9 @@
-name: energy_transport
+name: energy_transport_corrected
 description: A full version of the energy-transport system-of-systems model, with energy
-  models in constrained heat technology mode.
+  models in constrained heat technology mode + energy demand correction applied
 sector_models:
   - energy_demand_constrained
+  - apply_energy_correction_factors_constrained
   - aggregate_energy_constrained
   - convert_regions_ed_to_es_constrained
   - convert_intervals_ed_to_es_constrained
@@ -25,7 +26,161 @@ scenarios:
   - biomass_waste_to_energy
   - elec_interconnector_prices
 model_dependencies:
-  # from energy demand to aggregation
+  # from energy demand to apply correction constrained
+  - source: energy_demand_constrained
+    source_output: residential_gas_boiler_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_gas_boiler_gas
+  - source: energy_demand_constrained
+    source_output: residential_electricity_boiler_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_electricity_boiler_electricity
+  - source: energy_demand_constrained
+    source_output: residential_electricity_heat_pumps_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_electricity_heat_pumps_electricity
+  - source: energy_demand_constrained
+    source_output: residential_gas_district_heating_CHP_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_gas_district_heating_CHP_gas
+  - source: energy_demand_constrained
+    source_output: residential_electricity_district_heating_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_electricity_district_heating_electricity
+  - source: energy_demand_constrained
+    source_output: service_gas_boiler_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_gas_boiler_gas
+  - source: energy_demand_constrained
+    source_output: service_electricity_boiler_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_electricity_boiler_electricity
+  - source: energy_demand_constrained
+    source_output: service_electricity_heat_pumps_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_electricity_heat_pumps_electricity
+  - source: energy_demand_constrained
+    source_output: service_gas_district_heating_CHP_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_gas_district_heating_CHP_gas
+  - source: energy_demand_constrained
+    source_output: service_electricity_district_heating_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_electricity_district_heating_electricity
+  - source: energy_demand_constrained
+    source_output: industry_gas_boiler_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_gas_boiler_gas
+  - source: energy_demand_constrained
+    source_output: industry_electricity_boiler_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_electricity_boiler_electricity
+  - source: energy_demand_constrained
+    source_output: industry_electricity_heat_pumps_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_electricity_heat_pumps_electricity
+  - source: energy_demand_constrained
+    source_output: industry_gas_district_heating_CHP_gas
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_gas_district_heating_CHP_gas
+  - source: energy_demand_constrained
+    source_output: industry_electricity_district_heating_electricity
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_electricity_district_heating_electricity
+  - source: energy_demand_constrained
+    source_output: residential_gas_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_gas_non_heating
+  - source: energy_demand_constrained
+    source_output: residential_electricity_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: residential_electricity_non_heating
+  - source: energy_demand_constrained
+    source_output: service_gas_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_gas_non_heating
+  - source: energy_demand_constrained
+    source_output: service_electricity_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: service_electricity_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_gas_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_gas_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_electricity_non_heating
+    sink: apply_energy_correction_factors_constrained
+    sink_input: industry_electricity_non_heating
+  # from apply correction to aggregation (corrected demands to aggregation)
+  - source: apply_energy_correction_factors_constrained
+    source_output: residential_gas_boiler_gas
+    sink: aggregate_energy_constrained
+    sink_input: residential_gas_boiler_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: residential_electricity_boiler_electricity
+    sink: aggregate_energy_constrained
+    sink_input: residential_electricity_boiler_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: residential_electricity_heat_pumps_electricity
+    sink: aggregate_energy_constrained
+    sink_input: residential_electricity_heat_pumps_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: residential_gas_district_heating_CHP_gas
+    sink: aggregate_energy_constrained
+    sink_input: residential_gas_district_heating_CHP_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: residential_electricity_district_heating_electricity
+    sink: aggregate_energy_constrained
+    sink_input: residential_electricity_district_heating_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: service_gas_boiler_gas
+    sink: aggregate_energy_constrained
+    sink_input: service_gas_boiler_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: service_electricity_boiler_electricity
+    sink: aggregate_energy_constrained
+    sink_input: service_electricity_boiler_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: service_electricity_heat_pumps_electricity
+    sink: aggregate_energy_constrained
+    sink_input: service_electricity_heat_pumps_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: service_gas_district_heating_CHP_gas
+    sink: aggregate_energy_constrained
+    sink_input: service_gas_district_heating_CHP_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: service_electricity_district_heating_electricity
+    sink: aggregate_energy_constrained
+    sink_input: service_electricity_district_heating_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_gas_boiler_gas
+    sink: aggregate_energy_constrained
+    sink_input: industry_gas_boiler_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_electricity_boiler_electricity
+    sink: aggregate_energy_constrained
+    sink_input: industry_electricity_boiler_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_electricity_heat_pumps_electricity
+    sink: aggregate_energy_constrained
+    sink_input: industry_electricity_heat_pumps_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_gas_district_heating_CHP_gas
+    sink: aggregate_energy_constrained
+    sink_input: industry_gas_district_heating_CHP_gas
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_electricity_district_heating_electricity
+    sink: aggregate_energy_constrained
+    sink_input: industry_electricity_district_heating_electricity
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_gas_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_gas_non_heating
+  - source: apply_energy_correction_factors_constrained
+    source_output: industry_electricity_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_electricity_non_heating
+  # from energy demand to aggregation (uncorrected demands to aggregation)
   - source: energy_demand_constrained
     source_output: industry_biomass_district_heating_biomass
     sink: aggregate_energy_constrained
@@ -42,34 +197,6 @@ model_dependencies:
     source_output: industry_oil_non_heating
     sink: aggregate_energy_constrained
     sink_input: industry_oil_non_heating
-  - source: energy_demand_constrained
-    source_output: industry_electricity_boiler_electricity
-    sink: aggregate_energy_constrained
-    sink_input: industry_electricity_boiler_electricity
-  - source: energy_demand_constrained
-    source_output: industry_electricity_district_heating_electricity
-    sink: aggregate_energy_constrained
-    sink_input: industry_electricity_district_heating_electricity
-  - source: energy_demand_constrained
-    source_output: industry_electricity_heat_pumps_electricity
-    sink: aggregate_energy_constrained
-    sink_input: industry_electricity_heat_pumps_electricity
-  - source: energy_demand_constrained
-    source_output: industry_electricity_non_heating
-    sink: aggregate_energy_constrained
-    sink_input: industry_electricity_non_heating
-  - source: energy_demand_constrained
-    source_output: industry_gas_boiler_gas
-    sink: aggregate_energy_constrained
-    sink_input: industry_gas_boiler_gas
-  - source: energy_demand_constrained
-    source_output: industry_gas_district_heating_CHP_gas
-    sink: aggregate_energy_constrained
-    sink_input: industry_gas_district_heating_CHP_gas
-  - source: energy_demand_constrained
-    source_output: industry_gas_non_heating
-    sink: aggregate_energy_constrained
-    sink_input: industry_gas_non_heating
   - source: energy_demand_constrained
     source_output: industry_hydrogen_boiler_hydrogen
     sink: aggregate_energy_constrained
@@ -98,26 +225,6 @@ model_dependencies:
     source_output: residential_biomass_district_heating_biomass
     sink: aggregate_energy_constrained
     sink_input: residential_biomass_district_heating_biomass
-  - source: energy_demand_constrained
-    source_output: residential_electricity_boiler_electricity
-    sink: aggregate_energy_constrained
-    sink_input: residential_electricity_boiler_electricity
-  - source: energy_demand_constrained
-    source_output: residential_electricity_district_heating_electricity
-    sink: aggregate_energy_constrained
-    sink_input: residential_electricity_district_heating_electricity
-  - source: energy_demand_constrained
-    source_output: residential_electricity_heat_pumps_electricity
-    sink: aggregate_energy_constrained
-    sink_input: residential_electricity_heat_pumps_electricity
-  - source: energy_demand_constrained
-    source_output: residential_gas_boiler_gas
-    sink: aggregate_energy_constrained
-    sink_input: residential_gas_boiler_gas
-  - source: energy_demand_constrained
-    source_output: residential_gas_district_heating_CHP_gas
-    sink: aggregate_energy_constrained
-    sink_input: residential_gas_district_heating_CHP_gas
   - source: energy_demand_constrained
     source_output: residential_hydrogen_boiler_hydrogen
     sink: aggregate_energy_constrained
@@ -154,26 +261,6 @@ model_dependencies:
     source_output: service_biomass_district_heating_biomass
     sink: aggregate_energy_constrained
     sink_input: service_biomass_district_heating_biomass
-  - source: energy_demand_constrained
-    source_output: service_electricity_boiler_electricity
-    sink: aggregate_energy_constrained
-    sink_input: service_electricity_boiler_electricity
-  - source: energy_demand_constrained
-    source_output: service_electricity_district_heating_electricity
-    sink: aggregate_energy_constrained
-    sink_input: service_electricity_district_heating_electricity
-  - source: energy_demand_constrained
-    source_output: service_electricity_heat_pumps_electricity
-    sink: aggregate_energy_constrained
-    sink_input: service_electricity_heat_pumps_electricity
-  - source: energy_demand_constrained
-    source_output: service_gas_boiler_gas
-    sink: aggregate_energy_constrained
-    sink_input: service_gas_boiler_gas
-  - source: energy_demand_constrained
-    source_output: service_gas_district_heating_CHP_gas
-    sink: aggregate_energy_constrained
-    sink_input: service_gas_district_heating_CHP_gas
   - source: energy_demand_constrained
     source_output: service_hydrogen_boiler_hydrogen
     sink: aggregate_energy_constrained
@@ -226,20 +313,20 @@ model_dependencies:
     source_output: service_solid_fuel_boiler_solid_fuel
     sink: aggregate_energy_constrained
     sink_input: service_solid_fuel_boiler_solid_fuel
-  # from energy demand to region conversion
-  - source: energy_demand_constrained
+  # from apply correction to region conversion
+  - source: apply_energy_correction_factors_constrained
     source_output: residential_electricity_non_heating
     sink: convert_regions_ed_to_es_constrained
     sink_input: elecload_non_heat_res
-  - source: energy_demand_constrained
+  - source: apply_energy_correction_factors_constrained
     source_output: service_electricity_non_heating
     sink: convert_regions_ed_to_es_constrained
     sink_input: elecload_non_heat_com
-  - source: energy_demand_constrained
+  - source: apply_energy_correction_factors_constrained
     source_output: residential_gas_non_heating
     sink: convert_regions_ed_to_es_constrained
     sink_input: gasload_non_heat_res
-  - source: energy_demand_constrained
+  - source: apply_energy_correction_factors_constrained
     source_output: service_gas_non_heating
     sink: convert_regions_ed_to_es_constrained
     sink_input: gasload_non_heat_com

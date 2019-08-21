@@ -1,0 +1,261 @@
+name: apply_energy_correction_factors_constrained
+description: Apply correction factors to energy_demand_constrained outputs
+classname: EnergyCorrectionFactor_Constrained
+path: models/energy_correction_factor.py
+interventions: []
+initial_conditions: []
+parameters: []
+inputs:
+  - name: residential_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+outputs:
+  - name: residential_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_boiler_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_boiler_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_heat_pumps_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_district_heating_CHP_gas
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_district_heating_electricity
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_non_heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float

@@ -1,12 +1,12 @@
-name: arc_ets__baseline
+name: arc_ets__expansion-23K
 stamp: '2019-05-14'
-description: Arc Energy-Transport baseline
+description: Arc Energy-Transport Expansion
 sos_model: energy_transport-scenario_corrected
 scenarios:
   fuel_price: baseline
-  socio-economic: arc_baseline
+  socio-economic: arc_expansion23
   temperature: NF1
-  ev_transport_trips: arc_baseline
+  ev_transport_trips: arc_expansion
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
@@ -29,7 +29,7 @@ narratives:
   - electric_world
 strategies:
   - type: pre-specified-planning
-    description: 'electric world development, default centralised operation'
+    description: 'electric world development, decentral operation allowing expansion'
     filename: ../energy_supply/strategies/electric_world.csv
     model_name: energy_supply_constrained
 timesteps:
