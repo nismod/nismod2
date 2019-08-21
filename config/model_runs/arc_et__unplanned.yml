@@ -1,7 +1,7 @@
 name: arc_et__unplanned
 stamp: '2019-05-14'
 description: Arc Energy-Transport Unplanned
-sos_model: energy_transport
+sos_model: energy_transport_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: arc_unplanned
