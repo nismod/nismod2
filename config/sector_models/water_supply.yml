@@ -12,6 +12,12 @@ inputs:
   - water_supply/reservoir_names
   dtype: float
   unit: Ml
+- name: flows_data
+  dims:
+  - water_supply/days_into_year
+  - water_supply/flow_file_column_names
+  dtype: float
+  unit: Ml/day
 interventions: []
 name: water_supply
 outputs:
