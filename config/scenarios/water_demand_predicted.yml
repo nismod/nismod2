@@ -23,6 +23,6 @@ variants:
   - name: predicted
     description: Predicted population and water demand for water resource zones, 2020-2044
     data:
-      population: water_demand/water_resource_zone_populations.csv
-      constant_water_demand: water_demand/constant_water_demand.csv
-      per_capita_water_demand: water_demand/per_capita_water_demand.csv
+      population: water_demand/water_resource_zone_populations
+      constant_water_demand: water_demand/constant_water_demand
+      per_capita_water_demand: water_demand/per_capita_water_demand

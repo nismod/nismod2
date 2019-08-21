@@ -11,4 +11,4 @@ variants:
   - name: predicted
     description: Predicted reservoir levels
     data:
-      reservoir_levels: water_supply/reservoir_levels.csv
+      reservoir_levels: water_supply/reservoir_levels

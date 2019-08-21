@@ -64,7 +64,7 @@ parameters:
   - water_supply/nonpublic_use_codes
   dtype: float
   unit: Ml/day
-  default: water_supply/nonpublic_water_demands.csv
+  default: water_supply/nonpublic_water_demands
 - name: demand_profiles
   description: Demand profiles required for preparing Wathnet nodal file
   dims:
@@ -72,5 +72,5 @@ parameters:
   - water_supply/demand_profile_zones
   dtype: float
   unit: None
-  default: water_supply/demand_profiles.csv
+  default: water_supply/demand_profiles
 path: models/water_supply/run.py

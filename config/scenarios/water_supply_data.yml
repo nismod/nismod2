@@ -12,4 +12,4 @@ variants:
   - name: predicted_2020_2050
     description: Predicted water supply data
     data:
-      flows_data: water_supply/flows_data.csv
+      flows_data: water_supply/flows_data
