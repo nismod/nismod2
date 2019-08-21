@@ -258,7 +258,6 @@ class BaseTransportWrapper(SectorModel):
                        join_axes=[df.index])
         # Hack year usage column in baseYearRailDemand.csv should contain integers
         df.year_usage = df.year_usage.astype(int)
-        print(df)
         # rename columns to meet rail model's expectations
         columns_names = {
             'mode': 'Mode',
@@ -306,8 +305,7 @@ class BaseTransportWrapper(SectorModel):
                 bool(data_handle.get_parameter('use_car_cost_from_road_model').data),
             'predict_intermediate_rail_years': \
                 bool(data_handle.get_parameter('predict_intermediate_rail_years').data),
-            'base_year': \
-                int(data_handle.get_parameter('base_year').data),
+            'base_year': data_handle.previous_timestep,
         })
 
         with open(self._config_path, 'w') as template_fh:

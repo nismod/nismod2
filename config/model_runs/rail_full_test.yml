@@ -1,7 +1,7 @@
 name: rail_full_test
 description: Baseline rail model run for testing
 sos_model: rail_full
-timesteps: [2015, 2020]
+timesteps: [2015, 2020, 2030]
 scenarios:
   socio-economic: itrc_baseline16
   station_usage: baseline

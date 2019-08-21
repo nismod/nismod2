@@ -87,10 +87,18 @@ parameters:
     description: Wether to predict all years between base year and predicted year
     dtype: bool
     default: default_rail_flags.csv
-  - name: base_year
-    description: Value of the base year for transport model
+  - name: base_year_year_demand	
+    dims:
+      - NLC_gb
+    description: Station usage numbers for the base year
     dtype: int
-    default: default_transport_base_year.csv
+    default: default_base_year_year_demand.csv
+  - name: base_year_day_demand
+    dims:
+      - NLC_gb
+    description: Station usage numbers for the base year
+    dtype: float
+    default: default_base_year_day_demand.csv
 interventions:
   - transport_rail.csv
 initial_conditions:
