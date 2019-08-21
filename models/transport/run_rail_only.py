@@ -294,9 +294,9 @@ class BaseTransportWrapper(SectorModel):
         intervention_files = []
         # Discard initial conditions if current year is the base year
         interventions = self._filter_interventions(data_handle)
-        for i, intervention in enumerate(interventions):
-            fname = self._write_rail_intervention(intervention, data_handle)
-            intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+        # for i, intervention in enumerate(interventions):
+        #     fname = self._write_rail_intervention(intervention, data_handle)
+        #     intervention_files.append("railInterventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
