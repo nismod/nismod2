@@ -12,9 +12,21 @@ scenarios:
   elec_interconnector_prices: average_annual_prices
 narratives:
   operation_mode:
-  - decentral
+  - central
   virtual_dw_stock:
   - load_in_directly
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
 strategies:
   - type: pre-specified-planning
     description: 'electric world development, decentral operation allowing expansion'
