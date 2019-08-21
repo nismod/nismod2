@@ -4,7 +4,7 @@
 base_path=$1
 
 # Read remote_data, local_dir from config.ini
-source <(grep = <(grep -A4 "\[water-supply\]" $base_path/provision/config.ini))
+eval "$(grep -A4 "\[water-supply\]" $base_path/provision/config.ini | tail -n3)"
 
 # Locations for the git repo (temporary) and the nodal-related files
 repo_dir=$local_dir/repo
