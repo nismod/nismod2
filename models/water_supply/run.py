@@ -50,8 +50,6 @@ class WaterWrapper(SectorModel):
 
         """
 
-        now = 1999  # Hack, as some data still only exists for old years. # data_handle.current_timestep
-
         # Check reservoir data:
         if data_handle.current_timestep == data_handle.base_timestep:
             reservoir_levels = data_handle.get_data('reservoir_levels')
@@ -71,7 +69,7 @@ class WaterWrapper(SectorModel):
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # Inject the current simulation period (current timestep)
-        sysfile = self.inject_simulation_days(sysfile, now)
+        sysfile = self.inject_simulation_days(sysfile, data_handle.current_timestep)
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # Inject the reservoir levels from the previous timestep
@@ -79,7 +77,7 @@ class WaterWrapper(SectorModel):
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
         # This is the nodal file which is generated from various static data files
-        nodal_file = self.prepare_nodal(data_handle, nodal_dir, now)
+        nodal_file = self.prepare_nodal(data_handle, nodal_dir)
         assert(os.path.isfile(nodal_file))
 
         subprocess.call([
@@ -134,7 +132,7 @@ class WaterWrapper(SectorModel):
         )
 
     @staticmethod
-    def prepare_nodal(data_handle, nodal_dir, year_now):
+    def prepare_nodal(data_handle, nodal_dir):
         """Generates the nodal file necessary for the Wathnet model run. The script to prepare the nodal file requires
         a number of csv files as parameters. Some of these data come via the data_handle as either parameters or
         scenario data, and some are installed with the water_supply model. Those that come via the data_handle must be
@@ -148,9 +146,6 @@ class WaterWrapper(SectorModel):
 
         nodal_dir : str
             Path to the directory containing the necessary files for preparing the nodal file.
-
-        year_now: int
-            The year to be simulated
 
         Returns
         =======
@@ -219,7 +214,7 @@ class WaterWrapper(SectorModel):
 
         col_month = np.array([x['month'] for x in flows_data.dim_coords('water_supply/days_into_year').elements])
         col_day = np.array([x['day'] for x in flows_data.dim_coords('water_supply/days_into_year').elements])
-        col_year = np.array([1999] * len(col_month))  # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
+        col_year = np.array([data_handle.current_timestep] * len(col_month))
 
         flows_df.insert(0, 'DAY', col_day)
         flows_df.insert(0, 'MONTH', col_month)
@@ -245,8 +240,9 @@ class WaterWrapper(SectorModel):
         )
 
         col_date = np.array([
-            # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
-            x['day_month'] + str(1999) for x in irrigations_data.dim_coords('water_supply/days_into_year').elements
+            x['day_month'] + str(data_handle.current_timestep) for x in irrigations_data.dim_coords(
+                'water_supply/days_into_year'
+            ).elements
         ] * len(unstacked_df['water_supply/irrigations_cams_names'].unique()))
 
         unstacked_df.insert(2, 'date', col_date)
@@ -279,7 +275,7 @@ class WaterWrapper(SectorModel):
             }
         )
 
-        col_year = [1999] * 12  # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
+        col_year = [data_handle.current_timestep] * 12
         borehole_df.insert(1, 'Year', col_year)
 
         # Reorder the columns as expected by the prepare nodal script
@@ -331,12 +327,12 @@ class WaterWrapper(SectorModel):
             '--DemandProfilesFile', demand_profiles_file,
             '--DynatopFile', dynatop_file,
             '--OutputFile', output_file,
-            '--Year', str(year_now),
+            '--Year', str(data_handle.current_timestep),
         ])
 
         assert(os.path.isfile(output_file)), "Expected to find WATHNET nodal file at {}".format(output_file)
         return output_file
-    
+
     @staticmethod
     def inject_simulation_days(sysfile, year_now):
         """Injects the current year into the sysfile so that the current year is simulated.
@@ -371,7 +367,7 @@ class WaterWrapper(SectorModel):
                 # Write every line from the old file directly into the new file
                 for line in old_file:
                     new_file.write(line)
-                    
+
                     # If we see the sentinel, skip 4 lines in the old file and
                     # write the replacement string out instead to the new file
                     if sentinel_line in line:
@@ -383,7 +379,7 @@ class WaterWrapper(SectorModel):
 
                         sentinel_lines_hit += 1
                         new_file.write(new_string)
-        
+
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
