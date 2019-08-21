@@ -19,30 +19,30 @@ variants:
   - name: central
     description: Central (test) scenario for et_module verification
     data:
-      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__central.csv
-      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__central.csv
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__central
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__central
   - name: electricworld
     description: Initial outputs for electric world (energy narrative)
     data:
-      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__ew.csv
-      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__ew.csv
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__ew
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__ew
   - name: multivector
     description: Initial outputs for multi-vector (energy narrative)
     data:
-      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv.csv
-      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv.csv
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv
   - name: arc_baseline
     description: Baseline/NO transport run
     data:
-      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__baseline.csv
-      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__baseline.csv
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__baseline
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__baseline
   - name: arc_new-cities
     description: scenario1/B1 transport run
     data:
-      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__1-new-cities.csv
-      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__1-new-cities.csv
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__1-new-cities
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__1-new-cities
   - name: arc_expansion
     description: scenario2/B1 transport run
     data:
-      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__2-expansion.csv
-      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__2-expansion.csv
+      electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__2-expansion
+      electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__2-expansion

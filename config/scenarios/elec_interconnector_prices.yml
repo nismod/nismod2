@@ -12,5 +12,4 @@ variants:
   - name: average_annual_prices
     description: ''
     data:
-      elec_int: ../energy_supply/scenarios/elec_interconnector_prices.csv
-
+      elec_int: ../energy_supply/scenarios/elec_interconnector_prices

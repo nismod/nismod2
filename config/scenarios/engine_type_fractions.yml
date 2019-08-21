@@ -11,16 +11,16 @@ variants:
   - name: baseline
     description: baseline_scenario
     data:
-      engine_type_fractions: engine_type_fractions.csv
+      engine_type_fractions: engine_type_fractions
   - name: test
     description: test scenario
     data:
-      engine_type_fractions: engine_type_fractions_test.csv
+      engine_type_fractions: engine_type_fractions_test
   - name: electricworld
     description: Electric world energy scenario
     data:
-      engine_type_fractions: engine_type_fractions_ew.csv
+      engine_type_fractions: engine_type_fractions_ew
   - name: multivector
     description: Multi-vector energy scenario
     data:
-      engine_type_fractions: engine_type_fractions_mve.csv
+      engine_type_fractions: engine_type_fractions_mve

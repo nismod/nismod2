@@ -1,7 +1,7 @@
 parameters:
 - description: The cost of installing a fiber link
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_links_fibre_meter
   dtype: int
   abs_range:
@@ -10,7 +10,7 @@ parameters:
   unit: GBP
 - description: The cost of installing a copper link
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_links_copper_meter
   dtype: int
   abs_range:
@@ -19,7 +19,7 @@ parameters:
   unit: GBP
 - description: The costs to enable an exchange to service FTTDP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_exchange_fttdp
   dtype: int
   abs_range:
@@ -28,7 +28,7 @@ parameters:
   unit: GBP
 - description: The costs to enable an exchange to service FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_exchange_fttp
   dtype: int
   abs_range:
@@ -37,7 +37,7 @@ parameters:
   unit: GBP
 - description: The costs to enable an exchange to service GFast
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_exchange_gfast
   dtype: int
   abs_range:
@@ -46,7 +46,7 @@ parameters:
   unit: GBP
 - description: The costs to enable an exchange to service FTTC
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_exchange_fttc
   dtype: int
   abs_range:
@@ -55,7 +55,7 @@ parameters:
   unit: GBP
 - description: The costs to enable an exchange to service ADSL
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_exchange_adsl
   dtype: int
   abs_range:
@@ -64,7 +64,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a cabinet to service FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_fttp_32_ports
   dtype: int
   abs_range:
@@ -73,7 +73,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a cabinet to service GFast
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_gfast
   dtype: int
   abs_range:
@@ -82,7 +82,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a cabinet to service FTTC
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_fttc
   dtype: int
   abs_range:
@@ -91,7 +91,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a cabinet to service ADSL
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_adsl
   dtype: int
   abs_range:
@@ -100,7 +100,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a distribution to service FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_distribution_fttp_32_ports
   dtype: int
   abs_range:
@@ -109,7 +109,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a distribution to service GFast
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_distribution_gfast_4_ports
   dtype: int
   abs_range:
@@ -118,7 +118,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a distribution to service FTTC
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_distribution_fttc
   dtype: int
   abs_range:
@@ -127,7 +127,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a distribution to service ADSL
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_distribution_adsl
   dtype: int
   abs_range:
@@ -136,7 +136,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a premise to receive FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_fttp_modem
   dtype: int
   abs_range:
@@ -145,7 +145,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a premise to receive FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_fttp_optical_network_terminator
   dtype: int
   abs_range:
@@ -154,7 +154,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a premise to receive GFast
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_gfast_modem
   dtype: int
   abs_range:
@@ -163,7 +163,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a premise to receive FTTC
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_fttc_modem
   dtype: int
   abs_range:
@@ -172,7 +172,7 @@ parameters:
   unit: GBP
 - description: The costs to enable a premise to receive ADSL
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_adsl_modem
   dtype: int
   abs_range:
@@ -181,7 +181,7 @@ parameters:
   unit: GBP
 - description: The benefits to enable a premise to receive FTTP
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: benefits_assets_premise_fttp
   dtype: int
   abs_range:
@@ -190,7 +190,7 @@ parameters:
   unit: GBP
 - description: The benefits to enable a premise to receive GFast
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: benefits_assets_premise_gfast
   dtype: int
   abs_range:
@@ -199,7 +199,7 @@ parameters:
   unit: GBP
 - description: The benefits to enable a premise to receive FTTC
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: benefits_assets_premise_fttc
   dtype: int
   abs_range:
@@ -208,7 +208,7 @@ parameters:
   unit: GBP
 - description: The benefits to enable a premise to receive ADSL
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: benefits_assets_premise_adsl
   dtype: int
   abs_range:
@@ -217,7 +217,7 @@ parameters:
   unit: GBP
 - description: ' The yearly budget to spend on infrastructure'
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: annual_budget
   dtype: int
   sug_range:
@@ -229,7 +229,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: service_obligation_capacity
   dtype: int
   sug_range:
@@ -241,7 +241,7 @@ parameters:
   unit: mbps
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: planning_administration_cost
   dtype: int
   sug_range:
@@ -253,7 +253,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_fttdp_modem
   dtype: int
   sug_range:
@@ -265,7 +265,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_premise_fttp_optical_connection_point
   dtype: int
   sug_range:
@@ -277,7 +277,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_distribution_fttdp_8_ports
   dtype: int
   sug_range:
@@ -289,7 +289,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_fttp
   dtype: int
   sug_range:
@@ -301,7 +301,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: costs_assets_cabinet_fttdp
   dtype: int
   sug_range:
@@ -313,7 +313,7 @@ parameters:
   unit: GBP
 - description: ' '
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: technology_strategy
   dtype: int
   sug_range:
@@ -325,7 +325,7 @@ parameters:
   unit: mode
 - description: ' The yearly budget for a telco to match fund on infrastructure'
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: telco_match_funding
   dtype: int
   sug_range:
@@ -337,7 +337,7 @@ parameters:
   unit: GBP
 - description: The yearly government subsidy to spend on infrastructure
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: subsidy
   dtype: int
   sug_range:
@@ -349,7 +349,7 @@ parameters:
   unit: GBP
 - description: Months per year
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: months_per_year
   dtype: int
   sug_range:
@@ -361,7 +361,7 @@ parameters:
   unit: months
 - description: Payback period
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: payback_period
   dtype: int
   sug_range:
@@ -373,7 +373,7 @@ parameters:
   unit: years
 - description: Profit margin
   dims: []
-  default: ../digital_comms/parameters/defaults.csv
+  default: ../digital_comms/parameters/defaults
   name: profit_margin
   dtype: int
   sug_range:

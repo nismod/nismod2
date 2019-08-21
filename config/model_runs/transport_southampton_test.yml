@@ -12,6 +12,6 @@ decision_module: []
 strategies:
   - type: pre-specified-planning
     description: test interventions
-    filename: transport_test.csv
+    filename: transport_test
     model_name: transport_southampton
 stamp: ''
