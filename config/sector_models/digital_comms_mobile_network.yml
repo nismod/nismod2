@@ -2,10 +2,10 @@ name: digital_comms_mobile_network
 classname: DigitalMobileWrapper
 path: models/digital_comms/mobile_run.py
 description: Mobile infrastructure assessment model
-interventions: []
-  # - digital_interventions.csv
-initial_conditions: []
-  # - digital_initial_conditions.csv
+interventions: #[]
+  - digital_interventions
+initial_conditions: #[]
+  - digital_initial_conditions
 inputs:
   - description: Data growth
     dims: []
