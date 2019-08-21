@@ -21,8 +21,8 @@ narratives:
       - name: high_cost
         description: very high cost load shedding
         data:
-          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
-          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed
+          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed
   - name: operation_mode
     description: operation mode for energy supply system
     provides:
@@ -32,11 +32,11 @@ narratives:
       - name: decentral
         decription: decentralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral
       - name: central
         decription: centralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central
   - name: heat_supply_strategy
     description: heat supply strategy for operation
     provides:
@@ -46,15 +46,15 @@ narratives:
       - name: full_electric
         decription: full electric heating
         data:
-          heat_supply_strategy: ../../data/energy_supply/parameters/hs_fullelectric.csv
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_fullelectric
       - name: heat_networks
         decription: heat network domination for heating
         data:
-          heat_supply_strategy: ../../data/energy_supply/parameters/hs_heatnetworks.csv
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_heatnetworks
       - name: green_gas
         decription: green gas mixture for heat supply
         data:
-          heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas.csv
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas
 scenario_dependencies:
 - source: fuel_price
   source_output: energy_supply_price

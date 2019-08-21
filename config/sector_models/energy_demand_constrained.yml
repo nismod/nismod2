@@ -6,17 +6,17 @@ initial_conditions: []
 # Parameters-----------------------------------------------
 parameters:
 - description: Dwelling stock type or read in floor area directly
-  default: ../energy_demand/parameters/virtual_dw_stock.csv
+  default: ../energy_demand/parameters/virtual_dw_stock
   name: virtual_dw_stock
   unit: ''
   dtype: bool
 - description: Mode of model
-  default: ../energy_demand/parameters/mode_constrained.csv
+  default: ../energy_demand/parameters/mode_constrained
   name: mode
   unit: ''
   dtype: float
 - description: 
-  default: ../energy_demand/parameters/switches_service.csv
+  default: ../energy_demand/parameters/switches_service
   name: switches_service
   unit: ''
   dims:
@@ -26,7 +26,7 @@ parameters:
   - sector
   dtype: float
 - description: Generic fuel switch
-  default: ../energy_demand/parameters/generic_fuel_switch.csv
+  default: ../energy_demand/parameters/generic_fuel_switch
   name: generic_fuel_switch
   unit: ''
   dims:
@@ -36,7 +36,7 @@ parameters:
   - param_generic_fuel_switch
   dtype: float
 - description: Share in cold rolling in steel manufacturing
-  default: ../energy_demand/parameters/p_cold_rolling_steel.csv
+  default: ../energy_demand/parameters/p_cold_rolling_steel
   name: p_cold_rolling_steel
   unit: 'decimal'
   dims:
@@ -44,7 +44,7 @@ parameters:
   - interpolation_params
   dtype: float
 - description: Recovered heat
-  default: ../energy_demand/parameters/heat_recovered.csv
+  default: ../energy_demand/parameters/heat_recovered
   name: heat_recovered
   unit: 'decimal'
   dims:
@@ -53,7 +53,7 @@ parameters:
   - enduses
   dtype: float
 - description: Share of cooled service floor area
-  default: ../energy_demand/parameters/cooled_floorarea.csv
+  default: ../energy_demand/parameters/cooled_floorarea
   name: cooled_floorarea
   unit: 'decimal'
   dims:
@@ -62,7 +62,7 @@ parameters:
   - enduses
   dtype: float
 - description: Change in floor area per person
-  default: ../energy_demand/parameters/assump_diff_floorarea_pp.csv
+  default: ../energy_demand/parameters/assump_diff_floorarea_pp
   name: assump_diff_floorarea_pp
   unit: 'decimal'
   dims:
@@ -70,7 +70,7 @@ parameters:
   - interpolation_params
   dtype: float
 - description: Air leakage caused reducing in demand
-  default: ../energy_demand/parameters/air_leakage.csv
+  default: ../energy_demand/parameters/air_leakage
   name: air_leakage
   unit: 'decimal'
   dims:
@@ -79,7 +79,7 @@ parameters:
   - interpolation_params
   dtype: float
 - description: Efficiency achievement level
-  default: ../energy_demand/parameters/f_eff_achieved.csv
+  default: ../energy_demand/parameters/f_eff_achieved
   name: f_eff_achieved
   unit: 'decimal'
   dims:
@@ -87,7 +87,7 @@ parameters:
   - interpolation_params
   dtype: float
 - description: Smart meter penetration
-  default: ../energy_demand/parameters/smart_meter_p.csv
+  default: ../energy_demand/parameters/smart_meter_p
   name: smart_meter_p
   unit: 'decimal'
   dims:
@@ -95,7 +95,7 @@ parameters:
   - interpolation_params
   dtype: float
 - description: Industrial base temperature
-  default: ../energy_demand/parameters/rs_t_base_heating.csv
+  default: ../energy_demand/parameters/rs_t_base_heating
   name: rs_t_base_heating
   unit: 
   dims:
@@ -103,7 +103,7 @@ parameters:
   - end_yr
   dtype: float
 - description: Industrial base temperature
-  default: ../energy_demand/parameters/ss_t_base_heating.csv
+  default: ../energy_demand/parameters/ss_t_base_heating
   name: ss_t_base_heating
   unit: 
   dims:
@@ -111,7 +111,7 @@ parameters:
   - end_yr
   dtype: float
 - description: Industrial base temperature
-  default: ../energy_demand/parameters/is_t_base_heating.csv
+  default: ../energy_demand/parameters/is_t_base_heating
   name: is_t_base_heating
   unit: 
   dims:
@@ -119,7 +119,7 @@ parameters:
   - end_yr
   dtype: float
 - description: Demand side management improvemnt
-  default: ../energy_demand/parameters/dm_improvement.csv
+  default: ../energy_demand/parameters/dm_improvement
   name: dm_improvement
   unit: 
   dims:
@@ -128,19 +128,19 @@ parameters:
   - end_yr
   dtype: float
 - description: Spatial explicit diffusion or not
-  default: ../energy_demand/parameters/spatial_explicit_diffusion.csv
+  default: ../energy_demand/parameters/spatial_explicit_diffusion
   name: spatial_explicit_diffusion
   unit: 'integer'
   dims:
   dtype: float
 - description: Spatial diffusion speed
-  default: ../energy_demand/parameters/speed_con_max.csv
+  default: ../energy_demand/parameters/speed_con_max
   name: speed_con_max
   unit: ''
   dims:
   dtype: float
 - description: Heat pump fractions
-  default: ../energy_demand/parameters/gshp_fraction.csv
+  default: ../energy_demand/parameters/gshp_fraction
   name: gshp_fraction
   unit: 'decimal'
   dims:
@@ -148,13 +148,13 @@ parameters:
   - end_yr
   dtype: float
 - description: Heat pump fractions
-  default: ../energy_demand/parameters/gshp_fraction.csv
+  default: ../energy_demand/parameters/gshp_fraction
   name: gshp_fraction
   unit: 'decimal'
   dims:
   dtype: float
 - description: Overall change in energy demand per enduse
-  default: ../energy_demand/parameters/generic_enduse_change.csv
+  default: ../energy_demand/parameters/generic_enduse_change
   name: generic_enduse_change
   unit: '%'
   dims:

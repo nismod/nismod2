@@ -142,9 +142,9 @@ source nismod/bin/activate
 pip install --upgrade pip
 pip install --upgrade setuptools wheel
 pip install pyscaffold
-pip install smif~=1.0 --upgrade
-pip install smif[data]~=1.0
-pip install smif[spatial]~=1.0
+pip install smif~=1.2 --upgrade
+pip install smif[data]~=1.2
+pip install smif[spatial]~=1.2
 
 # Install Jupyter Notebook for Results Viewer
 pip install jupyter notebook

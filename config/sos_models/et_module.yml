@@ -26,5 +26,5 @@ narratives:
       - name: managed
         description: EV charging is fully managed by the system operator
         data:
-          load_profile_charging_regime: ../et_module/parameters/ev_scheduling_managed.csv
-          yr_until_changed_lp: ../et_module/parameters/ev_scheduling_managed.csv
+          load_profile_charging_regime: ../et_module/parameters/ev_scheduling_managed
+          yr_until_changed_lp: ../et_module/parameters/ev_scheduling_managed

@@ -24,7 +24,7 @@ parameters:
   exp_range:
   - 5.0e-6
   - 1.5e-5
-  default: default_water_demand.csv
+  default: default_water_demand
   dtype: float
   unit: 'ML/person/day'
 path: models/water_demand/run.py

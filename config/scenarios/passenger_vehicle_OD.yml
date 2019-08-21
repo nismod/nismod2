@@ -12,4 +12,4 @@ variants:
   - name: Southampton-Southampton test OD
     description: Test data for transport base year
     data:
-      flow: soton_passenger_vehicle_OD.csv
+      flow: soton_passenger_vehicle_OD
