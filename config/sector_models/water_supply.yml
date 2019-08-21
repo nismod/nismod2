@@ -18,6 +18,13 @@ inputs:
   - water_supply/flow_file_column_names
   dtype: float
   unit: Ml/day
+- name: irrigations_data
+  dims:
+  - water_supply/days_into_year
+  - water_supply/irrigations_cams_names
+  - water_supply/irrigations_file_column_names
+  dtype: float
+  unit: Ml/day
 interventions: []
 name: water_supply
 outputs:

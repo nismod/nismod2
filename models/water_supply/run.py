@@ -208,6 +208,7 @@ class WaterWrapper(SectorModel):
         # Data from data handle as scenario data #
         ##########################################
 
+        # The flows data
         flows_data = data_handle.get_data('flows_data', data_handle.current_timestep)
 
         flows_df = flows_data.as_df().reset_index().pivot(
@@ -230,8 +231,38 @@ class WaterWrapper(SectorModel):
         assert os.path.isfile(flows_file), \
             "Expected to find water supply flows data at {}".format(flows_file)
 
-        demand_file = os.path.join(nodal_dir, '001_daily.csv')
-        assert (os.path.isfile(demand_file)), "Expected to find water supply demand file at {}".format(demand_file)
+        # The irrigations demand data
+        irrigations_data = data_handle.get_data('irrigations_data', data_handle.current_timestep)
+
+        irrigations_df = irrigations_data.as_df()
+
+        unstacked_df = irrigations_df.unstack(level=-1)
+        unstacked_df.columns = unstacked_df.columns.get_level_values(1)
+        unstacked_df.reset_index(inplace=True)
+        unstacked_df.sort_values(
+            by=['water_supply/irrigations_cams_names', 'water_supply/days_into_year'],
+            inplace=True
+        )
+
+        col_date = np.array([
+            # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
+            x['day_month'] + str(1999) for x in irrigations_data.dim_coords('water_supply/days_into_year').elements
+        ] * len(unstacked_df['water_supply/irrigations_cams_names'].unique()))
+
+        unstacked_df.insert(2, 'date', col_date)
+        unstacked_df.drop(columns=['water_supply/days_into_year'], inplace=True)
+
+        unstacked_df.rename(
+            inplace=True,
+            columns={
+                'water_supply/irrigations_cams_names': 'cams_name',
+            }
+        )
+
+        irrigations_file = os.path.join(nodal_dir, 'irrigations_file.csv')
+        unstacked_df.to_csv(irrigations_file, index=False, na_rep='NaN', sep=',')
+        assert os.path.isfile(irrigations_file), \
+            "Expected to find water supply irrigations data at {}".format(irrigations_file)
 
         borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
         assert (os.path.isfile(borehole_file)), "Expected to find water supply borehole data at {}".format(borehole_file)
@@ -266,7 +297,7 @@ class WaterWrapper(SectorModel):
         subprocess.call([
             sys.executable, prepare_nodal,
             '--FlowFile', flows_file,
-            '--DemandFile', demand_file,
+            '--DemandFile', irrigations_file,
             '--CatchmentFile', catchment_file,
             '--BoreholeForcingFile', borehole_file,
             '--PublicFile', public_file,

@@ -8,8 +8,17 @@ provides:
     - water_supply/flow_file_column_names
     dtype: float
     unit: Ml/day
+  - name: irrigations_data
+    description: Data related to irrigations
+    dims:
+      - water_supply/days_into_year
+      - water_supply/irrigations_cams_names
+      - water_supply/irrigations_file_column_names
+    dtype: float
+    unit: Ml/day
 variants:
   - name: predicted_2020_2050
     description: Predicted water supply data
     data:
       flows_data: water_supply/flows_data
+      irrigations_data: water_supply/irrigations_data
