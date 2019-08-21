@@ -25,6 +25,12 @@ inputs:
   - water_supply/irrigations_file_column_names
   dtype: float
   unit: Ml/day
+- name: borehole_data
+  dims:
+    - water_supply/months_into_year
+    - water_supply/borehole_names
+  dtype: float
+  unit: Ml/day
 interventions: []
 name: water_supply
 outputs:

@@ -264,8 +264,33 @@ class WaterWrapper(SectorModel):
         assert os.path.isfile(irrigations_file), \
             "Expected to find water supply irrigations data at {}".format(irrigations_file)
 
-        borehole_file = os.path.join(nodal_dir, 'borehole_forcing_1974_to_2015.csv')
-        assert (os.path.isfile(borehole_file)), "Expected to find water supply borehole data at {}".format(borehole_file)
+        # The borehole data
+        borehole_data = data_handle.get_data('borehole_data', data_handle.current_timestep)
+        borehole_df = borehole_data.as_df().reset_index().pivot(
+            index='water_supply/months_into_year',
+            columns='water_supply/borehole_names',
+            values='borehole_data'
+        ).reset_index()
+
+        borehole_df.rename(
+            inplace=True,
+            columns={
+                'water_supply/months_into_year': 'Month',
+            }
+        )
+
+        col_year = [1999] * 12  # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
+        borehole_df.insert(1, 'Year', col_year)
+
+        # Reorder the columns as expected by the prepare nodal script
+        borehole_names = [x['name'] for x in borehole_data.dim_coords('water_supply/borehole_names').elements]
+        col_order = ['Month', 'Year'] + borehole_names
+        borehole_df = borehole_df[col_order]
+
+        borehole_file = os.path.join(nodal_dir, 'borehole_file.csv')
+        borehole_df.to_csv(borehole_file, index=False, na_rep='NaN', sep=',')
+        assert os.path.isfile(borehole_file), \
+            "Expected to find water supply borehole data at {}".format(borehole_file)
 
         ####################################
         # Data installed with water_supply #
