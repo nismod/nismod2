@@ -208,12 +208,27 @@ class WaterWrapper(SectorModel):
         # Data from data handle as scenario data #
         ##########################################
 
-        flow_data = data_handle.get_data('flows_data', data_handle.current_timestep)
+        flows_data = data_handle.get_data('flows_data', data_handle.current_timestep)
 
-        print(flow_data)
+        flows_df = flows_data.as_df().reset_index().pivot(
+            index='water_supply/days_into_year',
+            columns='water_supply/flow_file_column_names',
+            values='flows_data'
+        ).reset_index()
 
+        col_month = np.array([x['month'] for x in flows_data.dim_coords('water_supply/days_into_year').elements])
+        col_day = np.array([x['day'] for x in flows_data.dim_coords('water_supply/days_into_year').elements])
+        col_year = np.array([1999] * len(col_month))  # <<<<<<<<<<<< FIX ME >>>>>>>>>>>>
 
-        exit(0)
+        flows_df.insert(0, 'DAY', col_day)
+        flows_df.insert(0, 'MONTH', col_month)
+        flows_df.insert(0, 'YEAR', col_year)
+        flows_df.drop(columns=['water_supply/days_into_year'], inplace=True)
+
+        flows_file = os.path.join(nodal_dir, 'flows_file.csv')
+        flows_df.to_csv(flows_file, index=False, na_rep='NaN', sep='\t')
+        assert os.path.isfile(flows_file), \
+            "Expected to find water supply flows data at {}".format(flows_file)
 
         demand_file = os.path.join(nodal_dir, '001_daily.csv')
         assert (os.path.isfile(demand_file)), "Expected to find water supply demand file at {}".format(demand_file)
@@ -250,7 +265,8 @@ class WaterWrapper(SectorModel):
 
         subprocess.call([
             sys.executable, prepare_nodal,
-            '--FlowFile', flow_file,            '--DemandFile', demand_file,
+            '--FlowFile', flows_file,
+            '--DemandFile', demand_file,
             '--CatchmentFile', catchment_file,
             '--BoreholeForcingFile', borehole_file,
             '--PublicFile', public_file,
