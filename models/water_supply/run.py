@@ -208,8 +208,12 @@ class WaterWrapper(SectorModel):
         # Data from data handle as scenario data #
         ##########################################
 
-        flow_file = os.path.join(nodal_dir, 'National_WRSM_NatModel_logNSE_obs_11018_1.txt')
-        assert (os.path.isfile(flow_file)), "Expected to find water supply flows file at {}".format(flow_file)
+        flow_data = data_handle.get_data('flows_data', data_handle.current_timestep)
+
+        print(flow_data)
+
+
+        exit(0)
 
         demand_file = os.path.join(nodal_dir, '001_daily.csv')
         assert (os.path.isfile(demand_file)), "Expected to find water supply demand file at {}".format(demand_file)
@@ -246,8 +250,7 @@ class WaterWrapper(SectorModel):
 
         subprocess.call([
             sys.executable, prepare_nodal,
-            '--FlowFile', flow_file,
-            '--DemandFile', demand_file,
+            '--FlowFile', flow_file,            '--DemandFile', demand_file,
             '--CatchmentFile', catchment_file,
             '--BoreholeForcingFile', borehole_file,
             '--PublicFile', public_file,

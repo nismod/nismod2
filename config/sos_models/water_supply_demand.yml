@@ -12,6 +12,10 @@ scenario_dependencies:
   source_output: reservoir_levels
   sink: water_supply
   sink_input: reservoir_levels
+- source: water_supply_data
+  source_output: flows_data
+  sink: water_supply
+  sink_input: flows_data
 - source: water_demand_predicted
   source_output: population
   sink: water_demand
