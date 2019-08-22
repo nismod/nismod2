@@ -294,9 +294,9 @@ class BaseTransportWrapper(SectorModel):
         intervention_files = []
         # Discard initial conditions if current year is the base year
         interventions = self._filter_interventions(data_handle)
-        # for i, intervention in enumerate(interventions):
-        #     fname = self._write_rail_intervention(intervention, data_handle)
-        #     intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+        for i, intervention in enumerate(interventions):
+            fname = self._write_rail_intervention(intervention, data_handle)
+            intervention_files.append("railInterventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
@@ -343,12 +343,13 @@ class BaseTransportWrapper(SectorModel):
         # add day and year usage
         build_year=intervention['build_year']
         NLC_dim = self.inputs['day_usage'].dims[0] # Name of NLC dimension in smif
-        # day usage
-        day_usage = data_handle.get_data("day_usage", timestep=build_year).as_df().reset_index()
+        # day usage from base year station usage parameter
+        # (For newly built stations base year is the build year)
+        day_usage = data_handle.get_parameter('base_year_day_demand').as_df().reset_index()
         day_usage = day_usage.set_index([NLC_dim])
         intervention['dayUsage'] = day_usage.loc[intervention['NLC']].values[0]
         # year usage
-        year_usage = data_handle.get_data("year_usage", timestep=build_year).as_df().reset_index()
+        year_usage = data_handle.get_parameter('base_year_year_demand').as_df().reset_index()
         year_usage = year_usage.set_index([NLC_dim])
         intervention['yearUsage'] = int(year_usage.loc[intervention['NLC']].values[0])
 
