@@ -9,7 +9,7 @@ XPRESS_DIR=$2
 #
 
 # Read dbname, host, user, password, port from dbconfig.ini
-eval "$(grep = <(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini | tail -n4)"
+eval "$(grep = <(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini | tail -n4))"
 
 # Create connection template file
 odbc_config_path=$base_path/install/odbc_config.ini
