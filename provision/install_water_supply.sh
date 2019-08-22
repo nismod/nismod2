@@ -13,12 +13,8 @@ mkdir -p "${repo_dir}"
 mkdir -p "${nodal_dir}"
 mkdir -p "${exe_dir}"
 
-# Clone repo and copy necessary files to the model directory
-git clone git@github.com:nismod/water_supply.git "${repo_dir}" || exit
-pushd "${repo_dir}" || exit
-    # Pin the model at a specific commit
-    git checkout 02eca9f81e0bbd2ffdb7f4963e70da8163c24646
-popd || exit
+# Shallow clone repo to specific tag and copy necessary files to the model directory
+git clone --branch nismod_1.0 --depth 1 git@github.com:nismod/water_supply.git "${repo_dir}" || exit
 
 # Move the files necessary for execution
 mv "${repo_dir}"/wathnet/w5_console.exe "${exe_dir}"
