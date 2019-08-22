@@ -3,6 +3,9 @@
 # Expect NISMOD dir as first argument
 base_path=$1
 
+# Read model_version from config.ini
+eval "$(grep -A2 "\[water-supply\]" $base_path/provision/config.ini | tail -n2)"
+
 # Define required directories and ensure they exist
 model_dir="${base_path}"/models/water_supply
 repo_dir="${model_dir}"/repo
@@ -14,7 +17,7 @@ mkdir -p "${nodal_dir}"
 mkdir -p "${exe_dir}"
 
 # Shallow clone repo to specific tag and copy necessary files to the model directory
-git clone --branch nismod_1.0 --depth 1 git@github.com:nismod/water_supply.git "${repo_dir}" || exit
+git clone --branch $model_version --depth 1 git@github.com:nismod/water_supply.git "${repo_dir}" || exit
 
 # Move the files necessary for execution
 mv "${repo_dir}"/wathnet/w5_console.exe "${exe_dir}"
