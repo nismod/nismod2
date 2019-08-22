@@ -37,14 +37,17 @@ class WaterDemandWrapper(SectorModel):
 
         """
 
-        # The per capita demand (in ML/person/day) is set as a model parameter
-        per_capita_demand = data_handle.get_parameter('per_capita_water_demand')
-
-        # The population is currently a scenario dependency
-        pop_input = data_handle.get_data('population')
+        # The populations and demands are currently scenario dependencies
+        population = data_handle.get_data('population')
+        per_capita = data_handle.get_data('per_capita_water_demand')
+        constant = data_handle.get_data('constant_water_demand')
 
         # Create the model
-        model = WaterDemand(population=pop_input.data, scale_factor=per_capita_demand.data)
+        model = WaterDemand(
+            population=population.data,
+            per_capita_demand=per_capita.data,
+            constant_demand=constant.data
+        )
 
         # Simulate the water demand
         demand = model.simulate()

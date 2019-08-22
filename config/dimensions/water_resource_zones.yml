@@ -1,0 +1,3 @@
+name: water_resource_zones
+description: Names of water resource zones
+elements: water_demand/water_resource_zones.csv

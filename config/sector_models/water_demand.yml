@@ -4,27 +4,26 @@ initial_conditions: []
 inputs:
 - name: population
   dims:
-  - water_demand_population_areas
-  dtype: int
-  unit: people
+  - water_resource_zones
+  dtype: float
+  unit: thousands of people
+- name: constant_water_demand
+  dims:
+  - water_resource_zones
+  dtype: float
+  unit: Ml/day
+- name: per_capita_water_demand
+  dims:
+  - water_resource_zones
+  dtype: float
+  unit: Ml/(thousand people)/day
 interventions: []
 name: water_demand
 outputs:
 - name: water_demand
   dims:
-  - water_demand_population_areas
+  - water_resource_zones
   dtype: float
-  unit: ML/day
-parameters:
-- name: per_capita_water_demand
-  description: The assumed per capita demand for water
-  abs_range:
-  - 0
-  - 2.0e-5
-  exp_range:
-  - 5.0e-6
-  - 1.5e-5
-  default: default_water_demand
-  dtype: float
-  unit: 'ML/person/day'
+  unit: Ml/day
+parameters: []
 path: models/water_demand/run.py

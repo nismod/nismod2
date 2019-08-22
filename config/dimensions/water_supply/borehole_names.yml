@@ -1,0 +1,3 @@
+name: borehole_names
+description: Names of water supply boreholes
+elements: water_supply/borehole_names.csv
