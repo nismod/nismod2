@@ -230,6 +230,7 @@ bash ./provision/get_data_energy_demand.sh .
 bash ./provision/get_data_energy_supply.sh .
 bash ./provision/get_data_transport.sh .
 bash ./provision/get_data_water_supply.sh .
+bash ./provision/get_data_water_demand.sh .
 ```
 
 ### Install models

@@ -1,0 +1,3 @@
+name: cams_names
+description: Names of water supply cams names
+elements: water_supply/cams_names.csv
