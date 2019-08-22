@@ -4,7 +4,7 @@
 base_path=$1
 
 # Read remote_data, local_dir from config.ini
-eval "$(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini | tail -n2)"
+eval "$(grep -A3 "\[digital-comms\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 
 # Download data
