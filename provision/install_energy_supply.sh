@@ -9,7 +9,7 @@ XPRESS_DIR=$2
 #
 
 # Read dbname, host, user, password, port from dbconfig.ini
-eval "$(grep = <(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini | tail -n4))"
+eval "$(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini | tail -n5)"
 
 # Create connection template file
 odbc_config_path=$base_path/install/odbc_config.ini
@@ -41,7 +41,7 @@ odbcinst -i -s -f $odbc_config_path
 #
 
 # Read model_version, remote_data, local_dir from config.ini
-source <(grep = <(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini | tail -n3)"
 
 MODEL_DIR=$base_path/install
 DATA_DIR=$base_path/$local_dir
