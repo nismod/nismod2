@@ -30,7 +30,7 @@ narratives:
 strategies:
   - type: pre-specified-planning
     description: 'A multi-vector world, but default centralised operation'
-    filename: ../energy_supply/strategies/multi_vector.csv
+    filename: ../energy_supply/strategies/multi_vector
     model_name: energy_supply_constrained
 timesteps:
   - 2015
