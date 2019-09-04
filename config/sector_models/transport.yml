@@ -1,6 +1,6 @@
 name: transport
 description: Transport model for Southampton and neighbouring LADs
-path: ./models/transport/run.py
+path: ./models/transport/run_rail_only.py
 classname: TransportWrapper
 inputs:
   - name: population
@@ -110,4 +110,5 @@ interventions:
   - transport_lane_expansions
   - transport_new_links
   - transport_congestion_zones
+  - transport_rail
 initial_conditions: []

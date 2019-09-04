@@ -110,4 +110,5 @@ interventions:
   - transport_lane_expansions
   - transport_new_links
   - transport_congestion_zones
+  - transport_rail
 initial_conditions: []

@@ -1,0 +1,10 @@
+name: rail_trip_rates
+description: rail trip rates
+provides:
+  - name: rail_trip_rates
+    dtype: float
+variants:
+  - name: baseline
+    description: Baseline rail trip rates
+    data:
+      rail_trip_rates: rail_trip_rates

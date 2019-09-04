@@ -156,3 +156,5 @@ models/water_supply/repo
 *.png 
 *.jpg
 
+# Temporary files
+*~
