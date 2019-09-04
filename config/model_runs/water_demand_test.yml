@@ -1,0 +1,13 @@
+description: ''
+name: water_demand_test
+narratives: {}
+scenarios:
+  water_demand_predicted: predicted
+sos_model: water_demand_only
+stamp: '2019-03-01T00:00:00.000Z'
+timesteps:
+- 2020
+- 2021
+- 2022
+- 2023
+strategies: []

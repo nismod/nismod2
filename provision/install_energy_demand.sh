@@ -4,7 +4,7 @@
 base_path=$1
 
 # Read model_version, remote_data, local_dir from config.ini
-source <(grep = <(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini | tail -n3)"
 
 # Install energy_demand
 pip install git+https://github.com/nismod/energy_demand.git@$model_version#egg=energy_demand --upgrade

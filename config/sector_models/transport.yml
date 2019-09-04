@@ -61,54 +61,54 @@ parameters:
   - name: POPULATION_ETA
     description: Population elasticity for passenger demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: GVA_ETA
     description: GVA elasticity for passenger demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: TIME_ETA
     description: Time elasticity for passenger demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: COST_ETA
     description: Cost elasticity for passenger demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: POPULATION_FREIGHT_ETA
     description: Population elasticity for freight demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: GVA_FREIGHT_ETA
     description: GVA elasticity for freight demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: TIME_FREIGHT_ETA
     description: Time elasticity for freight demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: COST_FREIGHT_ETA
     description: Cost elasticity for freight demand
     dtype: float
-    default: default_transport_elasticities.csv
+    default: default_transport_elasticities
   - name: link_travel_time_averaging_weight
     description: Averages link travel time with the time from previous iterations (1.0 = overwrite with new)
     dtype: float
-    default: default_transport_flags.csv
+    default: default_transport_flags
   - name: assignment_iterations
     description: How many times to repeat the same assignment to obtain average times
     dtype: int
-    default: default_transport_flags.csv
+    default: default_transport_flags
   - name: prediction_iterations
     description: How many times to iterate between flow prediction and flow assignment
     dtype: int
-    default: default_transport_flags.csv
+    default: default_transport_flags
   - name: use_route_choice_model
     description: Whether to use route-choice model (true) or routing with A-Star (false)
     dtype: bool
-    default: default_transport_flags.csv
+    default: default_transport_flags
 interventions:
-  - transport_lane_expansions.csv
-  - transport_new_links.csv
-  - transport_congestion_zones.csv
-  - transport_rail.csv
+  - transport_lane_expansions
+  - transport_new_links
+  - transport_congestion_zones
+  - transport_rail
 initial_conditions: []

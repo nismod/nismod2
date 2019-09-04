@@ -1,0 +1,3 @@
+name: irrigations_file_column_names
+description: Names of columns in the irrigations scenario data file
+elements: water_supply/irrigations_file_column_names.csv

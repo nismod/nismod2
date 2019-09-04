@@ -32,6 +32,10 @@ bash -x ./provision/install_transport.sh .
 bash -x ./provision/get_data_et_module.sh .
 bash -x ./provision/install_et_module.sh .
 
-# Water supplysmif
+# Water supply
 bash -x ./provision/get_data_water_supply.sh .
 bash -x ./provision/install_water_supply.sh .
+
+# Water demand
+bash -x ./provision/get_data_water_demand.sh .
+bash -x ./provision/install_water_demand.sh .

@@ -70,9 +70,12 @@ class EnergySupplyWrapper(SectorModel):
         operation_mode = int(data.get_parameter('operation_mode').as_ndarray())
         self.logger.debug('Parameter operation mode: %s', operation_mode)
 
+        heat_supply_strategy = int(data.get_parameter('heat_supply_strategy').as_ndarray())
+        self.logger.debug('Parameter heat strategy mode: %s', heat_supply_strategy)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode, conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy, conn)
 
         conn.close()
 
@@ -157,7 +160,7 @@ class EnergySupplyWrapper(SectorModel):
         write_prices(fuel_prices, data.current_timestep)
 
         # inputs with just region
-        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste']
+        param_name_annual = ['EV_Cap', 'biomass_feedstock','municipal_waste','elec_int']
         for param_name in param_name_annual :
             param_data = data.get_data(param_name)
             write_input_annual(param_data, param_name, data.current_timestep)
@@ -171,6 +174,8 @@ class EnergySupplyWrapper(SectorModel):
             'gasload_non_heat_com',
             'elecload_non_heat_com',
             'hydrogenload_non_heat_eh',
+            'oil_non_heat_eh',
+            'solid_fuel_non_heat_eh',
             # optimised mode only
             'heatload_res',
             'heatload_com',
@@ -181,6 +186,7 @@ class EnergySupplyWrapper(SectorModel):
             'building_gas_boiler',
             'building_hydrogen_boiler',
             'building_oil_boiler',
+            'building_solidfuel_boiler',
             'dh_biomass_boiler',
             'dh_elec_boiler',
             'dh_gas_CHP',
@@ -480,12 +486,13 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_supply_strategy';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -493,6 +500,9 @@ def write_flags(heat_mode,operation_mode,conn):
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('central_decentral_mode', operation_mode))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('heat_supply_strategy', heat_supply_strategy))
 
 
 def retire_generator(plants):
@@ -552,6 +562,7 @@ def build_generator(plants, current_timestep):
                           'hydro': 5,
                           'oil': 6,
                           'ocgt (flexible generation)': 7,
+                          'gas ccs' : 8,
                           'biomass': 10,
                           'interconnector': 11,
                           'chp gas': 13,
@@ -613,6 +624,24 @@ def build_generator(plants, current_timestep):
                     current_timestep,
                     float(plant['build_year']) + lifetime,
                     plant['sys_layer']
+                    )
+
+        elif plant_type == 11:
+
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "BusNum",
+                    "MinPower", "MaxPower", "Year", "Retire", "SysLayer","Inter_conn")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer'],
+                    plant['to_location']
                     )
 
         else:

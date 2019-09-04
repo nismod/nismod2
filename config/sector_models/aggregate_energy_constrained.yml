@@ -10,6 +10,12 @@ inputs:
       - hourly
     dtype: float
     unit: GW
+  - name: industry_biomass_boiler_biomass
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
   - name: industry_electricity_boiler_electricity
     dims:
       - lad_uk_2016
@@ -238,6 +244,66 @@ inputs:
       - hourly
     dtype: float
     unit: GW
+  - name: industry_oil_boiler_oil
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_oil_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_oil_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_oil_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_solid_fuel_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_solid_fuel_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_solid_fuel_non_heating
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: industry_solid_fuel_boiler_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: residential_solid_fuel_boiler_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: service_solid_fuel_boiler_solid_fuel
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
 interventions: []
 outputs:
   - name: building_biomass_boiler
@@ -319,6 +385,24 @@ outputs:
     dtype: float
     unit: GW
   - name: hydrogen_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: oil_non_heat_eh
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: building_solidfuel_boiler
+    dims:
+      - lad_uk_2016
+      - hourly
+    dtype: float
+    unit: GW
+  - name: solid_fuel_non_heat_eh
     dims:
       - lad_uk_2016
       - hourly

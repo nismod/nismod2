@@ -3,7 +3,7 @@ description: energy_supply model description
 path: models/energy_supply/energy_supply.py
 classname: EnergySupplyWrapper
 initial_conditions:
-- ../energy_supply/initial_conditions/historical_interventions.csv
+- ../energy_supply/initial_conditions/historical_interventions
 inputs:
   - name: elecload
     dims:
@@ -59,6 +59,18 @@ inputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: oil_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
+  - name: solid_fuel_non_heat_eh
+    dims:
+      - energy_hub
+      - seasonal_week
+    dtype: float
+    unit: MW
   - name: fuel_price
     dims:
       - seasons
@@ -89,34 +101,83 @@ inputs:
       - seasonal_week
     unit: W/m2
     dtype: float
+  - name: EV_Cap
+    dims:
+    - energy_hub
+    unit: MW
+    dtype: float
+  - name: elec_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: biomass_feedstock
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: municipal_waste
+    dims:
+    - energy_hub
+    unit: kg
+    dtype: float
+  - name: elec_int
+    dims:
+    - elec_intercon_countries
+    unit: £/MW
+    dtype: float  
 parameters:
   - description: cost of electricity load shedding
     name: LoadShed_elec
     units: GBP/MWh
     dtype: float
-    default: ../energy_supply/parameters/load_shed.csv
+    default: ../energy_supply/parameters/load_shed
   - description: cost of gas load shedding
     name: LoadShed_gas
     units: GBP/MWh
     dtype: float
-    default: ../energy_supply/parameters/load_shed.csv
+    default: ../energy_supply/parameters/load_shed
   - name: heat_mode
     description: Flag to configure heat technology mode
     units: mode
     dtype: int
-    default: ../energy_supply/parameters/heat_mode_optimised.csv
+    default: ../energy_supply/parameters/heat_mode_optimised
   - name: operation_mode
     description: Flag to configure central/decentral operation mode
     units: mode
     dtype: int
-    default: ../energy_supply/parameters/op_mode_central.csv
+    default: ../energy_supply/parameters/op_mode_central
+  - name: heat_supply_strategy
+    description: Flag to configure heat supply strategy in the optimised mode
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/hs_default
 interventions:
-  - ../energy_supply/interventions/full/es_elec_network.csv
-  - ../energy_supply/interventions/full/es_gaspipes.csv
-  - ../energy_supply/interventions/full/es_gasstorage.csv
-  - ../energy_supply/interventions/full/es_gasterminals.csv
-  - ../energy_supply/interventions/full/es_generators.csv
-  - ../energy_supply/interventions/full/es_heattech.csv
+  - ../energy_supply/interventions/full/es_elec_network
+  - ../energy_supply/interventions/full/es_gaspipes
+  - ../energy_supply/interventions/full/es_gasstorage
+  - ../energy_supply/interventions/full/es_gasterminals
+  - ../energy_supply/interventions/full/es_generators
+  - ../energy_supply/interventions/full/es_heattech
+  - ../energy_supply/interventions/electric_world/es_elec_network
+  - ../energy_supply/interventions/electric_world/es_gaspipes
+  - ../energy_supply/interventions/electric_world/es_gasstorage
+  - ../energy_supply/interventions/electric_world/es_gasterminals
+  - ../energy_supply/interventions/electric_world/es_generators
+  - ../energy_supply/interventions/electric_world/es_heattech
+  - ../energy_supply/interventions/multi_vector/es_elec_network
+  - ../energy_supply/interventions/multi_vector/es_gaspipes
+  - ../energy_supply/interventions/multi_vector/es_gasstorage
+  - ../energy_supply/interventions/multi_vector/es_gasterminals
+  - ../energy_supply/interventions/multi_vector/es_generators
+  - ../energy_supply/interventions/multi_vector/es_heattech
+  - ../energy_supply/interventions/net_zero/es_elec_network
+  - ../energy_supply/interventions/net_zero/es_gaspipes
+  - ../energy_supply/interventions/net_zero/es_gasstorage
+  - ../energy_supply/interventions/net_zero/es_gasterminals
+  - ../energy_supply/interventions/net_zero/es_generators
+  - ../energy_supply/interventions/net_zero/es_heattech
 outputs:
   - name: tran_gas_fired
     dims:
@@ -148,7 +209,13 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: tran_interconnector
+  - name: tran_int_import
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_int_export
     dims:
     - bus_bars
     - seasonal_week
@@ -185,6 +252,12 @@ outputs:
     unit: mcm
     dtype: float
   - name: gas_interconnector
+    dims:
+    - national
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: gas_shale
     dims:
     - national
     - seasonal_week
@@ -470,17 +543,185 @@ outputs:
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2_qs
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
     dtype: float
   - name: eh_h2storage_level
     dims:
     - energy_hub
     - seasonal_week
-    unit: mcm
+    unit: MW
+    dtype: float
+  - name: gas_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: gas_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float  
+  - name: hydrogen_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: waste_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: solidfuel_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: oil_demand_heat
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_storage
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowin
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_flowout
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_tran_e_export
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: e_uc
+    dims:
+    - national
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_gas_ccs
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_oil
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oil
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_hp
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_hybridhp_gb
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_resistive_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_oilboiler_b
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_smr
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_electrolysis
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
     dtype: float

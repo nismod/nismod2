@@ -11,6 +11,7 @@ scenarios:
   engine_type_fractions: baseline
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
 narratives:
   operation_mode:
   - central
@@ -19,7 +20,7 @@ narratives:
 strategies: 
   - type: pre-specified-planning
     description: 'A multi-vector world, but default centralised operation'
-    filename: ../energy_supply/strategies/multi_vector.csv
+    filename: ../energy_supply/strategies/multi_vector
     model_name: energy_supply_constrained
 timesteps:
   - 2015

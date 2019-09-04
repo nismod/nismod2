@@ -1,4 +1,15 @@
 name: energy_supply_constrained
+description: Contains only energy supply wrapper with full data and full energy demand
+  scenarios
+sector_models:
+- energy_supply_constrained
+model_dependencies: []
+scenarios:
+- fuel_price
+- dummy_energy_demands_full
+- dummy_weather_inputs_full
+- biomass_waste_to_energy
+- elec_interconnector_prices
 narratives:
   - name: load_shedding
     description: Costs of shedding load
@@ -10,8 +21,8 @@ narratives:
       - name: high_cost
         description: very high cost load shedding
         data:
-          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
-          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed
+          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed
   - name: operation_mode
     description: operation mode for energy supply system
     provides:
@@ -21,11 +32,11 @@ narratives:
       - name: decentral
         decription: decentralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral
       - name: central
         decription: centralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central
 scenario_dependencies:
 - source: fuel_price
   source_output: energy_supply_price
@@ -60,6 +71,14 @@ scenario_dependencies:
   sink: energy_supply_constrained
   sink_input: hydrogen_non_heat_eh
 - source: dummy_energy_demands_full
+  source_output: solid_fuel_non_heat_eh
+  sink: energy_supply_constrained
+  sink_input: solid_fuel_non_heat_eh
+- source: dummy_energy_demands_full
+  source_output: oil_non_heat_eh
+  sink: energy_supply_constrained
+  sink_input: oil_non_heat_eh  
+- source: dummy_energy_demands_full
   source_output: building_biomass_boiler
   sink: energy_supply_constrained
   sink_input: building_biomass_boiler
@@ -79,6 +98,10 @@ scenario_dependencies:
   source_output: building_hydrogen_boiler
   sink: energy_supply_constrained
   sink_input: building_hydrogen_boiler
+- source: dummy_energy_demands_full
+  source_output: building_solidfuel_boiler
+  sink: energy_supply_constrained
+  sink_input: building_solidfuel_boiler
 - source: dummy_energy_demands_full
   source_output: building_hydrogen_heatpump
   sink: energy_supply_constrained
@@ -134,14 +157,8 @@ scenario_dependencies:
 - source: biomass_waste_to_energy
   source_output: municipal_waste
   sink: energy_supply_constrained
-  sink_input: municipal_waste    
-description: Contains only energy supply wrapper with full data and full energy demand
-  scenarios
-sector_models:
-- energy_supply_constrained
-model_dependencies: []
-scenarios:
-- fuel_price
-- dummy_energy_demands_full
-- dummy_weather_inputs_full
-- biomass_waste_to_energy
+  sink_input: municipal_waste
+- source: elec_interconnector_prices
+  source_output: elec_int
+  sink: energy_supply_constrained
+  sink_input: elec_int   

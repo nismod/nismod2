@@ -11,4 +11,4 @@ variants:
   - name: et_demand_baseline
     description: Baseline GWh of transport for the UK
     data:
-      electricity: et_demand_electricity.csv
+      electricity: et_demand_electricity

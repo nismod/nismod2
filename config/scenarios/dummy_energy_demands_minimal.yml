@@ -61,11 +61,11 @@ variants:
   - name: es_energy_demand_minimal
     description: ''
     data:
-      elecload: ../energy_supply/scenarios/energy_demand_minimal.csv
-      gasload: ../energy_supply/scenarios/energy_demand_minimal_gasload.csv
-      residential_heatload: ../energy_supply/scenarios/energy_demand_minimal.csv
-      residential_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
-      residential_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
-      service_heatload: ../energy_supply/scenarios/energy_demand_minimal.csv
-      service_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
-      service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal.csv
+      elecload: ../energy_supply/scenarios/energy_demand_minimal
+      gasload: ../energy_supply/scenarios/energy_demand_minimal_gasload
+      residential_heatload: ../energy_supply/scenarios/energy_demand_minimal
+      residential_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal
+      residential_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal
+      service_heatload: ../energy_supply/scenarios/energy_demand_minimal
+      service_gas_non_heating: ../energy_supply/scenarios/energy_demand_minimal
+      service_electricity_non_heating: ../energy_supply/scenarios/energy_demand_minimal

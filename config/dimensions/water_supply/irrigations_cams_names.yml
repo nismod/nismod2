@@ -1,0 +1,3 @@
+name: irrigations_cams_names
+description: Names of water supply cams names related to irrigations data
+elements: water_supply/irrigations_cams_names.csv

@@ -9,4 +9,4 @@ test:
     - smif list
     - smif run digital_comms_test
     # - smif run energy_demand_constrained  # memory usage too high
-    # - smif run energy_supply_toy  # license server not accessible from CI runner
+    # - smif run energy_supply_constrained  # license server not accessible from CI runner

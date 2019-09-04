@@ -142,9 +142,9 @@ source nismod/bin/activate
 pip install --upgrade pip
 pip install --upgrade setuptools wheel
 pip install pyscaffold
-pip install smif~=1.0 --upgrade
-pip install smif[data]~=1.0
-pip install smif[spatial]~=1.0
+pip install smif~=1.2 --upgrade
+pip install smif[data]~=1.2
+pip install smif[spatial]~=1.2
 
 # Install Jupyter Notebook for Results Viewer
 pip install jupyter notebook
@@ -204,11 +204,11 @@ bash -x $base_path/provision/install_energy_demand.sh $base_path
 energy_demand setup -f $base_path/models/energy_demand/wrapperconfig.ini
 
 # Energy supply
-bash -x $base_path/provision/get_data_energy_supply.sh $base_path $XPRESS_DIR
+bash -x $base_path/provision/get_data_energy_supply.sh $base_path
 # use default dbconfig if no other provided
 cp --no-clobber $base_path/provision/template.dbconfig.ini $base_path/provision/dbconfig.ini
 # run install as vagrant to set up ODBC connection
-su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path"
+su vagrant -c "bash -x $base_path/provision/install_energy_supply.sh $base_path $XPRESS_DIR"
 
 # Transport
 bash -x $base_path/provision/get_data_transport.sh $base_path
@@ -221,6 +221,10 @@ bash -x $base_path/provision/install_et_module.sh $base_path
 # Water supply
 bash -x $base_path/provision/get_data_water_supply.sh $base_path
 bash -x $base_path/provision/install_water_supply.sh $base_path
+
+# Water demand
+bash -x $base_path/provision/get_data_water_demand.sh $base_path
+bash -x $base_path/provision/install_water_demand.sh $base_path
 
 
 #

@@ -1,0 +1,3 @@
+name: elec_intercon_countries
+description: list of countries with electricity interconnection with GB
+elements: ../energy_supply/dimensions/elec_intercon_countries.csv

@@ -1,0 +1,15 @@
+name: elec_interconnector_prices
+description: Annual prices for electricity interconnectors
+provides:
+  - name: elec_int
+    description: 'electricity interconnector prices'
+    dims:
+    - elec_intercon_countries
+    dtype: float
+    unit: £/MW
+
+variants:
+  - name: average_annual_prices
+    description: ''
+    data:
+      elec_int: ../energy_supply/scenarios/elec_interconnector_prices

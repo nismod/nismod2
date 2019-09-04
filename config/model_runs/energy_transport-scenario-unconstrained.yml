@@ -1,0 +1,20 @@
+name: energy_transport-scenario-unconstrained
+stamp: '2019-04-23'
+description: 'Test model run for energy (supply-demand unconstrained) and et_module with transport energy demand scenario'
+sos_model: energy_transport-scenario-unconstrained_corrected
+scenarios:
+  fuel_price: baseline
+  socio-economic: itrc_baseline16
+  temperature: NF1
+  ev_transport_trips: electricworld
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
+narratives: 
+  operation_mode:
+  - central
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
