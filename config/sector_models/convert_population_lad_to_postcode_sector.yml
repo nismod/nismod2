@@ -1,0 +1,19 @@
+name: convert_population_lad_to_postcode_sector
+description: Region conversion from LAD to postcode sector
+path: models/convert.py
+classname: ConvertLADtoPostcodeSector
+inputs:
+  - name: population
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: people
+outputs:
+  - name: population
+    dims:
+      - postcode_sector
+    dtype: int
+    unit: persons
+parameters: []
+interventions: []
+initial_conditions: []

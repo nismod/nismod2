@@ -1,0 +1,15 @@
+name: digital_comms_fixed_test
+stamp: '2019-09-04'
+description: Test run digital fixed model
+sos_model: digital_comms_fixed_only
+narratives: {}
+scenarios:
+  adoption: fttp_high_adoption
+strategies:
+  - type: rule-based
+    description: reduce emissions
+    path: planning/digital_decisions.py
+    classname: DigitalDecisions
+timesteps:
+  - 2015
+  - 2020

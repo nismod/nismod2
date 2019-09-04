@@ -30,6 +30,25 @@ def main():
         .rename(columns={'StrSect': 'name'}) \
         [['name', 'geometry']]
 
+    lads = gpd.read_file(os.path.join(dimdir, 'lad_uk_2016-12', 'lad_uk_2016-12.shp'))
+
+    # Overlay to find intersecting areas
+    overlay = gpd.overlay(ps, lads, how="intersection")
+    overlay['area'] = overlay.geometry.area
+
+    # Filter to create lookup based on max overlapping area
+    link = overlay[['name_1', 'name_2', 'desc', 'area']] \
+        .rename(columns={'name_1': 'name', 'name_2': 'lad'}) \
+        .sort_values(by='area', ascending=False) \
+        .drop_duplicates(subset='name', keep='first')
+
+    # Merge lookup
+    ps = ps.merge(link, on='name', how='left')
+
+    # Check validity
+    validity = ps.geometry.apply(lambda geom: geom.is_valid)
+    print(~validity.any())
+
     ps.to_file(os.path.join(dimdir, "postcode_sector.shp"))
 
 

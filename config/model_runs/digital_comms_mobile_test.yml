@@ -1,0 +1,12 @@
+name: digital_comms_mobile_test
+stamp: '2019-09-04'
+description: Test run digital mobile model
+sos_model: digital_comms_mobile_network
+scenarios:
+  data_growth: baseline
+  socio-economic: arc_baseline
+narratives: {}
+strategies: {}
+timesteps:
+  - 2015
+  - 2020
