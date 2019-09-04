@@ -1,15 +1,12 @@
-name: arc_dc__baseline
-stamp: '2019-05-14'
-description: Arc Digital baseline
+name: digital_comms_mobile_test
+stamp: '2019-09-04'
+description: Test run digital mobile model
 sos_model: digital_comms_mobile_network
 scenarios:
-  adoption: fttp_baseline_adoption
   data_growth: baseline
   socio-economic: arc_baseline
 narratives: {}
-strategies: []
+strategies: {}
 timesteps:
   - 2015
   - 2020
-  - 2030
-  - 2050
