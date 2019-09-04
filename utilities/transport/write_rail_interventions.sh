@@ -16,7 +16,7 @@
 inputFile=$1
 outputInterventionFile=$2
 if [ -f $inputFile ]; then
-    rm -i $outputInterventionFile
+    rm -f $outputInterventionFile
 fi
 
 columns=NLC,name,type,technical_lifetime_value,technical_lifetime_units,mode,station,naPTANname,easting,northing,runDays,LADcode,LADname,area
@@ -35,5 +35,3 @@ do
 done
 echo Intervention data written in $outputInterventionFile
 echo Be sure to add potential future stations to the intervention data file.
-
-

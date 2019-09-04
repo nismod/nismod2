@@ -1,5 +1,6 @@
 """Read from transport data to output smif scenario
 """
+import os
 import sys
 
 import pandas as pd
@@ -25,8 +26,11 @@ def main(input_filename, output_filename):
     df_out.to_csv(output_filename, index=False)
 
 if __name__ == '__main__':
-    INPUT_FILENAME = '../data/transport/TR_data_full/full/data/csvfiles/railStationGeneralisedJourneyTimes.csv'
-    OUTPUT_FILENAME = '../data/scenarios/rail_station_journey_times.csv'
+    BASE_PATH = os.path.join(os.path.dirname(__file__), '..', '..')
+    INPUT_FILENAME = os.path.join(
+        BASE_PATH, 'data/transport/gb/data/csvfiles/railStationGeneralisedJourneyTimes.csv')
+    OUTPUT_FILENAME = os.path.join(
+        BASE_PATH, 'data/scenarios/rail_station_journey_times.csv')
 
     try:
         INPUT_FILENAME = sys.argv[1]

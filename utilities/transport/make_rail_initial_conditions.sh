@@ -18,20 +18,15 @@ path_baseYearRailUsage=${1:-../../data/transport/gb/data/csvfiles/baseYearRailUs
 path_initial_conditions=${2:-../../data/initial_conditions/base_year_railstations.csv}
 
 if [ -f "$path_initial_conditions" ] ; then
-    rm -i $path_initial_conditions
+    rm -f $path_initial_conditions
 fi
 if ! [ -f "$path_baseYearRailUsage" ] ; then
     echo ERROR: Could not find base year rail usage file $path_baseYearRailUsage
     exit 1
 fi
 echo Reading $path_baseYearRailUsage
-build_year=1975
-for line in $(cat $path_baseYearRailUsage)
-do
-    mode=$(echo $line | cut -d, -f2)
-    intervention_name=new$(echo $line | cut -d, -f3)_$mode
-    echo $intervention_name,$build_year >> $path_initial_conditions
-done
+
+cat $path_baseYearRailUsage | awk -F',' '{ print $3 "_" $2  ",1975" }' > $path_initial_conditions
 
 # Update first line
 sed -i "1s/.*/name,build_year/" $path_initial_conditions

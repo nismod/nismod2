@@ -13,6 +13,6 @@ decision_module: []
 strategies:
   - type: pre-specified-planning
     description: test interventions
-    filename: rail_test.csv
+    filename: rail_test
     model_name: rail_southampton
 stamp: ''

@@ -43,3 +43,14 @@ python $base_path/utilities/transport/convert_transport_engine_fractions.py \
 python $base_path/utilities/transport/convert_transport_engine_fractions.py \
     $base_path/$local_dir/gb/data/csvfiles/engineTypeFractionsMVE.csv \
     $base_path/data/scenarios/engine_type_fractions_mve.csv
+
+
+# Download rail data
+source <(grep = <(grep -A3 "\[transport-rail\]" $base_path/provision/config.ini))
+python $base_path/provision/get_data.py $remote_data $base_path/$local_dir
+
+mv $base_path/$local_dir/transport-rail_$data_version/dimensions/*.csv $base_path/data/dimensions/
+mv $base_path/$local_dir/transport-rail_$data_version/initial_conditions/*.csv $base_path/data/initial_conditions/
+mv $base_path/$local_dir/transport-rail_$data_version/interventions/*.csv $base_path/data/interventions/
+mv $base_path/$local_dir/transport-rail_$data_version/parameters/*.csv $base_path/data/parameters/
+mv $base_path/$local_dir/transport-rail_$data_version/scenarios/*.csv $base_path/data/scenarios/

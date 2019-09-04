@@ -13,6 +13,6 @@ decision_module: []
 strategies:
   - type: pre-specified-planning
     description: test interventions
-    filename: transport_build_winslow.csv
+    filename: transport_build_winslow
     model_name: rail
 stamp: ''

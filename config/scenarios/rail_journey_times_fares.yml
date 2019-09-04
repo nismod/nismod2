@@ -15,5 +15,5 @@ variants:
   - name: baseline
     description: Journey times and fares for transport rail model
     data:
-      rail_journey_fares:  rail_station_journey_fares.csv
-      rail_journey_times: rail_station_journey_times.csv
+      rail_journey_fares:  rail_station_journey_fares
+      rail_journey_times: rail_station_journey_times

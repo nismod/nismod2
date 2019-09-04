@@ -97,7 +97,7 @@ class BaseTransportWrapper(SectorModel):
             '-c',
             self._config_path
         ]
-        
+
         tspt_model_arguments = base_arguments + [
             '-rail',
             str(data_handle.current_timestep),
@@ -279,14 +279,14 @@ class BaseTransportWrapper(SectorModel):
         # Write base year rail demand csv file
         df.to_csv(os.path.join(self._input_dir, 'baseYearRailDemand.csv'))
 
-            
+
     def _set_properties(self, data_handle):
         """Set the transport model properties, such as paths and interventions
         """
         working_dir = self._working_dir
         working_dir_path = str(os.path.abspath(working_dir)).replace('\\', '/')
         path_to_config_template = os.path.join(self._templates_dir, self._template_filename)
-        
+
         # read config as a Template for easy substitution of values
         with open(path_to_config_template) as template_fh:
             config = Template(template_fh.read())
@@ -333,7 +333,7 @@ class BaseTransportWrapper(SectorModel):
                     if intervention['build_year'] < data_handle.base_timestep:
                         interventions.append(intervention)
         return interventions
-    
+
     def _write_rail_intervention(self, intervention, data_handle):
         """Write a single intervention file, returning the full path
         """
@@ -425,7 +425,7 @@ class BaseTransportWrapper(SectorModel):
         data_handle: smif.data_layer.DataHandle
         output_name
         filename: str
-        cols: dict - Labels of the columns to keep. 
+        cols: dict - Labels of the columns to keep.
                      Keys are label in the ouput file.
                      Values are label in data_handle.
         """
@@ -433,7 +433,7 @@ class BaseTransportWrapper(SectorModel):
         df = df.loc[:,cols.keys()].rename(columns=cols)
         numpy_array = self._df_to_ndarray(output_name, df)
         data_handle.set_results(output_name, numpy_array)
-        
+
     def _df_to_ndarray(self, output_name, dataframe):
         spec = self.outputs[output_name]
         dataframe.set_index(spec.dims, inplace=True)
@@ -443,7 +443,7 @@ class BaseTransportWrapper(SectorModel):
 class SouthamptonRailTransportWrapper(BaseTransportWrapper):
     """Wrap the rail model, in 'southampton' configuration
     """
-    _config_filename = 'run_config_rail_southampton.ini'
+    _config_filename = 'run_config_southampton.ini'
     _template_filename = 'rail_southampton-config.properties.template'
 
 class RailTransportWrapper(BaseTransportWrapper):

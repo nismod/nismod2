@@ -7,4 +7,4 @@ variants:
   - name: baseline
     description: Baseline rail trip rates
     data:
-      rail_trip_rates: rail_trip_rates.csv
+      rail_trip_rates: rail_trip_rates

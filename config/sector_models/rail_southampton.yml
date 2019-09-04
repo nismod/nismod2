@@ -78,28 +78,28 @@ parameters:
       - area
     description: Population elasticity for passenger demand
     dtype: float
-    default: default_rail_elasticities.csv
+    default: default_rail_elasticities
   - name: use_car_cost_from_road_model
     description: Whether to use output of road model for car costs
     dtype: bool
-    default: default_rail_flags.csv
+    default: default_rail_flags
   - name: predict_intermediate_rail_years
     description: Wether to predict all years between base year and predicted year
     dtype: bool
-    default: default_rail_flags.csv
-  - name: base_year_year_demand	
+    default: default_rail_flags
+  - name: base_year_year_demand
     dims:
       - NLC_gb
     description: Station usage numbers for the base year
     dtype: int
-    default: default_base_year_year_demand.csv
+    default: default_base_year_year_demand
   - name: base_year_day_demand
     dims:
       - NLC_gb
     description: Station usage numbers for the base year
     dtype: float
-    default: default_base_year_day_demand.csv
+    default: default_base_year_day_demand
 interventions:
-  - transport_rail.csv
+  - transport_rail
 initial_conditions:
-  - base_year_railstations_soton.csv
+  - base_year_railstations_soton
