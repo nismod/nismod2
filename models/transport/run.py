@@ -87,7 +87,8 @@ class BaseTransportWrapper(SectorModel):
         path_to_jar = self._jar_path
 
         self.logger.info("FROM run.py: Running transport model")
-        arguments = ['java'] + self._optional_args + [
+        base_arguments = ['java'] + self._optional_args + [
+            '-XX:MaxHeapSize=10g',
             '-cp',
             path_to_jar,
             'nismod.transport.App',
@@ -95,22 +96,30 @@ class BaseTransportWrapper(SectorModel):
             self._config_path
         ]
         if data_handle.current_timestep == data_handle.base_timestep:
-            arguments.append('-b')
+            base_arguments.append('-b')
+            try:
+                self.logger.debug(base_arguments)
+                output = check_output(base_arguments)
+                self.logger.info(output.decode("utf-8"))
+            except CalledProcessError as ex:
+                self.logger.error(ex.output.decode("utf-8"))
+                self.logger.exception("Transport model failed %s", ex)
+                raise ex
         else:
-            arguments.extend([
-                '-road',
-                str(data_handle.current_timestep),
-                str(data_handle.previous_timestep)
-            ])
-
-        try:
-            self.logger.debug(arguments)
-            output = check_output(arguments)
-            self.logger.info(output.decode("utf-8"))
-        except CalledProcessError as ex:
-            self.logger.error(ex.output.decode("utf-8"))
-            self.logger.exception("Transport model failed %s", ex)
-            raise ex
+            for switch in ['-road', '-rail']:
+                tspt_model_arguments = base_arguments + [
+                    switch,
+                    str(data_handle.current_timestep),
+                    str(data_handle.previous_timestep)
+                ]
+                try:
+                    self.logger.debug(tspt_model_arguments)
+                    output = check_output(tspt_model_arguments)
+                    self.logger.info(output.decode("utf-8"))
+                except CalledProcessError as ex:
+                    self.logger.error(ex.output.decode("utf-8"))
+                    self.logger.exception("Transport model failed %s", ex)
+                    raise ex
 
     def _input_dimension_names(self, input_name, dimension_name):
         return self.inputs[input_name].dim_coords(dimension_name).ids
@@ -149,7 +158,7 @@ class BaseTransportWrapper(SectorModel):
         current_population['year'] = data_handle.current_timestep
 
         if data_handle.current_timestep != data_handle.base_timestep:
-            previous_population = data_handle.get_data("population").as_df().reset_index()
+            previous_population = data_handle.get_previous_timestep_data("population").as_df().reset_index()
             previous_population['year'] = data_handle.previous_timestep
 
             population = pd.concat(
@@ -250,9 +259,17 @@ class BaseTransportWrapper(SectorModel):
             config = Template(template_fh.read())
 
         intervention_files = []
+        # Must be able to identify rail model interventions
+        # the key in the config.properties must be railInterventionsFileX instead of
+        # interventionsFilesX
+        # Next line must contain all possible types of rail interventions
+        rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
-            intervention_files.append("interventionFile{} = {}".format(i, fname))
+            if intervention['type'] in rail_interventions_types:
+                intervention_files.append("railInterventionFile{} = {}".format(i, fname))
+            else:
+                intervention_files.append("interventionFile{} = {}".format(i, fname))
 
         config_str = config.substitute({
             'relative_path': working_dir_path,
@@ -290,6 +307,7 @@ class BaseTransportWrapper(SectorModel):
                 self._working_dir, 'data', 'csvfiles', cccp_filename
             )
 
+        print('Now writing {}'.format(path))
         with open(path, 'w') as file_handle:
             for key, value in intervention.items():
                 file_handle.write("{} = {}\n".format(key, value))

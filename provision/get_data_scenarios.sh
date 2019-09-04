@@ -4,26 +4,26 @@
 base_path=$1
 
 # Climate scenarios
-source <(grep = <(grep -A3 "\[climate\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[climate\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path
 
 # ITRC population and gva scenarios
-source <(grep = <(grep -A3 "\[population\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[population\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path
 
 # Prices scenarios
-source <(grep = <(grep -A3 "\[prices\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[prices\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path
 
 # Dwellings, GVA, Population, Floor Area scenarios
-source <(grep = <(grep -A3 "\[socio-economic\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[socio-economic\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path
 
 # EV transport trips
-source <(grep = <(grep -A3 "\[ev_transport_trips\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[ev_transport_trips\]" $base_path/provision/config.ini | tail -n3)"
 local_path=$base_path/$local_dir
 python $base_path/provision/get_data.py $remote_data $local_path

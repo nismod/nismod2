@@ -1,8 +1,0 @@
-name: water_supply_only
-description: Future water demand for UK
-sector_models: # Select 1 or more of the sector models
-- water_supply
-scenarios: []    # Select 0 or more of the scenario sets
-narratives: []
-scenario_dependencies: []
-model_dependencies: []

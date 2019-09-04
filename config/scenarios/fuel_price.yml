@@ -20,18 +20,18 @@ variants:
   - name: baseline
     description: Baseline fuel price projections
     data:
-      fuel_price: transport_fuel_price.csv
-      fuel_price_electricity: transport_fuel_price_electricity.csv
-      energy_supply_price: energy_supply_price.csv
+      fuel_price: transport_fuel_price
+      fuel_price_electricity: transport_fuel_price_electricity
+      energy_supply_price: energy_supply_price
   - name: es_prices_electric_world
     description: electric world scenario fuel price projections
     data:
-      fuel_price: transport_fuel_price.csv
-      fuel_price_electricity: transport_fuel_price_electricity.csv
-      energy_supply_price: prices/prices__electric_world.csv
+      fuel_price: transport_fuel_price
+      fuel_price_electricity: transport_fuel_price_electricity
+      energy_supply_price: prices/prices__electric_world
   - name: es_prices_multivector_world
     description: electric world scenario fuel price projections
     data:
-      fuel_price: transport_fuel_price.csv
-      fuel_price_electricity: transport_fuel_price_electricity.csv
-      energy_supply_price: prices/prices_multivector_world.csv
+      fuel_price: transport_fuel_price
+      fuel_price_electricity: transport_fuel_price_electricity
+      energy_supply_price: prices/prices_multivector_world

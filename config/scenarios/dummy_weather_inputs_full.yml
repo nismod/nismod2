@@ -34,8 +34,7 @@ variants:
   - name: es_dummy_weather_inputs_full
     description: ''
     data:
-      wind_speed_eh: ../energy_supply/scenarios/weather_dummy_full_eh.csv
-      wind_speed_bus: ../energy_supply/scenarios/weather_dummy_full_bus.csv
-      insolation_eh: ../energy_supply/scenarios/weather_dummy_full_eh.csv
-      insolation_bus: ../energy_supply/scenarios/weather_dummy_full_bus.csv
-
+      wind_speed_eh: ../energy_supply/scenarios/weather_dummy_full_eh
+      wind_speed_bus: ../energy_supply/scenarios/weather_dummy_full_bus
+      insolation_eh: ../energy_supply/scenarios/weather_dummy_full_eh
+      insolation_bus: ../energy_supply/scenarios/weather_dummy_full_bus

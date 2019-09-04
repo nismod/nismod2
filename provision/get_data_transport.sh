@@ -5,7 +5,7 @@ base_path=$1
 
 # Download full (Great Britain) data
 # Read model_version, remote_data, local_dir from config.ini
-source <(grep = <(grep -A3 "\[transport\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[transport\]" $base_path/provision/config.ini | tail -n3)"
 rm -rf $base_path/$local_dir/TR_data_full
 python $base_path/provision/get_data.py $remote_data $base_path/$local_dir
 mv $base_path/$local_dir/TR_data_full_for_release_$model_version $base_path/$local_dir/TR_data_full
@@ -15,7 +15,7 @@ mv $base_path/$local_dir/TR_data_full/full/data $base_path/$local_dir/gb/data
 
 
 # Download test (Southampton) data
-source <(grep = <(grep -A3 "\[transport-test\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[transport-test\]" $base_path/provision/config.ini | tail -n3)"
 python $base_path/provision/get_data.py $remote_data $base_path/$local_dir
 mv $base_path/$local_dir/transport_testdata_$model_version $base_path/$local_dir/transport_testdata
 rm -rf $base_path/$local_dir/southampton
@@ -43,3 +43,14 @@ python $base_path/utilities/transport/convert_transport_engine_fractions.py \
 python $base_path/utilities/transport/convert_transport_engine_fractions.py \
     $base_path/$local_dir/gb/data/csvfiles/engineTypeFractionsMVE.csv \
     $base_path/data/scenarios/engine_type_fractions_mve.csv
+
+
+# Download rail data
+source <(grep = <(grep -A3 "\[transport-rail\]" $base_path/provision/config.ini))
+python $base_path/provision/get_data.py $remote_data $base_path/$local_dir
+
+mv $base_path/$local_dir/transport-rail_$data_version/dimensions/*.csv $base_path/data/dimensions/
+mv $base_path/$local_dir/transport-rail_$data_version/initial_conditions/*.csv $base_path/data/initial_conditions/
+mv $base_path/$local_dir/transport-rail_$data_version/interventions/*.csv $base_path/data/interventions/
+mv $base_path/$local_dir/transport-rail_$data_version/parameters/*.csv $base_path/data/parameters/
+mv $base_path/$local_dir/transport-rail_$data_version/scenarios/*.csv $base_path/data/scenarios/

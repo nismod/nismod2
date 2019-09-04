@@ -1,0 +1,105 @@
+name: rail_southampton
+description: Transport rail model for Southampton and neighbouring LADs
+path: ./models/transport/run_rail_only.py
+classname: SouthamptonRailTransportWrapper
+inputs:
+  - name: population
+    dims:
+      - lad_southampton
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_southampton
+    unit: GBP
+    dtype: float
+  - name: day_usage
+    dims:
+      - NLC_southampton
+    unit: people
+    dtype: float
+  - name: year_usage
+    dims:
+      - NLC_southampton
+    unit: people
+    dtype: float
+  - name: rail_journey_fares
+    dims:
+      - NLC_southampton
+    unit: £
+    dtype: float
+  - name: rail_journey_times
+    dims:
+      - NLC_southampton_generalised
+    unit: h
+    dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_southampton
+    unit: £
+    dtype: float
+  - name: rail_trip_rates
+    dtype: float
+outputs:
+  - name: year_stations_usage
+    dims:
+      - NLC_southampton
+    unit: ppl
+    dtype: float
+  - name: day_stations_usage
+    dims:
+      - NLC_southampton
+    unit: ppl
+    dtype: float
+  - name: total_year_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: avg_year_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: total_day_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+  - name: avg_day_zonal_rail_demand
+    dims:
+      - lad_southampton
+    unit: ppl
+    dtype: float
+parameters:
+  - name: elasticities
+    dims:
+      - variables
+      - area
+    description: Population elasticity for passenger demand
+    dtype: float
+    default: default_rail_elasticities
+  - name: use_car_cost_from_road_model
+    description: Whether to use output of road model for car costs
+    dtype: bool
+    default: default_rail_flags
+  - name: predict_intermediate_rail_years
+    description: Wether to predict all years between base year and predicted year
+    dtype: bool
+    default: default_rail_flags
+  - name: base_year_year_demand
+    dims:
+      - NLC_gb
+    description: Station usage numbers for the base year
+    dtype: int
+    default: default_base_year_year_demand
+  - name: base_year_day_demand
+    dims:
+      - NLC_gb
+    description: Station usage numbers for the base year
+    dtype: float
+    default: default_base_year_day_demand
+interventions:
+  - transport_rail
+initial_conditions:
+  - base_year_railstations_soton

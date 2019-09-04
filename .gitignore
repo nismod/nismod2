@@ -38,7 +38,6 @@ smif.log
 *.xlsx
 
 # Vagrant provision install artifacts
-database
 .vagrant/
 smif/
 
@@ -148,9 +147,14 @@ provision/cache/*
 *.bak/*
 
 # Water supply
-models/water_supply/nodal
+models/water_supply/download
 models/water_supply/exe
+models/water_supply/nodal
+models/water_supply/repo
 
 # Ignore images
 *.png 
 *.jpg
+
+# Temporary files
+*~

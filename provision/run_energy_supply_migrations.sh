@@ -11,10 +11,10 @@ base_path=$1
 minimal_or_full=$2
 
 # Read dbname, host, user, password, port from dbconfig.ini
-source <(grep = <(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini))
+eval "$(grep -A5 "\[energy-supply\]" $base_path/provision/dbconfig.ini | tail -n5)"
 
 # Read model_version, remote_data, local_dir from config.ini
-source <(grep = <(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[energy-supply\]" $base_path/provision/config.ini | tail -n3)"
 
 MODEL_DIR=$base_path/install
 DATA_DIR=$base_path/$local_dir

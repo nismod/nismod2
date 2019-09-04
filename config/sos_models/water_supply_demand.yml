@@ -1,0 +1,48 @@
+name: water_supply_demand
+description: Future water supply and demand for UK
+sector_models:
+- water_supply
+- water_demand
+scenarios:
+- water_demand_predicted  # Needed as input for water demand
+- reservoir_levels  # Needed as initial input to water_supply
+narratives: []
+scenario_dependencies:
+- source: reservoir_levels
+  source_output: reservoir_levels
+  sink: water_supply
+  sink_input: reservoir_levels
+- source: water_supply_data
+  source_output: flows_data
+  sink: water_supply
+  sink_input: flows_data
+- source: water_supply_data
+  source_output: irrigations_data
+  sink: water_supply
+  sink_input: irrigations_data
+- source: water_supply_data
+  source_output: borehole_data
+  sink: water_supply
+  sink_input: borehole_data
+- source: water_demand_predicted
+  source_output: population
+  sink: water_demand
+  sink_input: population
+- source: water_demand_predicted
+  source_output: constant_water_demand
+  sink: water_demand
+  sink_input: constant_water_demand
+- source: water_demand_predicted
+  source_output: per_capita_water_demand
+  sink: water_demand
+  sink_input: per_capita_water_demand
+model_dependencies:
+- source: water_demand
+  source_output: water_demand
+  sink: water_supply
+  sink_input: water_demand
+- source: water_supply
+  source_output: reservoir_levels
+  sink: water_supply
+  sink_input: reservoir_levels
+  timestep: PREVIOUS  # dependency on own outputs from previous timestep

@@ -8,4 +8,4 @@ variants:
   - name: default
     description: Test data for transport base year
     data:
-      link_travel_time: link_travel_time.csv
+      link_travel_time: link_travel_time

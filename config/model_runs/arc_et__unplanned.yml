@@ -1,7 +1,7 @@
 name: arc_et__unplanned
 stamp: '2019-05-14'
 description: Arc Energy-Transport Unplanned
-sos_model: energy_transport
+sos_model: energy_transport_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: arc_unplanned
@@ -14,13 +14,25 @@ scenarios:
   elec_interconnector_prices: average_annual_prices
 narratives:
   operation_mode:
-  - decentral
+  - central
   virtual_dw_stock:
   - load_in_directly
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
 strategies:
   - type: pre-specified-planning
     description: 'A multi-vector world, decentralised operation'
-    filename: ../energy_supply/strategies/multi_vector.csv
+    filename: ../energy_supply/strategies/multi_vector
     model_name: energy_supply_constrained
 timesteps:
   - 2015

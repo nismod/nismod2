@@ -1,0 +1,643 @@
+name: energy_transport-unconstrained_corrected
+description: A full version of the energy-transport system-of-systems model, with energy
+  models in unconstrained/optimised heat technology mode + energy demand correction applied
+sector_models:
+  - energy_demand_unconstrained
+  - apply_energy_correction_factors_unconstrained
+  - aggregate_energy_optimised
+  - convert_regions_ed_to_es_optimised
+  - convert_intervals_ed_to_es_optimised
+  - convert_units_ed_to_es_optimised
+  - remap_gas
+  - extract_gb_scenarios
+  - transport
+  - et_module
+  - convert_regions_tr_to_es
+  - convert_intervals_tr_to_es
+  - convert_units_tr_to_es
+  - energy_supply_optimised
+scenarios:
+  - fuel_price
+  - socio-economic
+  - temperature
+  - link_travel_time
+  - engine_type_fractions
+  - dummy_weather_inputs_full
+  - biomass_waste_to_energy
+  - elec_interconnector_prices
+model_dependencies:
+  # from energy demand to apply correction
+  - source: energy_demand_unconstrained
+    source_output: residential_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_gas
+  - source: energy_demand_unconstrained
+    source_output: residential_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: residential_electricity
+  - source: energy_demand_unconstrained
+    source_output: service_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_gas
+  - source: energy_demand_unconstrained
+    source_output: service_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: service_electricity
+  - source: energy_demand_unconstrained
+    source_output: industry_gas
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_gas
+  - source: energy_demand_unconstrained
+    source_output: industry_electricity
+    sink: apply_energy_correction_factors_unconstrained
+    sink_input: industry_electricity
+  # from energy demand to aggregation
+  - source: energy_demand_unconstrained
+    source_output: residential_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: residential_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: service_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: service_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: industry_hydrogen
+    sink: aggregate_energy_optimised
+    sink_input: industry_hydrogen
+  - source: energy_demand_unconstrained
+    source_output: service_heat
+    sink: aggregate_energy_optimised
+    sink_input: service_heat
+  - source: energy_demand_unconstrained
+    source_output: industry_heat
+    sink: aggregate_energy_optimised
+    sink_input: industry_heat
+  - source: energy_demand_unconstrained
+    source_output: industry_oil
+    sink: aggregate_energy_optimised
+    sink_input: industry_oil
+  - source: energy_demand_unconstrained
+    source_output: service_oil
+    sink: aggregate_energy_optimised
+    sink_input: service_oil
+  - source: energy_demand_unconstrained
+    source_output: residential_oil
+    sink: aggregate_energy_optimised
+    sink_input: residential_oil
+  - source: energy_demand_unconstrained
+    source_output: industry_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: industry_solid_fuel
+  - source: energy_demand_unconstrained
+    source_output: service_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: service_solid_fuel
+  - source: energy_demand_unconstrained
+    source_output: residential_solid_fuel
+    sink: aggregate_energy_optimised
+    sink_input: residential_solid_fuel
+  # from apply correction to region conversion
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: residential_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: residential_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: service_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_gas
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: gasload
+  - source: apply_energy_correction_factors_unconstrained
+    source_output: industry_electricity
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: elecload
+  # from energy demand to region conversion
+  - source: energy_demand_unconstrained
+    source_output: residential_heat
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: heatload_res
+  # from aggregation to region conversion
+  - source: aggregate_energy_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: aggregate_energy_optimised
+    source_output: heatload_com
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: heatload_com
+  - source: aggregate_energy_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: aggregate_energy_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_regions_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
+  # from region conversion to interval conversion
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: heatload_res
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: heatload_res
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: heatload_com
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: heatload_com
+  - source: convert_regions_ed_to_es_optimised
+    source_output: gasload
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: gasload
+  - source: convert_regions_ed_to_es_optimised
+    source_output: elecload
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: elecload
+  - source: convert_regions_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: convert_regions_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_regions_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_intervals_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
+  # from interval conversion to unit conversion
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: heatload_res
+    sink: convert_units_ed_to_es_optimised
+    sink_input: heatload_res
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: heatload_com
+    sink: convert_units_ed_to_es_optimised
+    sink_input: heatload_com
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: gasload
+    sink: convert_units_ed_to_es_optimised
+    sink_input: gasload
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: elecload
+    sink: convert_units_ed_to_es_optimised
+    sink_input: elecload
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_intervals_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_units_ed_to_es_optimised
+    sink_input: solid_fuel_non_heat_eh
+  # from unit conversion to remap gas nodes
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload
+    sink: remap_gas
+    sink_input: gasload
+  # remap gas nodes to energy supply
+  - source: remap_gas
+    source_output: gasload
+    sink: energy_supply_optimised
+    sink_input: gasload
+  # from unit conversion to energy supply
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload
+    sink: energy_supply_optimised
+    sink_input: elecload
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload_non_heat_res
+    sink: energy_supply_optimised
+    sink_input: gasload_non_heat_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload_non_heat_res
+    sink: energy_supply_optimised
+    sink_input: elecload_non_heat_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: gasload_non_heat_com
+    sink: energy_supply_optimised
+    sink_input: gasload_non_heat_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: elecload_non_heat_com
+    sink: energy_supply_optimised
+    sink_input: elecload_non_heat_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: hydrogen_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: hydrogen_non_heat_eh
+  - source: convert_units_ed_to_es_optimised
+    source_output: heatload_res
+    sink: energy_supply_optimised
+    sink_input: heatload_res
+  - source: convert_units_ed_to_es_optimised
+    source_output: heatload_com
+    sink: energy_supply_optimised
+    sink_input: heatload_com
+  - source: convert_units_ed_to_es_optimised
+    source_output: oil_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: oil_non_heat_eh
+  - source: convert_units_ed_to_es_optimised
+    source_output: solid_fuel_non_heat_eh
+    sink: energy_supply_optimised
+    sink_input: solid_fuel_non_heat_eh
+  # extract for transport
+  - source: extract_gb_scenarios
+    source_output: population
+    sink: transport
+    sink_input: population
+  - source: extract_gb_scenarios
+    source_output: gva
+    sink: transport
+    sink_input: gva
+  # from transport to et_module
+  - source: transport
+    source_output: electric_vehicle_trip_starts
+    sink: et_module
+    sink_input: ev_trips
+  - source: transport
+    source_output: electric_vehicle_electricity_consumption
+    sink: et_module
+    sink_input: ev_electricity
+  # from et_module to region conv to unit conv to energy supply
+  - source: et_module
+    source_output: v2g_g2v_capacity
+    sink: convert_regions_tr_to_es
+    sink_input: v2g_g2v_capacity
+  - source: convert_regions_tr_to_es
+    source_output: v2g_g2v_capacity
+    sink: convert_units_tr_to_es
+    sink_input: v2g_g2v_capacity
+  - source: convert_units_tr_to_es
+    source_output: v2g_g2v_capacity
+    sink: energy_supply_optimised
+    sink_input: EV_Cap
+  # from transport to region conv to interval conv to unit conv to energy supply
+  - source: transport
+    source_output: electric_vehicle_electricity_consumption
+    sink: convert_regions_tr_to_es
+    sink_input: electric_vehicle_electricity_consumption
+  - source: convert_regions_tr_to_es
+    source_output: electric_vehicle_electricity_consumption
+    sink: convert_intervals_tr_to_es
+    sink_input: electric_vehicle_electricity_consumption
+  - source: convert_intervals_tr_to_es
+    source_output: electric_vehicle_electricity_consumption
+    sink: convert_units_tr_to_es
+    sink_input: electric_vehicle_electricity_consumption
+  - source: convert_units_tr_to_es
+    source_output: electric_vehicle_electricity_consumption
+    sink: energy_supply_optimised
+    sink_input: elec_trans
+  # from transport PREVIOUS to transport
+  - source: transport
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+    timestep: PREVIOUS
+scenario_dependencies:
+  - sink: energy_demand_unconstrained
+    sink_input: floor_area
+    source: socio-economic
+    source_output: floor_area
+  - source: fuel_price
+    source_output: fuel_price
+    sink: transport
+    sink_input: fuel_price
+  - source: fuel_price
+    source_output: fuel_price_electricity
+    sink: transport
+    sink_input: fuel_price_electricity
+  - source: fuel_price
+    source_output: energy_supply_price
+    sink: energy_supply_optimised
+    sink_input: fuel_price
+  - source: socio-economic
+    source_output: gva_per_head
+    sink: energy_demand_unconstrained
+    sink_input: gva_per_head
+  - source: socio-economic
+    source_output: gva_per_sector
+    sink: energy_demand_unconstrained
+    sink_input: gva_per_sector
+  - source: socio-economic
+    source_output: gva_per_head
+    sink: extract_gb_scenarios
+    sink_input: gva
+  - source: link_travel_time
+    source_output: link_travel_time
+    sink: transport
+    sink_input: link_travel_time
+  - source: engine_type_fractions
+    source_output: engine_type_fractions
+    sink: transport
+    sink_input: engine_type_fractions
+  - source: socio-economic
+    source_output: population
+    sink: energy_demand_unconstrained
+    sink_input: population
+  - source: socio-economic
+    source_output: population
+    sink: extract_gb_scenarios
+    sink_input: population
+  - source: temperature
+    source_output: t_min
+    sink: energy_demand_unconstrained
+    sink_input: t_min
+  - source: temperature
+    source_output: t_max
+    sink: energy_demand_unconstrained
+    sink_input: t_max
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_eh
+    sink: energy_supply_optimised
+    sink_input: wind_speed_eh
+  - source: dummy_weather_inputs_full
+    source_output: wind_speed_bus
+    sink: energy_supply_optimised
+    sink_input: wind_speed_bus
+  - source: dummy_weather_inputs_full
+    source_output: insolation_eh
+    sink: energy_supply_optimised
+    sink_input: insolation_eh
+  - source: dummy_weather_inputs_full
+    source_output: insolation_bus
+    sink: energy_supply_optimised
+    sink_input: insolation_bus
+  - source: biomass_waste_to_energy
+    source_output: biomass_feedstock
+    sink: energy_supply_optimised
+    sink_input: biomass_feedstock
+  - source: biomass_waste_to_energy
+    source_output: municipal_waste
+    sink: energy_supply_optimised
+    sink_input: municipal_waste
+  - source: elec_interconnector_prices
+    source_output: elec_int
+    sink: energy_supply_optimised
+    sink_input: elec_int
+narratives:
+  - name: load_shedding
+    description: Costs of shedding load
+    provides:
+      energy_supply_toy:
+      - LoadShed_elec
+      - LoadShed_gas
+    variants:
+      - name: high_cost
+        description: very high cost load shedding
+        data:
+          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
+          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+  - name: operation_mode
+    description: operation mode for energy supply system
+    provides:
+      energy_supply_optimised:
+      - operation_mode
+    variants:
+      - name: decentral
+        decription: decentralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+      - name: central
+        decription: centralised operating mode
+        data:
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+  - name: virtual_dw_stock
+    description: Virutal dwelling stock mode
+    variants:
+      - name: load_in_directly
+        description: Loads in floor area directly
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_false.csv      
+      - name: virtual_stock
+        description: Creates virtual stock
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_true.csv
+  - name: air_leakage
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - air_leakage
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          air_leakage: ../energy_demand/narratives/air_leakage__central.csv
+  - name: assump_diff_floorarea_pp
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - assump_diff_floorarea_pp
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          assump_diff_floorarea_pp: ../energy_demand/narratives/assump_diff_floorarea_pp__central.csv
+  - name: cooled_floorarea
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - cooled_floorarea
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          cooled_floorarea: ../energy_demand/narratives/cooled_floorarea__central.csv
+  - name: dm_improvement
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - dm_improvement
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          dm_improvement: ../energy_demand/narratives/dm_improvement__central.csv
+  - name: f_eff_achieved
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - f_eff_achieved
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__central.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__electric_world.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world.csv
+  - name: generic_enduse_change
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - generic_enduse_change
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central.csv
+      - name: electric_world
+        description: Electirc world assumptions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__electric_world.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world.csv
+  - name: heat_recovered
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+      - heat_recovered
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          heat_recovered: ../energy_demand/narratives/heat_recovered__central.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          heat_recovered: ../energy_demand/narratives/heat_recovered__electric_world.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          heat_recovered: ../energy_demand/narratives/heat_recovered__multivector_world.csv
+  - name: t_base_heating
+    description: Change in heating
+    provides:
+      energy_demand_unconstrained:
+        - rs_t_base_heating
+        - ss_t_base_heating
+        - is_t_base_heating
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__central.csv
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__central.csv
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central.csv
+      - name: electric_world
+        description: Electric world assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world.csv
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world.csv
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world.csv
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world.csv
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world.csv
+  - name: p_cold_rolling_steel
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+        - p_cold_rolling_steel
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          p_cold_rolling_steel: ../energy_demand/narratives/p_cold_rolling_steel__central.csv
+  - name: smart_meter_p
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+        - smart_meter_p
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__central.csv
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector_world.csv
+      - name: electric_world
+        description: Central assumptions
+        data:
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__electric_world.csv
+  - name: generic_fuel_switch
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+        - generic_fuel_switch
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector_world.csv
+      - name: electric_world
+        description: Electirc world assumptions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world.csv
+  - name: switches_service
+    description: ''
+    provides:
+      energy_demand_unconstrained:
+        - switches_service
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__central.csv
+      - name: electric_world
+        description: Electric world assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__electric_world.csv
+      - name: multivector_world
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__multivector_world.csv

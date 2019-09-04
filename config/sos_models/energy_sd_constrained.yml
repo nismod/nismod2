@@ -24,6 +24,18 @@ model_dependencies:
     sink: aggregate_energy_constrained
     sink_input: industry_biomass_district_heating_biomass
   - source: energy_demand_constrained
+    source_output: industry_biomass_boiler_biomass
+    sink: aggregate_energy_constrained
+    sink_input: industry_biomass_boiler_biomass
+  - source: energy_demand_constrained
+    source_output: industry_oil_boiler_oil
+    sink: aggregate_energy_constrained
+    sink_input: industry_oil_boiler_oil
+  - source: energy_demand_constrained
+    source_output: industry_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_oil_non_heating
+  - source: energy_demand_constrained
     source_output: industry_electricity_boiler_electricity
     sink: aggregate_energy_constrained
     sink_input: industry_electricity_boiler_electricity
@@ -124,6 +136,10 @@ model_dependencies:
     sink: aggregate_energy_constrained
     sink_input: residential_oil_boiler_oil
   - source: energy_demand_constrained
+    source_output: residential_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: residential_oil_non_heating
+  - source: energy_demand_constrained
     source_output: service_biomass_boiler_biomass
     sink: aggregate_energy_constrained
     sink_input: service_biomass_boiler_biomass
@@ -175,6 +191,34 @@ model_dependencies:
     source_output: service_oil_boiler_oil
     sink: aggregate_energy_constrained
     sink_input: service_oil_boiler_oil
+  - source: energy_demand_constrained
+    source_output: service_oil_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: service_oil_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: industry_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: residential_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: residential_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: service_solid_fuel_non_heating
+    sink: aggregate_energy_constrained
+    sink_input: service_solid_fuel_non_heating
+  - source: energy_demand_constrained
+    source_output: industry_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: industry_solid_fuel_boiler_solid_fuel
+  - source: energy_demand_constrained
+    source_output: residential_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: residential_solid_fuel_boiler_solid_fuel
+  - source: energy_demand_constrained
+    source_output: service_solid_fuel_boiler_solid_fuel
+    sink: aggregate_energy_constrained
+    sink_input: service_solid_fuel_boiler_solid_fuel
   # from energy demand to region conversion
   - source: energy_demand_constrained
     source_output: residential_electricity_non_heating
@@ -249,6 +293,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_regions_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: aggregate_energy_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_regions_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from region conversion to interval conversion
   - source: convert_regions_ed_to_es_constrained
     source_output: elecload_non_heat_res
@@ -322,6 +378,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_intervals_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_regions_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_intervals_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from interval conversion to unit conversion
   - source: convert_intervals_ed_to_es_constrained
     source_output: elecload_non_heat_res
@@ -395,6 +463,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: convert_units_ed_to_es_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: convert_units_ed_to_es_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: convert_units_ed_to_es_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_intervals_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: convert_units_ed_to_es_constrained
+    sink_input: building_solidfuel_boiler
   # from unit conversion to remap gas nodes
   - source: convert_units_ed_to_es_constrained
     source_output: gasload
@@ -474,6 +554,18 @@ model_dependencies:
     source_output: hydrogen_non_heat_eh
     sink: energy_supply_constrained
     sink_input: hydrogen_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: oil_non_heat_eh
+    sink: energy_supply_constrained
+    sink_input: oil_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: solid_fuel_non_heat_eh
+    sink: energy_supply_constrained
+    sink_input: solid_fuel_non_heat_eh
+  - source: convert_units_ed_to_es_constrained
+    source_output: building_solidfuel_boiler
+    sink: energy_supply_constrained
+    sink_input: building_solidfuel_boiler
 scenario_dependencies:
   - sink: energy_demand_constrained
     sink_input: floor_area
@@ -543,15 +635,15 @@ narratives:
   - name: load_shedding
     description: Costs of shedding load
     provides:
-      energy_supply_toy:
+      energy_supply_constrained:
       - LoadShed_elec
       - LoadShed_gas
     variants:
       - name: high_cost
         description: very high cost load shedding
         data:
-          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed.csv
-          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed.csv
+          LoadShed_elec: ../../data/energy_supply/narratives/high_load_shed
+          LoadShed_gas: ../../data/energy_supply/narratives/high_load_shed
   - name: operation_mode
     description: operation mode for energy supply system
     provides:
@@ -561,11 +653,11 @@ narratives:
       - name: decentral
         decription: decentralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_decentral
       - name: central
         decription: centralised operating mode
         data:
-          operation_mode: ../../data/energy_supply/parameters/op_mode_central.csv
+          operation_mode: ../../data/energy_supply/parameters/op_mode_central
   - name: air_leakage
     description: ''
     provides:
@@ -575,7 +667,7 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          air_leakage: ../energy_demand/narratives/air_leakage__central.csv
+          air_leakage: ../energy_demand/narratives/air_leakage__central
   - name: assump_diff_floorarea_pp
     description: ''
     provides:
@@ -585,7 +677,7 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          assump_diff_floorarea_pp: ../energy_demand/narratives/assump_diff_floorarea_pp__central.csv
+          assump_diff_floorarea_pp: ../energy_demand/narratives/assump_diff_floorarea_pp__central
   - name: cooled_floorarea
     description: ''
     provides:
@@ -595,7 +687,7 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          cooled_floorarea: ../energy_demand/narratives/cooled_floorarea__central.csv
+          cooled_floorarea: ../energy_demand/narratives/cooled_floorarea__central
   - name: dm_improvement
     description: ''
     provides:
@@ -605,7 +697,7 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          dm_improvement: ../energy_demand/narratives/dm_improvement__central.csv
+          dm_improvement: ../energy_demand/narratives/dm_improvement__central
   - name: f_eff_achieved
     description: ''
     provides:
@@ -615,15 +707,15 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__central.csv
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__central
       - name: electric_world
         description: Central assumptions
         data:
-          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__electric_world.csv
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__electric_world
       - name: multivector_world
         description: Central assumptions
         data:
-          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world.csv
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world
   - name: generic_enduse_change
     description: ''
     provides:
@@ -633,15 +725,15 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central.csv
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__central
       - name: electric_world
         description: Electirc world assumptions
         data:
-          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__electric_world.csv
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__electric_world
       - name: multivector_world
         description: Multivector assumptions
         data:
-          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world.csv
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world
   - name: heat_recovered
     description: ''
     provides:
@@ -651,15 +743,15 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          heat_recovered: ../energy_demand/narratives/heat_recovered__central.csv
+          heat_recovered: ../energy_demand/narratives/heat_recovered__central
       - name: electric_world
         description: Central assumptions
         data:
-          heat_recovered: ../energy_demand/narratives/heat_recovered__electric_world.csv
+          heat_recovered: ../energy_demand/narratives/heat_recovered__electric_world
       - name: multivector_world
         description: Central assumptions
         data:
-          heat_recovered: ../energy_demand/narratives/heat_recovered__multivector_world.csv
+          heat_recovered: ../energy_demand/narratives/heat_recovered__multivector_world
   - name: t_base_heating
     description: Change in heating
     provides:
@@ -671,21 +763,21 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__central.csv
-          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__central.csv
-          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central.csv
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__central
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__central
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central
       - name: electric_world
         description: Electric world assumptions
         data:
-          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world.csv
-          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world.csv
-          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world.csv
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world
       - name: multivector_world
         description: Central assumptions
         data:
-          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world.csv
-          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world.csv
-          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world.csv
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world
   - name: p_cold_rolling_steel
     description: ''
     provides:
@@ -695,7 +787,7 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          p_cold_rolling_steel: ../energy_demand/narratives/p_cold_rolling_steel__central.csv
+          p_cold_rolling_steel: ../energy_demand/narratives/p_cold_rolling_steel__central
   - name: smart_meter_p
     description: ''
     provides:
@@ -705,15 +797,15 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          smart_meter_p: ../energy_demand/narratives/smart_meter_p__central.csv
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__central
       - name: multivector_world
         description: Central assumptions
         data:
-          smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector_world.csv
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__multivector_world
       - name: electric_world
         description: Central assumptions
         data:
-          smart_meter_p: ../energy_demand/narratives/smart_meter_p__electric_world.csv
+          smart_meter_p: ../energy_demand/narratives/smart_meter_p__electric_world
   - name: generic_fuel_switch
     description: ''
     provides:
@@ -723,15 +815,15 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central.csv
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__central
       - name: multivector_world
         description: Multivector assumptions
         data:
-          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector_world.csv
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__multivector_world
       - name: electric_world
         description: Electirc world assumptions
         data:
-          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world.csv
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world
   - name: switches_service
     description: ''
     provides:
@@ -741,12 +833,12 @@ narratives:
       - name: central_narrative
         description: Central assumptions
         data:
-          switches_service: ../energy_demand/narratives/switches_service__central.csv
+          switches_service: ../energy_demand/narratives/switches_service__central
       - name: electric_world
         description: Electric world assumptions
         data:
-          switches_service: ../energy_demand/narratives/switches_service__electric_world.csv
+          switches_service: ../energy_demand/narratives/switches_service__electric_world
       - name: multivector_world
         description: Multivector assumptions
         data:
-          switches_service: ../energy_demand/narratives/switches_service__multivector_world.csv
+          switches_service: ../energy_demand/narratives/switches_service__multivector_world

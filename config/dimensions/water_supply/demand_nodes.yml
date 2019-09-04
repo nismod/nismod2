@@ -1,0 +1,3 @@
+name: demand_nodes
+description: Names of water supply demand nodes
+elements: water_supply/demand_nodes.csv

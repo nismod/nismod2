@@ -230,6 +230,7 @@ bash ./provision/get_data_energy_demand.sh .
 bash ./provision/get_data_energy_supply.sh .
 bash ./provision/get_data_transport.sh .
 bash ./provision/get_data_water_supply.sh .
+bash ./provision/get_data_water_demand.sh .
 ```
 
 ### Install models
@@ -302,6 +303,25 @@ logout               # log out of the virtual machine (or shortcut: CTRL+D)
 ```
 
 Then results are written to subfolders within the `results` directory.
+
+
+### Running NISMOD with smif binary (parquet) store
+
+Parquet files are smaller, typed and faster to read and write than CSV.
+
+Run smif `csv2parquet` converter after getting data and installing models, or after updates.
+
+```bash
+smif csv2parquet --noclobber data
+```
+
+Then run model-runs using the `local_binary` interface. smif will read and write parquet
+files.
+
+```bash
+smif run et_module_test --interface local_binary
+```
+
 
 ### Updating
 
