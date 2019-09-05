@@ -341,7 +341,7 @@ class WaterWrapper(SectorModel):
         ---------
         sysfile : str
             Path to the sysfile ('National_Model.wat')
-        
+
         year_now: int
             The year to be simulated
 
@@ -522,7 +522,17 @@ class WaterWrapper(SectorModel):
             sep=',',
         )
 
-        coord_names_from_smif = np.array([x['name'] for x in demand_data.dim_coords('water_resource_zones').elements])
+        # reorder alphabetically, then append particular set (following WRZ_DI_DO.csv order)
+        smif_demand_df = demand_data.as_df().reset_index().sort_values('water_resource_zones')
+        to_append = ['SEWCUS','Tywi CUS','Alwen','Ross Bulk Supply']
+        dfs = []
+        dfs.append(smif_demand_df[~smif_demand_df.water_resource_zones.isin(to_append)])
+        for name in to_append:
+            dfs.append(smif_demand_df[smif_demand_df.water_resource_zones == name])
+        smif_demand_df = pd.concat(dfs)
+
+        # Check names and order
+        coord_names_from_smif = smif_demand_df.water_resource_zones
         coord_names_in_csv = np.array(public_df['WRZ Name'])
 
         if len(coord_names_from_smif) != len(coord_names_in_csv):
@@ -541,7 +551,7 @@ class WaterWrapper(SectorModel):
                 )
 
         # Inject the new demand data, and create a new CSV file
-        public_df['Distribution Input'] = demand_data.data
+        public_df['Distribution Input'] = smif_demand_df.water_demand
         assert np.array_equal(demand_data.data, public_df['Distribution Input'])
 
         public_df.to_csv(path_or_buf=new_public_file, sep=',', header=True, index=False)

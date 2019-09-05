@@ -1,8 +1,8 @@
 name: water_demand
 description: Future water demand for UK, from LAD population projections
 sector_models:
-  - water_demand
   - convert_population_lad_to_wrz
+  - water_demand
 scenarios:
   - socio-economic
   - water_demand_projections
