@@ -3,9 +3,11 @@ stamp: '2017-11-07T14:15:00+00:00'
 description: Run energy demand for baseline population scenario
 sos_model: energy_demand_unconstrained
 scenarios:
-  socio-economic: itrc_baseline16
+  socio-economic: arc_baseline
   temperature: NF1
-narratives: {}
+narratives:
+  generic_enduse_change:
+    - multivector_world
 decision_module: ''
 strategies: {}
 timesteps:
