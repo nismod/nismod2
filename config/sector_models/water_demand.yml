@@ -2,28 +2,28 @@ classname: WaterDemandWrapper
 description: Water demand model
 initial_conditions: []
 inputs:
-- name: population
-  dims:
-  - water_resource_zones
-  dtype: float
-  unit: thousands of people
-- name: constant_water_demand
-  dims:
-  - water_resource_zones
-  dtype: float
-  unit: Ml/day
-- name: per_capita_water_demand
-  dims:
-  - water_resource_zones
-  dtype: float
-  unit: Ml/(thousand people)/day
+  - name: population
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: people
+  - name: constant_water_demand
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: Ml/day
+  - name: per_capita_water_demand
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: Ml/person/day
 interventions: []
 name: water_demand
 outputs:
-- name: water_demand
-  dims:
-  - water_resource_zones
-  dtype: float
-  unit: Ml/day
+  - name: water_demand
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: Ml/day
 parameters: []
 path: models/water_demand/run.py

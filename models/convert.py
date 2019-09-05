@@ -22,3 +22,8 @@ class ConvertHourlyToSeasonalWeek(IntervalAdaptor):
 class ConvertLADtoPostcodeSector(RegionAdaptor):
     """Convert LAD to Postcode Sector for digital from scenarios
     """
+
+
+class ConvertPopulationLadToWRZ(RegionAdaptor):
+    """Convert LAD to Water Resource Zone for water from scenarios
+    """

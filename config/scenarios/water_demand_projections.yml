@@ -1,0 +1,21 @@
+name: water_demand_projections
+description: Constant and per-capita water demand for water resource zones
+provides:
+  - name: constant_water_demand
+    description: Constant demand for each water resource zone
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: Ml/day
+  - name: per_capita_water_demand
+    description: Demand per thousand people for each water resource zone
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: Ml/person/day
+variants:
+  - name: baseline
+    description: Constant and per-capita water demand for water resource zones, 2020-2044
+    data:
+      constant_water_demand: water_demand/constant_water_demand
+      per_capita_water_demand: water_demand/per_capita_water_demand
