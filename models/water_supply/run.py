@@ -84,19 +84,13 @@ class WaterWrapper(SectorModel):
             wathnet,
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
-            '-output=RAGDS',
+            '-output=RGDS',
+            '-save',
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
-        # and with (for instance) '_arcFlow.csv' added.
-        #   e.g. `modified_model_arcFlow.csv`
-        arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
-        assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
-        data_handle.set_results(
-            'water_supply_arc_flows',
-            self.extract_wathnet_output(output_file=arc_flows, spec=self.outputs['water_supply_arc_flows'])
-        )
-
+        # and with (for instance) '_reservoirEndVolume.csv' added.
+        #   e.g. `modified_model_reservoirEndVolume.csv`
         res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols)), "Expected to find water supply reservoir results at {}".format(res_vols)
         data_handle.set_results(
@@ -341,7 +335,7 @@ class WaterWrapper(SectorModel):
         ---------
         sysfile : str
             Path to the sysfile ('National_Model.wat')
-        
+
         year_now: int
             The year to be simulated
 
@@ -515,36 +509,27 @@ class WaterWrapper(SectorModel):
 
         new_public_file = public_file + ".NEW_DEMANDS"
 
-        # Read the existing CSV using Pandas, and as a sanity check assert it is written
-        # back out identically (to ensure nothing has gone wrong reading the file)
+        # Read template file
         public_df = pd.read_csv(
             public_file,
             sep=',',
         )
 
-        coord_names_from_smif = np.array([x['name'] for x in demand_data.dim_coords('water_resource_zones').elements])
-        coord_names_in_csv = np.array(public_df['WRZ Name'])
+        # Merge, replacing values for 'Distribution Input'
+        smif_demand_df = demand_data.as_df().reset_index()
 
-        if len(coord_names_from_smif) != len(coord_names_in_csv):
-            raise ValueError(
-                'Expected the calculated water demand from water demand model to have to have the same coordinates as'
-                ' the "WRZ Name" column in the public file (WRZ_DI_DO.csv). But, they have different lengths ({} and'
-                ' {})'.format(len(coord_names_from_smif), len(coord_names_in_csv))
-            )
+        public_df = public_df.merge(
+            smif_demand_df,
+            left_on='WRZ Name',
+            right_on='water_resource_zones',
+            validate='one_to_one'
+        ).drop(
+            ['Distribution Input', 'water_resource_zones'], axis=1
+        ).rename(columns={
+            'water_demand': 'Distribution Input'
+        })
 
-        for x, y in zip(coord_names_from_smif, coord_names_in_csv):
-            if x != y and 'Nottinghamshire' not in x:  # hack, as Nottinghamshire.1 and Nottinghamshire.2 from smif
-                raise ValueError(
-                    'Expected the calculated water demand from water demand model to have to have the same coordinates'
-                    ' as the "WRZ Name" column in the public file (WRZ_DI_DO.csv). Instead, found non-matching'
-                    ' coordinates ({} <=> {})'.format(x, y)
-                )
-
-        # Inject the new demand data, and create a new CSV file
-        public_df['Distribution Input'] = demand_data.data
-        assert np.array_equal(demand_data.data, public_df['Distribution Input'])
-
-        public_df.to_csv(path_or_buf=new_public_file, sep=',', header=True, index=False)
+        public_df.to_csv(new_public_file, index=False)
         assert os.path.isfile(new_public_file)
 
         return new_public_file
