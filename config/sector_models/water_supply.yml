@@ -46,12 +46,6 @@ outputs:
       - water_supply/reservoir_names
     dtype: float
     unit: Ml
-  - name: water_supply_arc_flows
-    dims:
-      - water_supply/days_into_year
-      - water_supply/arc_names
-    dtype: float
-    unit: Ml/day
   - name: water_supply_global_variables
     dims:
       - water_supply/days_into_year

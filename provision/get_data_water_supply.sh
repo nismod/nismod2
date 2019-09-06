@@ -28,7 +28,6 @@ mv "${download_dir}"/installed_data/missing_data.csv "${nodal_dir}"
 mv "${download_dir}"/installed_data/WRZ_DI_DO.csv "${nodal_dir}"
 
 # Move all dimension definitions
-mv "${download_dir}"/dimensions/arc_names.csv "${dim_dir}"
 mv "${download_dir}"/dimensions/borehole_names.csv "${dim_dir}"
 mv "${download_dir}"/dimensions/cams_names.csv "${dim_dir}"
 mv "${download_dir}"/dimensions/days_into_year.csv "${dim_dir}"

@@ -84,19 +84,12 @@ class WaterWrapper(SectorModel):
             wathnet,
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
-            '-output=RAGDS',
+            '-output=RGDS',
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
-        # and with (for instance) '_arcFlow.csv' added.
-        #   e.g. `modified_model_arcFlow.csv`
-        arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
-        assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
-        data_handle.set_results(
-            'water_supply_arc_flows',
-            self.extract_wathnet_output(output_file=arc_flows, spec=self.outputs['water_supply_arc_flows'])
-        )
-
+        # and with (for instance) '_reservoirEndVolume.csv' added.
+        #   e.g. `modified_model_reservoirEndVolume.csv`
         res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols)), "Expected to find water supply reservoir results at {}".format(res_vols)
         data_handle.set_results(
