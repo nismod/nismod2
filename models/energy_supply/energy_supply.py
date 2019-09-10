@@ -869,6 +869,8 @@ def build_gas_terminals(gas_terminals, current_timestep):
     LNGCapacity        | double precision       |
     InterCapacity      | double precision       |
     DomCapacity        | double precision       |
+    DomSupp            | integer                |
+    InterSupp          | integer                |
 
     """
     conn = establish_connection()
@@ -881,8 +883,8 @@ def build_gas_terminals(gas_terminals, current_timestep):
         sql = """
         INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode",
             "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity",
-            "DomCapacity")
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            "DomCapacity","DomSupp","InterSupp")
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         data = (terminal_num + 1,
@@ -893,7 +895,9 @@ def build_gas_terminals(gas_terminals, current_timestep):
                 terminal['capacity']['value'],
                 terminal['lngcapacity'],
                 terminal['intercapacity'],
-                terminal['domcapacity']
+                terminal['domcapacity'],
+                terminal['domestic_supply_source'],
+                terminal['import_supply_source']
                 )
 
         cur.execute(sql, data)
