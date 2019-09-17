@@ -403,6 +403,24 @@ narratives:
         decription: centralised operating mode
         data:
           operation_mode: ../../data/energy_supply/parameters/op_mode_central
+  - name: heat_supply_strategy
+    description: heat supply strategy for operation
+    provides:
+      energy_supply_optimised:
+      - heat_supply_strategy
+    variants:
+      - name: full_electric
+        decription: full electric heating
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_fullelectric
+      - name: heat_networks
+        decription: heat network domination for heating
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_heatnetworks
+      - name: green_gas
+        decription: green gas mixture for heat supply
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
