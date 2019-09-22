@@ -785,3 +785,33 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: ev_v2g
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_g2v
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: ev_charging
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_h2_blend_vol
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: mcm
+    dtype: float
+  - name: eh_biogas_blend_vol
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
