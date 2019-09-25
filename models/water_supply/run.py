@@ -2,6 +2,7 @@
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
 
@@ -39,6 +40,34 @@ class WaterWrapper(SectorModel):
                 ' Instead, timesteps are: {}'.format(timesteps)
             )
 
+        base_dir = os.path.dirname(os.path.realpath(__file__))
+        model_dir = self._get_model_dir(data_handle)
+
+        try:
+            os.mkdir(model_dir)
+        except FileExistsError:
+            pass
+
+        base_exe_dir = os.path.join(base_dir, 'exe')
+        model_exe_dir = os.path.join(model_dir, 'exe')
+        try:
+            shutil.copytree(base_exe_dir, model_exe_dir)
+        except FileExistsError:
+            pass
+
+        base_nodal_dir = os.path.join(base_dir, 'nodal')
+        model_nodal_dir = os.path.join(model_dir, 'nodal')
+        try:
+            shutil.copytree(base_nodal_dir, model_nodal_dir)
+        except FileExistsError:
+            pass
+
+
+    def _get_model_dir(self, data_handle):
+        return os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            os.path.basename(data_handle._modelrun_name))
+
     def simulate(self, data_handle):
         """Runs the water supply model.
 
@@ -56,7 +85,7 @@ class WaterWrapper(SectorModel):
         else:
             reservoir_levels = data_handle.get_previous_timestep_data('reservoir_levels')
 
-        model_dir = os.path.dirname(os.path.realpath(__file__))
+        model_dir = self._get_model_dir(data_handle)
         exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
 
@@ -85,7 +114,7 @@ class WaterWrapper(SectorModel):
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
             '-output=RGDS',
-            '-save',
+            # '-save',  # enable to allow debugging in WATHNET GUI with data in line
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension

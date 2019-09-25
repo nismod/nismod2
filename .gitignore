@@ -151,9 +151,10 @@ models/water_supply/download
 models/water_supply/exe
 models/water_supply/nodal
 models/water_supply/repo
+models/water_supply/arc_ws*
 
 # Ignore images
-*.png 
+*.png
 *.jpg
 
 # Temporary files
