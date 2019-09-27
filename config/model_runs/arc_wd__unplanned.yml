@@ -1,12 +1,10 @@
-name: arc_ws__baseline
+name: arc_wd__unplanned
 stamp: '2019-05-14'
-description: Arc Water Supply baseline
-sos_model: water_supply_demand
+description: Arc Water Demand Unplanned
+sos_model: water_demand
 scenarios:
-  socio-economic: arc_baseline
+  socio-economic: arc_unplanned
   water_demand_projections: baseline
-  reservoir_levels: predicted
-  water_supply_data: predicted_2020_2050  # Needed as input for preparing Wathnet nodal file
 narratives: {}
 strategies: []
 timesteps:
