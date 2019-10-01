@@ -4,7 +4,7 @@
 base_path=$1
 
 # Read remote_data from config.ini
-eval "$(grep -A2 "\[water-demand\]" $base_path/provision/config.ini | tail -n2)"
+eval "$(grep -A3 "\[water-demand\]" $base_path/provision/config.ini | tail -n3)"
 
 # Define required directories and ensure they exist
 temp_dir=$base_path/models/water_demand/temp
