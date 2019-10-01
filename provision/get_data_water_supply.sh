@@ -3,6 +3,9 @@
 # Expect NISMOD dir as first argument
 base_path=$1
 
+# Read data version from config.ini
+eval "$(grep -A4 "\[water-supply\]" $base_path/provision/config.ini | tail -n4)"
+
 # Define required directories and ensure they exist
 model_dir="${base_path}"/models/water_supply
 download_dir="${model_dir}"/download
@@ -18,7 +21,6 @@ mkdir -p "${scenario_dir}"
 mkdir -p "${parameter_dir}"
 
 # Download data
-remote_data=water_supply/water_supply_data_v9.zip
 python "${base_path}"/provision/get_data.py ${remote_data} "${download_dir}"
 
 # Move all nodal input files
@@ -42,9 +44,7 @@ mv "${download_dir}"/dimensions/nonpublic_use_codes.csv "${dim_dir}"
 mv "${download_dir}"/dimensions/reservoir_names.csv "${dim_dir}"
 
 # Move the scenario data
-mv "${download_dir}"/scenarios/borehole_data.csv "${scenario_dir}"
-mv "${download_dir}"/scenarios/flows_data.csv "${scenario_dir}"
-mv "${download_dir}"/scenarios/irrigations_data.csv "${scenario_dir}"
+mv "${download_dir}"/scenarios/*.parquet "${scenario_dir}"
 mv "${download_dir}"/scenarios/reservoir_levels.csv "${scenario_dir}"
 
 # Move the parameters data
