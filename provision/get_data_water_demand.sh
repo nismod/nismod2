@@ -3,6 +3,9 @@
 # Expect NISMOD dir as first argument
 base_path=$1
 
+# Read remote_data from config.ini
+eval "$(grep -A2 "\[water-demand\]" $base_path/provision/config.ini | tail -n2)"
+
 # Define required directories and ensure they exist
 temp_dir=$base_path/models/water_demand/temp
 dim_dir=$base_path/data/dimensions/water_demand
@@ -13,7 +16,6 @@ mkdir -p $dim_dir
 mkdir -p $data_dir
 
 # Download data
-remote_data=water_demand/water_demand.zip
 python $base_path/provision/get_data.py $remote_data $temp_dir
 
 # Move the dimensions to the dimensions directory
