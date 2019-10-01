@@ -1,10 +1,10 @@
-name: arc_wd__new-cities
+name: arc_wd__baseline__FP
 stamp: '2019-05-14'
-description: Arc Water Demand New Cities
+description: Arc Water Demand baseline
 sos_model: water_demand
 scenarios:
-  socio-economic: arc_new-cities
-  water_demand_projections: baseline
+  socio-economic: arc_baseline
+  water_demand_projections: final_planning_wrmp_2019
 narratives: {}
 strategies: []
 timesteps:

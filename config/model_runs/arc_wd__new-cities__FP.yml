@@ -1,10 +1,10 @@
-name: arc_wd__unplanned
+name: arc_wd__new-cities__FP
 stamp: '2019-05-14'
-description: Arc Water Demand Unplanned
+description: Arc Water Demand New Cities
 sos_model: water_demand
 scenarios:
-  socio-economic: arc_unplanned
-  water_demand_projections: baseline
+  socio-economic: arc_new-cities
+  water_demand_projections: final_planning_wrmp_2019
 narratives: {}
 strategies: []
 timesteps:
