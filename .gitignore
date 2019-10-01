@@ -140,6 +140,7 @@ models/*/*.ini
 # Working directories
 install/*
 data/*
+notebooks/*.csv
 tmp/*
 results/*
 provision/cache/*
