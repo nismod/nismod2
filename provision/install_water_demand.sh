@@ -7,4 +7,4 @@ base_path=$1
 eval "$(grep -A2 "\[water-demand\]" $base_path/provision/config.ini | tail -n2)"
 
 # Install directly from GitHub
-pip install git+https://github.com/nismod/water_demand.git@$model_version#egg=water_demand
+pip install git+https://github.com/nismod/water_demand.git@$model_version#egg=water_demand --upgrade
