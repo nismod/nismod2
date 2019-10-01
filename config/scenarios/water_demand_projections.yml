@@ -14,8 +14,22 @@ provides:
     dtype: float
     unit: Ml/person/day
 variants:
-  - name: baseline
-    description: Constant and per-capita water demand for water resource zones, 2020-2044
+  - name: baseline_wrmp_2019
+    description: "The baseline scenario (with BL suffix) represents 'business as usual'. This
+    scenario reflects: forecast changes to the amount of water available, through planned
+    changes to abstraction licences and through reductions to supply from climate change;
+    continuation of current policies in demand management (including the committed leakage
+    levels, metering policies and implementation of companies’ water efficiency plans); and
+    forecast changes to properties and population."
     data:
-      constant_water_demand: water_demand/constant_water_demand
-      per_capita_water_demand: water_demand/per_capita_water_demand
+      constant_water_demand: water_demand/constant_water_demand__BL
+      per_capita_water_demand: water_demand/per_capita_water_demand__BL
+  - name: final_planning_wrmp_2019
+    description: "The final planning scenario (with FP suffix) represents the company's
+    forecast supply and demand as a result of the implementation of the additional supply
+    and/or reduced demand options incorporated into its forecasts. This is the scenario that
+    represents what a water company intends to do over the planning period to maintain the
+    balance of supply and demand."
+    data:
+      constant_water_demand: water_demand/constant_water_demand__FP
+      per_capita_water_demand: water_demand/per_capita_water_demand__FP
