@@ -17,12 +17,20 @@ remote_data=water_demand/water_demand.zip
 python $base_path/provision/get_data.py $remote_data $temp_dir
 
 # Move the dimensions to the dimensions directory
-mv $temp_dir/water_resource_zones.csv $dim_dir
+mv $temp_dir/dimensions/water_resource_zones.csv $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.cpg $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.dbf $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.prj $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.shp $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.shp.xml $dim_dir
+mv $temp_dir/dimensions/WRMP_WRZ.shx $dim_dir
 
 # Move data to the scenario data directory
-mv $temp_dir/constant_water_demand.csv $data_dir
-mv $temp_dir/per_capita_water_demand.csv $data_dir
-mv $temp_dir/water_resource_zone_populations.csv $data_dir
+mv $temp_dir/scenarios/constant_water_demand__BL.csv $data_dir
+mv $temp_dir/scenarios/per_capita_water_demand__BL.csv $data_dir
+mv $temp_dir/scenarios/constant_water_demand__FP.csv $data_dir
+mv $temp_dir/scenarios/per_capita_water_demand__FP.csv $data_dir
+mv $temp_dir/scenarios/water_resource_zone_populations.csv $data_dir
 
 # Tidy up the temporary directory
 rm -rf $temp_dir
