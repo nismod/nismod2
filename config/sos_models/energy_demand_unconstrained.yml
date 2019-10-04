@@ -5,7 +5,21 @@ sector_models:
 scenarios:
 - socio-economic
 - temperature
-narratives: []
+narratives:
+  - name: virtual_dw_stock
+    description: Virtual dwelling stock mode
+    provides:
+      energy_demand_constrained:
+        - virtual_dw_stock
+    variants:
+      - name: load_in_directly
+        description: Loads in floor area directly
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_dw_stock_false
+      - name: virtual_stock
+        description: Creates virtual stock
+        data:
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_true
 model_dependencies: []
 scenario_dependencies:
 - sink: energy_demand_unconstrained

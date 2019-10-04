@@ -45,12 +45,12 @@ provides:
       - lad_uk_2016
     dtype: float
     unit: people
-  - name: population_postcode_sector
-    description: Population by postcode sector
-    dims:
-     - postcode_sector
-    dtype: int
-    unit: persons
+  # - name: population_postcode_sector
+  #   description: Population by postcode sector
+  #   dims:
+  #    - postcode_sector
+  #   dtype: int
+  #   unit: persons
 variants:
   - name: itrc_baseline16
     description: Baseline scenario used in ITRC NNA analysis
