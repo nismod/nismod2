@@ -1,21 +1,21 @@
 name: digital_comms_mobile_network
 description: Mobile capacity-demand assessment.
 sector_models:
-  - digital_comms_mobile_network
   - convert_population_lad_to_postcode_sector
+  - digital_comms_mobile_network
 scenarios:
   - data_growth
   - socio-economic
 scenario_dependencies:
-  - source: data_growth
-    source_output: data_growth
-    sink: digital_comms_mobile_network
-    sink_input: data_growth
   - source: socio-economic
     source_output: population
     sink: convert_population_lad_to_postcode_sector
     sink_input: population
-model_dependencies:
+  - source: data_growth
+    source_output: data_growth
+    sink: digital_comms_mobile_network
+    sink_input: data_growth
+model_dependencies: []
   - source: convert_population_lad_to_postcode_sector
     source_output: population
     sink: digital_comms_mobile_network

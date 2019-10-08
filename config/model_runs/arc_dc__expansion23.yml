@@ -1,11 +1,11 @@
-name: arc_dc__unplanned
+name: arc_dc__expansion23
 stamp: '2019-05-14'
-description: Arc Digital Unplanned
+description: Arc Digital Expansion
 sos_model: digital_comms_mobile_network
 scenarios:
   adoption: fttp_baseline_adoption
   data_growth: baseline
-  socio-economic: arc_unplanned
+  socio-economic: arc_expansion23
 narratives: {}
 strategies: []
 timesteps:
