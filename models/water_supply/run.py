@@ -105,6 +105,10 @@ class WaterWrapper(SectorModel):
         sysfile = self.inject_reservoir_levels(sysfile, reservoir_levels)
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
+        # Set intervention
+        sysfile = self.set_interventions(sysfile, data_handle.get_current_interventions())
+        assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
+
         # This is the nodal file which is generated from various static data files
         nodal_file = self.prepare_nodal(data_handle, nodal_dir)
         assert(os.path.isfile(nodal_file))
@@ -114,7 +118,7 @@ class WaterWrapper(SectorModel):
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
             '-output=RGDS',
-            # '-save',  # enable to allow debugging in WATHNET GUI with data in line
+            '-save',  # enable to allow debugging in WATHNET GUI with data in line
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
@@ -406,6 +410,43 @@ class WaterWrapper(SectorModel):
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
+
+    @staticmethod
+    def set_interventions(sysfile, interventions):
+        """Set ITRC intervention
+        """
+        interventions = list(interventions.values())
+
+        msg = "Expected at most one intervention for water supply, got {}"
+        assert len(interventions) <= 1, msg.format(interventions)
+
+        if interventions and 'option_number' in interventions[0]:
+            option_number = interventions[0]['option_number']
+        else:
+            option_number = 0
+
+        # Option Number sets the value of itrco in the National_Model.wat file, with effects
+        # as defined within the file:
+        # itrco = 0 - no options;
+        # itrco = 1 - severn thames transfer;
+        # itrco = 2 - trent to rutland transfer;
+        # itrco = 3 - s lincs reservoir;
+        # itrco = 4 - abingdon storage;
+        # itrco = 5 - beckton reuse;
+
+        # open file
+        with open(sysfile, 'r') as fh:
+            original_text = fh.read()
+
+        # modify
+        new_text = original_text.replace("itrco = 0;", "itrco = {};".format(option_number))
+
+        # save modified file
+        new_sysfile = sysfile.replace('.wat', '_with_intervention.wat')
+        with open(new_sysfile, 'w') as fh:
+            fh.write(new_text)
+
+        return new_sysfile
 
     @staticmethod
     def inject_reservoir_levels(sysfile, reservoir_levels):

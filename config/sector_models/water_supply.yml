@@ -3,7 +3,8 @@ classname: WaterWrapper
 path: models/water_supply/run.py
 description: Water supply model
 initial_conditions: []
-interventions: []
+interventions:
+ - arc_ws_options
 inputs:
   - name: water_demand
     dims:
