@@ -153,6 +153,7 @@ models/water_supply/exe
 models/water_supply/nodal
 models/water_supply/repo
 models/water_supply/arc_ws*
+config/model_runs/arc_ws/**/*.yml
 
 # Ignore images
 *.png
