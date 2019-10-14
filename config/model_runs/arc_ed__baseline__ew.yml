@@ -1,4 +1,4 @@
-name: arc_ed__baseline
+name: arc_ed__baseline__ew
 stamp: '2019-05-14'
 description: Arc Energy Demand baseline
 sos_model: energy_demand_unconstrained

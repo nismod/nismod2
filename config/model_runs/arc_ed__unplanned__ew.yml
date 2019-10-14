@@ -1,4 +1,4 @@
-name: arc_ed__unplanned
+name: arc_ed__unplanned__ew
 stamp: '2019-05-14'
 description: Arc Energy Demand Unplanned
 sos_model: energy_demand_unconstrained
