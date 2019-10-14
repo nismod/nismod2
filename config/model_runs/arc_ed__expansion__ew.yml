@@ -6,8 +6,6 @@ scenarios:
   socio-economic: arc_expansion
   temperature: NF1
 narratives:
-  virtual_dw_stock:
-    - load_in_directly
   smart_meter_p:
     - electric_world
   t_base_heating:

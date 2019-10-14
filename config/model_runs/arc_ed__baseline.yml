@@ -5,9 +5,7 @@ sos_model: energy_demand_unconstrained
 scenarios:
   socio-economic: arc_baseline
   temperature: NF1
-narratives:
-  virtual_dw_stock:
-    - load_in_directly
+narratives: {}
 strategies: []
 timesteps:
   - 2015
