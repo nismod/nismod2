@@ -13,6 +13,8 @@ nodal_dir="${model_dir}"/nodal
 dim_dir="${base_path}"/data/dimensions/water_supply
 scenario_dir="${base_path}"/data/scenarios/water_supply
 parameter_dir="${base_path}"/data/parameters/water_supply
+interventions_dir="${base_path}"/data/interventions
+strategies_dir="${base_path}"/data/strategies
 
 mkdir -p "${download_dir}"
 mkdir -p "${nodal_dir}"
@@ -50,3 +52,11 @@ mv "${download_dir}"/scenarios/reservoir_levels.csv "${scenario_dir}"
 # Move the parameters data
 mv "${download_dir}"/parameters/demand_profiles.csv "${parameter_dir}"
 mv "${download_dir}"/parameters/nonpublic_water_demands.csv "${parameter_dir}"
+
+# Move interventions and strategies
+mv "${download_dir}"/interventions/arc_ws_options.csv $interventions_dir
+mv "${download_dir}"/strategies/arc_ws__opt_* $strategies_dir
+
+# Fix up a zero-th strategy
+cp $strategies_dir/arc_ws__opt_1.csv $strategies_dir/arc_ws__opt_0.csv
+sed -i 's/1/0/g' $strategies_dir/arc_ws__opt_0.csv
