@@ -305,6 +305,18 @@ outputs:
     - seasonal_week
     unit: GBP
     dtype: float
+  - name: total_opt_cost_transmission
+    dims:
+    - national
+    - seasonal_week
+    unit: GBP
+    dtype: float
+  - name: total_opt_cost_distribution
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: GBP
+    dtype: float
   - name: eh_gas_fired_other
     dims:
     - energy_hub
