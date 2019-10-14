@@ -388,7 +388,8 @@ def write_prices(data_array, year):
         'nuclear': 3,
         'oil': 4,
         'biomass': 5,
-        'electricity': 6
+        'electricity': 6,
+        'carbon' : 7
     }
 
     for datum in dataframe.itertuples():
