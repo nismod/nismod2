@@ -1,0 +1,44 @@
+name: arc_ed__baseline
+stamp: '2019-05-14'
+description: Arc Energy Demand baseline
+sos_model: energy_demand_unconstrained
+scenarios:
+  socio-economic: arc_baseline
+  temperature: NF1
+narratives:
+  f_eff_achieved:
+    - electric_world
+  generic_enduse_change:
+    - electric_world
+  generic_fuel_switch:
+    - electric_world
+  heat_recovered:
+    - electric_world
+  smart_meter_p:
+    - electric_world
+  switches_service:
+    - electric_world
+  t_base_heating:
+    - electric_world
+
+# - [ ] air_leakage
+# - [ ] assump_diff_floorarea_pp
+# - [ ] cooled_floorarea
+# - [ ] dm_improvement
+# - [x] f_eff_achieved
+# - [x] generic_enduse_change
+# - [x] generic_fuel_switch
+# - [ ] gshp_fraction
+# - [x] heat_recovered
+# - [ ] p_cold_rolling_steel
+# - [x] smart_meter_p
+# - [ ] spatial_explicit_diffusion
+# - [ ] speed_con_max
+# - [x] switches_service
+# - [x] t_base_heating (is, rs, ss)
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050
