@@ -114,6 +114,32 @@ narratives:
         description: Multivector assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__multivector_world
+  - name: t_base_heating
+    description: Change in heating
+    provides:
+      energy_demand_constrained:
+        - rs_t_base_heating
+        - ss_t_base_heating
+        - is_t_base_heating
+    variants:
+      - name: central_narrative
+        description: Central assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__central
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__central
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__central
+      - name: electric_world
+        description: Electric world assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__electric_world
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__electric_world
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__electric_world
+      - name: multivector_world
+        description: Central assumptions
+        data:
+          is_t_base_heating: ../energy_demand/narratives/is_t_base_heating__multivector_world
+          ss_t_base_heating: ../energy_demand/narratives/ss_t_base_heating__multivector_world
+          rs_t_base_heating: ../energy_demand/narratives/rs_t_base_heating__multivector_world
 model_dependencies: []
 scenario_dependencies:
 - sink: energy_demand_unconstrained
