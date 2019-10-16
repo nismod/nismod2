@@ -209,10 +209,15 @@ parameters:
     dtype: int
     default: ../energy_supply/parameters/op_mode_central
   - name: heat_supply_strategy
-    description: Flag to configure heat supply strategy in the optimised mode
+    description: Flag to configure heat supply strategy in the constrained mode
     units: mode
     dtype: int
     default: ../energy_supply/parameters/hs_default
+  - name: sensitivity_mode
+    description: Flag to setup the sensitivity study in the constrained mode
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/sensitivity_default
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes
@@ -822,6 +827,24 @@ outputs:
     unit: mcm
     dtype: float
   - name: eh_biogas_blend_vol
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dsm_shifted_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dsm_assigned_demand
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dsm_electricity_demand
     dims:
     - energy_hub
     - seasonal_week
