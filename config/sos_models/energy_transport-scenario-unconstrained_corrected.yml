@@ -421,6 +421,32 @@ narratives:
         decription: green gas mixture for heat supply
         data:
           heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas
+  - name: sensitivity_mode
+    description: selection of the sensitivity analysis
+    provides:
+      energy_supply_optimised:
+      - sensitivity_mode
+    variants:
+      - name: wind_increase
+        decription: overall increase in wind speed magnitude
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_wind_increase
+      - name: wind_decrease
+        decription: overall decrease in wind speed magnitude
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_wind_decrease
+      - name: peak_increase
+        decription: increase in peak demand only for heat, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_peak
+      - name: dsm
+        decription: dsm opportunity for EV charging demand, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_dsm
+      - name: demand_reduction
+        decription: further demand reduction for heat, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
