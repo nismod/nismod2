@@ -252,8 +252,10 @@ class EDWrapper(SectorModel):
         mode = self._get_mode(data_handle)
         config['CRITERIA']['mode_constrained'] = mode
 
-        virtual_building_stock_criteria = mode = self._get_virtual_dw_stock(data_handle)
+        virtual_building_stock_criteria = self._get_virtual_dw_stock(data_handle)
         config['CRITERIA']['virtual_building_stock_criteria'] = virtual_building_stock_criteria
+
+        logging.debug("MODE {} VIRTUAL_STOCK {}".format(mode, virtual_building_stock_criteria))
 
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
@@ -391,6 +393,11 @@ class EDWrapper(SectorModel):
         mode = self._get_mode(data_handle)
         config['CRITERIA']['mode_constrained'] = mode
 
+        virtual_building_stock_criteria = self._get_virtual_dw_stock(data_handle)
+        config['CRITERIA']['virtual_building_stock_criteria'] = virtual_building_stock_criteria
+
+        logging.info("MODE {} VIRTUAL_STOCK {}".format(mode, virtual_building_stock_criteria))
+
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
         weather_yr = curr_yr
@@ -425,11 +432,6 @@ class EDWrapper(SectorModel):
         data['scenario_data']['rs_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 0], data['regions'])
         data['scenario_data']['ss_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 1], data['regions'])
 
-        floor_area_curr = data_handle.get_data('floor_area').as_ndarray()
-
-        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
-        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
-    
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------
@@ -439,6 +441,10 @@ class EDWrapper(SectorModel):
         data['scenario_data']['population'][curr_yr] = self._assign_array_to_dict(pop_array_cy, data['regions'])
         data['scenario_data']['gva_per_head'][curr_yr] = self._assign_array_to_dict(gva_array_cy, data['regions'])
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
+
+        floor_area_curr = data_handle.get_data('floor_area').as_ndarray()
+        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
+        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
 
         default_streategy_vars = strategy_vars_def.load_param_assump(
             hard_coded_default_val=True)
