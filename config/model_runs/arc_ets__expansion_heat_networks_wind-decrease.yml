@@ -1,0 +1,41 @@
+name: arc_ets__expansion_heat_networks_wind-decrease
+stamp: '2019-05-14'
+description: Arc Energy-Transport Expansion
+sos_model: energy_transport-scenario-unconstrained_corrected
+scenarios:
+  fuel_price: baseline
+  socio-economic: arc_expansion
+  temperature: NF1
+  ev_transport_trips: arc_expansion
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
+narratives:
+  operation_mode:
+  - central
+  virtual_dw_stock:
+  - load_in_directly
+  heat_supply_strategy:
+  - heat_networks
+  sensitivity_mode:
+  - wind_decrease
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
+strategies:
+  - type: pre-specified-planning
+    description: 'net zero development (national), centralised operation'
+    filename: ../energy_supply/strategies/net_zero
+    model_name: energy_supply_optimised
+timesteps:
+  - 2015
+  - 2050
