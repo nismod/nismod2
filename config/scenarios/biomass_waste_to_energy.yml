@@ -8,7 +8,7 @@ provides:
     dtype: float
     unit: kg
   - name: municipal_waste
-    description: 'biomass feedstock available in energy hub regions'
+    description: 'municipal waste available in energy hub regions'
     dims:
     - energy_hub
     dtype: float

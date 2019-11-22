@@ -1,12 +1,12 @@
-name: arc_ets__expansion-23K
+name: arc_ets__new-cities_green_gas
 stamp: '2019-05-14'
-description: Arc Energy-Transport Expansion
+description: Arc Energy-Transport New Cities
 sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: baseline
-  socio-economic: arc_expansion23
+  socio-economic: arc_new-cities
   temperature: NF1
-  ev_transport_trips: arc_expansion
+  ev_transport_trips: arc_new-cities
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
@@ -15,6 +15,8 @@ narratives:
   - central
   virtual_dw_stock:
   - load_in_directly
+  heat_supply_strategy:
+  - green_gas
   smart_meter_p:
   - electric_world
   t_base_heating:

@@ -1,7 +1,7 @@
 name: arc_ets__baseline
 stamp: '2019-05-14'
 description: Arc Energy-Transport baseline
-sos_model: energy_transport-scenario_corrected
+sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: arc_baseline
@@ -29,9 +29,9 @@ narratives:
   - electric_world
 strategies:
   - type: pre-specified-planning
-    description: 'electric world development, default centralised operation'
-    filename: ../energy_supply/strategies/electric_world
-    model_name: energy_supply_constrained
+    description: 'net zero development (national), centralised operation'
+    filename: ../energy_supply/strategies/net_zero
+    model_name: energy_supply_optimised
 timesteps:
   - 2015
   - 2030

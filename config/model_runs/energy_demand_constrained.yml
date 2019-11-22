@@ -5,7 +5,21 @@ sos_model: energy_demand_constrained
 scenarios:
   socio-economic: itrc_baseline16
   temperature: NF1
-narratives: {}
+narratives:
+  virtual_dw_stock:
+  - load_in_directly
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world
+  generic_enduse_change:
+  - electric_world
+  generic_fuel_switch:
+  - electric_world
+  switches_service:
+  - electric_world
 decision_module: ''
 strategies: {}
 timesteps:

@@ -1,10 +1,10 @@
-name: arc_ets__expansion-23K
+name: arc_ets__expansion_full_electric_dsm
 stamp: '2019-05-14'
 description: Arc Energy-Transport Expansion
 sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: baseline
-  socio-economic: arc_expansion23
+  socio-economic: arc_expansion
   temperature: NF1
   ev_transport_trips: arc_expansion
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
@@ -15,6 +15,10 @@ narratives:
   - central
   virtual_dw_stock:
   - load_in_directly
+  heat_supply_strategy:
+  - full_electric
+  sensitivity_mode:
+  - dsm
   smart_meter_p:
   - electric_world
   t_base_heating:
@@ -34,5 +38,4 @@ strategies:
     model_name: energy_supply_optimised
 timesteps:
   - 2015
-  - 2030
   - 2050

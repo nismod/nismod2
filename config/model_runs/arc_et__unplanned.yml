@@ -1,7 +1,7 @@
 name: arc_et__unplanned
 stamp: '2019-05-14'
 description: Arc Energy-Transport Unplanned
-sos_model: energy_transport_corrected
+sos_model: energy_transport-unconstrained_corrected
 scenarios:
   fuel_price: baseline
   socio-economic: arc_unplanned
@@ -31,11 +31,10 @@ narratives:
   - electric_world
 strategies:
   - type: pre-specified-planning
-    description: 'A multi-vector world, decentralised operation'
-    filename: ../energy_supply/strategies/multi_vector
-    model_name: energy_supply_constrained
+    description: 'net zero development (national), centralised operation'
+    filename: ../energy_supply/strategies/net_zero
+    model_name: energy_supply_optimised
 timesteps:
   - 2015
-  - 2020
   - 2030
   - 2050

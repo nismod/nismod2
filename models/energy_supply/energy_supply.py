@@ -73,9 +73,12 @@ class EnergySupplyWrapper(SectorModel):
         heat_supply_strategy = int(data.get_parameter('heat_supply_strategy').as_ndarray())
         self.logger.debug('Parameter heat strategy mode: %s', heat_supply_strategy)
 
+        sensitivity_mode = int(data.get_parameter('sensitivity_mode').as_ndarray())
+        self.logger.debug('Parameter sensitivity_mode mode: %s', sensitivity_mode)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy, conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn)
 
         conn.close()
 
@@ -388,7 +391,8 @@ def write_prices(data_array, year):
         'nuclear': 3,
         'oil': 4,
         'biomass': 5,
-        'electricity': 6
+        'electricity': 6,
+        'carbon' : 7
     }
 
     for datum in dataframe.itertuples():
@@ -486,13 +490,14 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,heat_supply_strategy,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_supply_strategy';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'sensitivity_mode';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -503,6 +508,9 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,conn):
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('heat_supply_strategy', heat_supply_strategy))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('sensitivity_mode', sensitivity_mode))
 
 
 def retire_generator(plants):
@@ -869,6 +877,8 @@ def build_gas_terminals(gas_terminals, current_timestep):
     LNGCapacity        | double precision       |
     InterCapacity      | double precision       |
     DomCapacity        | double precision       |
+    DomSupp            | integer                |
+    InterSupp          | integer                |
 
     """
     conn = establish_connection()
@@ -881,8 +891,8 @@ def build_gas_terminals(gas_terminals, current_timestep):
         sql = """
         INSERT INTO "GasTerminal" ("TerminalNum", "Year", "Name", "GasNode",
             "GasTerminalOptCost", "TerminalCapacity", "LNGCapacity", "InterCapacity",
-            "DomCapacity")
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            "DomCapacity","DomSupp","InterSupp")
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         data = (terminal_num + 1,
@@ -893,7 +903,9 @@ def build_gas_terminals(gas_terminals, current_timestep):
                 terminal['capacity']['value'],
                 terminal['lngcapacity'],
                 terminal['intercapacity'],
-                terminal['domcapacity']
+                terminal['domcapacity'],
+                terminal['domestic_supply_source'],
+                terminal['import_supply_source']
                 )
 
         cur.execute(sql, data)

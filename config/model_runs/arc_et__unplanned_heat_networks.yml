@@ -1,12 +1,14 @@
-name: arc_ets__expansion-23K
+name: arc_et__unplanned_heat_networks
 stamp: '2019-05-14'
-description: Arc Energy-Transport Expansion
-sos_model: energy_transport-scenario-unconstrained_corrected
+description: Arc Energy-Transport Unplanned
+sos_model: energy_transport-unconstrained_corrected
 scenarios:
   fuel_price: baseline
-  socio-economic: arc_expansion23
+  socio-economic: arc_unplanned
   temperature: NF1
-  ev_transport_trips: arc_expansion
+  ev_transport_trips: TODO
+  link_travel_time: default
+  engine_type_fractions: baseline
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
@@ -15,6 +17,8 @@ narratives:
   - central
   virtual_dw_stock:
   - load_in_directly
+  heat_supply_strategy:
+  - heat_networks
   smart_meter_p:
   - electric_world
   t_base_heating:
