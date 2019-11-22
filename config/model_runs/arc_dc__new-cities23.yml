@@ -1,0 +1,15 @@
+name: arc_dc__new-cities23
+stamp: '2019-05-14'
+description: Arc Digital New Cities
+sos_model: digital_comms_mobile_network
+scenarios:
+  adoption: fttp_baseline_adoption
+  data_growth: baseline
+  socio-economic: arc_new-cities23
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050

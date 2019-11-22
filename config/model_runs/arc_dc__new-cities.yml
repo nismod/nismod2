@@ -1,9 +1,11 @@
 name: arc_dc__new-cities
 stamp: '2019-05-14'
 description: Arc Digital New Cities
-sos_model: digital_comms_fixed_only
+sos_model: digital_comms_mobile_network
 scenarios:
   adoption: fttp_baseline_adoption
+  data_growth: baseline
+  socio-economic: arc_new-cities
 narratives: {}
 strategies: []
 timesteps:

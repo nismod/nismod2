@@ -1,0 +1,3 @@
+name: postcode_sector
+description: Postcode sectors of GB - first part + first character of second part of a postcode,
+elements: postcode_sector.shp

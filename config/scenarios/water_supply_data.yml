@@ -4,8 +4,8 @@ provides:
   - name: flows_data
     description: Data related to flows
     dims:
-    - water_supply/days_into_year
-    - water_supply/flow_file_column_names
+      - water_supply/days_into_year
+      - water_supply/flow_file_column_names
     dtype: float
     unit: Ml/day
   - name: irrigations_data
@@ -30,3 +30,603 @@ variants:
       flows_data: water_supply/flows_data
       irrigations_data: water_supply/irrigations_data
       borehole_data: water_supply/borehole_data
+  - name: water_supply_data_001
+    description: water_supply_data variant number 001
+    data:
+      flows_data: water_supply/WRM_nearfuture_001_paramset1_smif
+      irrigations_data: water_supply/001_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_001_2020_to_2049_smif
+  - name: water_supply_data_002
+    description: water_supply_data variant number 002
+    data:
+      flows_data: water_supply/WRM_nearfuture_002_paramset1_smif
+      irrigations_data: water_supply/002_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_002_2020_to_2049_smif
+  - name: water_supply_data_003
+    description: water_supply_data variant number 003
+    data:
+      flows_data: water_supply/WRM_nearfuture_003_paramset1_smif
+      irrigations_data: water_supply/003_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_003_2020_to_2049_smif
+  - name: water_supply_data_004
+    description: water_supply_data variant number 004
+    data:
+      flows_data: water_supply/WRM_nearfuture_004_paramset1_smif
+      irrigations_data: water_supply/004_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_004_2020_to_2049_smif
+  - name: water_supply_data_005
+    description: water_supply_data variant number 005
+    data:
+      flows_data: water_supply/WRM_nearfuture_005_paramset1_smif
+      irrigations_data: water_supply/005_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_005_2020_to_2049_smif
+  - name: water_supply_data_006
+    description: water_supply_data variant number 006
+    data:
+      flows_data: water_supply/WRM_nearfuture_006_paramset1_smif
+      irrigations_data: water_supply/006_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_006_2020_to_2049_smif
+  - name: water_supply_data_007
+    description: water_supply_data variant number 007
+    data:
+      flows_data: water_supply/WRM_nearfuture_007_paramset1_smif
+      irrigations_data: water_supply/007_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_007_2020_to_2049_smif
+  - name: water_supply_data_008
+    description: water_supply_data variant number 008
+    data:
+      flows_data: water_supply/WRM_nearfuture_008_paramset1_smif
+      irrigations_data: water_supply/008_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_008_2020_to_2049_smif
+  - name: water_supply_data_009
+    description: water_supply_data variant number 009
+    data:
+      flows_data: water_supply/WRM_nearfuture_009_paramset1_smif
+      irrigations_data: water_supply/009_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_009_2020_to_2049_smif
+  - name: water_supply_data_010
+    description: water_supply_data variant number 010
+    data:
+      flows_data: water_supply/WRM_nearfuture_010_paramset1_smif
+      irrigations_data: water_supply/010_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_010_2020_to_2049_smif
+  - name: water_supply_data_011
+    description: water_supply_data variant number 011
+    data:
+      flows_data: water_supply/WRM_nearfuture_011_paramset1_smif
+      irrigations_data: water_supply/011_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_011_2020_to_2049_smif
+  - name: water_supply_data_012
+    description: water_supply_data variant number 012
+    data:
+      flows_data: water_supply/WRM_nearfuture_012_paramset1_smif
+      irrigations_data: water_supply/012_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_012_2020_to_2049_smif
+  - name: water_supply_data_013
+    description: water_supply_data variant number 013
+    data:
+      flows_data: water_supply/WRM_nearfuture_013_paramset1_smif
+      irrigations_data: water_supply/013_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_013_2020_to_2049_smif
+  - name: water_supply_data_014
+    description: water_supply_data variant number 014
+    data:
+      flows_data: water_supply/WRM_nearfuture_014_paramset1_smif
+      irrigations_data: water_supply/014_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_014_2020_to_2049_smif
+  - name: water_supply_data_015
+    description: water_supply_data variant number 015
+    data:
+      flows_data: water_supply/WRM_nearfuture_015_paramset1_smif
+      irrigations_data: water_supply/015_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_015_2020_to_2049_smif
+  - name: water_supply_data_016
+    description: water_supply_data variant number 016
+    data:
+      flows_data: water_supply/WRM_nearfuture_016_paramset1_smif
+      irrigations_data: water_supply/016_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_016_2020_to_2049_smif
+  - name: water_supply_data_017
+    description: water_supply_data variant number 017
+    data:
+      flows_data: water_supply/WRM_nearfuture_017_paramset1_smif
+      irrigations_data: water_supply/017_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_017_2020_to_2049_smif
+  - name: water_supply_data_018
+    description: water_supply_data variant number 018
+    data:
+      flows_data: water_supply/WRM_nearfuture_018_paramset1_smif
+      irrigations_data: water_supply/018_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_018_2020_to_2049_smif
+  - name: water_supply_data_019
+    description: water_supply_data variant number 019
+    data:
+      flows_data: water_supply/WRM_nearfuture_019_paramset1_smif
+      irrigations_data: water_supply/019_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_019_2020_to_2049_smif
+  - name: water_supply_data_020
+    description: water_supply_data variant number 020
+    data:
+      flows_data: water_supply/WRM_nearfuture_020_paramset1_smif
+      irrigations_data: water_supply/020_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_020_2020_to_2049_smif
+  - name: water_supply_data_021
+    description: water_supply_data variant number 021
+    data:
+      flows_data: water_supply/WRM_nearfuture_021_paramset1_smif
+      irrigations_data: water_supply/021_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_021_2020_to_2049_smif
+  - name: water_supply_data_022
+    description: water_supply_data variant number 022
+    data:
+      flows_data: water_supply/WRM_nearfuture_022_paramset1_smif
+      irrigations_data: water_supply/022_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_022_2020_to_2049_smif
+  - name: water_supply_data_023
+    description: water_supply_data variant number 023
+    data:
+      flows_data: water_supply/WRM_nearfuture_023_paramset1_smif
+      irrigations_data: water_supply/023_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_023_2020_to_2049_smif
+  - name: water_supply_data_024
+    description: water_supply_data variant number 024
+    data:
+      flows_data: water_supply/WRM_nearfuture_024_paramset1_smif
+      irrigations_data: water_supply/024_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_024_2020_to_2049_smif
+  - name: water_supply_data_025
+    description: water_supply_data variant number 025
+    data:
+      flows_data: water_supply/WRM_nearfuture_025_paramset1_smif
+      irrigations_data: water_supply/025_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_025_2020_to_2049_smif
+  - name: water_supply_data_026
+    description: water_supply_data variant number 026
+    data:
+      flows_data: water_supply/WRM_nearfuture_026_paramset1_smif
+      irrigations_data: water_supply/026_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_026_2020_to_2049_smif
+  - name: water_supply_data_027
+    description: water_supply_data variant number 027
+    data:
+      flows_data: water_supply/WRM_nearfuture_027_paramset1_smif
+      irrigations_data: water_supply/027_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_027_2020_to_2049_smif
+  - name: water_supply_data_028
+    description: water_supply_data variant number 028
+    data:
+      flows_data: water_supply/WRM_nearfuture_028_paramset1_smif
+      irrigations_data: water_supply/028_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_028_2020_to_2049_smif
+  - name: water_supply_data_029
+    description: water_supply_data variant number 029
+    data:
+      flows_data: water_supply/WRM_nearfuture_029_paramset1_smif
+      irrigations_data: water_supply/029_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_029_2020_to_2049_smif
+  - name: water_supply_data_030
+    description: water_supply_data variant number 030
+    data:
+      flows_data: water_supply/WRM_nearfuture_030_paramset1_smif
+      irrigations_data: water_supply/030_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_030_2020_to_2049_smif
+  - name: water_supply_data_031
+    description: water_supply_data variant number 031
+    data:
+      flows_data: water_supply/WRM_nearfuture_031_paramset1_smif
+      irrigations_data: water_supply/031_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_031_2020_to_2049_smif
+  - name: water_supply_data_032
+    description: water_supply_data variant number 032
+    data:
+      flows_data: water_supply/WRM_nearfuture_032_paramset1_smif
+      irrigations_data: water_supply/032_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_032_2020_to_2049_smif
+  - name: water_supply_data_033
+    description: water_supply_data variant number 033
+    data:
+      flows_data: water_supply/WRM_nearfuture_033_paramset1_smif
+      irrigations_data: water_supply/033_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_033_2020_to_2049_smif
+  - name: water_supply_data_034
+    description: water_supply_data variant number 034
+    data:
+      flows_data: water_supply/WRM_nearfuture_034_paramset1_smif
+      irrigations_data: water_supply/034_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_034_2020_to_2049_smif
+  - name: water_supply_data_035
+    description: water_supply_data variant number 035
+    data:
+      flows_data: water_supply/WRM_nearfuture_035_paramset1_smif
+      irrigations_data: water_supply/035_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_035_2020_to_2049_smif
+  - name: water_supply_data_036
+    description: water_supply_data variant number 036
+    data:
+      flows_data: water_supply/WRM_nearfuture_036_paramset1_smif
+      irrigations_data: water_supply/036_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_036_2020_to_2049_smif
+  - name: water_supply_data_037
+    description: water_supply_data variant number 037
+    data:
+      flows_data: water_supply/WRM_nearfuture_037_paramset1_smif
+      irrigations_data: water_supply/037_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_037_2020_to_2049_smif
+  - name: water_supply_data_038
+    description: water_supply_data variant number 038
+    data:
+      flows_data: water_supply/WRM_nearfuture_038_paramset1_smif
+      irrigations_data: water_supply/038_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_038_2020_to_2049_smif
+  - name: water_supply_data_039
+    description: water_supply_data variant number 039
+    data:
+      flows_data: water_supply/WRM_nearfuture_039_paramset1_smif
+      irrigations_data: water_supply/039_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_039_2020_to_2049_smif
+  - name: water_supply_data_040
+    description: water_supply_data variant number 040
+    data:
+      flows_data: water_supply/WRM_nearfuture_040_paramset1_smif
+      irrigations_data: water_supply/040_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_040_2020_to_2049_smif
+  - name: water_supply_data_041
+    description: water_supply_data variant number 041
+    data:
+      flows_data: water_supply/WRM_nearfuture_041_paramset1_smif
+      irrigations_data: water_supply/041_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_041_2020_to_2049_smif
+  - name: water_supply_data_042
+    description: water_supply_data variant number 042
+    data:
+      flows_data: water_supply/WRM_nearfuture_042_paramset1_smif
+      irrigations_data: water_supply/042_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_042_2020_to_2049_smif
+  - name: water_supply_data_043
+    description: water_supply_data variant number 043
+    data:
+      flows_data: water_supply/WRM_nearfuture_043_paramset1_smif
+      irrigations_data: water_supply/043_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_043_2020_to_2049_smif
+  - name: water_supply_data_044
+    description: water_supply_data variant number 044
+    data:
+      flows_data: water_supply/WRM_nearfuture_044_paramset1_smif
+      irrigations_data: water_supply/044_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_044_2020_to_2049_smif
+  - name: water_supply_data_045
+    description: water_supply_data variant number 045
+    data:
+      flows_data: water_supply/WRM_nearfuture_045_paramset1_smif
+      irrigations_data: water_supply/045_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_045_2020_to_2049_smif
+  - name: water_supply_data_046
+    description: water_supply_data variant number 046
+    data:
+      flows_data: water_supply/WRM_nearfuture_046_paramset1_smif
+      irrigations_data: water_supply/046_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_046_2020_to_2049_smif
+  - name: water_supply_data_047
+    description: water_supply_data variant number 047
+    data:
+      flows_data: water_supply/WRM_nearfuture_047_paramset1_smif
+      irrigations_data: water_supply/047_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_047_2020_to_2049_smif
+  - name: water_supply_data_048
+    description: water_supply_data variant number 048
+    data:
+      flows_data: water_supply/WRM_nearfuture_048_paramset1_smif
+      irrigations_data: water_supply/048_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_048_2020_to_2049_smif
+  - name: water_supply_data_049
+    description: water_supply_data variant number 049
+    data:
+      flows_data: water_supply/WRM_nearfuture_049_paramset1_smif
+      irrigations_data: water_supply/049_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_049_2020_to_2049_smif
+  - name: water_supply_data_050
+    description: water_supply_data variant number 050
+    data:
+      flows_data: water_supply/WRM_nearfuture_050_paramset1_smif
+      irrigations_data: water_supply/050_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_050_2020_to_2049_smif
+  - name: water_supply_data_051
+    description: water_supply_data variant number 051
+    data:
+      flows_data: water_supply/WRM_nearfuture_051_paramset1_smif
+      irrigations_data: water_supply/051_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_051_2020_to_2049_smif
+  - name: water_supply_data_052
+    description: water_supply_data variant number 052
+    data:
+      flows_data: water_supply/WRM_nearfuture_052_paramset1_smif
+      irrigations_data: water_supply/052_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_052_2020_to_2049_smif
+  - name: water_supply_data_053
+    description: water_supply_data variant number 053
+    data:
+      flows_data: water_supply/WRM_nearfuture_053_paramset1_smif
+      irrigations_data: water_supply/053_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_053_2020_to_2049_smif
+  - name: water_supply_data_054
+    description: water_supply_data variant number 054
+    data:
+      flows_data: water_supply/WRM_nearfuture_054_paramset1_smif
+      irrigations_data: water_supply/054_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_054_2020_to_2049_smif
+  - name: water_supply_data_055
+    description: water_supply_data variant number 055
+    data:
+      flows_data: water_supply/WRM_nearfuture_055_paramset1_smif
+      irrigations_data: water_supply/055_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_055_2020_to_2049_smif
+  - name: water_supply_data_056
+    description: water_supply_data variant number 056
+    data:
+      flows_data: water_supply/WRM_nearfuture_056_paramset1_smif
+      irrigations_data: water_supply/056_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_056_2020_to_2049_smif
+  - name: water_supply_data_057
+    description: water_supply_data variant number 057
+    data:
+      flows_data: water_supply/WRM_nearfuture_057_paramset1_smif
+      irrigations_data: water_supply/057_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_057_2020_to_2049_smif
+  - name: water_supply_data_058
+    description: water_supply_data variant number 058
+    data:
+      flows_data: water_supply/WRM_nearfuture_058_paramset1_smif
+      irrigations_data: water_supply/058_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_058_2020_to_2049_smif
+  - name: water_supply_data_059
+    description: water_supply_data variant number 059
+    data:
+      flows_data: water_supply/WRM_nearfuture_059_paramset1_smif
+      irrigations_data: water_supply/059_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_059_2020_to_2049_smif
+  - name: water_supply_data_060
+    description: water_supply_data variant number 060
+    data:
+      flows_data: water_supply/WRM_nearfuture_060_paramset1_smif
+      irrigations_data: water_supply/060_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_060_2020_to_2049_smif
+  - name: water_supply_data_061
+    description: water_supply_data variant number 061
+    data:
+      flows_data: water_supply/WRM_nearfuture_061_paramset1_smif
+      irrigations_data: water_supply/061_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_061_2020_to_2049_smif
+  - name: water_supply_data_062
+    description: water_supply_data variant number 062
+    data:
+      flows_data: water_supply/WRM_nearfuture_062_paramset1_smif
+      irrigations_data: water_supply/062_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_062_2020_to_2049_smif
+  - name: water_supply_data_063
+    description: water_supply_data variant number 063
+    data:
+      flows_data: water_supply/WRM_nearfuture_063_paramset1_smif
+      irrigations_data: water_supply/063_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_063_2020_to_2049_smif
+  - name: water_supply_data_064
+    description: water_supply_data variant number 064
+    data:
+      flows_data: water_supply/WRM_nearfuture_064_paramset1_smif
+      irrigations_data: water_supply/064_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_064_2020_to_2049_smif
+  - name: water_supply_data_065
+    description: water_supply_data variant number 065
+    data:
+      flows_data: water_supply/WRM_nearfuture_065_paramset1_smif
+      irrigations_data: water_supply/065_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_065_2020_to_2049_smif
+  - name: water_supply_data_066
+    description: water_supply_data variant number 066
+    data:
+      flows_data: water_supply/WRM_nearfuture_066_paramset1_smif
+      irrigations_data: water_supply/066_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_066_2020_to_2049_smif
+  - name: water_supply_data_067
+    description: water_supply_data variant number 067
+    data:
+      flows_data: water_supply/WRM_nearfuture_067_paramset1_smif
+      irrigations_data: water_supply/067_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_067_2020_to_2049_smif
+  - name: water_supply_data_068
+    description: water_supply_data variant number 068
+    data:
+      flows_data: water_supply/WRM_nearfuture_068_paramset1_smif
+      irrigations_data: water_supply/068_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_068_2020_to_2049_smif
+  - name: water_supply_data_069
+    description: water_supply_data variant number 069
+    data:
+      flows_data: water_supply/WRM_nearfuture_069_paramset1_smif
+      irrigations_data: water_supply/069_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_069_2020_to_2049_smif
+  - name: water_supply_data_070
+    description: water_supply_data variant number 070
+    data:
+      flows_data: water_supply/WRM_nearfuture_070_paramset1_smif
+      irrigations_data: water_supply/070_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_070_2020_to_2049_smif
+  - name: water_supply_data_071
+    description: water_supply_data variant number 071
+    data:
+      flows_data: water_supply/WRM_nearfuture_071_paramset1_smif
+      irrigations_data: water_supply/071_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_071_2020_to_2049_smif
+  - name: water_supply_data_072
+    description: water_supply_data variant number 072
+    data:
+      flows_data: water_supply/WRM_nearfuture_072_paramset1_smif
+      irrigations_data: water_supply/072_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_072_2020_to_2049_smif
+  - name: water_supply_data_073
+    description: water_supply_data variant number 073
+    data:
+      flows_data: water_supply/WRM_nearfuture_073_paramset1_smif
+      irrigations_data: water_supply/073_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_073_2020_to_2049_smif
+  - name: water_supply_data_074
+    description: water_supply_data variant number 074
+    data:
+      flows_data: water_supply/WRM_nearfuture_074_paramset1_smif
+      irrigations_data: water_supply/074_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_074_2020_to_2049_smif
+  - name: water_supply_data_075
+    description: water_supply_data variant number 075
+    data:
+      flows_data: water_supply/WRM_nearfuture_075_paramset1_smif
+      irrigations_data: water_supply/075_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_075_2020_to_2049_smif
+  - name: water_supply_data_076
+    description: water_supply_data variant number 076
+    data:
+      flows_data: water_supply/WRM_nearfuture_076_paramset1_smif
+      irrigations_data: water_supply/076_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_076_2020_to_2049_smif
+  - name: water_supply_data_077
+    description: water_supply_data variant number 077
+    data:
+      flows_data: water_supply/WRM_nearfuture_077_paramset1_smif
+      irrigations_data: water_supply/077_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_077_2020_to_2049_smif
+  - name: water_supply_data_078
+    description: water_supply_data variant number 078
+    data:
+      flows_data: water_supply/WRM_nearfuture_078_paramset1_smif
+      irrigations_data: water_supply/078_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_078_2020_to_2049_smif
+  - name: water_supply_data_079
+    description: water_supply_data variant number 079
+    data:
+      flows_data: water_supply/WRM_nearfuture_079_paramset1_smif
+      irrigations_data: water_supply/079_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_079_2020_to_2049_smif
+  - name: water_supply_data_080
+    description: water_supply_data variant number 080
+    data:
+      flows_data: water_supply/WRM_nearfuture_080_paramset1_smif
+      irrigations_data: water_supply/080_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_080_2020_to_2049_smif
+  - name: water_supply_data_081
+    description: water_supply_data variant number 081
+    data:
+      flows_data: water_supply/WRM_nearfuture_081_paramset1_smif
+      irrigations_data: water_supply/081_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_081_2020_to_2049_smif
+  - name: water_supply_data_082
+    description: water_supply_data variant number 082
+    data:
+      flows_data: water_supply/WRM_nearfuture_082_paramset1_smif
+      irrigations_data: water_supply/082_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_082_2020_to_2049_smif
+  - name: water_supply_data_083
+    description: water_supply_data variant number 083
+    data:
+      flows_data: water_supply/WRM_nearfuture_083_paramset1_smif
+      irrigations_data: water_supply/083_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_083_2020_to_2049_smif
+  - name: water_supply_data_084
+    description: water_supply_data variant number 084
+    data:
+      flows_data: water_supply/WRM_nearfuture_084_paramset1_smif
+      irrigations_data: water_supply/084_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_084_2020_to_2049_smif
+  - name: water_supply_data_085
+    description: water_supply_data variant number 085
+    data:
+      flows_data: water_supply/WRM_nearfuture_085_paramset1_smif
+      irrigations_data: water_supply/085_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_085_2020_to_2049_smif
+  - name: water_supply_data_086
+    description: water_supply_data variant number 086
+    data:
+      flows_data: water_supply/WRM_nearfuture_086_paramset1_smif
+      irrigations_data: water_supply/086_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_086_2020_to_2049_smif
+  - name: water_supply_data_087
+    description: water_supply_data variant number 087
+    data:
+      flows_data: water_supply/WRM_nearfuture_087_paramset1_smif
+      irrigations_data: water_supply/087_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_087_2020_to_2049_smif
+  - name: water_supply_data_088
+    description: water_supply_data variant number 088
+    data:
+      flows_data: water_supply/WRM_nearfuture_088_paramset1_smif
+      irrigations_data: water_supply/088_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_088_2020_to_2049_smif
+  - name: water_supply_data_089
+    description: water_supply_data variant number 089
+    data:
+      flows_data: water_supply/WRM_nearfuture_089_paramset1_smif
+      irrigations_data: water_supply/089_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_089_2020_to_2049_smif
+  - name: water_supply_data_090
+    description: water_supply_data variant number 090
+    data:
+      flows_data: water_supply/WRM_nearfuture_090_paramset1_smif
+      irrigations_data: water_supply/090_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_090_2020_to_2049_smif
+  - name: water_supply_data_091
+    description: water_supply_data variant number 091
+    data:
+      flows_data: water_supply/WRM_nearfuture_091_paramset1_smif
+      irrigations_data: water_supply/091_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_091_2020_to_2049_smif
+  - name: water_supply_data_092
+    description: water_supply_data variant number 092
+    data:
+      flows_data: water_supply/WRM_nearfuture_092_paramset1_smif
+      irrigations_data: water_supply/092_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_092_2020_to_2049_smif
+  - name: water_supply_data_093
+    description: water_supply_data variant number 093
+    data:
+      flows_data: water_supply/WRM_nearfuture_093_paramset1_smif
+      irrigations_data: water_supply/093_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_093_2020_to_2049_smif
+  - name: water_supply_data_094
+    description: water_supply_data variant number 094
+    data:
+      flows_data: water_supply/WRM_nearfuture_094_paramset1_smif
+      irrigations_data: water_supply/094_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_094_2020_to_2049_smif
+  - name: water_supply_data_095
+    description: water_supply_data variant number 095
+    data:
+      flows_data: water_supply/WRM_nearfuture_095_paramset1_smif
+      irrigations_data: water_supply/095_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_095_2020_to_2049_smif
+  - name: water_supply_data_096
+    description: water_supply_data variant number 096
+    data:
+      flows_data: water_supply/WRM_nearfuture_096_paramset1_smif
+      irrigations_data: water_supply/096_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_096_2020_to_2049_smif
+  - name: water_supply_data_097
+    description: water_supply_data variant number 097
+    data:
+      flows_data: water_supply/WRM_nearfuture_097_paramset1_smif
+      irrigations_data: water_supply/097_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_097_2020_to_2049_smif
+  - name: water_supply_data_098
+    description: water_supply_data variant number 098
+    data:
+      flows_data: water_supply/WRM_nearfuture_098_paramset1_smif
+      irrigations_data: water_supply/098_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_098_2020_to_2049_smif
+  - name: water_supply_data_099
+    description: water_supply_data variant number 099
+    data:
+      flows_data: water_supply/WRM_nearfuture_099_paramset1_smif
+      irrigations_data: water_supply/099_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_099_2020_to_2049_smif
+  - name: water_supply_data_100
+    description: water_supply_data variant number 100
+    data:
+      flows_data: water_supply/WRM_nearfuture_100_paramset1_smif
+      irrigations_data: water_supply/100_daily_smif
+      borehole_data: water_supply/borehole_forcing_scenario_nf_id_100_2020_to_2049_smif

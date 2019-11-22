@@ -1,10 +1,11 @@
-description: ''
 name: water_demand_test
-narratives: {}
-scenarios:
-  water_demand_predicted: predicted
-sos_model: water_demand_only
+description: Test water demand, and conversion from LAD
 stamp: '2019-03-01T00:00:00.000Z'
+sos_model: water_demand
+scenarios:
+  water_demand_projections: baseline
+  socio-economic: arc_baseline
+narratives: {}
 timesteps:
 - 2020
 - 2021

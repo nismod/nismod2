@@ -1,0 +1,26 @@
+name: arc_ed__unplanned__mv
+stamp: '2019-05-14'
+description: Arc Energy Demand Unplanned
+sos_model: energy_demand_unconstrained
+scenarios:
+  socio-economic: arc_unplanned
+  temperature: NF1
+narratives:
+  smart_meter_p:
+    - multivector_world
+  t_base_heating:
+    - multivector_world
+  f_eff_achieved:
+    - multivector_world
+  generic_enduse_change:
+    - multivector_world
+  generic_fuel_switch:
+    - multivector_world
+  switches_service:
+    - multivector_world
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050

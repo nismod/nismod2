@@ -1,0 +1,14 @@
+name: arc_ed__unplanned
+stamp: '2019-05-14'
+description: Arc Energy Demand Unplanned
+sos_model: energy_demand_unconstrained
+scenarios:
+  socio-economic: arc_unplanned
+  temperature: NF1
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2020
+  - 2030
+  - 2050

@@ -155,7 +155,7 @@ class EDWrapper(SectorModel):
     def _get_temperatures(self, data_handle, sim_yrs, regions, constant_weather=False):
         """Load minimum and maximum temperatures
         """
-        logging.info("... load temperature")
+        logging.debug("... load temperature")
         temp_data = defaultdict(dict)
 
         for simulation_yr in sim_yrs:
@@ -236,7 +236,7 @@ class EDWrapper(SectorModel):
     def before_model_run(self, data_handle):
         """Implement this method to conduct pre-model run tasks
         """
-        logging.info("... Start function before_model_run")
+        logging.debug("... Start function before_model_run")
         data = {}
 
         if self._get_base_yr(data_handle) != 2015:
@@ -252,8 +252,10 @@ class EDWrapper(SectorModel):
         mode = self._get_mode(data_handle)
         config['CRITERIA']['mode_constrained'] = mode
 
-        virtual_building_stock_criteria = mode = self._get_virtual_dw_stock(data_handle)
+        virtual_building_stock_criteria = self._get_virtual_dw_stock(data_handle)
         config['CRITERIA']['virtual_building_stock_criteria'] = virtual_building_stock_criteria
+
+        logging.debug("MODE {} VIRTUAL_STOCK {}".format(mode, virtual_building_stock_criteria))
 
         region_set_name = self._get_region_set_name()
         curr_yr = self._get_base_yr(data_handle)
@@ -391,6 +393,11 @@ class EDWrapper(SectorModel):
         mode = self._get_mode(data_handle)
         config['CRITERIA']['mode_constrained'] = mode
 
+        virtual_building_stock_criteria = self._get_virtual_dw_stock(data_handle)
+        config['CRITERIA']['virtual_building_stock_criteria'] = virtual_building_stock_criteria
+
+        logging.info("MODE {} VIRTUAL_STOCK {}".format(mode, virtual_building_stock_criteria))
+
         curr_yr = self._get_simulation_yr(data_handle)
         base_yr = config['CONFIG']['base_yr']
         weather_yr = curr_yr
@@ -440,6 +447,10 @@ class EDWrapper(SectorModel):
         data['scenario_data']['gva_per_head'][curr_yr] = self._assign_array_to_dict(gva_array_cy, data['regions'])
         data['scenario_data']['gva_industry'][curr_yr] = self._load_gva_sector_data(data_handle, data['regions'])
 
+        floor_area_curr = data_handle.get_data('floor_area').as_ndarray()
+        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
+        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
+
         default_streategy_vars = strategy_vars_def.load_param_assump(
             hard_coded_default_val=True)
 
@@ -488,7 +499,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         # Read results from pre_simulate from disc
         # --------------------------------------------------
-        logging.info("... reading in results from before_model_run(): " + str(temp_and_result_path))
+        logging.debug("... reading in results from before_model_run(): " + str(temp_and_result_path))
         regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "regional_vars.yml"))
         non_regional_vars = read_data.read_yaml(os.path.join(temp_and_result_path, "non_regional_vars.yml"))
         data['fuel_disagg'] = read_data.read_yaml(os.path.join(temp_and_result_path, "fuel_disagg.yml"))
@@ -536,7 +547,7 @@ class EDWrapper(SectorModel):
         # --------------------------------------------------
         for key_name in self.outputs:
             if key_name in sim_obj.supply_results.keys():
-                logging.info("...writing `{}` to smif".format(key_name))
+                logging.debug("...writing `{}` to smif".format(key_name))
                 single_result = sim_obj.supply_results[key_name]
                 data_handle.set_results(key_name, single_result)
             else:
@@ -544,5 +555,3 @@ class EDWrapper(SectorModel):
                 #data_handle.set_results(key_name, np.zeros((391, 8760)))
                 logging.info(" '{}' is not in outputs".format(key_name))
                 raise Exception("Output '{}' is not defined".format(key_name))
-
-        logging.info("----Finished Energy Demand Wrapper-----")

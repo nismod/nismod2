@@ -2,6 +2,7 @@
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
 
@@ -39,6 +40,34 @@ class WaterWrapper(SectorModel):
                 ' Instead, timesteps are: {}'.format(timesteps)
             )
 
+        base_dir = os.path.dirname(os.path.realpath(__file__))
+        model_dir = self._get_model_dir(data_handle)
+
+        try:
+            os.mkdir(model_dir)
+        except FileExistsError:
+            pass
+
+        base_exe_dir = os.path.join(base_dir, 'exe')
+        model_exe_dir = os.path.join(model_dir, 'exe')
+        try:
+            shutil.copytree(base_exe_dir, model_exe_dir)
+        except FileExistsError:
+            pass
+
+        base_nodal_dir = os.path.join(base_dir, 'nodal')
+        model_nodal_dir = os.path.join(model_dir, 'nodal')
+        try:
+            shutil.copytree(base_nodal_dir, model_nodal_dir)
+        except FileExistsError:
+            pass
+
+
+    def _get_model_dir(self, data_handle):
+        return os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            os.path.basename(data_handle._modelrun_name))
+
     def simulate(self, data_handle):
         """Runs the water supply model.
 
@@ -56,7 +85,7 @@ class WaterWrapper(SectorModel):
         else:
             reservoir_levels = data_handle.get_previous_timestep_data('reservoir_levels')
 
-        model_dir = os.path.dirname(os.path.realpath(__file__))
+        model_dir = self._get_model_dir(data_handle)
         exe_dir = os.path.join(model_dir, 'exe')
         nodal_dir = os.path.join(model_dir, 'nodal')
 
@@ -76,6 +105,10 @@ class WaterWrapper(SectorModel):
         sysfile = self.inject_reservoir_levels(sysfile, reservoir_levels)
         assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
 
+        # Set intervention
+        sysfile = self.set_interventions(sysfile, data_handle.get_current_interventions())
+        assert(os.path.isfile(sysfile)), "Expected to find water supply sysfile at {}".format(sysfile)
+
         # This is the nodal file which is generated from various static data files
         nodal_file = self.prepare_nodal(data_handle, nodal_dir)
         assert(os.path.isfile(nodal_file))
@@ -84,19 +117,13 @@ class WaterWrapper(SectorModel):
             wathnet,
             '-sysfile={}'.format(sysfile),
             '-nodalfile={}'.format(nodal_file),
-            '-output=RAGDS',
+            '-output=RGDS',
+            '-save',  # enable to allow debugging in WATHNET GUI with data in line
         ])
 
         # Output will be the name of the sysfile (modified_model.wat), without the .wat extension
-        # and with (for instance) '_arcFlow.csv' added.
-        #   e.g. `modified_model_arcFlow.csv`
-        arc_flows = sysfile.replace('.wat', '_arcFlow.csv')
-        assert(os.path.isfile(arc_flows)), "Expected to find water supply arc flow results at {}".format(arc_flows)
-        data_handle.set_results(
-            'water_supply_arc_flows',
-            self.extract_wathnet_output(output_file=arc_flows, spec=self.outputs['water_supply_arc_flows'])
-        )
-
+        # and with (for instance) '_reservoirEndVolume.csv' added.
+        #   e.g. `modified_model_reservoirEndVolume.csv`
         res_vols = sysfile.replace('.wat', '_reservoirEndVolume.csv')
         assert (os.path.isfile(res_vols)), "Expected to find water supply reservoir results at {}".format(res_vols)
         data_handle.set_results(
@@ -341,7 +368,7 @@ class WaterWrapper(SectorModel):
         ---------
         sysfile : str
             Path to the sysfile ('National_Model.wat')
-        
+
         year_now: int
             The year to be simulated
 
@@ -383,6 +410,43 @@ class WaterWrapper(SectorModel):
         assert(sentinel_lines_hit == 1)
 
         return modified_sysfile
+
+    @staticmethod
+    def set_interventions(sysfile, interventions):
+        """Set ITRC intervention
+        """
+        interventions = list(interventions.values())
+
+        msg = "Expected at most one intervention for water supply, got {}"
+        assert len(interventions) <= 1, msg.format(interventions)
+
+        if interventions and 'option_number' in interventions[0]:
+            option_number = interventions[0]['option_number']
+        else:
+            option_number = 0
+
+        # Option Number sets the value of itrco in the National_Model.wat file, with effects
+        # as defined within the file:
+        # itrco = 0 - no options;
+        # itrco = 1 - severn thames transfer;
+        # itrco = 2 - trent to rutland transfer;
+        # itrco = 3 - s lincs reservoir;
+        # itrco = 4 - abingdon storage;
+        # itrco = 5 - beckton reuse;
+
+        # open file
+        with open(sysfile, 'r') as fh:
+            original_text = fh.read()
+
+        # modify
+        new_text = original_text.replace("itrco = 0;", "itrco = {};".format(option_number))
+
+        # save modified file
+        new_sysfile = sysfile.replace('.wat', '_with_intervention.wat')
+        with open(new_sysfile, 'w') as fh:
+            fh.write(new_text)
+
+        return new_sysfile
 
     @staticmethod
     def inject_reservoir_levels(sysfile, reservoir_levels):
@@ -515,36 +579,27 @@ class WaterWrapper(SectorModel):
 
         new_public_file = public_file + ".NEW_DEMANDS"
 
-        # Read the existing CSV using Pandas, and as a sanity check assert it is written
-        # back out identically (to ensure nothing has gone wrong reading the file)
+        # Read template file
         public_df = pd.read_csv(
             public_file,
             sep=',',
         )
 
-        coord_names_from_smif = np.array([x['name'] for x in demand_data.dim_coords('water_resource_zones').elements])
-        coord_names_in_csv = np.array(public_df['WRZ Name'])
+        # Merge, replacing values for 'Distribution Input'
+        smif_demand_df = demand_data.as_df().reset_index()
 
-        if len(coord_names_from_smif) != len(coord_names_in_csv):
-            raise ValueError(
-                'Expected the calculated water demand from water demand model to have to have the same coordinates as'
-                ' the "WRZ Name" column in the public file (WRZ_DI_DO.csv). But, they have different lengths ({} and'
-                ' {})'.format(len(coord_names_from_smif), len(coord_names_in_csv))
-            )
+        public_df = public_df.merge(
+            smif_demand_df,
+            left_on='WRZ Name',
+            right_on='water_resource_zones',
+            validate='one_to_one'
+        ).drop(
+            ['Distribution Input', 'water_resource_zones'], axis=1
+        ).rename(columns={
+            'water_demand': 'Distribution Input'
+        })
 
-        for x, y in zip(coord_names_from_smif, coord_names_in_csv):
-            if x != y and 'Nottinghamshire' not in x:  # hack, as Nottinghamshire.1 and Nottinghamshire.2 from smif
-                raise ValueError(
-                    'Expected the calculated water demand from water demand model to have to have the same coordinates'
-                    ' as the "WRZ Name" column in the public file (WRZ_DI_DO.csv). Instead, found non-matching'
-                    ' coordinates ({} <=> {})'.format(x, y)
-                )
-
-        # Inject the new demand data, and create a new CSV file
-        public_df['Distribution Input'] = demand_data.data
-        assert np.array_equal(demand_data.data, public_df['Distribution Input'])
-
-        public_df.to_csv(path_or_buf=new_public_file, sep=',', header=True, index=False)
+        public_df.to_csv(new_public_file, index=False)
         assert os.path.isfile(new_public_file)
 
         return new_public_file

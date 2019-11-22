@@ -1,0 +1,19 @@
+name: convert_population_lad_to_wrz
+description: Region conversion from LAD to water resource zones
+path: models/convert.py
+classname: ConvertPopulationLadToWRZ
+inputs:
+  - name: population
+    dims:
+      - lad_uk_2016
+    dtype: float
+    unit: people
+outputs:
+  - name: population
+    dims:
+      - water_resource_zones
+    dtype: float
+    unit: people
+parameters: []
+interventions: []
+initial_conditions: []

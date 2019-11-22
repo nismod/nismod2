@@ -32,9 +32,9 @@ inputs:
     dims:
       - lad_uk_2016
     dtype: float
-  - unit: GBP
-    description: GVA per industrial sector
-    name: gva_per_sector
+  - name: gva_per_sector
+    unit: GBP
+    description: GVA per industrial sector    
     dims:
       - lad_uk_2016
       - sectors
@@ -245,8 +245,8 @@ parameters:
     default: ../energy_demand/parameters/f_eff_achieved
     unit: 'decimal'
     dims:
-    - end_yr
-    - interpolation_params
+      - end_yr
+      - interpolation_params
     dtype: float
   - name: smart_meter_p
     description: Smart meter penetration

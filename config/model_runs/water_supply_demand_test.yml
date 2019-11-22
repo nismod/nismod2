@@ -1,12 +1,13 @@
-description: 'Test model run for water supply and demand models'
 name: water_supply_demand_test
-narratives: {}
-scenarios:
-  water_demand_predicted: predicted  # Needed as input for water demand
-  reservoir_levels: predicted  # Needed as input for initial timestep of water demand
-  water_supply_data: predicted_2020_2050  # Needed as input for preparing Wathnet nodal file
-sos_model: water_supply_demand
+description: 'Test model run for water supply and demand models'
 stamp: '2019-03-01T00:00:00.000Z'
+sos_model: water_supply_demand
+scenarios:
+  socio-economic: arc_baseline
+  water_demand_projections: baseline
+  reservoir_levels: predicted
+  water_supply_data: predicted_2020_2050  # Needed as input for preparing Wathnet nodal file
+narratives: {}
 timesteps:
 - 2020
 - 2021

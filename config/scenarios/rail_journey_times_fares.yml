@@ -1,0 +1,19 @@
+name: rail_journey_times_fares
+description: Journey times and fares for transport rail model
+provides:
+  - name: rail_journey_fares
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: £
+  - name: rail_journey_times
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: h
+variants:
+  - name: baseline
+    description: Journey times and fares for transport rail model
+    data:
+      rail_journey_fares:  rail_station_journey_fares
+      rail_journey_times: rail_station_journey_times

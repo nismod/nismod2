@@ -1,0 +1,35 @@
+name: arc_wd__new-cities__BL
+stamp: '2019-05-14'
+description: Arc Water Demand New Cities
+sos_model: water_demand
+scenarios:
+  socio-economic: arc_new-cities
+  water_demand_projections: baseline_wrmp_2019
+narratives: {}
+strategies: []
+timesteps:
+  - 2020
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+  - 2026
+  - 2027
+  - 2028
+  - 2029
+  - 2030
+  - 2031
+  - 2032
+  - 2033
+  - 2034
+  - 2035
+  - 2036
+  - 2037
+  - 2038
+  - 2039
+  - 2040
+  - 2041
+  - 2042
+  - 2043
+  - 2044
