@@ -1,7 +1,7 @@
 name: multivector_decentral
 stamp: ''
 description: ''
-sos_model: energy_transport-scenario
+sos_model: energy_transport-scenario_corrected
 scenarios:
   fuel_price: es_prices_multivector_world
   socio-economic: itrc_low-fcc

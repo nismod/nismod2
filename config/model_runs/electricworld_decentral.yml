@@ -1,7 +1,7 @@
 name: electricworld_decentral
 stamp: ''
 description: ''
-sos_model: energy_transport-scenario
+sos_model: energy_transport-scenario_corrected
 scenarios:
   fuel_price: es_prices_electric_world
   socio-economic: itrc_high-dcc
