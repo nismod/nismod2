@@ -1,0 +1,39 @@
+name: electricworld_netzero
+stamp: ''
+description: 'electric world config with es-ed-et and net zero assumpsions'
+sos_model: energy_transport-scenario_corrected
+scenarios:
+  fuel_price: es_prices_electric_world
+  socio-economic: itrc_high-dcc
+  temperature: NF1
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  ev_transport_trips: electricworld
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
+narratives:
+  load_shedding:
+  - high_cost
+  operation_mode:
+  - central
+  smart_meter_p:
+  - electric_world
+  t_base_heating:
+  - electric_world
+  f_eff_achieved:
+  - electric_world_netzero
+  generic_enduse_change:
+  - electric_world_netzero
+  generic_fuel_switch:
+  - electric_world_netzero
+  switches_service:
+  - electric_world_netzero
+decision_module: ''
+strategies:
+  - type: pre-specified-planning
+    description: 'electric world'
+    filename: ../energy_supply/strategies/electric_world
+    model_name: energy_supply_constrained
+timesteps:
+  - 2015
+  - 2030
+  - 2050

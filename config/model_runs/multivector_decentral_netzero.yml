@@ -1,0 +1,39 @@
+name: multivector_decentral_netzero
+stamp: ''
+description: ''
+sos_model: energy_transport-scenario_corrected
+scenarios:
+  fuel_price: es_prices_multivector_world
+  socio-economic: itrc_low-fcc
+  temperature: NF1
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  ev_transport_trips: multivector
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
+narratives:
+  load_shedding:
+  - high_cost
+  operation_mode:
+  - decentral
+  smart_meter_p:
+  - multivector_world
+  t_base_heating:
+  - multivector_world
+  f_eff_achieved:
+  - multivector_world_netzero
+  generic_enduse_change:
+  - multivector_world_netzero
+  generic_fuel_switch:
+  - multivector_world_netzero
+  switches_service:
+  - multivector_world_netzero
+decision_module: ''
+strategies:
+  - type: pre-specified-planning
+    description: 'multi vector world'
+    filename: ../energy_supply/strategies/multi_vector
+    model_name: energy_supply_constrained
+timesteps:
+  - 2015
+  - 2030
+  - 2050
