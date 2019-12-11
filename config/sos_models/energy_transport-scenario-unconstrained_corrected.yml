@@ -421,6 +421,10 @@ narratives:
         decription: green gas mixture for heat supply
         data:
           heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas
+      - name: national_grid_fes
+        decription: green gas mixture for heat supply
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_national_grid_fes
   - name: sensitivity_mode
     description: selection of the sensitivity analysis
     provides:

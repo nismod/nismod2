@@ -1,7 +1,7 @@
 name: multivector_decentral
 stamp: ''
 description: ''
-sos_model: energy_transport-scenario_corrected
+sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: es_prices_multivector_world
   socio-economic: itrc_low-fcc
@@ -15,6 +15,8 @@ narratives:
   - high_cost
   operation_mode:
   - decentral
+  heat_supply_strategy:
+  - national_grid_fes
   smart_meter_p:
   - multivector_world
   t_base_heating:

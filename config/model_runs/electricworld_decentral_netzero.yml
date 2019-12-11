@@ -1,7 +1,7 @@
 name: electricworld_decentral_netzero
 stamp: ''
 description: ''
-sos_model: energy_transport-scenario_corrected
+sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: es_prices_electric_world
   socio-economic: itrc_high-dcc
@@ -15,6 +15,8 @@ narratives:
   - high_cost
   operation_mode:
   - decentral
+  heat_supply_strategy:
+  - full_electric
   smart_meter_p:
   - electric_world
   t_base_heating:
