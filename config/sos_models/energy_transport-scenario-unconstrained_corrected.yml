@@ -380,7 +380,7 @@ narratives:
   - name: load_shedding
     description: Costs of shedding load
     provides:
-      energy_supply_toy:
+      energy_supply_optimised:
       - LoadShed_elec
       - LoadShed_gas
     variants:
@@ -516,6 +516,14 @@ narratives:
         description: Central assumptions
         data:
           f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world
+      - name: electric_world_netzero
+        description: electric world assumptions for net zero emissions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__net_zero_electric_world
+      - name: multivector_world_netzero
+        description: multivector assumptions for net zero emissions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__net_zero_multivector_world
   - name: generic_enduse_change
     description: ''
     provides:
@@ -534,6 +542,14 @@ narratives:
         description: Multivector assumptions
         data:
           generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world
+      - name: electric_world_netzero
+        description: Electirc world assumptions for net zero emissions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__net_zero_electric_world
+      - name: multivector_world_netzero
+        description: Multivector assumptions for net zero emissions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__net_zero_multivector_world
   - name: heat_recovered
     description: ''
     provides:
@@ -624,6 +640,14 @@ narratives:
         description: Electirc world assumptions
         data:
           generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world
+      - name: multivector_world_netzero
+        description: Multivector assumptions for net zero emissions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__net_zero_multivector_world
+      - name: electric_world_netzero
+        description: Electirc world assumptions for net zero emissions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__net_zero_electric_world
   - name: switches_service
     description: ''
     provides:
@@ -642,4 +666,12 @@ narratives:
         description: Multivector assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__multivector_world
+      - name: electric_world_netzero
+        description: Electric world assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_electric_world
+      - name: multivector_world_netzero
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world
 
