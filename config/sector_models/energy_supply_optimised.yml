@@ -808,3 +808,15 @@ outputs:
     - seasonal_week
     unit: t
     dtype: float
+  - name: tran_beccs
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: tran_h2ccgt
+    dims:
+    - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
