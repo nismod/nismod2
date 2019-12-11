@@ -850,3 +850,21 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: other_emissions_eh
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: t
+    dtype: float
+  - name: total_emissions
+    dims:
+    - national
+    - seasonal_week
+    unit: t
+    dtype: float
+  - name: net_emissions
+    dims:
+    - national
+    - seasonal_week
+    unit: t
+    dtype: float
