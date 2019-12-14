@@ -30,9 +30,9 @@ narratives:
 decision_module: ''
 strategies:
   - type: pre-specified-planning
-    description: 'electric world'
+    description: 'net zero development (national), centralised operation'
     filename: ../energy_supply/strategies/electric_world
-    model_name: energy_supply_constrained
+    model_name: energy_supply_optimised
 timesteps:
   - 2015
   - 2030

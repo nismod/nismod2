@@ -33,7 +33,7 @@ decision_module: ''
 strategies:
   - type: pre-specified-planning
     description: 'net zero development (national), centralised operation'
-    filename: ../energy_supply/strategies/net_zero
+    filename: ../energy_supply/strategies/multi_vector
     model_name: energy_supply_optimised
 timesteps:
   - 2015
