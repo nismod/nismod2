@@ -571,6 +571,7 @@ def build_generator(plants, current_timestep):
                           'oil': 6,
                           'ocgt (flexible generation)': 7,
                           'gas ccs' : 8,
+                          'becss' : 9,
                           'biomass': 10,
                           'interconnector': 11,
                           'chp gas': 13,
