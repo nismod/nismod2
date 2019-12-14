@@ -1002,8 +1002,12 @@ narratives:
         description: Electric world assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__net_zero_electric_world
-      - name: multivector_world_netzero
+      - name: multivector_world_netzero_HeatNetworks
         description: Multivector assumptions
         data:
-          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world_DistrictHeating
+      - name: multivector_world_netzero_Hydrogen
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world_Hydrogen
 

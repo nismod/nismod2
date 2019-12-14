@@ -28,7 +28,7 @@ narratives:
   generic_fuel_switch:
   - multivector_world_netzero
   switches_service:
-  - multivector_world_netzero
+  - multivector_world_netzero_Hydrogen
 decision_module: ''
 strategies:
   - type: pre-specified-planning
