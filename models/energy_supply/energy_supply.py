@@ -671,6 +671,24 @@ def build_generator(plants, current_timestep):
                     plant['to_location']
                     )
 
+        elif plant_type == 15:
+
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "BusNum",
+                    "MinPower", "MaxPower", "PumpStorageCapacity", "Year", "Retire", "SysLayer")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    extract_value(plant, 'pumpstore_capacity'),
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
+
         else:
 
             sql = """
