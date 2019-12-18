@@ -11,6 +11,18 @@ NISMOD v2 has several components:
 - (for some models) internal model data, used by the model but not exposed to smif as part of
   the system-of-systems configuration
 
+This repository contains *only*:
+- [smif](https://smif.readthedocs.io/en/latest/) configuration needed to link the models into a
+  system-of-systems and set up model runs
+- model wrappers and various helpers to set up runs and explore results.
+
+In particular:
+- prepared model data is not yet provided (references to Amazon S3 buckets below are not
+  public)
+- models and dependencies must be installed separately, following instructions below (water and
+  energy supply models are not open; [transport](https://github.com/nismod/transport) and
+  [digital](https://github.com/nismod/cdcam) models are open)
+
 
 ## Setup
 
