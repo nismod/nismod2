@@ -112,6 +112,12 @@ inputs:
     - seasonal_week
     unit: MWh
     dtype: float
+  - name: hydrogen_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: kg
+    dtype: float
   - name: biomass_feedstock
     dims:
     - energy_hub

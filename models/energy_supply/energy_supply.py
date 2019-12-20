@@ -201,6 +201,7 @@ class EnergySupplyWrapper(SectorModel):
             'insolation_bus',
             #transport
             'elec_trans',
+            'hydrogen_trans',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:

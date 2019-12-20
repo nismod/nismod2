@@ -15,6 +15,13 @@ provides:
       - annual_day_hours
     dtype: float
     unit: kWh
+  - name: hydrogen_vehicle_hydrogen_consumption
+    description: The electric vehicle electricity demanded at origin in each hour
+    dims:
+      - lad_gb_2016
+      - annual_day_hours
+    dtype: float
+    unit: kg
 variants:
   - name: central
     description: Central (test) scenario for et_module verification
@@ -26,11 +33,25 @@ variants:
     data:
       electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__ew
       electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__ew
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__ew
+  - name: electricworld_netzero
+    description: Outputs for electric world (net zero narrative)
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__ew_netzero
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__ew_netzero
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__ew_netzero
   - name: multivector
     description: Initial outputs for multi-vector (energy narrative)
     data:
       electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv
       electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__mv
+  - name: multivector_netzero
+    description: Outputs for multi-vector (net zero narrative)
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__mv_netzero
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__mv_netzero
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__mv_netzero
   - name: arc_baseline
     description: Baseline/NO transport run
     data:

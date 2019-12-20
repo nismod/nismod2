@@ -307,6 +307,14 @@ model_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: energy_supply_optimised
     sink_input: elec_trans
+  - source: convert_regions_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_intervals_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
+  - source: convert_intervals_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: energy_supply_optimised
+    sink_input: hydrogen_trans
 scenario_dependencies:
   - sink: energy_demand_unconstrained
     sink_input: floor_area
@@ -316,6 +324,10 @@ scenario_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: convert_regions_tr_to_es
     sink_input: electric_vehicle_electricity_consumption
+  - source: ev_transport_trips
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_regions_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
   - source: ev_transport_trips
     source_output: electric_vehicle_trip_starts
     sink: et_module
