@@ -21,7 +21,7 @@ provides:
       - lad_gb_2016
       - annual_day_hours
     dtype: float
-    unit: kg
+    unit: kWh
 variants:
   - name: central
     description: Central (test) scenario for et_module verification

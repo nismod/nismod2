@@ -13,7 +13,7 @@ inputs:
     dims:
       - lad_gb_2016
       - annual_day_hours
-    unit: kg
+    unit: kWh
     dtype: float
   - name: v2g_g2v_capacity
     dims:
@@ -31,7 +31,7 @@ outputs:
     dims:
       - energy_hub
       - annual_day_hours
-    unit: kg
+    unit: kWh
     dtype: float
   - name: v2g_g2v_capacity
     dims:

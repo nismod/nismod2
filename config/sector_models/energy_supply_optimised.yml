@@ -116,7 +116,7 @@ inputs:
     dims:
     - energy_hub
     - seasonal_week
-    unit: kg
+    unit: MWh
     dtype: float
   - name: biomass_feedstock
     dims:
@@ -823,6 +823,12 @@ outputs:
   - name: tran_h2ccgt
     dims:
     - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: hydrogen_demand_transport
+    dims:
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
