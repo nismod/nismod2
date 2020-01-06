@@ -6,7 +6,7 @@ scenarios:
   fuel_price: es_prices_multivector_world
   socio-economic: itrc_low-fcc
   temperature: NF1
-  ev_transport_trips: multivector
+  ev_transport_trips: multivector_netzero
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices

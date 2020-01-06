@@ -7,7 +7,7 @@ scenarios:
   socio-economic: itrc_high-dcc
   temperature: NF1
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
-  ev_transport_trips: electricworld
+  ev_transport_trips: electricworld_netzero
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
 narratives:
