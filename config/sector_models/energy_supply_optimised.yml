@@ -340,7 +340,7 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: eh_wind_curtalied
+  - name: eh_wind_curtailed
     dims:
     - energy_hub
     - seasonal_week
