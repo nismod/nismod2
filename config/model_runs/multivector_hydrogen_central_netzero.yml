@@ -1,4 +1,4 @@
-name: multivector_heatnetwork_netzero
+name: multivector_hydrogen_central_netzero
 stamp: ''
 description: ''
 sos_model: energy_transport-scenario-unconstrained_corrected
@@ -16,7 +16,7 @@ narratives:
   operation_mode:
   - central
   heat_supply_strategy:
-  - heat_networks
+  - green_gas
   smart_meter_p:
   - multivector_world
   t_base_heating:
@@ -28,7 +28,7 @@ narratives:
   generic_fuel_switch:
   - multivector_world_netzero
   switches_service:
-  - multivector_world_netzero_HeatNetworks
+  - multivector_world_netzero_Hydrogen
 decision_module: ''
 strategies:
   - type: pre-specified-planning
