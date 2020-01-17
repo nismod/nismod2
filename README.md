@@ -48,9 +48,10 @@ on a desktop, server or cluster:
    - Java (for transport)
    - PostgreSQL and ODBC (for energy supply)
 1. Configure:
-   - connection details for the NISMOD AWS S3 bucket `s3://nismod2-data` (copy `template.s3.ini` to `s3.ini` and edit)
-   - connection details for a Postgres database (copy `template.dbconfig.ini` to
-     `dbconfig.ini` and edit for your database)
+   - connection details for the NISMOD AWS S3 bucket `s3://nismod2-data` (copy
+     `provision/template.s3.ini` to `provision/s3.ini` and edit)
+   - connection details for a Postgres database (copy `provision/template.dbconfig.ini` to
+     `provision/dbconfig.ini` and edit for your database)
 1. Install models (run `provision/install_*` scripts)
 1. Get data (run `provision/get_data_*` scripts)
 
