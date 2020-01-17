@@ -1,0 +1,16 @@
+name: nic_ed_et_tr
+stamp: '2020-01-16'
+description: 'Energy demand, transport and energy from transport for NIC risk study'
+sos_model: energy_transport_demand
+scenarios:
+  fuel_price: baseline
+  socio-economic: arc_baseline_nia_pop
+  temperature: NF1
+  link_travel_time: default
+  engine_type_fractions: baseline
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050

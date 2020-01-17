@@ -262,3 +262,13 @@ variants:
       gva_per_head: socio-economic/arc_gva_per_head__4-expansion23
       gva_per_sector: socio-economic/arc_gva_by_sector_for_energy_demand__2-expansion
       population: socio-economic/arc_population__4-expansion23
+  - name: arc_baseline_nia_pop
+    description: Arc baseline scenario with NIA population
+    data:
+      dwellings: socio-economic/arc_dwellings__baseline
+      floor_area: socio-economic/arc_floor_area__baseline
+      employment: socio-economic/arc_employment__baseline
+      gva: socio-economic/arc_gva__baseline
+      gva_per_head: socio-economic/nia_population__arc_gva_per_head__baseline
+      gva_per_sector: socio-economic/arc_gva_by_sector_for_energy_demand__baseline
+      population: socio-economic/nia_population
