@@ -105,7 +105,7 @@ class BaseTransportWrapper(SectorModel):
                 self.logger.exception("Transport model failed %s", ex)
                 raise ex
         else:
-            for switch in ['-road', '-rail']:
+            for switch in ['-road']:
                 tspt_model_arguments = base_arguments + [
                     switch,
                     str(data_handle.current_timestep),
