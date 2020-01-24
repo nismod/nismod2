@@ -467,6 +467,16 @@ narratives:
         decription: further demand reduction for heat, non-heat electricity and non-heat gas
         data:
           sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
+  - name: emissions_constraint
+    description: pre defined emissions constraint 
+    provides:
+      energy_supply_optimised:
+      - emissions_constraint
+    variants:
+      - name: emissions_constraint_on
+        decription: energy supply subjected to pre-defined emissions constraint
+        data:
+          emissions_constraint: ../../data/energy_supply/parameters/emissions_constraint_on
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:

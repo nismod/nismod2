@@ -164,6 +164,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/sensitivity_default
+  - name: emissions_constraint
+    description: Flag to turn on/off emissions constraint
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/emissions_constraint_off
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes

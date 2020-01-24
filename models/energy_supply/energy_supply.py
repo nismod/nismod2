@@ -76,9 +76,12 @@ class EnergySupplyWrapper(SectorModel):
         sensitivity_mode = int(data.get_parameter('sensitivity_mode').as_ndarray())
         self.logger.debug('Parameter sensitivity_mode mode: %s', sensitivity_mode)
 
+        emissions_constraint = int(data.get_parameter('emissions_constraint').as_ndarray())
+        self.logger.debug('Parameter emissions_constraint mode: %s', emissions_constraint)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,conn)
 
         conn.close()
 
@@ -491,7 +494,7 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
@@ -499,6 +502,7 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,c
         cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_supply_strategy';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'sensitivity_mode';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'emissions_constraint';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -512,6 +516,9 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,c
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('sensitivity_mode', sensitivity_mode))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('emissions_constraint', emissions_constraint))
 
 
 def retire_generator(plants):
