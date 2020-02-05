@@ -843,3 +843,15 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
+  - name: eh_battery_supply
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_battery_charge
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
