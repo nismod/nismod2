@@ -105,20 +105,19 @@ class BaseTransportWrapper(SectorModel):
                 self.logger.exception("Transport model failed %s", ex)
                 raise ex
         else:
-            for switch in ['-road', '-rail']:
-                tspt_model_arguments = base_arguments + [
-                    switch,
-                    str(data_handle.current_timestep),
-                    str(data_handle.previous_timestep)
-                ]
-                try:
-                    self.logger.debug(tspt_model_arguments)
-                    output = check_output(tspt_model_arguments)
-                    self.logger.info(output.decode("utf-8"))
-                except CalledProcessError as ex:
-                    self.logger.error(ex.output.decode("utf-8"))
-                    self.logger.exception("Transport model failed %s", ex)
-                    raise ex
+            tspt_model_arguments = base_arguments + [
+                '-road',
+                str(data_handle.current_timestep),
+                str(data_handle.previous_timestep)
+            ]
+            try:
+                self.logger.debug(tspt_model_arguments)
+                output = check_output(tspt_model_arguments)
+                self.logger.info(output.decode("utf-8"))
+            except CalledProcessError as ex:
+                self.logger.error(ex.output.decode("utf-8"))
+                self.logger.exception("Transport model failed %s", ex)
+                raise ex
 
     def _input_dimension_names(self, input_name, dimension_name):
         return self.inputs[input_name].dim_coords(dimension_name).ids
@@ -306,7 +305,7 @@ class BaseTransportWrapper(SectorModel):
             cccp_filename = intervention['congestionChargingPricing']
             intervention['congestionChargingPricing'] = os.path.join(
                 self._working_dir, 'data', 'csvfiles', cccp_filename
-            )
+            ).replace("\\", "/")
 
         print('Now writing {}'.format(path))
         with open(path, 'w') as file_handle:
