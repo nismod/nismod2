@@ -1,0 +1,69 @@
+name: extract_southampton_scenarios_rail
+description: Filter GVA and Population scenarios down to Southampton LADs
+path: ./models/extract.py
+classname: FilterAdaptor
+inputs:
+  - name: population
+    dims:
+      - lad_uk_2016
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_uk_2016
+    unit: GBP
+    dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_gb_2016
+    dtype: float
+    unit: £
+  - name: rail_journey_fares
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: £
+  - name: day_usage
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: people
+  - name: year_usage
+    dims:
+      - NLC_gb
+    dtype: float
+    unit: people
+outputs:
+  - name: population
+    dims:
+      - lad_southampton
+    unit: people
+    dtype: float
+  - name: gva
+    dims:
+      - lad_southampton
+    unit: GBP
+    dtype: float
+  - name: car_zonal_journey_costs
+    dims:
+      - lad_southampton
+    dtype: float
+    unit: £
+  - name: rail_journey_fares
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: £
+  - name: day_usage
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: people
+  - name: year_usage
+    dims:
+      - NLC_southampton
+    dtype: float
+    unit: people
+parameters: []
+interventions: []
+initial_conditions: []

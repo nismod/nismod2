@@ -1,5 +1,5 @@
 name: transport_southampton
-description: Test model for transport
+description: Test model for transport road model
 sector_models:
   - transport_southampton
   - extract_southampton_scenarios
