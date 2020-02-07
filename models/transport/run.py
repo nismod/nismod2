@@ -266,6 +266,8 @@ class BaseTransportWrapper(SectorModel):
         rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
+            # write path with "/" separators even on Windows
+            fname = fname.replace("\\", "/")
             if intervention['type'] in rail_interventions_types:
                 intervention_files.append("railInterventionFile{} = {}".format(i, fname))
             else:
