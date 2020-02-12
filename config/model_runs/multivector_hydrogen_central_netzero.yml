@@ -15,6 +15,8 @@ narratives:
   - high_cost
   operation_mode:
   - central
+  emissions_constraint:
+  - emissions_constraint_on
   heat_supply_strategy:
   - green_gas
   smart_meter_p:
