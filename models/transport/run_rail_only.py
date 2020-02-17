@@ -90,7 +90,6 @@ class BaseTransportWrapper(SectorModel):
 
         self.logger.info("FROM run.py: Running transport model")
         base_arguments = ['java'] + self._optional_args + [
-            '-XX:MaxHeapSize=10g',
             '-cp',
             path_to_jar,
             'nismod.transport.App',

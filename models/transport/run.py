@@ -88,7 +88,6 @@ class BaseTransportWrapper(SectorModel):
 
         self.logger.info("FROM run.py: Running transport model")
         base_arguments = ['java'] + self._optional_args + [
-            '-XX:MaxHeapSize=10g',
             '-cp',
             path_to_jar,
             'nismod.transport.App',
@@ -106,20 +105,19 @@ class BaseTransportWrapper(SectorModel):
                 self.logger.exception("Transport model failed %s", ex)
                 raise ex
         else:
-            for switch in ['-road', '-rail']:
-                tspt_model_arguments = base_arguments + [
-                    switch,
-                    str(data_handle.current_timestep),
-                    str(data_handle.previous_timestep)
-                ]
-                try:
-                    self.logger.debug(tspt_model_arguments)
-                    output = check_output(tspt_model_arguments)
-                    self.logger.info(output.decode("utf-8"))
-                except CalledProcessError as ex:
-                    self.logger.error(ex.output.decode("utf-8"))
-                    self.logger.exception("Transport model failed %s", ex)
-                    raise ex
+            tspt_model_arguments = base_arguments + [
+                '-road',
+                str(data_handle.current_timestep),
+                str(data_handle.previous_timestep)
+            ]
+            try:
+                self.logger.debug(tspt_model_arguments)
+                output = check_output(tspt_model_arguments)
+                self.logger.info(output.decode("utf-8"))
+            except CalledProcessError as ex:
+                self.logger.error(ex.output.decode("utf-8"))
+                self.logger.exception("Transport model failed %s", ex)
+                raise ex
 
     def _input_dimension_names(self, input_name, dimension_name):
         return self.inputs[input_name].dim_coords(dimension_name).ids
@@ -266,6 +264,8 @@ class BaseTransportWrapper(SectorModel):
         rail_interventions_types = ['NewRailStation']
         for i, intervention in enumerate(data_handle.get_current_interventions().values()):
             fname = self._write_intervention(intervention)
+            # write path with "/" separators even on Windows
+            fname = fname.replace("\\", "/")
             if intervention['type'] in rail_interventions_types:
                 intervention_files.append("railInterventionFile{} = {}".format(i, fname))
             else:
@@ -305,7 +305,7 @@ class BaseTransportWrapper(SectorModel):
             cccp_filename = intervention['congestionChargingPricing']
             intervention['congestionChargingPricing'] = os.path.join(
                 self._working_dir, 'data', 'csvfiles', cccp_filename
-            )
+            ).replace("\\", "/")
 
         print('Now writing {}'.format(path))
         with open(path, 'w') as file_handle:

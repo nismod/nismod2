@@ -6,9 +6,6 @@ base_path=$1
 # Read model_version, remote_data, local_dir from config.ini
 eval "$(grep -A3 "\[energy-demand\]" $base_path/provision/config.ini | tail -n3)"
 
-# Copy lad_2016_uk_simplified.shp to a more general location as it is used by more than just energy_demand
-cp $base_path/data/energy_demand/energy_demand_minimal/region_definitions/lad_2016_uk_simplified.shp $base_path/data/dimensions/lad_2016_uk_simplified.shp
-
 # Install energy_demand
 pip install git+https://github.com/nismod/energy_demand.git@$model_version#egg=energy_demand --upgrade
 
