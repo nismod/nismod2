@@ -82,9 +82,12 @@ class EnergySupplyWrapper(SectorModel):
         ev_smart_charging = int(data.get_parameter('ev_smart_charging').as_ndarray())
         self.logger.debug('Parameter ev_smart_charging: %s', ev_smart_charging)
 
+        ev_vehicle_to_grid = int(data.get_parameter('ev_vehicle_to_grid').as_ndarray())
+        self.logger.debug('Parameter ev_vehicle_to_grid: %s', ev_vehicle_to_grid)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,conn)
 
         conn.close()
 
@@ -497,7 +500,7 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
@@ -507,6 +510,7 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,e
         cur.execute("DELETE FROM input_flags WHERE parameter = 'sensitivity_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'emissions_constraint';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_smart_charging';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_vehicle_to_grid';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -526,6 +530,9 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,e
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('ev_smart_charging', ev_smart_charging))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('ev_vehicle_to_grid', ev_vehicle_to_grid))
 
 
 def retire_generator(plants):

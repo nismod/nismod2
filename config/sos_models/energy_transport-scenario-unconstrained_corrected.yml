@@ -487,6 +487,16 @@ narratives:
         decription: energy supply subjected to smart charging of EVs
         data:
           ev_smart_charging: ../../data/energy_supply/parameters/ev_smart_charging_enabled
+  - name: ev_vehicle_to_grid
+    description: enable/disable vehicle to grid services of EVs 
+    provides:
+      energy_supply_optimised:
+      - ev_vehicle_to_grid
+    variants:
+      - name: ev_vehicle_to_grid_enabled
+        decription: energy supply subjected to EV vehicle to grid services
+        data:
+          ev_vehicle_to_grid: ../../data/energy_supply/parameters/ev_vehicle_to_grid_enabled
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
