@@ -477,6 +477,16 @@ narratives:
         decription: energy supply subjected to pre-defined emissions constraint
         data:
           emissions_constraint: ../../data/energy_supply/parameters/emissions_constraint_on
+  - name: ev_smart_charging
+    description: enable/disable smart chariging of EVs 
+    provides:
+      energy_supply_optimised:
+      - ev_smart_charging
+    variants:
+      - name: ev_smart_charging_enabled
+        decription: energy supply subjected to smart charging of EVs
+        data:
+          ev_smart_charging: ../../data/energy_supply/parameters/ev_smart_charging_enabled
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:

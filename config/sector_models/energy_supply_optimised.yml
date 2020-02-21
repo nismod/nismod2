@@ -169,6 +169,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/emissions_constraint_off
+  - name: ev_smart_charging
+    description: Flag to turn enable/disable smar charging capability
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/ev_smart_charging_disabled
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes
