@@ -1,0 +1,13 @@
+name: nic_ed_unconstrained
+stamp: '2020-02-21'
+description: 'Energy demand for NIC risk study'
+sos_model: energy_demand_unconstrained
+scenarios:
+  socio-economic: arc_baseline_nia_pop
+  temperature: NF1
+narratives: {}
+strategies: []
+timesteps:
+  - 2015
+  - 2030
+  - 2050
