@@ -137,6 +137,12 @@ inputs:
     - seasonal_week
     unit: MWh
     dtype: float
+  - name: hydrogen_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
   - name: EV_Cap
     dims:
     - energy_hub
@@ -218,6 +224,21 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/sensitivity_default
+  - name: emissions_constraint
+    description: Flag to turn on/off emissions constraint
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/emissions_constraint_off
+  - name: ev_smart_charging
+    description: Flag to enable/disable smart charging capability
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/ev_smart_charging_disabled
+  - name: ev_vehicle_to_grid
+    description: Flag to enable/disable ev vehicle to grid services
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/ev_vehicle_to_grid_disabled
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes
@@ -394,7 +415,7 @@ outputs:
     - seasonal_week
     unit: MW
     dtype: float
-  - name: eh_wind_curtalied
+  - name: eh_wind_curtailed
     dims:
     - energy_hub
     - seasonal_week
@@ -856,6 +877,12 @@ outputs:
     - seasonal_week
     unit: t
     dtype: float
+  - name: hydrogen_emissions_eh
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: t
+    dtype: float
   - name: total_emissions
     dims:
     - national
@@ -877,6 +904,24 @@ outputs:
   - name: tran_h2ccgt
     dims:
     - bus_bars
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: hydrogen_demand_transport
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_battery_supply
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: eh_battery_charge
+    dims:
+    - energy_hub
     - seasonal_week
     unit: MW
     dtype: float

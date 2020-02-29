@@ -683,6 +683,18 @@ model_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: energy_supply_constrained
     sink_input: elec_trans
+  - source: convert_regions_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_intervals_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
+  - source: convert_intervals_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_units_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
+  - source: convert_units_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: energy_supply_constrained
+    sink_input: hydrogen_trans
 scenario_dependencies:
   - sink: energy_demand_constrained
     sink_input: floor_area
@@ -692,6 +704,10 @@ scenario_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: convert_regions_tr_to_es
     sink_input: electric_vehicle_electricity_consumption
+  - source: ev_transport_trips
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_regions_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
   - source: ev_transport_trips
     source_output: electric_vehicle_trip_starts
     sink: et_module
@@ -779,6 +795,62 @@ narratives:
         decription: centralised operating mode
         data:
           operation_mode: ../../data/energy_supply/parameters/op_mode_central
+  - name: sensitivity_mode
+    description: selection of the sensitivity analysis
+    provides:
+      energy_supply_constrained:
+      - sensitivity_mode
+    variants:
+      - name: wind_increase
+        decription: overall increase in wind speed magnitude
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_wind_increase
+      - name: wind_decrease
+        decription: overall decrease in wind speed magnitude
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_wind_decrease
+      - name: peak_increase
+        decription: increase in peak demand only for heat, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_peak
+      - name: dsm
+        decription: dsm opportunity for EV charging demand, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_dsm
+      - name: demand_reduction
+        decription: further demand reduction for heat, non-heat electricity and non-heat gas
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
+  - name: emissions_constraint
+    description: pre defined emissions constraint 
+    provides:
+      energy_supply_constrained:
+      - emissions_constraint
+    variants:
+      - name: emissions_constraint_on
+        decription: energy supply subjected to pre-defined emissions constraint
+        data:
+          emissions_constraint: ../../data/energy_supply/parameters/emissions_constraint_on
+  - name: ev_smart_charging
+    description: enable/disable smart chariging of EVs 
+    provides:
+      energy_supply_constrained:
+      - ev_smart_charging
+    variants:
+      - name: ev_smart_charging_enabled
+        decription: energy supply subjected to smart charging of EVs
+        data:
+          ev_smart_charging: ../../data/energy_supply/parameters/ev_smart_charging_enabled
+  - name: ev_vehicle_to_grid
+    description: enable/disable vehicle to grid services of EVs 
+    provides:
+      energy_supply_constrained:
+      - ev_vehicle_to_grid
+    variants:
+      - name: ev_vehicle_to_grid_enabled
+        decription: energy supply subjected to EV vehicle to grid services
+        data:
+          ev_vehicle_to_grid: ../../data/energy_supply/parameters/ev_vehicle_to_grid_enabled
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
