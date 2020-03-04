@@ -1189,7 +1189,7 @@ def write_input_annual(data, parameter_name, timestep):
             input_annual (year, region_id, parameter, value)
             VALUES (%s, %s, %s, %s)
             """
-        for (region_id, ), value in data.as_df().itertuples():
+        for region_id, value in data.as_df().itertuples():
             cur.execute(
                 sql,
                 (timestep, region_id, parameter_name, value)
