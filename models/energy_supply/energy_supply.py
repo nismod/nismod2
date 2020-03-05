@@ -225,7 +225,7 @@ class EnergySupplyWrapper(SectorModel):
 
         os.environ["ES_PATH"] = str(model_dir)
         self.logger.debug("\n\n***Running the Energy Supply Model***\n\n")
-        self.logger.debug(check_output(['mosel', 'exec', model_path]))
+        self.logger.debug(check_output(['model', 'exec', model_path]))
 
     def retrieve_outputs(self, data, now):
         """Retrieves results from the model
