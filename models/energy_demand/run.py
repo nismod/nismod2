@@ -432,11 +432,6 @@ class EDWrapper(SectorModel):
         data['scenario_data']['rs_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 0], data['regions'])
         data['scenario_data']['ss_floorarea'][base_yr] = self._assign_array_to_dict(floor_area_base[:, 1], data['regions'])
 
-        floor_area_curr = data_handle.get_data('floor_area').as_ndarray()
-
-        data['scenario_data']['rs_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 0], data['regions'])
-        data['scenario_data']['ss_floorarea'][curr_yr] = self._assign_array_to_dict(floor_area_curr[:, 1], data['regions'])
-
         # --------------------------------------------
         # Load scenario data for current year
         # --------------------------------------------
