@@ -9,8 +9,20 @@ inputs:
       - annual_day_hours
     unit: kWh
     dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
+    dims:
+      - energy_hub
+      - annual_day_hours
+    unit: kWh
+    dtype: float
 outputs:
   - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: kWh
+    dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
     dims:
       - energy_hub
       - seasonal_week

@@ -76,9 +76,18 @@ class EnergySupplyWrapper(SectorModel):
         sensitivity_mode = int(data.get_parameter('sensitivity_mode').as_ndarray())
         self.logger.debug('Parameter sensitivity_mode mode: %s', sensitivity_mode)
 
+        emissions_constraint = int(data.get_parameter('emissions_constraint').as_ndarray())
+        self.logger.debug('Parameter emissions_constraint mode: %s', emissions_constraint)
+
+        ev_smart_charging = int(data.get_parameter('ev_smart_charging').as_ndarray())
+        self.logger.debug('Parameter ev_smart_charging: %s', ev_smart_charging)
+
+        ev_vehicle_to_grid = int(data.get_parameter('ev_vehicle_to_grid').as_ndarray())
+        self.logger.debug('Parameter ev_vehicle_to_grid: %s', ev_vehicle_to_grid)
+
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,conn)
 
         conn.close()
 
@@ -201,6 +210,7 @@ class EnergySupplyWrapper(SectorModel):
             'insolation_bus',
             #transport
             'elec_trans',
+            'hydrogen_trans',
         ]
         for input_ in inputs_with_region_and_interval:
             if input_ in self.inputs:
@@ -490,7 +500,7 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
@@ -498,6 +508,9 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,c
         cur.execute("DELETE FROM input_flags WHERE parameter = 'central_decentral_mode';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'heat_supply_strategy';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'sensitivity_mode';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'emissions_constraint';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_smart_charging';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_vehicle_to_grid';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -511,6 +524,15 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,c
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('sensitivity_mode', sensitivity_mode))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('emissions_constraint', emissions_constraint))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('ev_smart_charging', ev_smart_charging))
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('ev_vehicle_to_grid', ev_vehicle_to_grid))
 
 
 def retire_generator(plants):
@@ -571,6 +593,7 @@ def build_generator(plants, current_timestep):
                           'oil': 6,
                           'ocgt (flexible generation)': 7,
                           'gas ccs' : 8,
+                          'becss' : 9,
                           'biomass': 10,
                           'interconnector': 11,
                           'chp gas': 13,
@@ -634,6 +657,24 @@ def build_generator(plants, current_timestep):
                     plant['sys_layer']
                     )
 
+        elif plant_type == 8:
+
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "GasNode", "BusNum",
+                    "MinPower", "MaxPower", "Year", "Retire", "SysLayer")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+            data = (plant_type,
+                    plant['name'],
+                    plant['to_location'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
+                    )
+
         elif plant_type == 11:
 
             sql = """
@@ -650,6 +691,24 @@ def build_generator(plants, current_timestep):
                     float(plant['build_year']) + lifetime,
                     plant['sys_layer'],
                     plant['to_location']
+                    )
+
+        elif plant_type == 15:
+
+            sql = """
+                INSERT INTO "GeneratorData" ("Type", "GeneratorName", "BusNum",
+                    "MinPower", "MaxPower", "PumpStorageCapacity", "Year", "Retire", "SysLayer")
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+            data = (plant_type,
+                    plant['name'],
+                    plant['location'],
+                    min_power,
+                    capacity,
+                    extract_value(plant, 'pumpstore_capacity'),
+                    current_timestep,
+                    float(plant['build_year']) + lifetime,
+                    plant['sys_layer']
                     )
 
         else:

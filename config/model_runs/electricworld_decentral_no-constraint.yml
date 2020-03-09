@@ -1,7 +1,7 @@
-name: electricworld
+name: electricworld_decentral_no-constraint
 stamp: ''
-description: 'electric world config with es-ed-et'
-sos_model: energy_transport-scenario
+description: 'electric world config without any emissions constraint - decentral'
+sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: es_prices_electric_world
   socio-economic: itrc_high-dcc
@@ -14,26 +14,27 @@ narratives:
   load_shedding:
   - high_cost
   operation_mode:
-  - central
+  - decentral
+  heat_supply_strategy:
+  - full_electric
   smart_meter_p:
   - electric_world
   t_base_heating:
   - electric_world
   f_eff_achieved:
-  - electric_world
+  - electric_world_netzero
   generic_enduse_change:
-  - electric_world
+  - electric_world_netzero
   generic_fuel_switch:
-  - electric_world
+  - electric_world_netzero
   switches_service:
-  - electric_world
+  - electric_world_netzero
 decision_module: ''
 strategies:
   - type: pre-specified-planning
-    description: 'electric world'
+    description: 'net zero development (national), decentralised operation'
     filename: ../energy_supply/strategies/electric_world
-    model_name: energy_supply_constrained
+    model_name: energy_supply_optimised
 timesteps:
   - 2015
-  - 2030
   - 2050

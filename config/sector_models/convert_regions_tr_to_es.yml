@@ -9,6 +9,12 @@ inputs:
       - annual_day_hours
     unit: kWh
     dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
+    dims:
+      - lad_gb_2016
+      - annual_day_hours
+    unit: kWh
+    dtype: float
   - name: v2g_g2v_capacity
     dims:
       - lad_gb_2016
@@ -16,6 +22,12 @@ inputs:
     dtype: float
 outputs:
   - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - annual_day_hours
+    unit: kWh
+    dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
     dims:
       - energy_hub
       - annual_day_hours
