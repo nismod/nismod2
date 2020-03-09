@@ -9,6 +9,12 @@ inputs:
       - seasonal_week
     unit: kWh
     dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: kWh
+    dtype: float
   - name: v2g_g2v_capacity
     dims:
       - energy_hub
@@ -16,6 +22,12 @@ inputs:
     dtype: float
 outputs:
   - name: electric_vehicle_electricity_consumption
+    dims:
+      - energy_hub
+      - seasonal_week
+    unit: MWh
+    dtype: float
+  - name: hydrogen_vehicle_hydrogen_consumption
     dims:
       - energy_hub
       - seasonal_week

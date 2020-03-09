@@ -1,3 +1,3 @@
 name: lad_gb_2016
 description: Local Authority Districts (data from 2016, unchanged since 2009)
-elements: ../et_module/dimensions/lad_gb_2016.shp
+elements: lad_gb_2016.shp

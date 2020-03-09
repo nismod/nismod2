@@ -307,6 +307,18 @@ model_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: energy_supply_optimised
     sink_input: elec_trans
+  - source: convert_regions_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_intervals_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
+  - source: convert_intervals_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_units_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
+  - source: convert_units_tr_to_es
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: energy_supply_optimised
+    sink_input: hydrogen_trans
 scenario_dependencies:
   - sink: energy_demand_unconstrained
     sink_input: floor_area
@@ -316,6 +328,10 @@ scenario_dependencies:
     source_output: electric_vehicle_electricity_consumption
     sink: convert_regions_tr_to_es
     sink_input: electric_vehicle_electricity_consumption
+  - source: ev_transport_trips
+    source_output: hydrogen_vehicle_hydrogen_consumption
+    sink: convert_regions_tr_to_es
+    sink_input: hydrogen_vehicle_hydrogen_consumption
   - source: ev_transport_trips
     source_output: electric_vehicle_trip_starts
     sink: et_module
@@ -380,7 +396,7 @@ narratives:
   - name: load_shedding
     description: Costs of shedding load
     provides:
-      energy_supply_toy:
+      energy_supply_optimised:
       - LoadShed_elec
       - LoadShed_gas
     variants:
@@ -421,6 +437,10 @@ narratives:
         decription: green gas mixture for heat supply
         data:
           heat_supply_strategy: ../../data/energy_supply/parameters/hs_greengas
+      - name: national_grid_fes
+        decription: green gas mixture for heat supply
+        data:
+          heat_supply_strategy: ../../data/energy_supply/parameters/hs_national_grid_fes
   - name: sensitivity_mode
     description: selection of the sensitivity analysis
     provides:
@@ -447,6 +467,36 @@ narratives:
         decription: further demand reduction for heat, non-heat electricity and non-heat gas
         data:
           sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
+  - name: emissions_constraint
+    description: pre defined emissions constraint 
+    provides:
+      energy_supply_optimised:
+      - emissions_constraint
+    variants:
+      - name: emissions_constraint_on
+        decription: energy supply subjected to pre-defined emissions constraint
+        data:
+          emissions_constraint: ../../data/energy_supply/parameters/emissions_constraint_on
+  - name: ev_smart_charging
+    description: enable/disable smart chariging of EVs 
+    provides:
+      energy_supply_optimised:
+      - ev_smart_charging
+    variants:
+      - name: ev_smart_charging_enabled
+        decription: energy supply subjected to smart charging of EVs
+        data:
+          ev_smart_charging: ../../data/energy_supply/parameters/ev_smart_charging_enabled
+  - name: ev_vehicle_to_grid
+    description: enable/disable vehicle to grid services of EVs 
+    provides:
+      energy_supply_optimised:
+      - ev_vehicle_to_grid
+    variants:
+      - name: ev_vehicle_to_grid_enabled
+        decription: energy supply subjected to EV vehicle to grid services
+        data:
+          ev_vehicle_to_grid: ../../data/energy_supply/parameters/ev_vehicle_to_grid_enabled
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
@@ -516,6 +566,14 @@ narratives:
         description: Central assumptions
         data:
           f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__multivector_world
+      - name: electric_world_netzero
+        description: electric world assumptions for net zero emissions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__net_zero_electric_world
+      - name: multivector_world_netzero
+        description: multivector assumptions for net zero emissions
+        data:
+          f_eff_achieved: ../energy_demand/narratives/f_eff_achieved__net_zero_multivector_world
   - name: generic_enduse_change
     description: ''
     provides:
@@ -534,6 +592,14 @@ narratives:
         description: Multivector assumptions
         data:
           generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__multivector_world
+      - name: electric_world_netzero
+        description: Electirc world assumptions for net zero emissions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__net_zero_electric_world
+      - name: multivector_world_netzero
+        description: Multivector assumptions for net zero emissions
+        data:
+          generic_enduse_change: ../energy_demand/narratives/generic_enduse_change__net_zero_multivector_world
   - name: heat_recovered
     description: ''
     provides:
@@ -624,6 +690,14 @@ narratives:
         description: Electirc world assumptions
         data:
           generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__electric_world
+      - name: multivector_world_netzero
+        description: Multivector assumptions for net zero emissions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__net_zero_multivector_world
+      - name: electric_world_netzero
+        description: Electirc world assumptions for net zero emissions
+        data:
+          generic_fuel_switch: ../energy_demand/narratives/generic_fuel_switch__net_zero_electric_world
   - name: switches_service
     description: ''
     provides:
@@ -642,4 +716,16 @@ narratives:
         description: Multivector assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__multivector_world
+      - name: electric_world_netzero
+        description: Electric world assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_electric_world
+      - name: multivector_world_netzero_HeatNetworks
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world_DistrictHeating
+      - name: multivector_world_netzero_Hydrogen
+        description: Multivector assumptions
+        data:
+          switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world_Hydrogen
 

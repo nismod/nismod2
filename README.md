@@ -193,7 +193,7 @@ On Linux (x64) it should be possible download and install FICO by running:
 ```bash
 mkdir xpress_setup
 wget -nc -qO- \
-  "https://clientarea.xpress.fico.com/downloads/8.4.4/xp8.4.4_linux_x86_64_setup.tar" \
+  "https://clientarea.xpress.fico.com/downloads/8.5.10/xp8.5.10_linux_x86_64_setup.tar" \
   --no-check-certificate | tar -C xpress_setup -xv
 ./xpress_setup/install.sh
 ```

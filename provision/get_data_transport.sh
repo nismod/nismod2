@@ -46,7 +46,7 @@ python $base_path/utilities/transport/convert_transport_engine_fractions.py \
 
 
 # Download rail data
-source <(grep = <(grep -A3 "\[transport-rail\]" $base_path/provision/config.ini))
+eval "$(grep -A3 "\[transport-rail\]" $base_path/provision/config.ini | tail -n3)"
 python $base_path/provision/get_data.py $remote_data $base_path/$local_dir
 
 mv $base_path/$local_dir/transport-rail_$data_version/dimensions/*.csv $base_path/data/dimensions/
