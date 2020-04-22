@@ -67,3 +67,15 @@ variants:
     data:
       electric_vehicle_trip_starts: ev_transport_trips/electric_vehicle_trip_starts__2-expansion
       electric_vehicle_electricity_consumption: ev_transport_trips/electric_vehicle_electricity_consumption__2-expansion
+  - name: et_electric
+    description: Energy Transport paper full electric transport scenario outputs
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__et_electric
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__et_electric
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__et_electric
+  - name: et_electric_hydrogen
+    description: Energy Transport paper electric and hydrogen mix transport scenario outputs
+    data:
+      electric_vehicle_trip_starts: ../et_module/scenarios/electric_vehicle_trip_starts__et_electric_hydrogen
+      electric_vehicle_electricity_consumption: ../et_module/scenarios/electric_vehicle_electricity_consumption__et_electric_hydrogen
+      hydrogen_vehicle_hydrogen_consumption: ../et_module/scenarios/hydrogen_vehicle_hydrogen_consumption__et_electric_hydrogen
