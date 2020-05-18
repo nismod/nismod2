@@ -4,7 +4,7 @@ stamp: '2019-03-01T00:00:00.000Z'
 sos_model: water_supply_demand
 scenarios:
   socio-economic: arc_baseline
-  water_demand_projections: baseline
+  water_demand_projections: baseline_wrmp_2019
   reservoir_levels: predicted
   water_supply_data: predicted_2020_2050  # Needed as input for preparing Wathnet nodal file
 narratives: {}
