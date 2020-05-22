@@ -1,4 +1,4 @@
-name: samplng_convert_intervals_ed_to_es_constrained
+name: sampling_convert_intervals_ed_to_es_constrained
 description: Sample from hourly intervals for constrained energy supply
 path: models/energy_convert_intervals.py
 classname: SampleEnergyIntervals
