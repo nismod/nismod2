@@ -239,6 +239,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/ev_vehicle_to_grid_disabled
+  - name: unit_commitment
+    description: Flag to enable/disable unit commitment function of thermal electricity generators
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/unit_commitment_off
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes
@@ -920,6 +925,30 @@ outputs:
     unit: MW
     dtype: float
   - name: eh_battery_charge
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: gas_demand_national
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: electricity_demand_national
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: dsm_electricity_demand_national
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MW
+    dtype: float
+  - name: biomass_demand_national
     dims:
     - energy_hub
     - seasonal_week
