@@ -470,6 +470,16 @@ narratives:
         decription: energy supply subjected to EV vehicle to grid services
         data:
           ev_vehicle_to_grid: ../../data/energy_supply/parameters/ev_vehicle_to_grid_enabled
+  - name: unit_commitment
+    description: unit commitment function for thermal power stations
+    provides:
+      energy_supply_optimised:
+      - unit_commitment
+    variants:
+      - name: unit_commitment_on
+        decription: enable unit commitment functions
+        data:
+          unit_commitment: ../../data/energy_supply/parameters/unit_commitment_on
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
