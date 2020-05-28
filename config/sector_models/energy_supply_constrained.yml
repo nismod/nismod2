@@ -932,25 +932,25 @@ outputs:
     dtype: float
   - name: gas_demand_national
     dims:
-    - energy_hub
+    - national
     - seasonal_week
     unit: MW
     dtype: float
   - name: electricity_demand_national
     dims:
-    - energy_hub
+    - national
     - seasonal_week
     unit: MW
     dtype: float
   - name: dsm_electricity_demand_national
     dims:
-    - energy_hub
+    - national
     - seasonal_week
     unit: MW
     dtype: float
   - name: biomass_demand_national
     dims:
-    - energy_hub
+    - national
     - seasonal_week
     unit: MW
     dtype: float
