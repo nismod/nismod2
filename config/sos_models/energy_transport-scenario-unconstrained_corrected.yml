@@ -3,10 +3,9 @@ description: A full version of the energy-transport system-of-systems model, wit
   models in unconstrained heat technology mode.
 sector_models:
   - energy_demand_unconstrained
-  - apply_energy_correction_factors_unconstrained
   - aggregate_energy_optimised
   - convert_regions_ed_to_es_optimised
-  - convert_intervals_ed_to_es_optimised
+  - sampling_convert_intervals_ed_to_es_optimised
   - convert_units_ed_to_es_optimised
   - remap_gas
   - et_module
@@ -23,31 +22,6 @@ scenarios:
   - biomass_waste_to_energy
   - elec_interconnector_prices
 model_dependencies:
-  # from energy demand to apply correction
-  - source: energy_demand_unconstrained
-    source_output: residential_gas
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: residential_gas
-  - source: energy_demand_unconstrained
-    source_output: residential_electricity
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: residential_electricity
-  - source: energy_demand_unconstrained
-    source_output: service_gas
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: service_gas
-  - source: energy_demand_unconstrained
-    source_output: service_electricity
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: service_electricity
-  - source: energy_demand_unconstrained
-    source_output: industry_gas
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: industry_gas
-  - source: energy_demand_unconstrained
-    source_output: industry_electricity
-    sink: apply_energy_correction_factors_unconstrained
-    sink_input: industry_electricity
   # from energy demand to aggregation
   - source: energy_demand_unconstrained
     source_output: residential_hydrogen
@@ -93,32 +67,31 @@ model_dependencies:
     source_output: residential_solid_fuel
     sink: aggregate_energy_optimised
     sink_input: residential_solid_fuel
-  # from apply correction to region conversion
-  - source: apply_energy_correction_factors_unconstrained
+  # from energy demand to region conversion
+  - source: energy_demand_unconstrained
     source_output: residential_gas
     sink: convert_regions_ed_to_es_optimised
     sink_input: gasload_non_heat_res
-  - source: apply_energy_correction_factors_unconstrained
+  - source: energy_demand_unconstrained
     source_output: residential_electricity
     sink: convert_regions_ed_to_es_optimised
     sink_input: elecload_non_heat_res
-  - source: apply_energy_correction_factors_unconstrained
+  - source: energy_demand_unconstrained
     source_output: service_gas
     sink: convert_regions_ed_to_es_optimised
     sink_input: gasload_non_heat_com
-  - source: apply_energy_correction_factors_unconstrained
+  - source: energy_demand_unconstrained
     source_output: service_electricity
     sink: convert_regions_ed_to_es_optimised
     sink_input: elecload_non_heat_com
-  - source: apply_energy_correction_factors_unconstrained
+  - source: energy_demand_unconstrained
     source_output: industry_gas
     sink: convert_regions_ed_to_es_optimised
     sink_input: gasload
-  - source: apply_energy_correction_factors_unconstrained
+  - source: energy_demand_unconstrained
     source_output: industry_electricity
     sink: convert_regions_ed_to_es_optimised
     sink_input: elecload
-  # from energy demand to region conversion
   - source: energy_demand_unconstrained
     source_output: residential_heat
     sink: convert_regions_ed_to_es_optimised
@@ -143,90 +116,90 @@ model_dependencies:
   # from region conversion to interval conversion
   - source: convert_regions_ed_to_es_optimised
     source_output: gasload_non_heat_res
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: gasload_non_heat_res
   - source: convert_regions_ed_to_es_optimised
     source_output: elecload_non_heat_res
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: elecload_non_heat_res
   - source: convert_regions_ed_to_es_optimised
     source_output: heatload_res
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: heatload_res
   - source: convert_regions_ed_to_es_optimised
     source_output: gasload_non_heat_com
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: gasload_non_heat_com
   - source: convert_regions_ed_to_es_optimised
     source_output: elecload_non_heat_com
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: elecload_non_heat_com
   - source: convert_regions_ed_to_es_optimised
     source_output: heatload_com
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: heatload_com
   - source: convert_regions_ed_to_es_optimised
     source_output: gasload
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: gasload
   - source: convert_regions_ed_to_es_optimised
     source_output: elecload
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: elecload
   - source: convert_regions_ed_to_es_optimised
     source_output: hydrogen_non_heat_eh
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: hydrogen_non_heat_eh
   - source: convert_regions_ed_to_es_optimised
     source_output: oil_non_heat_eh
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: oil_non_heat_eh
   - source: convert_regions_ed_to_es_optimised
     source_output: solid_fuel_non_heat_eh
-    sink: convert_intervals_ed_to_es_optimised
+    sink: sampling_convert_intervals_ed_to_es_optimised
     sink_input: solid_fuel_non_heat_eh
   # from interval conversion to unit conversion
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: gasload_non_heat_res
     sink: convert_units_ed_to_es_optimised
     sink_input: gasload_non_heat_res
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: elecload_non_heat_res
     sink: convert_units_ed_to_es_optimised
     sink_input: elecload_non_heat_res
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: heatload_res
     sink: convert_units_ed_to_es_optimised
     sink_input: heatload_res
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: gasload_non_heat_com
     sink: convert_units_ed_to_es_optimised
     sink_input: gasload_non_heat_com
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: elecload_non_heat_com
     sink: convert_units_ed_to_es_optimised
     sink_input: elecload_non_heat_com
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: heatload_com
     sink: convert_units_ed_to_es_optimised
     sink_input: heatload_com
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: gasload
     sink: convert_units_ed_to_es_optimised
     sink_input: gasload
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: elecload
     sink: convert_units_ed_to_es_optimised
     sink_input: elecload
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: hydrogen_non_heat_eh
     sink: convert_units_ed_to_es_optimised
     sink_input: hydrogen_non_heat_eh
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: oil_non_heat_eh
     sink: convert_units_ed_to_es_optimised
     sink_input: oil_non_heat_eh
-  - source: convert_intervals_ed_to_es_optimised
+  - source: sampling_convert_intervals_ed_to_es_optimised
     source_output: solid_fuel_non_heat_eh
     sink: convert_units_ed_to_es_optimised
     sink_input: solid_fuel_non_heat_eh
@@ -468,7 +441,7 @@ narratives:
         data:
           sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
   - name: emissions_constraint
-    description: pre defined emissions constraint 
+    description: pre defined emissions constraint
     provides:
       energy_supply_optimised:
       - emissions_constraint
@@ -478,7 +451,7 @@ narratives:
         data:
           emissions_constraint: ../../data/energy_supply/parameters/emissions_constraint_on
   - name: ev_smart_charging
-    description: enable/disable smart chariging of EVs 
+    description: enable/disable smart chariging of EVs
     provides:
       energy_supply_optimised:
       - ev_smart_charging
@@ -488,7 +461,7 @@ narratives:
         data:
           ev_smart_charging: ../../data/energy_supply/parameters/ev_smart_charging_enabled
   - name: ev_vehicle_to_grid
-    description: enable/disable vehicle to grid services of EVs 
+    description: enable/disable vehicle to grid services of EVs
     provides:
       energy_supply_optimised:
       - ev_vehicle_to_grid
@@ -497,13 +470,23 @@ narratives:
         decription: energy supply subjected to EV vehicle to grid services
         data:
           ev_vehicle_to_grid: ../../data/energy_supply/parameters/ev_vehicle_to_grid_enabled
+  - name: unit_commitment
+    description: unit commitment function for thermal power stations
+    provides:
+      energy_supply_optimised:
+      - unit_commitment
+    variants:
+      - name: unit_commitment_on
+        decription: enable unit commitment functions
+        data:
+          unit_commitment: ../../data/energy_supply/parameters/unit_commitment_on
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:
       - name: load_in_directly
         description: Loads in floor area directly
         data:
-          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_false      
+          virtual_dw_stock: ../../data/energy_demand/narratives/virtual_stock_false
       - name: virtual_stock
         description: Creates virtual stock
         data:
@@ -728,4 +711,3 @@ narratives:
         description: Multivector assumptions
         data:
           switches_service: ../energy_demand/narratives/switches_service__net_zero_multivector_world_Hydrogen
-

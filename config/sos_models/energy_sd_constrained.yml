@@ -616,6 +616,10 @@ scenario_dependencies:
     sink: energy_supply_constrained
     sink_input: elec_trans
   - source: dummy_energy_demands_full
+    source_output: hydrogen_trans
+    sink: energy_supply_constrained
+    sink_input: hydrogen_trans
+  - source: dummy_energy_demands_full
     source_output: EV_Cap
     sink: energy_supply_constrained
     sink_input: EV_Cap

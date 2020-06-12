@@ -147,11 +147,17 @@ provides:
     - seasonal_week
     unit: MWh
     dtype: float
+  - name: hydrogen_trans
+    dims:
+    - energy_hub
+    - seasonal_week
+    unit: MWh
+    dtype: float
   - name: EV_Cap
     dims:
     - energy_hub
     unit: MW
-    dtype: float    
+    dtype: float
   - name: solid_fuel_non_heat_eh
     dims:
       - energy_hub
@@ -195,6 +201,7 @@ variants:
       dh_gas_CHP: ../energy_supply/scenarios/energy_demand_full
       dh_hydrogen_fuelcell: ../energy_supply/scenarios/energy_demand_full
       elec_trans: ../energy_supply/scenarios/energy_demand_full
+      hydrogen_trans: ../energy_supply/scenarios/energy_demand_full
       EV_Cap: ../energy_supply/scenarios/ev_cap
       solid_fuel_non_heat_eh: ../energy_supply/scenarios/energy_demand_full
       oil_non_heat_eh: ../energy_supply/scenarios/energy_demand_full
@@ -223,6 +230,7 @@ variants:
       dh_gas_CHP: ../energy_supply/scenarios/EW/EW_energy_demand_full
       dh_hydrogen_fuelcell: ../energy_supply/scenarios/EW/EW_energy_demand_full
       elec_trans: ../energy_supply/scenarios/EW/EW_energy_demand_full
+      hydrogen_trans: ../energy_supply/scenarios/EW/EW_energy_demand_full
       EV_Cap: ../energy_supply/scenarios/EW/EW_ev_cap
       solid_fuel_non_heat_eh: ../energy_supply/scenarios/EW/EW_energy_demand_full
       oil_non_heat_eh: ../energy_supply/scenarios/EW/EW_energy_demand_full
@@ -251,6 +259,7 @@ variants:
       dh_gas_CHP: ../energy_supply/scenarios/MV/MV_energy_demand_full
       dh_hydrogen_fuelcell: ../energy_supply/scenarios/MV/MV_energy_demand_full
       elec_trans: ../energy_supply/scenarios/MV/MV_energy_demand_full
+      hydrogen_trans: ../energy_supply/scenarios/MV/MV_energy_demand_full
       EV_Cap: ../energy_supply/scenarios/MV/MV_ev_cap
       solid_fuel_non_heat_eh: ../energy_supply/scenarios/MV/MV_energy_demand_full
       oil_non_heat_eh: ../energy_supply/scenarios/MV/MV_energy_demand_full
@@ -268,6 +277,7 @@ variants:
       service_electricity_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
       hydrogen_non_heating: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
       elec_trans: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
+      hydrogen_trans: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
       EV_Cap: ../energy_supply/scenarios/Heat_Strategy/HS_ev_cap
       solid_fuel_non_heat_eh: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
       oil_non_heat_eh: ../energy_supply/scenarios/Heat_Strategy/HS_energy_demand_full
