@@ -480,6 +480,16 @@ narratives:
         decription: enable unit commitment functions
         data:
           unit_commitment: ../../data/energy_supply/parameters/unit_commitment_on
+  - name: interconnector_neutral
+    description: Enable / Disable energy flow neutral constraint for electricity interconnectors
+    provides:
+      energy_supply_optimised:
+      - interconnector_neutral
+    variants:
+      - name: interconnector_neutral_off
+        decription: disable energy neutral constraint
+        data:
+          interconnector_neutral: ../../data/energy_supply/parameters/interconnector_neutral_off
   - name: virtual_dw_stock
     description: Virutal dwelling stock mode
     variants:

@@ -86,11 +86,14 @@ class EnergySupplyWrapper(SectorModel):
         self.logger.debug('Parameter ev_vehicle_to_grid: %s', ev_vehicle_to_grid)
 
         unit_commitment = int(data.get_parameter('unit_commitment').as_ndarray())
-        self.logger.debug('Parameter unit_commitment: %s', ev_vehicle_to_grid)
+        self.logger.debug('Parameter unit_commitment: %s', unit_commitment)
+
+        interconnector_neutral = int(data.get_parameter('interconnector_neutral').as_ndarray())
+        self.logger.debug('Parameter interconnector_neutral: %s', interconnector_neutral)
 
         with establish_connection() as conn:
             write_load_shed_costs(load_shed_elec, load_shed_gas, conn)
-            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,unit_commitment,conn)
+            write_flags(heat_technology_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,unit_commitment,interconnector_neutral,conn)
 
         conn.close()
 
@@ -503,7 +506,7 @@ def write_load_shed_costs(loadshedcost_elec, loadshedcost_gas, conn):
             (loadshedcost_elec, loadshedcost_gas))
 
 
-def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,unit_commitment,conn):
+def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,emissions_constraint,ev_smart_charging,ev_vehicle_to_grid,unit_commitment,interconnector_neutral,conn):
     """Write model configuration flags
     """
     with conn.cursor() as cur:
@@ -515,6 +518,7 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,e
         cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_smart_charging';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'ev_vehicle_to_grid';")
         cur.execute("DELETE FROM input_flags WHERE parameter = 'unit_commitment';")
+        cur.execute("DELETE FROM input_flags WHERE parameter = 'interconnector_neutral';")
 
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
@@ -540,7 +544,9 @@ def write_flags(heat_mode,operation_mode,heat_supply_strategy,sensitivity_mode,e
         cur.execute(
             'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
             ('unit_commitment', unit_commitment))
-
+        cur.execute(
+            'INSERT INTO input_flags (parameter, value) VALUES (%s, %s);',
+            ('interconnector_neutral', interconnector_neutral))
 
 def retire_generator(plants):
     conn = establish_connection()
