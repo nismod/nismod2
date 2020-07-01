@@ -1,9 +1,9 @@
-name: et_multivector_mix
+name: et_electric_unmanaged_no_v2g
 stamp: ''
-description: Energy transport model run with multi-vector heating and electrified transport
+description: Energy transport model run with both heating and transport electrified
 sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
-  fuel_price: es_prices_multivector_world
+  fuel_price: es_prices_electric_world
   socio-economic: itrc_high-dcc
   temperature: NF1
   ev_transport_trips: et_electric
@@ -18,24 +18,24 @@ narratives:
   emissions_constraint:
   - emissions_constraint_on
   heat_supply_strategy:
-  - green_gas
+  - full_electric
   smart_meter_p:
-  - multivector_world
+  - electric_world
   t_base_heating:
-  - multivector_world
+  - electric_world
   f_eff_achieved:
-  - multivector_world_netzero
+  - electric_world_netzero
   generic_enduse_change:
-  - multivector_world_netzero
+  - electric_world_netzero
   generic_fuel_switch:
-  - multivector_world_netzero
+  - electric_world_netzero
   switches_service:
-  - multivector_world_netzero_Hydrogen
+  - electric_world_netzero
 decision_module: ''
 strategies:
   - type: pre-specified-planning
     description: 'net zero development (national), centralised operation'
-    filename: ../energy_supply/strategies/multi_vector
+    filename: ../energy_supply/strategies/electric_world
     model_name: energy_supply_optimised
 timesteps:
   - 2015

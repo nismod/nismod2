@@ -43,5 +43,4 @@ strategies:
     model_name: energy_supply_optimised
 timesteps:
   - 2015
-  - 2030
   - 2050

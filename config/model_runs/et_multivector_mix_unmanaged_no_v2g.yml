@@ -1,12 +1,12 @@
-name: et_multivector
+name: et_multivector_mix_unmanaged_no_v2g
 stamp: ''
-description: Energy transport model run with multivector heating and transportation
+description: Energy transport model run with multi-vector heating and electrified transport
 sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: es_prices_multivector_world
   socio-economic: itrc_high-dcc
   temperature: NF1
-  ev_transport_trips: et_electric_hydrogen
+  ev_transport_trips: et_electric
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices

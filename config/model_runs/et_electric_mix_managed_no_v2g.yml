@@ -1,4 +1,4 @@
-name: et_electric_mix_managed
+name: et_electric_mix_managed_no_v2g
 stamp: ''
 description: Energy transport model run with electric heating and electric+hydrogen transportation scenario, smart charging only
 sos_model: energy_transport-scenario-unconstrained_corrected
@@ -41,5 +41,4 @@ strategies:
     model_name: energy_supply_optimised
 timesteps:
   - 2015
-  - 2030
   - 2050

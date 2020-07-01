@@ -1,12 +1,12 @@
-name: et_multivector_mix_managed
+name: et_multivector_unmanaged_no_v2g
 stamp: ''
-description: Energy transport model run with multi-vector heating and electrified transport, smart charging only
+description: Energy transport model run with multivector heating and transportation
 sos_model: energy_transport-scenario-unconstrained_corrected
 scenarios:
   fuel_price: es_prices_multivector_world
   socio-economic: itrc_high-dcc
   temperature: NF1
-  ev_transport_trips: et_electric
+  ev_transport_trips: et_electric_hydrogen
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
@@ -19,8 +19,6 @@ narratives:
   - emissions_constraint_on
   heat_supply_strategy:
   - green_gas
-  ev_smart_charging:
-  - ev_smart_charging_enabled
   smart_meter_p:
   - multivector_world
   t_base_heating:
