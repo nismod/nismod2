@@ -29,6 +29,10 @@ temproODMatrixFile = $relative_path/data/csvfiles/temproODM.csv
 populationFile = $relative_path/input/population.csv
 GVAFile = $relative_path/input/gva.csv
 
+# road trip rates files
+roadPassengerTripRatesFile = $relative_path/data/csvfiles/roadPassengerTripRates.csv
+roadFreightTripRatesFile = $relative_path/data/csvfiles/roadFreightTripRates.csv
+
 # finer zones data and nearest neighbour mapping (for origin and destination node choice within lad)
 areaCodeFileName = $relative_path/data/csvfiles/nomisPopulation.csv
 areaCodeNearestNodeFile = $relative_path/data/csvfiles/areaCodeToNearestNode.csv
