@@ -9,9 +9,5 @@ scenarios:
   engine_type_fractions: baseline
 narratives: {}
 decision_module: []
-strategies:
-  - type: pre-specified-planning
-    description: test interventions
-    filename: transport_build_winslow
-    model_name: transport
+strategies: []
 stamp: ''
