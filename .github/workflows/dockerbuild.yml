@@ -13,6 +13,7 @@ jobs:
       uses: docker/build-push-action@v1
       with:
         dockerfile: DAFNI-wrappers/base-image/Dockerfile
+        path: ./
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com

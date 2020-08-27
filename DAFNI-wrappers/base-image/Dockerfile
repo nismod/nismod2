@@ -23,13 +23,14 @@ RUN mkdir -p /code/nismod2 /code/datasets/scenarios \
     odbc-postgresql  \
     software-properties-common -y
 
-COPY ./* /code/nismod2/
+COPY ./ /code/nismod2/
+RUN ls -la /code/nismod2/
 
 # Move python scripts and dbconfig to right place
 RUN mv -f /code/nismod2/DAFNI-wrappers/base-image/dockerFiles/* /code/nismod2/ \
 &&  mv -f /code/nismod2/requirements.txt /code \
 &&  mv -f /code/nismod2/dbconfig.ini /code/nismod2/provision/dbconfig.ini \
-&&  chmod 777 ./provision/*
+&&  chmod 777 /code/nismod2/provision/*
 
 WORKDIR /code
 # Installing smif as per NISMOD2 instructions
