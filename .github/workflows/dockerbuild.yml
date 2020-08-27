@@ -17,6 +17,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/test
+        repository: rosedickinson/nismod2/test
         tags: latest
+        tag_with_sha: true
         tag_with_ref: true
