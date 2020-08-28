@@ -3,8 +3,8 @@ name: DockerBuild
 on: push
 
 jobs:
-  publish:
-    name: Publish Docker Image
+  publish-base-image:
+    name: Publish Base Image
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -18,6 +18,24 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
         repository: rosedickinson/nismod2/base-image
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-energy_demand-image:
+    name: Publish energy_demand Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_demand/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_demand
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
