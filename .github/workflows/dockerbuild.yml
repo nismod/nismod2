@@ -40,3 +40,79 @@ jobs:
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
+  publish-et_module-image:
+    name: Publish et_module Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/et_module/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/et_module
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-transport-image:
+    name: Publish transport Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/transport/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/transport
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-decide_step-image:
+    name: Publish decide_step Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/decide_step/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/decide_step
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-transforms-image:
+    name: Publish transforms Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/transforms/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/transforms
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
