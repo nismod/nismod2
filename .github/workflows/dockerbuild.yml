@@ -23,6 +23,7 @@ jobs:
         tag_with_ref: true
   publish-energy_demand-image:
     name: Publish energy_demand Image
+    needs: publish-base-image
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
