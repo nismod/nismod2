@@ -161,3 +161,6 @@ config/model_runs/arc_ws/**/*.yml
 
 # Temporary files
 *~
+
+# DAFNI Wrappers
+DAFNI-wrappers/energy_supply/model/dockerfiles/energy_supply_*/*

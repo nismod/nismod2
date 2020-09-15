@@ -26,4 +26,7 @@ RUN apt-get update \
 
 WORKDIR /code
 # Download Fico Xpress for Energy supply
-RUN wget https://clientarea.xpress.fico.com/downloads/8.5.10/xp8.5.10_linux_x86_64_setup.tar -O /code/xp8.5.10_linux_x86_64_setup.tar
+RUN wget https://clientarea.xpress.fico.com/downloads/8.5.10/xp8.5.10_linux_x86_64_setup.tar -O /code/xp8.5.10_linux_x86_64_setup.tar \
+&&  mkdir -p /code/xpress_setup \
+&&  tar -xf xp8.5.10_linux_x86_64_setup.tar -C ./xpress_setup \
+&&  chmod 777 /code/xpress_setup/install.sh

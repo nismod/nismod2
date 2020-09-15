@@ -75,9 +75,6 @@ def execute_migrations():
 
 def install_FICO():
     print("Installing FICO")
-    run_process("mkdir -p /code/xpress_setup")
-    run_process("tar -xf /code/xp8.5.10_linux_x86_64_setup.tar -C ./xpress_setup")
-    run_process("chmod 777 /code/xpress_setup/install.sh")
     run_process("code/xpress_setup/install.sh -l static -a /code/xpress/xpauth.xpr -d /opt/xpressmp -k no")
     run_process(". /opt/xpressmp/bin/xpvars.sh")
     print("Installed FICO")
