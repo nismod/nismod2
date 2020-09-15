@@ -4,7 +4,6 @@ metadata:
   # You will probably want to update this metadata before uploading to DAFNI
   displayName: NISMOD2 - Energy Demand Model
   name: nismod-energy-demand
-  owner: DAFNI Team 
   summary: National Infrastructure Systems Model
   type: systems of systems
   description: "Energy Demand model that forms part of NISMOD2"

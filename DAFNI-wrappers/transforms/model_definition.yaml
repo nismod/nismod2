@@ -4,7 +4,6 @@ metadata:
   # You will probably want to update this metadata before uploading to DAFNI
   displayName: NISMOD2 - Conversion modules
   name: nismod-transforms
-  owner: DAFNI Team
   summary: National Infrastructure Systems Model
   type: systems of systems
   description: "This model allows you to run one or more of the several conversion modules that are part of NISMOD2."

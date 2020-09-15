@@ -116,3 +116,41 @@ jobs:
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
+  publish-energy_supply-db-image:
+    name: Publish energy_supply database Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_supply/db/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_supply-db
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-energy_supply-model_base-image:
+    name: Publish energy_supply base Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_supply/model_base/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_supply-model_base
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true

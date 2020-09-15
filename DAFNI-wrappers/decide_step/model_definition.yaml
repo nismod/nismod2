@@ -4,7 +4,6 @@ metadata:
   # You will probably want to update this metadata before uploading to DAFNI
   displayName: NISMOD2 - Decide Step
   name: nismod-decide
-  owner: DAFNI Team
   summary: National Infrastructure Systems Model
   type: systems of systems
   description: "This model allows you to run the decide step of a NISMOD2 model run."

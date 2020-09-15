@@ -4,7 +4,6 @@ metadata:
   # You will probably want to update this metadata before uploading to DAFNI
   displayName: NISMOD2 - Transport Model
   name: nismod-transport
-  owner: DAFNI Team
   summary: National Infrastructure Systems Model
   type: systems of systems
   description: "Transport model that forms part of NISMOD2"

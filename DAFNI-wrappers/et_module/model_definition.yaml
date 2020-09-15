@@ -4,7 +4,6 @@ metadata:
   # You will probably want to update this metadata before uploading to DAFNI
   displayName: NISMOD2 - Energy Transport Module
   name: nismod-et-module
-  owner: DAFNI Team
   summary: National Infrastructure Systems Model
   type: systems of systems
   description: "Module that connects the energy and transport models from NISMOD2."
