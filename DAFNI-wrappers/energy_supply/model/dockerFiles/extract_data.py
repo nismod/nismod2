@@ -75,7 +75,8 @@ def execute_migrations():
 
 def install_FICO():
     print("Installing FICO")
-    run_process("code/xpress_setup/install.sh -l static -a /code/xpress/xpauth.xpr -d /opt/xpressmp -k no")
+    run_process("ls -laR /code/xpress")
+    run_process("/code/xpress_setup/install.sh -l static -a /code/xpress/xpauth.xpr -d /opt/xpressmp -k no")
     run_process(". /opt/xpressmp/bin/xpvars.sh")
     print("Installed FICO")
 
@@ -114,14 +115,14 @@ def extract():
             "src": "/data/energy_supply/energy_supply_data_v0.9.10.zip",
             "dest": str(NISMOD_DATA_PATH.joinpath("energy_supply/")),
         },
-        {
-            "src": "/data/energy_demand/v0.9.12_full.zip",
-            "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/")),
-        },
-        {
-            "src": "/data/energy_demand/config_data_v1.0.zip",
-            "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/config_data/")),
-        },
+        # {
+        #     "src": "/data/energy_demand/v0.9.12_full.zip",
+        #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/")),
+        # },
+        # {
+        #     "src": "/data/energy_demand/config_data_v1.0.zip",
+        #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/config_data/")),
+        # },
     ]
     for data in datasets:
         print("Extracting - " + data["src"] + " - to - " + data["dest"])

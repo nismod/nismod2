@@ -7,3 +7,19 @@ services:
   energy_supply:
     image: model
     build: ./model
+    volumes:
+        # Need to add your xpauth.xpr license file into the source folder
+      - type: bind
+        source: ./model/dockerFiles/license
+        target: /code/xpress
+        # Need to add the datasets required for this model to the below source folders
+      - type: bind
+        source: ./model/dockerFiles/scenarios
+        target: /data/scenarios
+      - type: bind
+        source: ./model/dockerFiles/energy_supply
+        target: /data/energy_supply
+      - type: bind
+        source: ./model/dockerFiles/lads
+        target: /data/lads
+    
