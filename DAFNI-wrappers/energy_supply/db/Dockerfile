@@ -17,7 +17,7 @@ RUN apt-get install -y \
 
 EXPOSE 5432
 RUN mkdir /code/
-COPY ./setup_db.sh /code/setup_db.sh
+COPY ./DAFNI-wrappers/energy_supply/db/setup_db.sh /code/setup_db.sh
 RUN chmod 777 /code/setup_db.sh
 RUN chmod 0700 /var/lib/postgresql/data
 USER postgres
