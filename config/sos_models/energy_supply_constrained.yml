@@ -81,7 +81,7 @@ scenario_dependencies:
 - source: dummy_energy_demands_full
   source_output: oil_non_heat_eh
   sink: energy_supply_constrained
-  sink_input: oil_non_heat_eh  
+  sink_input: oil_non_heat_eh
 - source: dummy_energy_demands_full
   source_output: building_biomass_boiler
   sink: energy_supply_constrained
@@ -165,4 +165,4 @@ scenario_dependencies:
 - source: elec_interconnector_prices
   source_output: elec_int
   sink: energy_supply_constrained
-  sink_input: elec_int   
+  sink_input: elec_int
