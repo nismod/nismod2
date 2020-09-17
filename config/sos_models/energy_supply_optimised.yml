@@ -89,6 +89,10 @@ scenario_dependencies:
   sink: energy_supply_optimised
   sink_input: hydrogen_non_heat_eh
 - source: dummy_energy_demands_full
+  source_output: hydrogen_trans
+  sink: energy_supply_optimised
+  sink_input: hydrogen_trans
+- source: dummy_energy_demands_full
   source_output: oil_non_heat_eh
   sink: energy_supply_optimised
   sink_input: oil_non_heat_eh
