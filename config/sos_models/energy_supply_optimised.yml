@@ -143,4 +143,4 @@ scenario_dependencies:
 - source: elec_interconnector_prices
   source_output: elec_int
   sink: energy_supply_optimised
-  sink_input: elec_int 
+  sink_input: elec_int
