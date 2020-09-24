@@ -1,0 +1,156 @@
+name: DockerBuild
+
+on: push
+
+jobs:
+  publish-base-image:
+    name: Publish Base Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/base-image/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/base-image
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-energy_demand-image:
+    name: Publish energy_demand Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_demand/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_demand
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-et_module-image:
+    name: Publish et_module Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/et_module/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/et_module
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-transport-image:
+    name: Publish transport Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/transport/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/transport
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-decide_step-image:
+    name: Publish decide_step Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/decide_step/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/decide_step
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-transforms-image:
+    name: Publish transforms Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/transforms/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/transforms
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-energy_supply-db-image:
+    name: Publish energy_supply database Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_supply/db/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_supply-db
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true
+  publish-energy_supply-model_base-image:
+    name: Publish energy_supply base Image
+    needs: publish-base-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: DockerBuild
+      uses: docker/build-push-action@v1
+      with:
+        dockerfile: DAFNI-wrappers/energy_supply/model_base/Dockerfile
+        path: ./
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: rosedickinson/nismod2/energy_supply-model_base
+        tags: latest
+        tag_with_sha: true
+        tag_with_ref: true

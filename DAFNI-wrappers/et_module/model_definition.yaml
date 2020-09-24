@@ -1,0 +1,54 @@
+kind: Model
+apiVersion: v1alpha3
+metadata:
+  # You will probably want to update this metadata before uploading to DAFNI
+  displayName: NISMOD2 - Energy Transport Module
+  name: nismod-et-module
+  summary: National Infrastructure Systems Model
+  type: systems of systems
+  description: "Module that connects the energy and transport models from NISMOD2."
+spec:
+  command: [python3, job_processing_wrapper.py]
+  inputs:
+    env:
+      - name: sector_model
+        title: ET Module Sector Model
+        desc: Pick one of the NISMOD2 et_module Sector Models to run
+        type: string
+        default: et_module
+        options:
+          - name: et_module
+            title: Energy Transport Module
+      - name: model_to_run
+        title: Model Run
+        desc: The name of the model run that is being executed
+        type: string
+        default: et_module_test
+      - name: part_of_sos_model
+        title: Part of SOS Model
+        desc: "Is this model being run as part of a NISMOD2 Systems of Systems Model?"
+        type: boolean
+        default: false
+      - name: use_generated_scenario
+        title: Use generated scenario
+        desc: "Is this run using a new generated scenario file?"
+        type: boolean
+        default: false
+      - name: timestep
+        title: Timestep
+        desc: "Timestep to run the Model at if this is part of an SoS Model"
+        type: integer
+    datasets:
+        # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
+        - uid: 1c25acf9-8f35-413f-8995-93ac4876eeac
+        versionUid: 22bf0529-7f21-43d8-bb11-ce84dbffa123
+        path: scenarios/
+      - uid: 97732713-9852-4da4-ada9-7d15a0e2eca6
+        versionUid: cfbc6c26-fbfe-4da6-968f-d6aa3b4fb285
+        path: et_module/
+      - uid: 84a711c4-2705-4f7a-b974-7aea05cafe0f
+        versionUid: 41de0075-42aa-45a1-b95a-a8d9fb81fc62
+        path: lads/
+      - uid: a8c81d5b-5adc-4a03-8d1b-8662829e09b1
+        versionUid: 35e26802-f094-41e2-81a5-b8d8698caf81
+        path: lads/
