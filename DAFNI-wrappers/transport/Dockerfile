@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/rosedickinson/nismod2/base-image:latest
+FROM docker.pkg.github.com/nismod/nismod2/base-image:latest
 
 # Setup environment variables
 ENV JAVA_OPTS -Xmx4g \

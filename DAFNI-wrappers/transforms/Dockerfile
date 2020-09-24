@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/rosedickinson/nismod2/base-image:latest
+FROM docker.pkg.github.com/nismod/nismod2/base-image:latest
 
 WORKDIR /code/nismod2
 COPY ./DAFNI-wrappers/transforms/dockerFiles/* /code/nismod2/

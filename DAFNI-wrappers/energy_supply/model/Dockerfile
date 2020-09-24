@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/rosedickinson/nismod2/energy_supply-model_base:latest
+FROM docker.pkg.github.com/nismod/nismod2/energy_supply-model_base:latest
 
 WORKDIR /code/nismod2
 COPY dockerFiles/dbconfig.ini ./provision/dbconfig.ini
