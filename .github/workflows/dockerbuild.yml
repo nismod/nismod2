@@ -17,7 +17,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/base-image
+        repository: nismod/nismod2/base-image
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -36,7 +36,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/energy_demand
+        repository: nismod/nismod2/energy_demand
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -55,7 +55,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/et_module
+        repository: nismod/nismod2/et_module
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -74,7 +74,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/transport
+        repository: nismod/nismod2/transport
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -93,7 +93,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/decide_step
+        repository: nismod/nismod2/decide_step
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -112,7 +112,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/transforms
+        repository: nismod/nismod2/transforms
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -131,7 +131,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/energy_supply-db
+        repository: nismod/nismod2/energy_supply-db
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
@@ -150,7 +150,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: rosedickinson/nismod2/energy_supply-model_base
+        repository: nismod/nismod2/energy_supply-model_base
         tags: latest
         tag_with_sha: true
         tag_with_ref: true
