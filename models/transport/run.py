@@ -325,34 +325,43 @@ class BaseTransportWrapper(SectorModel):
                 # assume that time is 'annual_day_hours', so we want the other one
                 zone_dim = dim
 
-        # EV trip starts
+        # EV trip starts and consumption
         evt_name = 'electric_vehicle_trip_starts'
-        ev_trips = self._melt_output(
-            name=evt_name,
-            filename=self._output_file_path('zonalTemporalEVTripStarts.csv'),
-            dims={
-                'zone': zone_dim,
-                'hour': 'annual_day_hours'
-            },
-            csv_id_vars=['zone'],
-            csv_melt_var='hour'
-        )
-        ev_trips = self._df_to_ndarray(evt_name, ev_trips)
-        data_handle.set_results(evt_name, ev_trips)
-
-        # EV consumption
         evc_name = 'electric_vehicle_electricity_consumption'
-        ev_consumption = self._melt_output(
-            name=evc_name,
-            filename=self._output_file_path('zonalTemporalEVTripElectricity.csv'),
-            dims={
-                'zone': zone_dim,
-                'hour': 'annual_day_hours'
-            },
-            csv_id_vars=['zone'],
-            csv_melt_var='hour'
-        )
-        ev_consumption = self._df_to_ndarray(evc_name, ev_consumption)
+
+        # set up zero-valued output arrays
+        ev_trips = np.zeros(self.outputs[evt_name].shape)
+        ev_consumption = np.zeros(self.outputs[evc_name].shape)
+
+        for vehicle_type in ('CAR', 'VAN', 'RIGID', 'ARTIC'):
+            vehicle_ev_trips = self._melt_output(
+                name=evt_name,
+                filename=self._output_file_path(f'zonalTemporalEVTripStarts{vehicle_type}.csv'),
+                dims={
+                    'zone': zone_dim,
+                    'hour': 'annual_day_hours'
+                },
+                csv_id_vars=['zone'],
+                csv_melt_var='hour'
+            )
+
+            vehicle_ev_consumption = self._melt_output(
+                name=evc_name,
+                filename=self._output_file_path(f'zonalTemporalEVTripElectricity{vehicle_type}.csv'),
+                dims={
+                    'zone': zone_dim,
+                    'hour': 'annual_day_hours'
+                },
+                csv_id_vars=['zone'],
+                csv_melt_var='hour'
+            )
+
+            # sum up over vehicles (aggregated output)
+            ev_trips += self._df_to_ndarray(evt_name, vehicle_ev_trips)
+            ev_consumption += self._df_to_ndarray(evc_name, vehicle_ev_consumption)
+
+        # Output EV trip starts and energy consumption
+        data_handle.set_results(evt_name, ev_trips)
         data_handle.set_results(evc_name, ev_consumption)
 
         # Energy consumption, all fuels
