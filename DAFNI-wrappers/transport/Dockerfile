@@ -5,16 +5,16 @@ ENV JAVA_OPTS -Xmx4g \
     _JAVA_OPTIONS -Xmx4g
 
 WORKDIR /code
-RUN mkdir -p /code/nismod2/install/transport \
-&&  add-apt-repository "deb http://deb.debian.org/debian experimental main" \
-&&  add-apt-repository "deb http://deb.debian.org/debian sid main" \
+RUN mkdir -p /code/nismod2/install/transport /usr/share/man/man1 \
 &&  apt-get update \
-&&  apt-get install \
-    default-jre \
+&&  apt-get --fix-broken install \
     gcc-8-base \
-    libreadline8 \
-    maven \
-    openjdk-8-jdk -y
+    default-jre \
+    rxvt-unicode \
+    openjdk-11-jre-headless \
+    openjdk-11-jre \
+    openjdk-11-jdk \
+    maven -y
 
 RUN git clone https://github.com/nismod/transport.git
 

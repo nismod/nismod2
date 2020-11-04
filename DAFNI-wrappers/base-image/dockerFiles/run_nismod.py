@@ -7,6 +7,7 @@ from settings import (
     INPUT_PATH,
     NISMOD_PATH,
     RESULTS_PATH,
+    TRANSPORT_ADDITIONAL_OUTPUTS_PATH,
     model_to_run,
     part_of_sos_model,
     sector_model,
@@ -63,12 +64,19 @@ def extract_and_run():
                 run_process(run_for_timestep)
                 print("Run for timestep" + str(t))
         else:
-            inputs_dir = INPUT_PATH.joinpath(model_to_run)
-            if inputs_dir.exists():
+            result_inputs_dir = INPUT_PATH.joinpath(model_to_run)
+            additional_inputs_dir = INPUT_PATH.joinpath("additional/")
+            if result_inputs_dir.exists():
                 print("Copying results from previous step to results folder")
                 RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
-                run_process("cp -ru " + str(inputs_dir) + "/ " + str(RESULTS_PATH))
-                print("Copied results")
+                run_process("cp -ru " + str(result_inputs_dir) + "/ " + str(RESULTS_PATH))
+                print("Copied proper results")
+                
+            if additional_inputs_dir.exists():
+                print("Copying results from transport step to results folder")
+                TRANSPORT_ADDITIONAL_OUTPUTS_PATH.mkdir(parents=True, exist_ok=True)
+                run_process("cp -ru " + str(additional_inputs_dir) + "/* " + str(TRANSPORT_ADDITIONAL_OUTPUTS_PATH))
+                print("Copied transport results")
 
             run_for_timestep = (
                 go_to_nismod_root

@@ -18,6 +18,7 @@ from settings import (
     NISMOD_DATA_PATH,
     NISMOD_SCENARIOS_PATH,
     NISMOD_SOCIO_ECONOMIC_PATH,
+    TRANSPORT_ADDITIONAL_OUTPUTS_PATH,
     part_of_sos_model,
     sector_model,
     timestep,
@@ -56,6 +57,12 @@ def process_job():
     # Copy results across to expected path for DAFNI
     results_dir = RESULTS_PATH.joinpath(model_to_run)
     run_process("cp -r " + str(results_dir) + "/ " + str(OUTPUT_PATH))
+    if TRANSPORT_ADDITIONAL_OUTPUTS_PATH.exists():
+        additional_dir = OUTPUT_PATH.joinpath("additional/")
+        additional_dir.mkdir(parents=True, exist_ok=True)
+        print("copying additional outputs")
+        run_process("cp -r " + str(TRANSPORT_ADDITIONAL_OUTPUTS_PATH) + "/* " + str(additional_dir))
+    run_process("ls -la " + str(OUTPUT_PATH))
     print("Copied results")
 
 

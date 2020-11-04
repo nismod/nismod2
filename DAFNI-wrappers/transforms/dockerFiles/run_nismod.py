@@ -8,8 +8,9 @@ from settings import (
     INPUT_PATH,
     NISMOD_PATH,
     RESULTS_PATH,
+    TRANSPORT_ADDITIONAL_OUTPUTS_PATH,
     model_to_run,
-    transforms,
+    transforms_to_run,
     timestep,
     use_generated_scenario,
 )
@@ -24,7 +25,7 @@ def extract_and_run():
         generated_scenario.parent.mkdir(parents=True, exist_ok=True)
         os.link(generated_scenario, model_run_file)
 
-    transforms_list = json.loads(transforms)
+    transforms_list = json.loads(transforms_to_run)
     go_to_nismod_root = "cd " + str(NISMOD_PATH)
 
     with open(model_run_file, "r") as f:
@@ -38,7 +39,7 @@ def extract_and_run():
     for transform in transforms_list:
         run_process(
             go_to_nismod_root
-            + " && smif before_step"
+            + " && smif before_step "
             + model_to_run
             + " --model "
             + transform
@@ -62,11 +63,17 @@ def extract_and_run():
 
         else:
             inputs_dir = INPUT_PATH.joinpath(model_to_run)
+            additional_inputs_dir = INPUT_PATH.joinpath("additional/")
             if inputs_dir.exists():
                 print("Copying results from previous step to results folder")
                 RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
                 run_process("cp -ru " + str(inputs_dir) + "/ " + str(RESULTS_PATH))
                 print("Copied results")
+            if additional_inputs_dir.exists():
+                print("Copying results from transport step to results folder")
+                TRANSPORT_ADDITIONAL_OUTPUTS_PATH.mkdir(parents=True, exist_ok=True)
+                run_process("cp -ru " + str(additional_inputs_dir) + "/* " + str(TRANSPORT_ADDITIONAL_OUTPUTS_PATH))
+                print("Copied transport results")
 
             run_for_timestep = (
                 go_to_nismod_root

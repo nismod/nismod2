@@ -12,6 +12,7 @@ CONFIG_FILE = Path("/code/script_config.ini")
 RESULTS_PATH = Path("/code/nismod2/results/")
 NISMOD_PATH = Path("/code/nismod2/")
 NISMOD_DATA_PATH = NISMOD_PATH.joinpath("data/")
+TRANSPORT_ADDITIONAL_OUTPUTS_PATH = NISMOD_DATA_PATH.joinpath("transport/gb/output/")
 NISMOD_SCENARIOS_PATH = NISMOD_DATA_PATH.joinpath("scenarios/")
 NISMOD_SOCIO_ECONOMIC_PATH = NISMOD_SCENARIOS_PATH.joinpath("socio-economic/")
 
