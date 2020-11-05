@@ -3,7 +3,7 @@ import time
 import sys
 import importlib.util
 import psycopg2
-from utils import run_process, link_files
+from utils import run_process, link_files, copy_lads
 from shutil import unpack_archive, move
 from pathlib import Path
 from settings import (
@@ -83,11 +83,7 @@ def install_FICO():
 
 def extract():
     install_FICO()
-    print("Copying LADS")
-    lads_input = Path("/data/lads/")
-    lads_output = NISMOD_DATA_PATH.joinpath("dimensions/")
-    run_process("cp -ru " + str(lads_input) + "/ " + str(lads_output))
-    print("Finished Copying LADS")
+    copy_lads() 
 
     print("Extracting")
     datasets = [

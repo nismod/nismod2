@@ -15,12 +15,16 @@ spec:
         title: Transport Sector Model
         desc: Pick one of the NISMOD2 transport models to run
         type: string
-        default: transport_full_test
+        default: transport
         options:
-          - name: transport_full_test
+          - name: transport
             title: Transport Full Baseline Test
-          - name: transport_southampton_test
+          - name: transport_southampton
             title: Transport Southampton Baseline Test
+          - name: rail
+            title: Rail Full Baseline Test
+          - name: rail_southampton
+            title: Rail Southampton Baseline Test
       - name: model_to_run
         title: Model Run
         desc: The name of the model run that is being executed

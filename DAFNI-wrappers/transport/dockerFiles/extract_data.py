@@ -1,5 +1,5 @@
 import importlib.util
-from utils import run_process, link_files
+from utils import run_process, link_files, copy_lads
 from shutil import unpack_archive, move, rmtree, move
 from pathlib import Path
 from settings import (
@@ -22,24 +22,7 @@ spec.loader.exec_module(convert_transport_engine_fractions)
 
 
 def extract():
-    print("Data directory looks like")
-    for dc in Path("/data").iterdir():
-        print(str(dc))
-        if dc.is_dir():
-            for dcdc in dc.iterdir():
-                print(str(dcdc))
-
-    print("Copying LADS")
-    lads_input = Path("/data/lads/")
-    lads_output = NISMOD_DATA_PATH.joinpath("dimensions/")
-    run_process("cp -ru " + str(lads_input) + "/* " + str(lads_output))
-    print("LADS directory looks like")
-    for dc in lads_output.iterdir():
-        print(str(dc))
-        if dc.is_dir():
-            for dcdc in dc.iterdir():
-                print(str(dcdc))
-    print("Finished Copying LADS")
+    copy_lads() 
 
     print("Extracting")
     TRANSPORT_PATH = NISMOD_DATA_PATH.joinpath("transport/")

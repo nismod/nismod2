@@ -1,4 +1,4 @@
-from utils import run_process, link_files
+from utils import run_process, link_files, copy_lads
 from shutil import unpack_archive
 from pathlib import Path
 from settings import (
@@ -10,11 +10,7 @@ from settings import (
 
 
 def extract():
-    print("Copying LADS")
-    lads_input = Path("/data/lads/")
-    lads_output = NISMOD_DATA_PATH.joinpath("dimensions/")
-    run_process("cp -ru " + str(lads_input) + "/ " + str(lads_output))
-    print("Finished Copying LADS")
+    copy_lads() 
 
     print("Extracting")
     TRANSPORT_PATH = NISMOD_DATA_PATH.joinpath("transport/")
