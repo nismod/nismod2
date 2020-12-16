@@ -2,6 +2,38 @@
 Changelog
 =========
 
+Version 2.4.0
+=============
+
+Features:
+- Add DAFNI wrappers and docker container image definitions
+
+Fixes:
+- Bump energy demand to 1.0.1
+- Bump energy supply data
+- Output aggregated EV trip starts and energy consumption
+- Bump smif to 1.3.2
+
+
+Version 2.3.1
+=============
+
+Fixes:
+- Add hydrogen_trans to energy_supply_optimised and energy_supply_constrained SoS models
+
+
+Version 2.3.0
+=============
+
+Features:
+- Add peak adaptor to improve energy validation (see #169 and #173)
+- Add energy functionality for energy supply-demand paper (see #164)
+- Add demand-only runs for resilience study (see #166)
+
+Fixes
+- Transport functionality and config for DAFNI wrapper
+
+
 Version 2.2.0
 =============
 Functionality:
