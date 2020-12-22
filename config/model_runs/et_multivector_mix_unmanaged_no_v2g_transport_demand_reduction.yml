@@ -1,0 +1,44 @@
+name: et_multivector_mix_unmanaged_no_v2g_transport_demand_reduction
+stamp: ''
+description: Energy transport model run with multi-vector heating and electrified transport
+sos_model: energy_transport-scenario-unconstrained_corrected
+scenarios:
+  fuel_price: es_prices_multivector_world
+  socio-economic: itrc_high-dcc
+  temperature: NF1
+  ev_transport_trips: et_electric
+  dummy_weather_inputs_full: es_dummy_weather_inputs_full
+  biomass_waste_to_energy: es_biomass_waste_to_energy
+  elec_interconnector_prices: average_annual_prices
+narratives:
+  load_shedding:
+  - high_cost
+  operation_mode:
+  - central
+  emissions_constraint:
+  - emissions_constraint_on
+  heat_supply_strategy:
+  - green_gas
+  sensitivity_mode:
+  - transport_energy_demand_reduction
+  smart_meter_p:
+  - multivector_world
+  t_base_heating:
+  - multivector_world
+  f_eff_achieved:
+  - multivector_world_netzero
+  generic_enduse_change:
+  - multivector_world_netzero
+  generic_fuel_switch:
+  - multivector_world_netzero
+  switches_service:
+  - multivector_world_netzero_Hydrogen
+decision_module: ''
+strategies:
+  - type: pre-specified-planning
+    description: 'net zero development (national), centralised operation'
+    filename: ../energy_supply/strategies/multi_vector
+    model_name: energy_supply_optimised
+timesteps:
+  - 2015
+  - 2050
