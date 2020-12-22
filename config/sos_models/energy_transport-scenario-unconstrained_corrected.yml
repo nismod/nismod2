@@ -440,6 +440,27 @@ narratives:
         decription: further demand reduction for heat, non-heat electricity and non-heat gas
         data:
           sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_demand_reduction
+      - name: ev_demand_increase
+        decription: an overall increase to EV charging demand
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_ev_demand_increase
+      - name: ev_demand_decrease
+        decription: an overall decrease to EV charging demand
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_ev_demand_decrease
+      - name: ev_residential_public_charging
+        decription: assign different shares for residential(slow) and public (fast and rapid) charging within a day
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_residential_charging
+      - name: ev_battery_size_change
+        decription: increases default ev battery size used for V2G services
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_ev_battery_size
+      - name: transport_energy_demand_reduction
+        decription: reduces both EV charging and hydrogen demand from transport
+        data:
+          sensitivity_mode: ../../data/energy_supply/parameters/sensitivity_transport_demand_reduction
+      
   - name: emissions_constraint
     description: pre defined emissions constraint
     provides:
