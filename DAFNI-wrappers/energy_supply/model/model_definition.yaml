@@ -1,14 +1,24 @@
 kind: Model
-apiVersion: v1alpha3
+apiVersion: v1alpha4
 metadata:
-  # You will probably want to update this metadata before uploading to DAFNI
-  displayName: NISMOD2 - Energy Supply Model
+  displayName: NISMOD - Energy Supply (model v2.8 build 1)
   name: nismod-energy-supply
   summary: National Infrastructure Systems Model
   type: systems of systems
-  description: "Energy Supply model from NISMOD2."
+  description: >
+    The NISMOD Energy Supply model provides the capability to perform integrated
+    analyses of the whole energy system in Great Britain from supply sources,
+    generation, transmission, distribution and end-use. The model is built on an
+    optimisation framework. It performs integrated optimal operation of the
+    energy system across electricity, gas, heat, and hydrogen networks. The
+    model can deliver insights and evaluation of national energy infrastructure
+    and its interconnectedness with global energy systems and through an energy
+    hub concept that models interactions with local energy systems.
+
+    Source code: https://github.com/nismod/energy_supply (not yet public)
+
+    Further description: https://www.itrc.org.uk/themes/energy/supply/
 spec:
-  command: [python3, job_processing_wrapper.py]
   inputs:
     env:
       - name: sector_model
@@ -40,19 +50,37 @@ spec:
         default: false
       - name: timestep
         title: Timestep
-        desc: "Timestep to run the Model at if this is part of an SoS Model"
+        desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
-    datasets:
-      # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
-    - uid: 1c25acf9-8f35-413f-8995-93ac4876eeac
-      versionUid: 22bf0529-7f21-43d8-bb11-ce84dbffa123
-      path: scenarios/
-    - uid: 7a347b45-0f05-42cd-8e34-25210be62f69
-      versionUid: 0bd574bd-d2dd-41d4-90aa-19b81c6aefda
-      path: energy_supply/
-    - uid: 84a711c4-2705-4f7a-b974-7aea05cafe0f
-      versionUid: 41de0075-42aa-45a1-b95a-a8d9fb81fc62
-      path: lads/
-    - uid: a8c81d5b-5adc-4a03-8d1b-8662829e09b1
-      versionUid: 35e26802-f094-41e2-81a5-b8d8698caf81
-      path: lads/
+    dataslots:
+      - name: Scenario Data
+        description: >
+          NISMOD scenario data pack. Should contain socio-economic scenarios
+          (population, GVA) and energy (fuel) price scenarios.
+        default:
+          - uid: 1237868f-52ea-416c-9087-eef9dbde429d
+            versionUid: cef750da-b26d-4da1-b67b-871281c3d551
+        path: scenarios/
+        required: true
+      - name: Energy Supply Model Data
+        description: >
+          NISMOD energy supply data pack. Should contain full data setup for the
+          energy supply model including model configuration for the electricity
+          and gas network in the base year (2015) and possible future
+          interventions - generation, transmission, interconnectors, gas storage
+          and terminals, and heating supply technology options.
+        default:
+          - uid: aa16e098-452b-496a-b3ae-dc95acd6959b
+            versionUid: 3d3380bc-2147-46a8-b1d6-74e755f3726b
+        path: energy_supply/
+        required: true
+      - name: LAD boundaries
+        description: >
+          LAD boundaries - shared definition for data exchange between models.
+        default:
+          - uid: 36adf09d-7657-4e46-a6d8-55dde43cbe51
+            versionUid: 4050b797-0a12-4b86-9ca3-9edfde3aeb6d
+          - uid: 40ba1196-6ee1-4be3-b813-471934bf3acd
+            versionUid: adce60be-2019-4ec8-8f61-a297c5a26cc5
+        path: lads/
+        required: true
