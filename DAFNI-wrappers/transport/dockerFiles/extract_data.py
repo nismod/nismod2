@@ -22,15 +22,11 @@ spec.loader.exec_module(convert_transport_engine_fractions)
 
 
 def extract():
-    copy_lads() 
+    copy_lads()
 
     print("Extracting")
     TRANSPORT_PATH = NISMOD_DATA_PATH.joinpath("transport/")
     datasets = [
-        {
-            "src": "/data/scenarios/climate_v1.zip",
-            "dest": str(NISMOD_SCENARIOS_PATH.joinpath("climate/")),
-        },
         {
             "src": "/data/scenarios/population_v1.zip",
             "dest": str(NISMOD_SCENARIOS_PATH.joinpath("population/")),
@@ -43,22 +39,6 @@ def extract():
             "src": "/data/scenarios/socio-economic-1.0.1.zip",
             "dest": str(NISMOD_SOCIO_ECONOMIC_PATH),
         },
-        {
-            "src": "/data/scenarios/ev_transport_trips_v0.1.zip",
-            "dest": str(NISMOD_SCENARIOS_PATH.joinpath("ev_transport_trips/")),
-        },
-        # {
-        #     "src": "/data/energy_supply/energy_supply_data_v0.9.10.zip",
-        #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_supply/")),
-        # },
-        # {
-        #     "src": "/data/energy_demand/v0.9.12_full.zip",
-        #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/")),
-        # },
-        # {
-        #     "src": "/data/energy_demand/config_data_v1.0.zip",
-        #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_demand/config_data/")),
-        # },
         {
             "src": "/data/transport/TR_data_full_for_release_v2.3.0.zip",
             "dest": str(TRANSPORT_PATH),
@@ -143,12 +123,3 @@ def extract():
         dest_path = str(NISMOD_DATA_PATH.joinpath(rd))
         print("Moving - " + src_path + " - to - " + dest_path)
         move(src_path, dest_path)
-
-    # print("energy_demand setup")
-    # run_process(
-    #     "cd "
-    #     + str(NISMOD_PATH)
-    #     + " && energy_demand setup -f "
-    #     + str(NISMOD_PATH)
-    #     + "/models/energy_demand/wrapperconfig.ini"
-    # )
