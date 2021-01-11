@@ -38,7 +38,7 @@ spec:
         default: false
       - name: timestep
         title: Timestep
-        desc: "Timestep to run the Model at if this is part of an SoS Model"
+        desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
     datasets:
         # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
