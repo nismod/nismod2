@@ -1,30 +1,39 @@
 kind: Model
-apiVersion: v1alpha3
+apiVersion: v1alpha4
 metadata:
-  # You will probably want to update this metadata before uploading to DAFNI
-  displayName: NISMOD2 - Transport Model
+  displayName: NISMOD - Transport Model
   name: nismod-transport
-  summary: National Infrastructure Systems Model
+  summary: National Infrastructure Systems Model - Transport
   type: systems of systems
-  description: "Transport model that forms part of NISMOD2"
+  description: >
+    NISMOD v2 Transport Model is a national-scale (Great Britain) transport model
+    developed to support policy making regarding the future infrastructure. It
+    forecasts the impact of various endogenous and exogenous factors on transport
+    demand and capacity utilisation, following an elasticity-based simulation
+    methodology. The model consists of three submodels covering the following modes
+    of transport: road (passenger and freight vehicle flows), rail (total station
+    usage), and air (domestic and international passenger movements).
+
+    Source code: https://github.com/nismod/transport
+
+    Documentation: https://nt2.readthedocs.io/en/latest/
 spec:
-  command: [python3, job_processing_wrapper.py]
   inputs:
     env:
       - name: sector_model
         title: Transport Sector Model
-        desc: Pick one of the NISMOD2 transport models to run
+        desc: Pick one of the NISMOD transport models to run
         type: string
         default: transport
         options:
           - name: transport
-            title: Transport Full Baseline Test
+            title: Road model (Great Britain)
           - name: transport_southampton
-            title: Transport Southampton Baseline Test
+            title: Road model (Southampton)
           - name: rail
-            title: Rail Full Baseline Test
+            title: Rail model (Great Britain)
           - name: rail_southampton
-            title: Rail Southampton Baseline Test
+            title: Rail model (Southampton)
       - name: model_to_run
         title: Model Run
         desc: The name of the model run that is being executed
@@ -32,7 +41,7 @@ spec:
         default: transport_full_test
       - name: part_of_sos_model
         title: Part of SOS Model
-        desc: "Is this model being run as part of a NISMOD2 Systems of Systems Model?"
+        desc: "Is this model being run as part of a NISMOD Systems of Systems Model?"
         type: boolean
         default: false
       - name: use_generated_scenario
@@ -42,19 +51,36 @@ spec:
         default: false
       - name: timestep
         title: Timestep
-        desc: "Timestep to run the Model at if this is part of an SoS Model"
+        desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
-    datasets:
-        # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
-      - uid: 1c25acf9-8f35-413f-8995-93ac4876eeac
-        versionUid: 22bf0529-7f21-43d8-bb11-ce84dbffa123
+    dataslots:
+      - name: Scenario Data
+        description: >
+          NISMOD scenario data pack. Should contain socio-economic scenarios
+          (population, GVA) and energy (fuel) price scenarios.
+        default:
+          - uid: 1237868f-52ea-416c-9087-eef9dbde429d
+            versionUid: cef750da-b26d-4da1-b67b-871281c3d551
         path: scenarios/
-      - uid: a54091be-6665-4c53-8cfa-f96642249d13
-        versionUid: fdd6c9b2-c2e3-40cf-9e18-17ea11fc7e03
+        required: true
+      - name: Transport Model Data
+        description: >
+          NISMOD transport data pack. Should contain full data setup for the
+          transport model including network shapefiles, base year population and
+          GVA, origin-destination matrices, engine fuel efficiencies, and future
+          interventions (new road links, new stations, congestion charging zones).
+        default:
+          - uid: dbfe6814-3fd3-4e94-8c30-ccfec60c9989
+            versionUid: df234857-a622-4b83-bec1-c72b1c7ed8b6
         path: transport/
-      - uid: 84a711c4-2705-4f7a-b974-7aea05cafe0f
-        versionUid: 41de0075-42aa-45a1-b95a-a8d9fb81fc62
+        required: true
+      - name: LAD boundaries
+        description: >
+          LAD boundaries - shared definition for data exchange between models.
+        default:
+          - uid: 36adf09d-7657-4e46-a6d8-55dde43cbe51
+            versionUid: 4050b797-0a12-4b86-9ca3-9edfde3aeb6d
+          - uid: 40ba1196-6ee1-4be3-b813-471934bf3acd
+            versionUid: adce60be-2019-4ec8-8f61-a297c5a26cc5
         path: lads/
-      - uid: a8c81d5b-5adc-4a03-8d1b-8662829e09b1
-        versionUid: 35e26802-f094-41e2-81a5-b8d8698caf81
-        path: lads/
+        required: true
