@@ -14,6 +14,10 @@ metadata:
     average electric vehicle battery capacity and assumptions on average EV
     storage capacity. The simulated capacity can then be used by the energy
     supply model in its optimisation.
+
+    Source code: https://github.com/nismod/et_module
+
+    Documentation: https://et-module.readthedocs.io/en/latest/
 spec:
   inputs:
     env:
