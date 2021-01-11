@@ -163,8 +163,7 @@ config/model_runs/arc_ws/**/*.yml
 *~
 
 # DAFNI Wrappers
-DAFNI-wrappers/energy_supply/model/dockerfiles/energy_supply_*/*
-DAFNI-wrappers/energy_supply/model/dockerfiles/license/*
-DAFNI-wrappers/energy_supply/model/dockerfiles/energy_supply/*
-DAFNI-wrappers/energy_supply/model/dockerfiles/scenarios/*
-DAFNI-wrappers/energy_supply/model/dockerfiles/lads/*
+DAFNI-wrappers/energy_supply/model/dockerFiles/energy_supply_*/*
+DAFNI-wrappers/energy_supply/model/dockerFiles/license/*
+DAFNI-wrappers/energy_supply/model/dockerFiles/scenarios/*
+DAFNI-wrappers/energy_supply/model/dockerFiles/lads/*
