@@ -1,7 +1,7 @@
 kind: Model
 apiVersion: v1alpha4
 metadata:
-  displayName: NISMOD - Transport Model
+  displayName: NISMOD - Transport (model v2.3.0 build 2)
   name: nismod-transport
   summary: National Infrastructure Systems Model - Transport
   type: systems of systems
