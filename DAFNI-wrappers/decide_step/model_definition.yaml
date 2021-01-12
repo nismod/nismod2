@@ -1,14 +1,18 @@
 kind: Model
-apiVersion: v1alpha3
+apiVersion: v1alpha4
 metadata:
-  # You will probably want to update this metadata before uploading to DAFNI
-  displayName: NISMOD2 - Decide Step
+  displayName: NISMOD - Decision Module (model v2.4.0 build 1)
   name: nismod-decide
   summary: National Infrastructure Systems Model
   type: systems of systems
-  description: "This model allows you to run the decide step of a NISMOD2 model run."
+  description: >
+    This runs a preparatory step of the NISMOD model integration software,
+    setting up pre-planned interventions in the models.
+
+    Documentation: https://smif.readthedocs.io/en/latest/getting_started.html#run-models-step-by-step
+
+    Source code: https://github.com/nismod/smif/
 spec:
-  command: [python3, job_processing_wrapper.py]
   inputs:
     env:
       - name: sector_model
@@ -34,26 +38,72 @@ spec:
         title: Timestep
         desc: "Timestep to run the Model at if this is part of an SoS Model"
         type: integer
-    datasets:
-        # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
-      - uid: 1c25acf9-8f35-413f-8995-93ac4876eeac
-        versionUid: 22bf0529-7f21-43d8-bb11-ce84dbffa123
+    dataslots:
+      - name: Scenario Data
+        description: >
+          NISMOD scenario data pack. Should contain socio-economic scenarios
+          (population, GVA) and energy (fuel) price scenarios.
+        default:
+          - uid: 1237868f-52ea-416c-9087-eef9dbde429d
+            versionUid: cef750da-b26d-4da1-b67b-871281c3d551
         path: scenarios/
-      - uid: a54091be-6665-4c53-8cfa-f96642249d13
-        versionUid: fdd6c9b2-c2e3-40cf-9e18-17ea11fc7e03
+        required: true
+      - name: Transport Model Data
+        description: >
+          NISMOD transport data pack. Should contain full data setup for the
+          transport model including network shapefiles, base year population and
+          GVA, origin-destination matrices, engine fuel efficiencies, and future
+          interventions (new road links, new stations, congestion charging zones).
+        default:
+          - uid: dbfe6814-3fd3-4e94-8c30-ccfec60c9989
+            versionUid: df234857-a622-4b83-bec1-c72b1c7ed8b6
         path: transport/
-      - uid: 3a27a317-1ace-48b6-8515-4889cbc3ed64
-        versionUid: fb325d6a-5ada-4844-9619-625617b59e4a
+        required: true
+      - name: Energy Demand Model Data
+        description: >
+          NISMOD energy demand data pack. Should contain full data setup for the
+          energy demand model including hourly interval definitions, technology,
+          efficiency, end-use and service parameters to explore changing energy
+          demand, historic temperature time series, scenarios of future
+          temperature (aligned with the wind speed and insolation time series
+          used to model renewables in energy supply), base year national and
+          subnational energy consumption estimates, load profiles, and base year
+          population and floor area.
+        default:
+          - uid: 180c33ea-592c-473e-b54b-692c2cc534dd
+            versionUid: f63c24ec-4262-4f88-ac1c-28fd47345de1
         path: energy_demand/
-      - uid: 6234080f-3196-458d-9d85-7a2ab7a3935b
-        versionUid: 8d191050-918a-41cc-8b44-752b7b3b2b7c
+        required: true
+      - name: Energy Supply Model Data
+        description: >
+          NISMOD energy supply data pack. Should contain full data setup for the
+          energy supply model including model configuration for the electricity
+          and gas network in the base year and possible future interventions -
+          generation, transmission, interconnectors, gas storage and terminals,
+          and heating supply technology options.
+        default:
+          - uid: aa16e098-452b-496a-b3ae-dc95acd6959b
+            versionUid: 3d3380bc-2147-46a8-b1d6-74e755f3726b
         path: energy_supply/
-      - uid: 97732713-9852-4da4-ada9-7d15a0e2eca6
-        versionUid: cfbc6c26-fbfe-4da6-968f-d6aa3b4fb285
+        required: true
+      - name: ET Module Data
+        description: >
+          NISMOD Energy Transport Module data pack. Should contain full data
+          setup for the model, including charging schedule parameters and
+          vehicle trip starts and consumption scenarios (test outputs from the
+          Transport model used to test running the et_module standalone).
+        default:
+          - uid: dbfe6814-3fd3-4e94-8c30-ccfec60c9989
+            versionUid: df234857-a622-4b83-bec1-c72b1c7ed8b6
         path: et_module/
-      - uid: 84a711c4-2705-4f7a-b974-7aea05cafe0f
-        versionUid: 41de0075-42aa-45a1-b95a-a8d9fb81fc62
+        required: true
+      - name: LAD boundaries
+        description: >
+          LAD boundaries - shared definition for data exchange between models.
+        default:
+          - uid: 36adf09d-7657-4e46-a6d8-55dde43cbe51
+            versionUid: 4050b797-0a12-4b86-9ca3-9edfde3aeb6d
+          - uid: 40ba1196-6ee1-4be3-b813-471934bf3acd
+            versionUid: adce60be-2019-4ec8-8f61-a297c5a26cc5
         path: lads/
-      - uid: a8c81d5b-5adc-4a03-8d1b-8662829e09b1
-        versionUid: 35e26802-f094-41e2-81a5-b8d8698caf81
-        path: lads/
+        required: true
