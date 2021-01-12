@@ -1,14 +1,22 @@
 kind: Model
-apiVersion: v1alpha3
+apiVersion: v1alpha4
 metadata:
-  # You will probably want to update this metadata before uploading to DAFNI
-  displayName: NISMOD2 - Energy Demand Model
+  displayName: NISMOD - Energy Demand (model v1.0.1 build 1)
   name: nismod-energy-demand
   summary: National Infrastructure Systems Model
   type: systems of systems
-  description: "Energy Demand model that forms part of NISMOD2"
+  description: >
+    HIRE (HIgh-Resolution Energy demand model) simulates energy demand for the
+    United Kingdom at an hourly / Local Authority District scale. Future energy
+    demand is simulated based on different scenario data and socio-technical
+    drivers such as technological efficiencies, changes in the technological mix
+    of an end use, consumption and behavioural change. Scenario data includes
+    population, regional Gross Value Added, residential and commercial
+    floorspace, and temperature.
+
+    Source code: https://github.com/nismod/energy_demand
+    Documentation: http://ed.readthedocs.io/en/latest/
 spec:
-  command: [python3, job_processing_wrapper.py]
   inputs:
     env:
       - name: sector_model
@@ -41,16 +49,37 @@ spec:
         desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
     datasets:
-        # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
-      - uid: 1c25acf9-8f35-413f-8995-93ac4876eeac
-        versionUid: 22bf0529-7f21-43d8-bb11-ce84dbffa123
+      - name: Scenario Data
+        description: >
+          NISMOD scenario data pack. Should contain socio-economic scenarios
+          (population, GVA) and energy (fuel) price scenarios.
+        default:
+          - uid: 1237868f-52ea-416c-9087-eef9dbde429d
+            versionUid: cef750da-b26d-4da1-b67b-871281c3d551
         path: scenarios/
-      - uid: 3a27a317-1ace-48b6-8515-4889cbc3ed64
-        versionUid: fb325d6a-5ada-4844-9619-625617b59e4a
+        required: true
+      - name: Energy Demand Model Data
+        description: >
+          NISMOD energy demand data pack. Should contain full data setup for the
+          energy demand model including hourly interval definitions, technology,
+          efficiency, end-use and service parameters to explore changing energy
+          demand, historic temperature time series, scenarios of future
+          temperature (aligned with the wind speed and insolation time series
+          used to model renewables in energy supply), base year national and
+          subnational energy consumption estimates, load profiles, and base year
+          population and floor area.
+        default:
+          - uid: 180c33ea-592c-473e-b54b-692c2cc534dd
+            versionUid: f63c24ec-4262-4f88-ac1c-28fd47345de1
         path: energy_demand/
-      - uid: 84a711c4-2705-4f7a-b974-7aea05cafe0f
-        versionUid: 41de0075-42aa-45a1-b95a-a8d9fb81fc62
+        required: true
+      - name: LAD boundaries
+        description: >
+          LAD boundaries - shared definition for data exchange between models.
+        default:
+          - uid: 36adf09d-7657-4e46-a6d8-55dde43cbe51
+            versionUid: 4050b797-0a12-4b86-9ca3-9edfde3aeb6d
+          - uid: 40ba1196-6ee1-4be3-b813-471934bf3acd
+            versionUid: adce60be-2019-4ec8-8f61-a297c5a26cc5
         path: lads/
-      - uid: a8c81d5b-5adc-4a03-8d1b-8662829e09b1
-        versionUid: 35e26802-f094-41e2-81a5-b8d8698caf81
-        path: lads/
+        required: true
