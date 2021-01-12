@@ -1,7 +1,7 @@
 kind: Model
 apiVersion: v1alpha4
 metadata:
-  displayName: NISMOD - Decision Module (model v2.4.0 build 1)
+  displayName: NISMOD - Decision Module (model v2.4.0 build 2)
   name: nismod-decide
   summary: National Infrastructure Systems Model
   type: systems of systems
