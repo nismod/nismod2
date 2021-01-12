@@ -38,7 +38,7 @@ spec:
         title: Timestep
         desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
-    datasets:
+    dataslots:
       - name: Scenario Data
         description: >
           NISMOD scenario data pack. Should contain socio-economic scenarios
