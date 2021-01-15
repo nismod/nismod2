@@ -1,7 +1,7 @@
 kind: Model
 apiVersion: v1alpha4
 metadata:
-  displayName: NISMOD - Decision Module (model v2.4.0 build 1)
+  displayName: NISMOD - Decision Module (model v2.4.0 build 5)
   name: nismod-decide
   summary: National Infrastructure Systems Model
   type: systems of systems
@@ -15,29 +15,15 @@ metadata:
 spec:
   inputs:
     env:
-      - name: sector_model
-        title: NISMOD2 Sector Model
-        desc: Pick one of the NISMOD2 Sector Models to run the decide step for
-        type: string
       - name: model_to_run
         title: Model Run
         desc: The name of the model run that is being executed
         type: string
-        default: energy_supply_constrained
-      - name: part_of_sos_model
-        title: Part of SOS Model
-        desc: "Is this model being run as part of a NISMOD2 Systems of Systems Model?"
-        type: boolean
-        default: false
       - name: use_generated_scenario
         title: Use generated scenario
         desc: "Is this run using a new generated scenario file?"
         type: boolean
         default: false
-      - name: timestep
-        title: Timestep
-        desc: "Timestep to run the Model at if this is part of an SoS Model"
-        type: integer
     dataslots:
       - name: Scenario Data
         description: >
@@ -93,8 +79,8 @@ spec:
           vehicle trip starts and consumption scenarios (test outputs from the
           Transport model used to test running the et_module standalone).
         default:
-          - uid: dbfe6814-3fd3-4e94-8c30-ccfec60c9989
-            versionUid: df234857-a622-4b83-bec1-c72b1c7ed8b6
+          - uid: ed671698-069c-40f4-8645-bf08e45634fb
+            versionUid: 66382de9-bef7-45ab-b729-dbfc1d01007f
         path: et_module/
         required: true
       - name: LAD boundaries

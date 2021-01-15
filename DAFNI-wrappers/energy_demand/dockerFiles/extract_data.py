@@ -35,7 +35,7 @@ def extract():
             "dest": str(NISMOD_SCENARIOS_PATH.joinpath("ev_transport_trips/")),
         },
         # {
-        #     "src": "/data/energy_supply/energy_supply_data_v0.9.10.zip",
+        #     "src": "/data/energy_supply/energy_supply_data_v0.9.12.zip",
         #     "dest": str(NISMOD_DATA_PATH.joinpath("energy_supply/")),
         # },
         {
