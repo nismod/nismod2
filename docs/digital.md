@@ -2,7 +2,7 @@
 
 ## Cambridge Digital Communications Assessment Model (cdcam)
 
-Model code: [nismod/cdcam]](https://github.com/nismod/cdcam)
+Model code: [nismod/cdcam](https://github.com/nismod/cdcam)
 
 Model documentation:
 [cdcam.readthedocs.io](https://cdcam.readthedocs.io/en/latest/index.html)
@@ -189,3 +189,31 @@ The analysis script for this process is available within the
 [DAFNI dataset](https://facility.secure.dafni.rl.ac.uk/data/details?dataset_id=f44bece9-6822-4b7d-acbe-af18bb323702&version_id=7ead1555-b2e2-462c-b5e0-3085f2751957&metadata_id=147313e8-a5da-42ed-a59a-06953716e99f)
 
 [DOI 10.5281/zenodo.3525286](https://doi.org/10.5281/zenodo.3525286)
+
+Contains population scenarios at LAD scale created for ITRC studies from Arc Scenarios
+workflow defined at https://github.com/nismod/arc-scenarios
+
+Baseline population per postcode sector is derived from ONS/NOMIS (2011) Table
+KS101EW Usual Resident Population http://www.nomisweb.co.uk/census/2011/ks101ew
+
+Boswarva, Owen. (2017). Sitefinder Mobile Phone Base Station Database,
+[Dataset]. https://doi.org/10.7488/ds/1975.
+
+Capacity look-up table by frequency, output from radio propagation model. See
+[itmlogic](https://github.com/edwardoughton/itmlogic)
+
+Local authority district, postcode sector area definitions, covered by the Open
+Government License Contains Ordnance Survey data © Crown copyright and database
+right 2012.
+
+OFCOM Connected Nations (2018) Mobile local and unitary authority - Coverage and
+performance data
+https://www.ofcom.org.uk/__data/assets/file/0009/131040/201809_mobile_laua_r02.zip
+
+Mobile data traffic forecasts from VNI Mobile forecast highlights tool Cisco
+(2017)
+https://www.cisco.com/c/m/en_us/solutions/service-provider/forecast-highlights-mobile.html
+
+Population density bands to define geotypes following OFCOM Mobile call termination
+market review 2018–21
+https://www.ofcom.org.uk/consultations-and-statements/category-1/mobile-call-termination-market-review
