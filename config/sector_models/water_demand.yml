@@ -3,16 +3,19 @@ description: Water demand model
 initial_conditions: []
 inputs:
   - name: population
+    description: Population
     dims:
       - water_resource_zones
     dtype: float
     unit: people
   - name: constant_water_demand
+    description: Constant water demand component
     dims:
       - water_resource_zones
     dtype: float
     unit: Ml/day
   - name: per_capita_water_demand
+    description: Per-capita water demand
     dims:
       - water_resource_zones
     dtype: float
@@ -21,6 +24,7 @@ interventions: []
 name: water_demand
 outputs:
   - name: water_demand
+    description: Public water demand
     dims:
       - water_resource_zones
     dtype: float

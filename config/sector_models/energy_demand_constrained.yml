@@ -1,619 +1,679 @@
 name: energy_demand_constrained
-path: models/energy_demand/run.py
 description: Constrained model configuration
+path: models/energy_demand/run.py
 classname: EDWrapper
 initial_conditions: []
-# Parameters-----------------------------------------------
-parameters:
-- description: Dwelling stock type or read in floor area directly
-  default: ../energy_demand/parameters/virtual_dw_stock
-  name: virtual_dw_stock
-  unit: ''
-  dtype: bool
-- description: Mode of model
-  default: ../energy_demand/parameters/mode_constrained
-  name: mode
-  unit: ''
-  dtype: float
-- description: 
-  default: ../energy_demand/parameters/switches_service
-  name: switches_service
-  unit: ''
-  dims:
-  - enduses_service_switch
-  - tech
-  - end_yr
-  - sector
-  dtype: float
-- description: Generic fuel switch
-  default: ../energy_demand/parameters/generic_fuel_switch
-  name: generic_fuel_switch
-  unit: ''
-  dims:
-  - generic_switch_number
-  - enduses
-  - end_yr
-  - param_generic_fuel_switch
-  dtype: float
-- description: Share in cold rolling in steel manufacturing
-  default: ../energy_demand/parameters/p_cold_rolling_steel
-  name: p_cold_rolling_steel
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  dtype: float
-- description: Recovered heat
-  default: ../energy_demand/parameters/heat_recovered
-  name: heat_recovered
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  - enduses
-  dtype: float
-- description: Share of cooled service floor area
-  default: ../energy_demand/parameters/cooled_floorarea
-  name: cooled_floorarea
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  - enduses
-  dtype: float
-- description: Change in floor area per person
-  default: ../energy_demand/parameters/assump_diff_floorarea_pp
-  name: assump_diff_floorarea_pp
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  dtype: float
-- description: Air leakage caused reducing in demand
-  default: ../energy_demand/parameters/air_leakage
-  name: air_leakage
-  unit: 'decimal'
-  dims:
-  - enduses
-  - end_yr
-  - interpolation_params
-  dtype: float
-- description: Efficiency achievement level
-  default: ../energy_demand/parameters/f_eff_achieved
-  name: f_eff_achieved
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  dtype: float
-- description: Smart meter penetration
-  default: ../energy_demand/parameters/smart_meter_p
-  name: smart_meter_p
-  unit: 'decimal'
-  dims:
-  - end_yr
-  - interpolation_params
-  dtype: float
-- description: Industrial base temperature
-  default: ../energy_demand/parameters/rs_t_base_heating
-  name: rs_t_base_heating
-  unit: 
-  dims:
-  - interpolation_params
-  - end_yr
-  dtype: float
-- description: Industrial base temperature
-  default: ../energy_demand/parameters/ss_t_base_heating
-  name: ss_t_base_heating
-  unit: 
-  dims:
-  - interpolation_params
-  - end_yr
-  dtype: float
-- description: Industrial base temperature
-  default: ../energy_demand/parameters/is_t_base_heating
-  name: is_t_base_heating
-  unit: 
-  dims:
-  - interpolation_params
-  - end_yr
-  dtype: float
-- description: Demand side management improvemnt
-  default: ../energy_demand/parameters/dm_improvement
-  name: dm_improvement
-  unit: 
-  dims:
-  - enduses
-  - interpolation_params
-  - end_yr
-  dtype: float
-- description: Spatial explicit diffusion or not
-  default: ../energy_demand/parameters/spatial_explicit_diffusion
-  name: spatial_explicit_diffusion
-  unit: 'integer'
-  dims:
-  dtype: float
-- description: Spatial diffusion speed
-  default: ../energy_demand/parameters/speed_con_max
-  name: speed_con_max
-  unit: ''
-  dims:
-  dtype: float
-- description: Heat pump fractions
-  default: ../energy_demand/parameters/gshp_fraction
-  name: gshp_fraction
-  unit: 'decimal'
-  dims:
-  - interpolation_params
-  - end_yr
-  dtype: float
-- description: Heat pump fractions
-  default: ../energy_demand/parameters/gshp_fraction
-  name: gshp_fraction
-  unit: 'decimal'
-  dims:
-  dtype: float
-- description: Overall change in energy demand per enduse
-  default: ../energy_demand/parameters/generic_enduse_change
-  name: generic_enduse_change
-  unit: '%'
-  dims:
-  - enduses
-  - interpolation_params
-  - end_yr
-  dtype: float
-# -----------------------------------------------
 inputs:
-- name: floor_area
-  unit: meter**2
-  dims:
-  - lad_uk_2016
-  - residential_or_non
-  dtype: float
-- name: t_min
-  unit: Degree Celcius
-  dims:
-  - lad_uk_2016
-  - yearday
-  dtype: float
-- name: t_max
-  unit: Degree Celcius
-  dims:
-  - lad_uk_2016
-  - yearday
-  dtype: float
-- name: population
-  unit: people
-  dims:
-  - lad_uk_2016
-  dtype: float
-- name: gva_per_head
-  unit: GBP
-  dims:
-  - lad_uk_2016
-  dtype: float
-- description: GVA per industrial sector
-  name: gva_per_sector
-  unit: GBP
-  dims:
-  - lad_uk_2016
-  - sectors
-  dtype: float
-# -----------------------------------------------
+  - name: floor_area
+    description: Floor area, residential and commercial
+    unit: meter**2
+    dims:
+      - lad_uk_2016
+      - residential_or_non
+    dtype: float
+  - name: t_min
+    description: Minimum daily temperature
+    unit: Degree Celcius
+    dims:
+      - lad_uk_2016
+      - yearday
+    dtype: float
+  - name: t_max
+    description: Maximum daily temperature
+    unit: Degree Celcius
+    dims:
+      - lad_uk_2016
+      - yearday
+    dtype: float
+  - name: population
+    description: Population
+    unit: people
+    dims:
+      - lad_uk_2016
+    dtype: float
+  - name: gva_per_head
+    description: Regional Gross Value Added per capita
+    unit: GBP
+    dims:
+      - lad_uk_2016
+    dtype: float
+  - name: gva_per_sector
+    description: Regional Gross Value Added, by sector
+    unit: GBP
+    dims:
+      - lad_uk_2016
+      - sectors
+    dtype: float
+parameters:
+  - name: virtual_dw_stock
+    description: Dwelling stock type or read in floor area directly
+    default: ../energy_demand/parameters/virtual_dw_stock
+    unit: ''
+    dtype: bool
+  - name: mode
+    description: Mode of model
+    default: ../energy_demand/parameters/mode_constrained
+    unit: ''
+    dtype: int
+  - name: switches_service
+    description: Service switches
+    default: ../energy_demand/parameters/switches_service
+    unit: ''
+    dims:
+      - enduses_service_switch
+      - tech
+      - end_yr
+      - sector
+    dtype: float
+  - name: generic_fuel_switch
+    description: Generic fuel switch
+    default: ../energy_demand/parameters/generic_fuel_switch
+    unit: ''
+    dims:
+      - generic_switch_number
+      - enduses
+      - end_yr
+      - param_generic_fuel_switch
+    dtype: float
+  - name: p_cold_rolling_steel
+    description: Share in cold rolling in steel manufacturing
+    default: ../energy_demand/parameters/p_cold_rolling_steel
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+    dtype: float
+  - name: heat_recovered
+    description: Recovered heat
+    default: ../energy_demand/parameters/heat_recovered
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+      - enduses
+    dtype: float
+  - name: cooled_floorarea
+    description: Share of cooled service floor area
+    default: ../energy_demand/parameters/cooled_floorarea
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+      - enduses
+    dtype: float
+  - name: assump_diff_floorarea_pp
+    description: Change in floor area per person
+    default: ../energy_demand/parameters/assump_diff_floorarea_pp
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+    dtype: float
+  - name: air_leakage
+    description: Air leakage caused reducing in demand
+    default: ../energy_demand/parameters/air_leakage
+    unit: 'decimal'
+    dims:
+      - enduses
+      - end_yr
+      - interpolation_params
+    dtype: float
+  - name: f_eff_achieved
+    description: Efficiency achievement level
+    default: ../energy_demand/parameters/f_eff_achieved
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+    dtype: float
+  - name: smart_meter_p
+    description: Smart meter penetration
+    default: ../energy_demand/parameters/smart_meter_p
+    unit: 'decimal'
+    dims:
+      - end_yr
+      - interpolation_params
+    dtype: float
+  - name: rs_t_base_heating
+    description: Residential base temperature
+    default: ../energy_demand/parameters/rs_t_base_heating
+    unit: ''
+    dims:
+      - interpolation_params
+      - end_yr
+    dtype: float
+  - name: ss_t_base_heating
+    description: Service base temperature
+    default: ../energy_demand/parameters/ss_t_base_heating
+    unit: ''
+    dims:
+      - interpolation_params
+      - end_yr
+    dtype: float
+  - name: is_t_base_heating
+    description: Industrial base temperature
+    default: ../energy_demand/parameters/is_t_base_heating
+    unit: ''
+    dims:
+      - interpolation_params
+      - end_yr
+    dtype: float
+  - name: dm_improvement
+    description: Demand side management improvemnt
+    default: ../energy_demand/parameters/dm_improvement
+    unit: ''
+    dims:
+      - enduses
+      - interpolation_params
+      - end_yr
+    dtype: float
+  - name: spatial_explicit_diffusion
+    description: Spatial explicit diffusion or not
+    default: ../energy_demand/parameters/spatial_explicit_diffusion
+    unit: 'integer'
+    dtype: float
+  - name: speed_con_max
+    description: Spatial diffusion speed
+    default: ../energy_demand/parameters/speed_con_max
+    unit: ''
+    dtype: float
+  - name: gshp_fraction
+    description: Heat pump fractions
+    default: ../energy_demand/parameters/gshp_fraction
+    unit: 'decimal'
+    dims:
+      - interpolation_params
+      - end_yr
+    dtype: float
+  - name: gshp_fraction
+    description: Heat pump fractions
+    default: ../energy_demand/parameters/gshp_fraction
+    unit: 'decimal'
+    dtype: float
+  - name: generic_enduse_change
+    description: Overall change in energy demand per enduse
+    default: ../energy_demand/parameters/generic_enduse_change
+    unit: '%'
+    dims:
+      - enduses
+      - interpolation_params
+      - end_yr
+    dtype: float
 outputs:
-- name: service_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float #NEW FINISHEd
-- name: residential_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_gas_boiler_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_boiler_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_biomass_boiler_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_hydrogen_boiler_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_hydrogen_heat_pumps_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_heat_pumps_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_gas_district_heating_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_district_heating_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_biomass_district_heating_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_hydrogen_district_heating_fuel_cell
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_hydrogen_fuel_cell_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_gas_boiler_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_boiler_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_biomass_boiler_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_hydrogen_boiler_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_hydrogen_heat_pumps_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_heat_pumps_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_gas_district_heating_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_district_heating_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_biomass_district_heating_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_hydrogen_district_heating_fuel_cell
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_hydrogen_fuel_cell_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_solid_fuel_boiler_solid_fuel
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_gas_boiler_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_boiler_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_oil_boiler_oil
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_biomass_boiler_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_hydrogen_boiler_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_hydrogen_heat_pumps_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_heat_pumps_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_gas_district_heating_CHP_gas
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_district_heating_electricity
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_biomass_district_heating_biomass
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_hydrogen_district_heating_fuel_cell
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_hydrogen_fuel_cell_hydrogen
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_gas_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_electricity_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_biomass_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: residential_hydrogen_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_gas_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_electricity_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_biomass_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: service_hydrogen_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_solid_fuel_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_gas_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_electricity_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_oil_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_biomass_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-- name: industry_hydrogen_non_heating
-  unit: GW
-  dims:
-  - lad_uk_2016
-  - hourly
-  dtype: float
-# ---------------------------------------------------
+  - name: service_solid_fuel_boiler_solid_fuel
+    description: Commercial solid fuel demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_solid_fuel_non_heating
+    description: Residential solid fuel demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_solid_fuel_boiler_solid_fuel
+    description: Residential solid fuel demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_solid_fuel_boiler_solid_fuel
+    description: Industrial solid fuel demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_solid_fuel_non_heating
+    description: Commercial solid fuel demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_solid_fuel_non_heating
+    description: Industrial solid fuel demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_oil_non_heating
+    description: Industrial oil demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_oil_boiler_oil
+    description: Residential oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_oil_boiler_oil
+    description: Industrial oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_oil_non_heating
+    description: Residential oil demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_oil_boiler_oil
+    description: Commercial oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_oil_non_heating
+    description: Commercial oil demand for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_boiler_gas
+    descriptions: Residential gas demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_boiler_electricity
+    descriptions: Residential electricity demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_oil_boiler_oil
+    descriptions: Residential oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_biomass_boiler_biomass
+    descriptions: Residential biomass demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_hydrogen_boiler_hydrogen
+    descriptions: Residential hydrogen demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_hydrogen_heat_pumps_hydrogen
+    descriptions: Residential hydrogen demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_heat_pumps_electricity
+    descriptions: Residential electricity demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_district_heating_CHP_gas
+    descriptions: Residential gas demand for district heating/CHP
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_district_heating_electricity
+    descriptions: Residential electricity demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_biomass_district_heating_biomass
+    descriptions: Residential biomass demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_hydrogen_district_heating_fuel_cell
+    descriptions: Residential hydrogen demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_hydrogen_fuel_cell_hydrogen
+    descriptions: Residential hydrogen for fuel cells
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_solid_fuel_boiler_solid_fuel
+    description: Commercial solid_fuel demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_boiler_gas
+    description: Commercial gas demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_boiler_electricity
+    description: Commercial electricity demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_oil_boiler_oil
+    description: Commercial oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_biomass_boiler_biomass
+    description: Commercial biomass demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_hydrogen_boiler_hydrogen
+    description: Commercial hydrogen demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_hydrogen_heat_pumps_hydrogen
+    description: Commercial hydrogen demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_heat_pumps_electricity
+    description: Commercial electricity demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_district_heating_CHP_gas
+    description: Commercial gas demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_district_heating_electricity
+    description: Commercial electricity demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_biomass_district_heating_biomass
+    description: Commercial biomass demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_hydrogen_district_heating_fuel_cell
+    description: Commercial hydrogen demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_hydrogen_fuel_cell_hydrogen
+    description: Commercial hydrogen for fuel cells
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_solid_fuel_boiler_solid_fuel
+    description: Industrial solid_fuel demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_boiler_gas
+    description: Industrial gas demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_boiler_electricity
+    description: Industrial electricity demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_oil_boiler_oil
+    description: Industrial oil demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_biomass_boiler_biomass
+    description: Industrial biomass demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_hydrogen_boiler_hydrogen
+    description: Industrial hydrogen demand for boilers
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_hydrogen_heat_pumps_hydrogen
+    description: Industrial hydrogen demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_heat_pumps_electricity
+    description: Industrial electricity demand for heat pumps
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_district_heating_CHP_gas
+    description: Industrial gas demand for district heating/CHP
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_district_heating_electricity
+    description: Industrial electricity demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_biomass_district_heating_biomass
+    description: Industrial biomass demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_hydrogen_district_heating_fuel_cell
+    description: Industrial hydrogen demand for district heating
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_hydrogen_fuel_cell_hydrogen
+    description: Industrial hydrogen for fuel cells
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_solid_fuel_non_heating
+    descriptions: Residential solid fuel for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_gas_non_heating
+    descriptions: Residential gas for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_electricity_non_heating
+    descriptions: Residential electricity for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_oil_non_heating
+    descriptions: Residential oil for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_biomass_non_heating
+    descriptions: Residential biomass for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: residential_hydrogen_non_heating
+    descriptions: Residential hydrogen for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_solid_fuel_non_heating
+    description: Commercial solid fuel for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_gas_non_heating
+    description: Commercial gas for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_electricity_non_heating
+    description: Commercial electricity for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_oil_non_heating
+    description: Commercial oil for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_biomass_non_heating
+    description: Commercial biomass for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: service_hydrogen_non_heating
+    description: Commercial hydrogen for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_solid_fuel_non_heating
+    description: Industrial solid fuel for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_gas_non_heating
+    description: Industrial gas for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_electricity_non_heating
+    description: Industrial electricity for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_oil_non_heating
+    description: Industrial oil for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_biomass_non_heating
+    description: Industrial biomass for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
+  - name: industry_hydrogen_non_heating
+    description: Industrial hydrogen for non-heating end uses
+    unit: GW
+    dims:
+    - lad_uk_2016
+    - hourly
+    dtype: float
 interventions: []

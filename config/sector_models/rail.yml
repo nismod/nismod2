@@ -4,79 +4,93 @@ path: ./models/transport/run_rail_only.py
 classname: RailTransportWrapper
 inputs:
   - name: population
+    description: Population
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
   - name: gva
+    description: Regional Gross Value Added (rGVA)
     dims:
       - lad_gb_2016
     unit: GBP
     dtype: float
   - name: day_usage
+    description: Station usage (day)
     dims:
       - NLC_gb
     unit: people
     dtype: float
   - name: year_usage
+    description: Station usage (year)
     dims:
       - NLC_gb
     unit: people
     dtype: int
   - name: rail_journey_fares
+    description: Fares
     dims:
       - NLC_gb
     unit: £
     dtype: float
   - name: rail_journey_times
+    description: Journey times
     dims:
       - NLC_gb
     unit: h
     dtype: float
   - name: car_zonal_journey_costs
+    description: Car journey costs
     dims:
       - lad_gb_2016
     unit: £
     dtype: float
   - name: rail_trip_rates
+    description: Rail trip rates
     dtype: float
 outputs:
   - name: year_stations_usage
+    description: Station usage (year)
     dims:
       - NLC_gb
     unit: people
     dtype: int
   - name: day_stations_usage
+    description: Station usage (day)
     dims:
       - NLC_gb
     unit: people
     dtype: float
   - name: total_year_zonal_rail_demand
+    description: Total zonal rail demand (year)
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
   - name: avg_year_zonal_rail_demand
+    description: Average zonal rail demand (year)
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
   - name: total_day_zonal_rail_demand
+    description: Total zonal rail demand (day)
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
   - name: avg_day_zonal_rail_demand
+    description: Average zonal rail demand (day)
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
 parameters:
   - name: elasticities
+    description: Population elasticity for passenger demand
     dims:
       - variables
       - area
-    description: Population elasticity for passenger demand
     dtype: float
     default: default_rail_elasticities
   - name: use_car_cost_from_road_model
@@ -88,15 +102,15 @@ parameters:
     dtype: bool
     default: default_rail_flags
   - name: base_year_year_demand
+    description: Station usage numbers for the base year
     dims:
       - NLC_gb
-    description: Station usage numbers for the base year
     dtype: int
     default: default_base_year_year_demand
   - name: base_year_day_demand
+    description: Station usage numbers for the base year
     dims:
       - NLC_gb
-    description: Station usage numbers for the base year
     dtype: float
     default: default_base_year_day_demand
 interventions:
