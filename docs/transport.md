@@ -1,14 +1,20 @@
 # NISMOD v2 Transport Model (Road and Rail)
 
-- Model code: [nismod/transport](https://github.com/nismod/transport)
-- Key reference: Lovric, M., Blainey, S., & Preston, J. (2018). A conceptual
-  design for a national transport model with cross-sectoral interdependencies.
-  Transportation Research Procedia, 27, 720-727
+Model code: [nismod/transport](https://github.com/nismod/transport)
 
-For a list of model inputs, parameters and outputs, see:
+Key reference: Lovric, M., Blainey, S., & Preston, J. (2018). A conceptual
+design for a national transport model with cross-sectoral interdependencies.
+Transportation Research Procedia, 27, 720-727
+
+Details of model inputs, parameters and outputs:
 - [Road](./transport_details.html)
 - [Rail](./rail_details.html)
 - [Energy-transport](./et_module_details.html)
+
+Notes on data sources:
+- [DAFNI dataset metadata, below](#nismod-transport-data)
+
+## Description
 
 NISMOD v2 Transport Model [1] is a national-scale (Great Britain) transport model
 developed to support policy making regarding future infrastructure. It forecasts
@@ -108,11 +114,9 @@ future years.
    https://github.com/nismod/transport doi: 10.5281/zenodo.3583128
 
 
-## NISMOD Transport data pack
+## NISMOD Transport data
 
-[DAFNI dataset](https://facility.secure.dafni.rl.ac.uk/data/details?dataset_id=dbfe6814-3fd3-4e94-8c30-ccfec60c9989&version_id=df234857-a622-4b83-bec1-c72b1c7ed8b6&metadata_id=2cbc52e7-d987-48ac-8e38-9f2da417ad35)
-
-Version: v2.3.0
+DAFNI dataset: [v2.3.0](https://facility.secure.dafni.rl.ac.uk/data/details?dataset_id=dbfe6814-3fd3-4e94-8c30-ccfec60c9989&version_id=df234857-a622-4b83-bec1-c72b1c7ed8b6&metadata_id=2cbc52e7-d987-48ac-8e38-9f2da417ad35)
 
 Contains data required by the NISMOD Transport model.
 

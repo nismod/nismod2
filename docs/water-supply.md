@@ -6,9 +6,14 @@
   in England and Wales. Water Resources Research, 56, e2020WR027187.
   [https://doi.org/10.1029/2020WR027187](https://doi.org/10.1029/2020WR027187)
 
-For a list of model inputs, parameters and outputs, see:
+Details of model inputs, parameters and outputs:
 - [Water supply](./water_supply_details.md)
 - [Water demand](./water_demand_details.md)
+
+Notes on data sources:
+- [Dataset metadata, below](#nismod-water-data)
+
+## Description
 
 A water resource system model of England and Wales (WREW hereafter) has been
 developed. [1] It includes all major water supply assets (reservoirs, boreholes,
@@ -102,3 +107,17 @@ Instead, assumptions that are the result of limited data/scope are:
 4. Dobson, B., Wagener, T., & Pianosi, F. (2019). An argument-driven
    classification and comparison of reservoir operation optimization methods.
    Advances in Water Resources, 128(October 2018), 74–86.
+
+## NISMOD Water Data
+
+River flows, output from DECIPHeR hydrological model.
+
+Irrigation water demand, output from Wasim Irrigation model.
+
+Maximum borehole abstraction and parameters for sensitivity to antecedent
+abstractions, from limiting abstraction borehole groundwater model.
+
+Public water demand from Water Resource Management plans.
+
+Historic non-public water demand (excluding irrigation) from National
+Abstraction Licensing Database.
