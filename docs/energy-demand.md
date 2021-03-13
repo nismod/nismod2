@@ -1,8 +1,21 @@
 # HIRE High-Resolution Energy Demand Model
 
-- [Model code](https://github.com/nismod/energy_demand)
-- [Model documentation](https://ed.readthedocs.io/en/latest/documentation.html)
-- [Key reference](https://doi.org/10.1016/j.apenergy.2018.12.052)
+- Model code: [nismod/energy_demand](https://github.com/nismod/energy_demand)
+- Model documentation: [ed.readthedocs.io](https://ed.readthedocs.io/en/latest/documentation.html)
+- Key references:
+  - Eggimann, S., Hall, W.J., Eyre, N. (2019): A high-resolution spatio-temporal
+    energy demand simulation of large-scale heat pump diffusion to explore the
+    potential of heating demand side management. Applied Energy, 236, 997–1010.
+    DOI:
+    [10.1016/j.apenergy.2018.12.052](https://doi.org/10.1016/j.apenergy.2018.12.052)
+  - Eggimann, S., Usher, W., Hall, J.W. and Eyre, N. How weather affects energy
+    demand variability in the transition towards sustainable heating, Energy,
+    195 (2020) 116947. DOI:
+    [10.1016/j.energy.2020.116947](https://doi.org/10.1016/j.energy.2020.116947)
+
+For a list of model inputs, parameters and outputs, see:
+- [Energy demand (constrained)](./energy_demand_constrained_details.html)
+- [Energy demand (unconstrained/optimised)](./energy_demand_unconstrained_details.html)
 
 HIRE allows the simulation of long-term changes in energy demand patterns for
 the residential, service and industry sector on a high temporal and spatial
@@ -28,7 +41,7 @@ For further model documentation, see [2]
 2. Eggimann, S., Usher, W., Russell, T. (2019) HIRE documentation. Available
    online: https://ed.readthedocs.io/en/latest/documentation.html
 
-## NISMOD Energy Demand data pack
+## NISMOD Energy Demand data
 
 [DAFNI dataset](https://facility.secure.dafni.rl.ac.uk/data/details?dataset_id=180c33ea-592c-473e-b54b-692c2cc534dd&version_id=f63c24ec-4262-4f88-ac1c-28fd47345de1&metadata_id=8c90791b-e00b-4ff2-87e3-1e9e9c5f9b48)
 

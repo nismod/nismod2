@@ -1,7 +1,15 @@
 # CGEN Combined Gas and Electricity Network Model
 
-- [Model code](https://github.com/nismod/energy_supply) (not yet public)
-- [Key reference](https://doi.org/10.1109/PTC.2019.8810641)
+- Model code: [nismod/energy_supply](https://github.com/nismod/energy_supply)
+  (not yet public)
+- Key reference: Jayasuriya, L. et al. (2019). ‘Energy hub modelling for
+  multi-scale and multi-energy supply systems’, 2019 IEEE Milan PowerTech,
+  PowerTech 2019. IEEE, pp. 1–6. doi:
+  [10.1109/PTC.2019.8810641](https://doi.org/10.1109/PTC.2019.8810641)
+
+For a list of model inputs, parameters and outputs, see:
+- [Energy supply (constrained)](./energy_supply_constrained_details.html)
+- [Energy supply (unconstrained/optimised)](./energy_supply_optimised_details.html)
 
 The energy supply model in the ITRC-MISTRAL programme is based on the Combined
 Gas and Electricity Network model for Great Britain. [1,2] The ITRC-MISTRAL
@@ -119,7 +127,7 @@ with one representative week for each season using hourly time granularity.
    IEEE, pp. 1–6. doi: 10.1109/PTC.2019.8810641.
 
 
-## NISMOD Energy Supply data pack
+## NISMOD Energy Supply data
 
 [DAFNI dataset](https://facility.secure.dafni.rl.ac.uk/data/details?dataset_id=aa16e098-452b-496a-b3ae-dc95acd6959b&version_id=3d3380bc-2147-46a8-b1d6-74e755f3726b&metadata_id=134184ae-a086-4cf0-92c3-2ba9aa125c4e)
 

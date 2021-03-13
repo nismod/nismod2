@@ -1,7 +1,14 @@
 # WREW Water Resource System Model of England and Wales
 
-- [Model code](https://github.com/nismod/water_supply) (not public)
-- [Key reference](https://doi.org/10.1029/2020WR027187)
+- Model code: [nismod/water_supply](https://github.com/nismod/water_supply) (not public)
+- Key reference: Dobson, B., Coxon, G., Freer, J., Gavin, H., Mortazavi‐Naeini,
+  M., & Hall, J. W. (2020). The spatial dynamics of droughts and water scarcity
+  in England and Wales. Water Resources Research, 56, e2020WR027187.
+  [https://doi.org/10.1029/2020WR027187](https://doi.org/10.1029/2020WR027187)
+
+For a list of model inputs, parameters and outputs, see:
+- [Water supply](./water_supply_details.md)
+- [Water demand](./water_demand_details.md)
 
 A water resource system model of England and Wales (WREW hereafter) has been
 developed. [1] It includes all major water supply assets (reservoirs, boreholes,

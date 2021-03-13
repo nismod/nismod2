@@ -1,7 +1,14 @@
 # NISMOD v2 Transport Model (Road and Rail)
 
-- [Model code](https://github.com/nismod/transport)
+- Model code: [nismod/transport](https://github.com/nismod/transport)
+- Key reference: Lovric, M., Blainey, S., & Preston, J. (2018). A conceptual
+  design for a national transport model with cross-sectoral interdependencies.
+  Transportation Research Procedia, 27, 720-727
 
+For a list of model inputs, parameters and outputs, see:
+- [Road](./transport_details.html)
+- [Rail](./rail_details.html)
+- [Energy-transport](./et_module_details.html)
 
 NISMOD v2 Transport Model [1] is a national-scale (Great Britain) transport model
 developed to support policy making regarding future infrastructure. It forecasts

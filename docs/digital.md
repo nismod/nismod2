@@ -1,8 +1,28 @@
-# Cambridge Digital Communications Assessment Model
+# Digital Communications
 
-- [Model code](https://github.com/nismod/cdcam)
-- [Model documentation](https://cdcam.readthedocs.io/en/latest/index.html)
-- [Key reference](https://doi.org/10.1016/j.compenvurbsys.2020.101515)
+## Cambridge Digital Communications Assessment Model (cdcam)
+
+- Model code: [nismod/cdcam]](https://github.com/nismod/cdcam)
+- Model documentation:
+  [cdcam.readthedocs.io](https://cdcam.readthedocs.io/en/latest/index.html)
+- Key reference: Oughton, E.J., Russell, T., 2020. The importance of
+  spatio-temporal infrastructure assessment: Evidence for 5G from the
+  Oxford–Cambridge Arc. Computers, Environment and Urban Systems 83, 101515.DOI:
+  [10.1016/j.compenvurbsys.2020.101515](https://doi.org/10.1016/j.compenvurbsys.2020.101515)
+
+For a full set of inputs and outputs:
+- Oughton, Edward J., & Russell, Tom. (2019). cdcam (Version v1) [Data set].
+  Zenodo. DOI: [10.5281/zenodo.3525286](http://doi.org/10.5281/zenodo.3525286)
+
+## Longley-Rice Irregular Terrain Model (itmlogic)
+
+- Model code: [edwardoughton/itmlogic](https://github.com/edwardoughton/itmlogic)
+- Model documentation:
+  [itmlogic.readthedocs.io](https://itmlogic.readthedocs.io/en/latest/index.html)
+- Key reference: Oughton et al., (2020). itmlogic: The Irregular Terrain Model
+  by Longley and Rice. Journal of Open Source Software, 5(51), 2266, DOI:
+  [10.21105/joss.02266](https://doi.org/10.21105/joss.02266)
+
 
 The 5G assessment model developed here can undertake system-level evaluation of
 wireless networks, to help quantify the capacity, coverage and cost of different
