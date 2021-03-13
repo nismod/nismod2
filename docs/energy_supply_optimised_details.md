@@ -1,4 +1,6 @@
-# Energy Supply
+# Energy Supply (unconstrained/optimised)
+
+[&lt; Back to Energy Supply](./energy-supply.html)
 
 These details are for the "unconstrained/optimised" model configuration, which
 models heating technology use in the supply model.

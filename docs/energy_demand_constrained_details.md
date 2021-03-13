@@ -1,4 +1,6 @@
-# Energy Demand
+# Energy Demand (constrained)
+
+[&lt; Back to Energy Demand](./energy-demand.html)
 
 These details are for the "constrained" model configuration, which models
 heating technology use in the demand model.

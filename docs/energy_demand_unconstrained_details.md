@@ -1,4 +1,6 @@
-# Energy Demand
+# Energy Demand (unconstrained/optimised)
+
+[&lt; Back to Energy Demand](./energy-demand.html)
 
 These details are for the "unconstrained/optimised" model configuration, which
 models heating technology use in the supply model.

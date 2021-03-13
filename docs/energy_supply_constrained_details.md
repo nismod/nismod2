@@ -1,4 +1,6 @@
-# Energy Supply
+# Energy Supply (constrained)
+
+[&lt; Back to Energy Supply](./energy-supply.html)
 
 These details are for the "constrained" model configuration, which models
 heating technology use in the demand model.
