@@ -285,84 +285,84 @@ outputs:
     - hourly
     dtype: float
   - name: residential_gas_boiler_gas
-    descriptions: Residential gas demand for boilers
+    description: Residential gas demand for boilers
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_electricity_boiler_electricity
-    descriptions: Residential electricity demand for boilers
+    description: Residential electricity demand for boilers
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_oil_boiler_oil
-    descriptions: Residential oil demand for boilers
+    description: Residential oil demand for boilers
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_biomass_boiler_biomass
-    descriptions: Residential biomass demand for boilers
+    description: Residential biomass demand for boilers
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_hydrogen_boiler_hydrogen
-    descriptions: Residential hydrogen demand for boilers
+    description: Residential hydrogen demand for boilers
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_hydrogen_heat_pumps_hydrogen
-    descriptions: Residential hydrogen demand for heat pumps
+    description: Residential hydrogen demand for heat pumps
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_electricity_heat_pumps_electricity
-    descriptions: Residential electricity demand for heat pumps
+    description: Residential electricity demand for heat pumps
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_gas_district_heating_CHP_gas
-    descriptions: Residential gas demand for district heating/CHP
+    description: Residential gas demand for district heating/CHP
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_electricity_district_heating_electricity
-    descriptions: Residential electricity demand for district heating
+    description: Residential electricity demand for district heating
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_biomass_district_heating_biomass
-    descriptions: Residential biomass demand for district heating
+    description: Residential biomass demand for district heating
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_hydrogen_district_heating_fuel_cell
-    descriptions: Residential hydrogen demand for district heating
+    description: Residential hydrogen demand for district heating
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_hydrogen_fuel_cell_hydrogen
-    descriptions: Residential hydrogen for fuel cells
+    description: Residential hydrogen for fuel cells
     unit: GW
     dims:
     - lad_uk_2016
@@ -551,42 +551,42 @@ outputs:
     - hourly
     dtype: float
   - name: residential_solid_fuel_non_heating
-    descriptions: Residential solid fuel for non-heating end uses
+    description: Residential solid fuel for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_gas_non_heating
-    descriptions: Residential gas for non-heating end uses
+    description: Residential gas for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_electricity_non_heating
-    descriptions: Residential electricity for non-heating end uses
+    description: Residential electricity for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_oil_non_heating
-    descriptions: Residential oil for non-heating end uses
+    description: Residential oil for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_biomass_non_heating
-    descriptions: Residential biomass for non-heating end uses
+    description: Residential biomass for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
     - hourly
     dtype: float
   - name: residential_hydrogen_non_heating
-    descriptions: Residential hydrogen for non-heating end uses
+    description: Residential hydrogen for non-heating end uses
     unit: GW
     dims:
     - lad_uk_2016
