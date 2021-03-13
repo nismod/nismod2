@@ -57,18 +57,18 @@ heating technology use in the demand model.
 | Residential oil demand for non-heating end uses        | residential_oil_non_heating                          | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial oil demand for boilers                      | service_oil_boiler_oil                               | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial oil demand for non-heating end uses         | service_oil_non_heating                              | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_gas_boiler_gas                           | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_electricity_boiler_electricity           | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_oil_boiler_oil                           | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_biomass_boiler_biomass                   | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_hydrogen_boiler_hydrogen                 | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_hydrogen_heat_pumps_hydrogen             | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_electricity_heat_pumps_electricity       | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_gas_district_heating_CHP_gas             | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_electricity_district_heating_electricity | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_biomass_district_heating_biomass         | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_hydrogen_district_heating_fuel_cell      | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_hydrogen_fuel_cell_hydrogen              | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential gas demand for boilers                     | residential_gas_boiler_gas                           | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential electricity demand for boilers             | residential_electricity_boiler_electricity           | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential oil demand for boilers                     | residential_oil_boiler_oil                           | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential biomass demand for boilers                 | residential_biomass_boiler_biomass                   | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential hydrogen demand for boilers                | residential_hydrogen_boiler_hydrogen                 | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential hydrogen demand for heat pumps             | residential_hydrogen_heat_pumps_hydrogen             | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential electricity demand for heat pumps          | residential_electricity_heat_pumps_electricity       | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential gas demand for district heating/CHP        | residential_gas_district_heating_CHP_gas             | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential electricity demand for district heating    | residential_electricity_district_heating_electricity | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential biomass demand for district heating        | residential_biomass_district_heating_biomass         | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential hydrogen demand for district heating       | residential_hydrogen_district_heating_fuel_cell      | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential hydrogen for fuel cells                    | residential_hydrogen_fuel_cell_hydrogen              | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial solid_fuel demand for boilers               | service_solid_fuel_boiler_solid_fuel                 | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial gas demand for boilers                      | service_gas_boiler_gas                               | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial electricity demand for boilers              | service_electricity_boiler_electricity               | GW     | ['lad_uk_2016', 'hourly'] | float   |
@@ -95,12 +95,12 @@ heating technology use in the demand model.
 | Industrial biomass demand for district heating         | industry_biomass_district_heating_biomass            | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Industrial hydrogen demand for district heating        | industry_hydrogen_district_heating_fuel_cell         | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Industrial hydrogen for fuel cells                     | industry_hydrogen_fuel_cell_hydrogen                 | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_solid_fuel_non_heating                   | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_gas_non_heating                          | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_electricity_non_heating                  | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_oil_non_heating                          | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_biomass_non_heating                      | GW     | ['lad_uk_2016', 'hourly'] | float   |
-| nan                                                    | residential_hydrogen_non_heating                     | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential solid fuel for non-heating end uses        | residential_solid_fuel_non_heating                   | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential gas for non-heating end uses               | residential_gas_non_heating                          | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential electricity for non-heating end uses       | residential_electricity_non_heating                  | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential oil for non-heating end uses               | residential_oil_non_heating                          | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential biomass for non-heating end uses           | residential_biomass_non_heating                      | GW     | ['lad_uk_2016', 'hourly'] | float   |
+| Residential hydrogen for non-heating end uses          | residential_hydrogen_non_heating                     | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial solid fuel for non-heating end uses         | service_solid_fuel_non_heating                       | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial gas for non-heating end uses                | service_gas_non_heating                              | GW     | ['lad_uk_2016', 'hourly'] | float   |
 | Commercial electricity for non-heating end uses        | service_electricity_non_heating                      | GW     | ['lad_uk_2016', 'hourly'] | float   |
