@@ -7,22 +7,26 @@ interventions:
  - arc_ws_options
 inputs:
   - name: water_demand
+    description: Public water demand
     dims:
       - water_resource_zones
     dtype: float
     unit: Ml/day
   - name: reservoir_levels
+    description: Reservoir storage levels
     dims:
       - water_supply/reservoir_names
     dtype: float
     unit: Ml
   - name: flows_data
+    description: Stream flows
     dims:
       - water_supply/days_into_year
       - water_supply/flow_file_column_names
     dtype: float
     unit: Ml/day
   - name: irrigations_data
+    description: Irrigation demand
     dims:
       - water_supply/days_into_year
       - water_supply/irrigations_cams_names
@@ -30,36 +34,42 @@ inputs:
     dtype: float
     unit: Ml/day
   - name: borehole_data
+    description: Borehole data
     dims:
         - water_supply/months_into_year
         - water_supply/borehole_names
     dtype: float
     unit: Ml/day
 outputs:
-  - name: reservoir_levels  # This is the end-of-year volumes that go into next timestep
+  - name: reservoir_levels
+    description: Reservoir storage levels (this is used as input to the next timestep)
     dims:
       - water_supply/reservoir_names
     dtype: float
     unit: Ml
-  - name: water_supply_reservoir_daily_volumes  # Daily volumes output from wathnet
+  - name: water_supply_reservoir_daily_volumes
+    description: Daily reservoir levels
     dims:
       - water_supply/days_into_year
       - water_supply/reservoir_names
     dtype: float
     unit: Ml
   - name: water_supply_global_variables
+    description: Global variables (including level of service for Water Resource Zones)
     dims:
       - water_supply/days_into_year
       - water_supply/global_variable_names
     dtype: float
     unit: Unknown/possibly variable
   - name: water_supply_requested_demand
+    description: Demand as modelled
     dims:
       - water_supply/days_into_year
       - water_supply/demand_nodes
     dtype: float
     unit: Ml
   - name: water_supply_shortfall
+    description: Shortfall
     dims:
       - water_supply/days_into_year
       - water_supply/demand_nodes
@@ -67,7 +77,7 @@ outputs:
     unit: Ml
 parameters:
   - name: nonpublic_water_demand
-    description: Nonpublic water demand required for preparing Wathnet nodal file
+    description: Nonpublic water demand
     dims:
       - water_supply/cams_names
       - water_supply/nonpublic_use_codes
@@ -75,7 +85,7 @@ parameters:
     unit: Ml/day
     default: water_supply/nonpublic_water_demands
   - name: demand_profiles
-    description: Demand profiles required for preparing Wathnet nodal file
+    description: Demand profiles
     dims:
       - water_supply/days_into_year
       - water_supply/demand_profile_zones

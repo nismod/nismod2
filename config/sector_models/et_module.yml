@@ -19,20 +19,21 @@ inputs:
     unit: trips
 outputs:
   - name: v2g_g2v_capacity
+    description: Vehicle-to-Grid/Grid-to-Vehice capacity
     dims:
       - lad_gb_2016
     dtype: float
     unit: kW
 parameters:
-  - default: ../et_module/parameters/ev_scheduling_default
+  - name: yr_until_changed_lp
     description: Year until future load profile assignment is fully realised
     dtype: float
-    name: yr_until_changed_lp
     units: 1
-  - default: ../et_module/parameters/ev_scheduling_default
-    description: EV charging regime
+    default: ../et_module/parameters/ev_scheduling_default
+  - name: load_profile_charging_regime
+    description: Electric Vehicle charging regime
     dtype: float
-    name: load_profile_charging_regime
     units: 1
+    default: ../et_module/parameters/ev_scheduling_default
 interventions: []
 initial_conditions: []

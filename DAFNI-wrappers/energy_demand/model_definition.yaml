@@ -1,14 +1,22 @@
 kind: Model
 apiVersion: v1alpha4
 metadata:
-  # You will probably want to update this metadata before uploading to DAFNI
-  displayName: NISMOD2 - High Resolution Energy Demand Model (HIRE, v0.9) 
+  displayName: NISMOD - Energy Demand (model v1.0.1 build 1)
   name: nismod-energy-demand
   summary: National Infrastructure Systems Model (preliminary upload No.9)
   type: systems of systems
-  description: "Energy Demand model that forms part of NISMOD2"
+  description: >
+    HIRE (HIgh-Resolution Energy demand model) simulates energy demand for the
+    United Kingdom at an hourly / Local Authority District scale. Future energy
+    demand is simulated based on different scenario data and socio-technical
+    drivers such as technological efficiencies, changes in the technological mix
+    of an end use, consumption and behavioural change. Scenario data includes
+    population, regional Gross Value Added, residential and commercial
+    floorspace, and temperature.
+
+    Source code: https://github.com/nismod/energy_demand
+    Documentation: http://ed.readthedocs.io/en/latest/
 spec:
-  command: [python3, job_processing_wrapper.py]
   inputs:
     env:
       - name: sector_model
@@ -41,7 +49,6 @@ spec:
         desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
     dataslots:
-        # All the below UUIDs are for DAFNI's staging site, they will need updating before uploading to DAFNI production
       - name: Scenario Data
         description: >
           NISMOD scenario data pack. Should contain socio-economic scenarios
@@ -54,7 +61,13 @@ spec:
       - name: Energy Demand Model Data
         description: >
           NISMOD energy demand data pack. Should contain full data setup for the
-          energy demand model.
+          energy demand model including hourly interval definitions, technology,
+          efficiency, end-use and service parameters to explore changing energy
+          demand, historic temperature time series, scenarios of future
+          temperature (aligned with the wind speed and insolation time series
+          used to model renewables in energy supply), base year national and
+          subnational energy consumption estimates, load profiles, and base year
+          population and floor area.
         default:
           - uid: 180c33ea-592c-473e-b54b-692c2cc534dd
             versionUid: f63c24ec-4262-4f88-ac1c-28fd47345de1

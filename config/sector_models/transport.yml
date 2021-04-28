@@ -4,57 +4,67 @@ path: ./models/transport/run.py
 classname: TransportWrapper
 inputs:
   - name: population
+    description: Population
     dims:
       - lad_gb_2016
     unit: people
     dtype: float
   - name: gva
+    description: Regional Gross Value Added (rGVA)
     dims:
       - lad_gb_2016
     unit: GBP
     dtype: float
   - name: fuel_price
+    description: Fuel prices
     unit: £/l
     dtype: float
     dims:
       - transport_fuel_type
   - name: fuel_price_electricity
+    description: Fuel price (electricity)
     unit: £/kWh
     dtype: float
   - name: link_travel_time
+    description: Link travel time
     unit: h
     dtype: float
   - name: engine_type_fractions
-    description:
+    description: Vehicle fleet composition (engine type proportion per vehicle type)
     dtype: float
     dims:
       - vehicle_type
       - engine_type
 outputs:
   - name: energy_consumption
+    description: Energy consumption (liquid fuels)
     dims:
       - annual_day
       - transport_fuel_type
     unit: l
     dtype: float
   - name: energy_consumption_electricity
+    description: Energy consumption (electricity)
     dims:
       - annual_day
     unit: kWh
     dtype: float
   - name: electric_vehicle_electricity_consumption
+    description: Energy consumption (electricity, by start zone)
     dims:
       - lad_gb_2016
       - annual_day_hours
     unit: kWh
     dtype: float
   - name: electric_vehicle_trip_starts
+    description: Electric vehicle trips
     dims:
       - lad_gb_2016
       - annual_day_hours
     unit: trips
     dtype: int
   - name: link_travel_time
+    description: Link travel time (used as input to next timestep)
     unit: h
     dtype: float
 parameters:

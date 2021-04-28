@@ -6,140 +6,162 @@ initial_conditions:
 - ../energy_supply/initial_conditions/historical_interventions
 inputs:
   - name: elecload
+    description: Electricity demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gasload
+    description: Gas demand
     dims:
     - gas_nodes
     - seasonal_week
     unit: mcm
     dtype: float
   - name: heatload_res
+    description: Residential heat demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gasload_non_heat_res
+    description: Residential non-heat gas demand
     dims:
     - energy_hub
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elecload_non_heat_res
+    description: Residential non-heat electricity demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: heatload_com
+    description: Commercial heat demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gasload_non_heat_com
+    description: Commercial non-heat gas demand
     dims:
     - energy_hub
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elecload_non_heat_com
+    description: Commerical non-heat electricity demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: hydrogen_non_heat_eh
+    description: Non-heat hydrogen demand
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: oil_non_heat_eh
+    description: Non-heat oil demand
     dims:
       - energy_hub
       - seasonal_week
     dtype: float
     unit: MW
   - name: solid_fuel_non_heat_eh
+    description: Non-heat solid fuel demand
     dims:
       - energy_hub
       - seasonal_week
     dtype: float
     unit: MW
   - name: fuel_price
+    description: Fuel prices
     dims:
       - seasons
       - es_fuel_types
     unit: GBP/MWh
     dtype: float
   - name: wind_speed_eh
+    description: Wind speed at energy hubs
     dims:
       - energy_hub
       - seasonal_week
     unit: m/s
     dtype: float
   - name: wind_speed_bus
+    description: Wind speed at bus bars
     dims:
       - bus_bars
       - seasonal_week
     unit: m/s
     dtype: float
   - name: insolation_bus
+    description: Insolation at bus bars
     dims:
       - bus_bars
       - seasonal_week
     unit: W/m2
     dtype: float
   - name: insolation_eh
+    description: Insolation at energy hubs
     dims:
       - energy_hub
       - seasonal_week
     unit: W/m2
     dtype: float
   - name: EV_Cap
+    description: Electric Vehicle Vehicle-to-Grid capacity
     dims:
     - energy_hub
     unit: MW
     dtype: float
   - name: elec_trans
+    description: Electricity demand for transport
     dims:
     - energy_hub
     - seasonal_week
     unit: MWh
     dtype: float
   - name: hydrogen_trans
+    description: Hydrogen demand for transport
     dims:
     - energy_hub
     - seasonal_week
     unit: MWh
     dtype: float
   - name: biomass_feedstock
+    description: Biomass feedstock
     dims:
     - energy_hub
     unit: kg
     dtype: float
   - name: municipal_waste
+    description: Municipal waste supply
     dims:
     - energy_hub
     unit: kg
     dtype: float
   - name: elec_int
+    description: Electricity interconnector prices
     dims:
     - elec_intercon_countries
     unit: £/MW
-    dtype: float  
+    dtype: float
 parameters:
-  - description: cost of electricity load shedding
+  - description: Cost of electricity load shedding
     name: LoadShed_elec
     units: GBP/MWh
     dtype: float
     default: ../energy_supply/parameters/load_shed
-  - description: cost of gas load shedding
+  - description: Cost of gas load shedding
     name: LoadShed_gas
     units: GBP/MWh
     dtype: float
@@ -211,252 +233,294 @@ interventions:
   - ../energy_supply/interventions/net_zero/es_heattech
 outputs:
   - name: tran_gas_fired
+    description: Gas-fired generation
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_coal
+    description: Coal-fired generation
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pump_power
+    description: Pumped storage generation
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_hydro
+    description: Hydro-electric generation
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_nuclear
+    description: Nuclear generation
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_int_import
+    description: Interconnector imports (electricity)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_int_export
+    description: Interconnector exports (electricity)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_renewable
+    description: Renewable generation (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: elec_cost
+    description: Cost of electricity
     dims:
     - national
     - seasonal_week
     unit: GBP/kWh
     dtype: float
   - name: e_reserve
+    description: Electricity reserve
     dims:
     - national
     - seasonal_week
     unit: MW
     dtype: float
   - name: gas_domestic
+    description: Domestic gas
     dims:
     - national
     - seasonal_week
     unit: mcm
     dtype: float
   - name: gas_lng
+    description: Liquified Natural Gas
     dims:
     - national
     - seasonal_week
     unit: mcm
     dtype: float
   - name: gas_interconnector
+    description: Interconnector gas
     dims:
     - national
     - seasonal_week
     unit: mcm
     dtype: float
   - name: gas_shale
+    description: Shale gas
     dims:
     - national
     - seasonal_week
     unit: mcm
     dtype: float
   - name: gas_storage_level
+    description: Gas storage
     dims:
     - energy_hub
     - seasonal_week
     unit: mcm
     dtype: float
   - name: tran_wind_onshore
+    description: Onshore wind generation (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_wind_offshore
+    description: Offshore wind generation (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pv_power
+    description: Solar generation (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_wind_curtailed
+    description: Wind curtailed (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: tran_pv_curtailed
+    description: Solar curtailed (transmission-connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: total_opt_cost
+    description: Total optimisation cost
     dims:
     - national
     - seasonal_week
     unit: GBP
     dtype: float
   - name: total_opt_cost_transmission
+    description: Total optimisation cost of transmission
     dims:
     - national
     - seasonal_week
     unit: GBP
     dtype: float
   - name: total_opt_cost_distribution
+    description: Total optimisation cost of distribution
     dims:
     - energy_hub
     - seasonal_week
     unit: GBP
     dtype: float
   - name: eh_gas_fired_other
+    description: Gas-fired/other generation (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_wind_power
+    description: Wind generation (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_wind_curtailed
+    description: Wind curtailed (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_pv_power
+    description: Solar generation (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_pv_curtailed
+    description: Solar curtailed (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gas_load_shed
+    description: Gas load shed
     dims:
     - gas_nodes
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elec_load_shed
+    description: Electricity load shed
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: e_emissions
+    description: Electricity emissions (transmission connected)
     dims:
     - bus_bars
     - seasonal_week
     unit: t
     dtype: float
   - name: e_emissions_eh
+    description: Electricity emissions (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: t
     dtype: float
   - name: h_emissions_eh
+    description: Heat emissions (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: t
     dtype: float
   - name: gas_load_shed_eh
+    description: Gas load shed (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: mcm
     dtype: float
   - name: elec_load_shed_eh
+    description: Electricity load shed (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: fresh_water_demand
+    description: Fresh water demand (for cooling)
     dims:
     - bus_bars
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_chp_gas
+    description: Combined Heat and Power Gas (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_chp_biomass
+    description: Combined Heat and Power Biomass (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_chp_waste
+    description: Combined Heat and Power Waste (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: eh_fuel_cell
+    description: Fuel Cell (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: gasdemand_heat
+    description: Gas demand for heat (energy hub)
     dims:
     - energy_hub
     - seasonal_week
     unit: MW
     dtype: float
   - name: elecdemand_heat
+    description: Electricity demand for heat (energy hub)
     dims:
     - energy_hub
     - seasonal_week
@@ -617,7 +681,7 @@ outputs:
     - energy_hub
     - seasonal_week
     unit: MW
-    dtype: float  
+    dtype: float
   - name: hydrogen_demand
     dims:
     - energy_hub
@@ -659,7 +723,7 @@ outputs:
     - energy_hub
     - seasonal_week
     unit: MW
-    dtype: float  
+    dtype: float
   - name: hydrogen_demand_heat
     dims:
     - energy_hub
