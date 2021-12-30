@@ -206,6 +206,11 @@ parameters:
     units: mode
     dtype: int
     default: ../energy_supply/parameters/unit_commitment_off
+  - name: interconnector_neutral
+    description: Flag to enable/disable energy flow netural constraint for electricity interconnectors
+    units: mode
+    dtype: int
+    default: ../energy_supply/parameters/interconnector_neutral_on
 interventions:
   - ../energy_supply/interventions/full/es_elec_network
   - ../energy_supply/interventions/full/es_gaspipes
