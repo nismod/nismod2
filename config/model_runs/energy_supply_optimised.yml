@@ -1,21 +1,28 @@
-description: ''
 name: energy_supply_optimised
-narratives:
-  load_shedding:
-  - high_cost
-  operation_mode:
-  - central
-  heat_supply_strategy:
-  - full_electric
+stamp: '2018-01-31T10:10:41.791Z'
+description: ''
+sos_model: energy_supply_optimised
 scenarios:
   fuel_price: baseline
   dummy_energy_demands_full: es_energy_demand_dummy_optimised
   dummy_weather_inputs_full: es_dummy_weather_inputs_full
   biomass_waste_to_energy: es_biomass_waste_to_energy
   elec_interconnector_prices: average_annual_prices
-sos_model: energy_supply_optimised
-stamp: '2018-01-31T10:10:41.791Z'
+narratives:
+  load_shedding:
+  - high_cost
+  operation_mode:
+  - central
+  emissions_constraint:
+  - emissions_constraint_on
+  heat_supply_strategy:
+  - full_electric
+decision_module: ''
+strategies:
+  - type: pre-specified-planning
+    description: 'net zero development (national), centralised operation'
+    filename: ../energy_supply/strategies/electric_world
+    model_name: energy_supply_optimised
 timesteps:
 - 2015
-- 2030
-strategies: []
+- 2050
