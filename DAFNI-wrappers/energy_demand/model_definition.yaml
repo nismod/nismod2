@@ -3,7 +3,7 @@ apiVersion: v1alpha4
 metadata:
   displayName: NISMOD - Energy Demand (model v1.0.1 build 1)
   name: nismod-energy-demand
-  summary: National Infrastructure Systems Model
+  summary: National Infrastructure Systems Model (preliminary upload No.9)
   type: systems of systems
   description: >
     HIRE (HIgh-Resolution Energy demand model) simulates energy demand for the
@@ -48,14 +48,14 @@ spec:
         title: Timestep
         desc: "Simulation year (used if run as part of a NISMOD Systems of Systems Model)"
         type: integer
-    datasets:
+    dataslots:
       - name: Scenario Data
         description: >
           NISMOD scenario data pack. Should contain socio-economic scenarios
           (population, GVA) and energy (fuel) price scenarios.
         default:
           - uid: 1237868f-52ea-416c-9087-eef9dbde429d
-            versionUid: cef750da-b26d-4da1-b67b-871281c3d551
+            versionUid: 5afbfaa2-a351-4a04-9b79-efa6a194aa60
         path: scenarios/
         required: true
       - name: Energy Demand Model Data

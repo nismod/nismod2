@@ -1,7 +1,7 @@
 kind: Model
 apiVersion: v1alpha4
 metadata:
-  displayName: NISMOD - Adaptors (model v2.4.0 build 1)
+  displayName: NISMOD - Adaptors (model v2.4.0 build 3)
   name: nismod-transforms
   summary: National Infrastructure Systems Model
   type: systems of systems
@@ -93,8 +93,8 @@ spec:
           vehicle trip starts and consumption scenarios (test outputs from the
           Transport model used to test running the et_module standalone).
         default:
-          - uid: dbfe6814-3fd3-4e94-8c30-ccfec60c9989
-            versionUid: df234857-a622-4b83-bec1-c72b1c7ed8b6
+          - uid: ed671698-069c-40f4-8645-bf08e45634fb
+            versionUid: 66382de9-bef7-45ab-b729-dbfc1d01007f
         path: et_module/
         required: true
       - name: LAD boundaries
